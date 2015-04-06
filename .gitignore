@@ -3,3 +3,8 @@
 
 # Office Temp Files
 ~$*
+
+# PyCharm Program DIR
+/*
+!/.idea
+/.idea/*
