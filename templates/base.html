@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    {% load staticfiles %}
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}" />
+    <script type="text/javascript" src="{% static 'js/jquery-1.11.2.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}"></script>
+    <title>{% block title %}{% endblock %}</title>
+</head>
+<body>
+    {% if user.is_authenticated %}
+    <div class="container" style="margin-top:20px">
+        <div class="row">
+            <div class="page-header">
+                {% block pageHeader %}{% endblock %}
+            </div>
+        </div>
+    </div>
+
+    <nav class="navbar navbar-default navbar-fixed-top" style="background-color:#00B2EE;">
+        <div class="container">
+            <div class="navbar-header">
+                <button class="navbar-toggle collapsed" data-toggle="collapse" data-target="#id_nav2">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="{% url 'login:menu' %}" style="color: white;">Database Systems</a>
+            </div>
+
+            <div class="collapse navbar-collapse" id="id_nav2">
+                
+                <ul class="nav navbar-nav">
+
+                    <li class="dropdown" role="presentation">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" style="color:white;">
+                            App Group1<span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{% url 'group1:index' %}">group1 index</a> </li>
+                            <li><a href="#">App2</a> </li>
+                        </ul>
+                    </li>
+
+                    <li class="dropdown" role="presentation">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" style="color:white;">
+                            App Group2<span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">App1</a> </li>
+                            <li><a href="#">App2</a> </li>
+                        </ul>
+                    </li>
+
+                    <li class="dropdown" role="presentation">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" style="color:white;">
+                            App Group3<span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">App1</a> </li>
+                            <li><a href="#">App2</a> </li>
+                        </ul>
+                    </li>
+
+                    <li class="dropdown" role="presentation">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" style="color:white;">
+                            App Group4<span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">App1</a> </li>
+                            <li><a href="#">App2</a> </li>
+                        </ul>
+                    </li>
+
+                    <li class="dropdown" role="presentation">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" style="color:white;">
+                            App Group5<span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">App1</a> </li>
+                            <li><a href="#">App2</a> </li>
+                        </ul>
+                    </li>
+
+                    <li class="dropdown" role="presentation">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" style="color:white;">
+                            App Group6<span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">App1</a> </li>
+                            <li><a href="#">App2</a> </li>
+                        </ul>
+                    </li>
+
+                    <li class="dropdown" role="presentation">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" style="color:white;">
+                            App Group7<span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">App1</a> </li>
+                            <li><a href="#">App2</a> </li>
+                        </ul>
+                    </li>
+
+                </ul>
+                
+                <ul class="nav navbar-nav navbar-right">
+                    <li class=dropdown>
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" style="color: white;">
+                            {{ user.username }}<span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{% url 'login:logout' %}">Log out</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="row">
+        {% block content %}{% endblock %}
+    </div></div>
+    {% else %}
+        <div class="alert alert-danger" role="alert"><strong>Warning!</strong> กรุณา<a href="{% url 'login:login' %}">เข้าสู่ระบบ</a></div>
+    {% endif %}
+</body>
+</html>

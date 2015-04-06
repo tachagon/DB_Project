@@ -23,7 +23,7 @@
 
             <div class="collapse navbar-collapse" id="id_nav1">
                 {% if user.is_authenticated %}
-                    <ul class="nav navbar-right">
+                    <ul class="nav navbar-nav navbar-right">
                         <a class="btn btn-danger navbar-btn" href="{% url 'login:logout' %}">Log out</a><br/>
                     </ul>
                 {% else %}
@@ -43,7 +43,6 @@
         </div>
     </nav>
 
-    </div>
 
     <div class="container">
         {% block content %}{% endblock %}

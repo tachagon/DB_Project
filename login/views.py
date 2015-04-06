@@ -53,6 +53,16 @@ def index(request):
         {'registered': registered, 'errors': errors},
         context)
 
+def menu(request):
+    template = 'login/menu.html'
+    context = RequestContext(request)
+
+    return  render_to_response(
+        template,
+        {},
+        context
+    )
+
 def register(request):
     # Like before, get the request's context.
     context = RequestContext(request)
@@ -137,7 +147,7 @@ def user_login(request):
                 # If the account is valid and active, we can log the user in.
                 # We'll send the user back to the homepage.
                 login(request, user)
-                return HttpResponseRedirect(reverse('login:index'))
+                return HttpResponseRedirect(reverse('login:menu'))
             else:
                 # An inactive account was used - no logging in!
                 return HttpResponse("Your account is disabled.")
