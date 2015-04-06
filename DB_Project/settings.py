@@ -23,7 +23,7 @@ SECRET_KEY = 'e#i&mumh&w2t%%-8w_9=du*)fg^do1r&1iy%gry9*#=^4ihu0-'
 DEBUG = True
 
 TEMPLATE_DEBUG = True
-
+TEMPLATE_DIRS = [os.path.join(BASE_DIR, 'templates')]
 ALLOWED_HOSTS = []
 
 
@@ -68,7 +68,7 @@ DATABASES = {
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Bangkok'
 
 USE_I18N = True
 
@@ -81,3 +81,4 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
 
 STATIC_URL = '/static/'
+STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"), "")
