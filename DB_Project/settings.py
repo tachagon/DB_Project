@@ -38,6 +38,12 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'login',
     'group1',
+    'group2',
+    'group3',
+    'group4',
+    'group5',
+    'group6',
+    'group7',
 )
 
 MIDDLEWARE_CLASSES = (
