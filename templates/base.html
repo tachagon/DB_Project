@@ -5,9 +5,11 @@
     {% load staticfiles %}
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}"/>
     <script type="text/javascript" src="{% static 'js/jquery-1.11.2.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}"></script>
     <title>{% block title %}{% endblock %}</title>
+
 </head>
 <body>
     {% if user.is_authenticated %}
@@ -19,7 +21,7 @@
         </div>
     </div>
 
-    <nav class="navbar navbar-default navbar-fixed-top" style="background-color:#00B2EE;">
+    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
         <div class="container">
             <div class="navbar-header">
                 <button class="navbar-toggle collapsed" data-toggle="collapse" data-target="#id_nav2">
@@ -27,7 +29,10 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="{% url 'login:menu' %}" style="color: white;">Database Systems</a>
+                <a class="navbar-brand" href="{% url 'login:menu' %}">
+                    <span class="glyphicon glyphicon-home"></span>
+                    หน้าหลัก
+                </a>
             </div>
 
             <div class="collapse navbar-collapse" id="id_nav2">
@@ -35,7 +40,7 @@
                 <ul class="nav navbar-nav">
 
                     <li class="dropdown" role="presentation">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" style="color:white;">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                             App Group1<span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu">
@@ -45,7 +50,7 @@
                     </li>
 
                     <li class="dropdown" role="presentation">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" style="color:white;">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                             App Group2<span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu">
@@ -54,18 +59,25 @@
                         </ul>
                     </li>
 
-                    <li class="dropdown" role="presentation">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" style="color:white;">
-                            App Group3<span class="caret"></span>
+                    <li class="dropdown">
+                        <a id="dLabel" role="button" data-toggle="dropdown" data-target="#">
+                            งานสอน<span class="caret"></span>
                         </a>
-                        <ul class="dropdown-menu">
-                            <li><a href="#">App1</a> </li>
-                            <li><a href="#">App2</a> </li>
+                        <ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
+                            <li><a href="#">Link1</a> </li>
+                            <li><a href="#">Link2</a> </li>
+                            <li class="divider"></li>
+                            <li class="dropdown-submenu">
+                                <a tabindex="-1" href="#">Sub Link3</a>
+                                <ul class="dropdown-menu">
+                                    <li><a tabindex="-1" href="#">second level1</a> </li>
+                                </ul>
+                            </li>
                         </ul>
                     </li>
 
                     <li class="dropdown" role="presentation">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" style="color:white;">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                             App Group4<span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu">
@@ -75,7 +87,7 @@
                     </li>
 
                     <li class="dropdown" role="presentation">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" style="color:white;">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                             App Group5<span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu">
@@ -85,7 +97,7 @@
                     </li>
 
                     <li class="dropdown" role="presentation">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" style="color:white;">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                             App Group6<span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu">
@@ -95,7 +107,7 @@
                     </li>
 
                     <li class="dropdown" role="presentation">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" style="color:white;">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                             App Group7<span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu">
@@ -108,11 +120,12 @@
                 
                 <ul class="nav navbar-nav navbar-right">
                     <li class=dropdown>
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" style="color: white;">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            <span class="glyphicon glyphicon-user"></span>
                             {{ user.username }}<span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a href="{% url 'login:logout' %}">Log out</a></li>
+                            <li><a href="{% url 'login:logout' %}">ออกจากระบบ</a></li>
                         </ul>
                     </li>
                 </ul>
