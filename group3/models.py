@@ -3,7 +3,7 @@ from django.db import models
 # Create your models here.
 class Prof2Lang(models.Model):
     # the professor ID is primary key
-    profID = models.IntegerField(primary_key=True)
+    profID = models.CharField(primary_key=True, max_length=10)
     # professor profile
     firstName = models.CharField(max_length=50)
     lastName = models.CharField(max_length=80)
@@ -20,14 +20,14 @@ class Prof2Lang(models.Model):
         return self.firstName + " " + self.lastName
 
 class Subject(models.Model):
-    subjectID = models.IntegerField(primary_key=True, max_length=9)
+    subjectID = models.CharField(primary_key=True, max_length=9)
     subjectName = models.CharField(max_length=200)
 
     def __unicode__(self):
         return self.subjectName
 
 class Section(models.Model):
-    sectionID = models.CharField(primary_key=True, max_length=7)
+    section = models.CharField(max_length=7)
     subject = models.ForeignKey(Subject)
     classroom = models.CharField(max_length=20)
     startTime = models.TimeField()
@@ -44,13 +44,13 @@ class Section(models.Model):
     date = models.CharField(max_length=1, choices=dateChoices)
 
     def __unicode__(self):
-        return self.sectionID
+        return self.section + " " + self.subject.subjectName
 
     class meta:
-        unique_together = ('sectionID', 'subject')
+        unique_together = ('section', 'subject')
 
 class Teach(models.Model):
-    prof = models.ForeignKey(Prof2Lang)
+    prof = models.ForeignKey(Prof2Lang, blank=True, null=True)
     subject = models.ForeignKey(Subject)
     section = models.ForeignKey(Section)
 

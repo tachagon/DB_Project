@@ -27,7 +27,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Prof2Lang',
             fields=[
-                ('profID', models.IntegerField(serialize=False, primary_key=True)),
+                ('profID', models.CharField(max_length=10, serialize=False, primary_key=True)),
                 ('firstName', models.CharField(max_length=50)),
                 ('lastName', models.CharField(max_length=80)),
                 ('shortName', models.CharField(max_length=3)),
@@ -44,7 +44,8 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Section',
             fields=[
-                ('sectionID', models.CharField(max_length=7, serialize=False, primary_key=True)),
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('section', models.CharField(max_length=7)),
                 ('classroom', models.CharField(max_length=20)),
                 ('startTime', models.TimeField()),
                 ('endTime', models.TimeField()),
@@ -57,7 +58,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Subject',
             fields=[
-                ('subjectID', models.IntegerField(max_length=9, serialize=False, primary_key=True)),
+                ('subjectID', models.CharField(max_length=9, serialize=False, primary_key=True)),
                 ('subjectName', models.CharField(max_length=200)),
             ],
             options={

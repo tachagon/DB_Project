@@ -18,7 +18,7 @@ class SubjectAdmin(admin.ModelAdmin):
     inlines = [SectionInline]
 
 class SectionAdmin(admin.ModelAdmin):
-    list_display = ('subject', 'sectionID', 'date', 'startTime', 'endTime', 'classroom')
+    list_display = ('subject', 'section', 'date', 'startTime', 'endTime', 'classroom')
 
 class TeachAdmin(admin.ModelAdmin):
     list_display = ('prof', 'subject', 'section')
