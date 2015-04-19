@@ -1,12 +1,7 @@
 {% extends "base.html" %}
 {% block head %}
     <style>
-        th {
-            text-align: center;
-        }
-        td#subjectName {
-            text-align: left;
-        }
+
     </style>
 {% endblock %}
 
@@ -18,48 +13,50 @@
     <!-- check has Prof2Lang object -->
     {% if teachList %}
         <div class="container-fluid">
-            <table class="table table-hover table-bordered">
-                <thead>
-                    <tr>
-                        <th>ลำดับ</th>
-                        <th>ชื่อ-สกุล</th>
-                        <th>ตัวย่อ</th>
-                        <th>รหัสวิชา</th>
-                        <th>ชื่อวิชา</th>
-                        <th>ตอนเรียน</th>
-                        <th>วัน</th>
-                        <th>เวลา</th>
-                        <th>ห้องเรียน</th>
-                        <th>เบอร์โทรศัพท์</th>
-                        <th>E-mail</th>
-                        <th>บ/ช สหกรณ์</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
+            <div class="table-responsive">
+                <table class="table table-hover table-bordered" id="no-more-tables">
+                    <thead>
+                        <tr>
+                            <th>ลำดับ</th>
+                            <th>ชื่อ-สกุล</th>
+                            <th>ตัวย่อ</th>
+                            <th>รหัสวิชา</th>
+                            <th>ชื่อวิชา</th>
+                            <th>ตอนเรียน</th>
+                            <th>วัน</th>
+                            <th>เวลา</th>
+                            <th>ห้องเรียน</th>
+                            <th>เบอร์โทรศัพท์</th>
+                            <th>E-mail</th>
+                            <th>บ/ช สหกรณ์</th>
+                            <th>เมนู</th>
+                        </tr>
+                    </thead>
+                    <tbody>
                     {% for teach in teachList %}
-                    <tr align="center">
-                        <td>{{ forloop.counter }}</td>
-                        <td>{{ teach.prof }}</td>
-                        <td>{{ teach.prof.shortName }}</td>
-                        <td>{{ teach.subject.subjectID }}</td>
-                        <td id="subjectName">{{ teach.subject.subjectName }}</td>
-                        <td>{{ teach.section.section }}</td>
-                        <td>{{ teach.section.date }}</td>
-                        <td>{{ teach.section.startTime|time:"H.i" }} - {{ teach.section.endTime|time:"H.i" }}</td>
-                        <td>{{ teach.section.classroom }}</td>
-                        <td>{{ teach.prof.tell }}</td>
-                        <td>{{ teach.prof.email }}</td>
-                        <td>{{ teach.prof.sahakornAccount }}</td>
-                        <td>
-                            <a class="btn btn-info btn-xs" href="#">ดูข้อมูล</a>
-                            <a class="btn btn-default btn-xs" href="#">แก้ไข</a>
-                            <a class="btn btn-danger btn-xs" href="#">ลบ</a>
-                        </td>
-                    </tr>
+                        <tr>
+                            <td data-title="ลำดับ">{{ forloop.counter }}</td>
+                            <td data-title="ชื่อ-สกุล">{{ teach.prof }}</td>
+                            <td data-title="ตัวย่อ">{{ teach.prof.shortName }}</td>
+                            <td data-title="รหัสวิชา">{{ teach.subject.subjectID }}</td>
+                            <td data-title="ชื่อวิชา">{{ teach.subject.subjectName }}</td>
+                            <td data-title="ตอนเรียน">{{ teach.section.section }}</td>
+                            <td data-title="วัน">{{ teach.section.date }}</td>
+                            <td data-title="เวลา">{{ teach.section.startTime|time:"H.i" }} - {{teach.section.endTime|time:"H.i" }}</td>
+                            <td data-title="ห้องเรียน">{{ teach.section.classroom }}</td>
+                            <td data-title="เบอร์โทรศัพท์">{{ teach.prof.tell }}</td>
+                            <td data-title="E-mail">{{ teach.prof.email }}</td>
+                            <td data-title="บ/ช สหกรณ์">{{ teach.prof.sahakornAccount }}</td>
+                            <td data-title="เมนู">
+                                <a class="btn btn-info btn-xs" href="#">ดูข้อมูล</a>
+                                <a class="btn btn-default btn-xs" href="#">แก้ไข</a>
+                                <a class="btn btn-danger btn-xs" href="#">ลบ</a>
+                            </td>
+                        </tr>
                     {% endfor %}
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
+            </div>
             <a class="btn btn-primary" href="#">เพิ่มข้อมูล</a>
         </div>
     {% else %}
