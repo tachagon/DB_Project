@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {% if teachObj %}
+        {{ teachObj.prof }} {{ teachObj.subject }}
+    {% else %}
+        ไม่พบข้อมูล
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    {% if teachObj %}
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4>ข้อมูลอาจารย์สองภาษา</h4>
+                        </div>
+                        <div class="panel-body">
+                            <table class="table table-responsive table-hover">
+                                <tr>
+                                    <th>รหัสอาจารย์</th>
+                                    <td>{{teachObj.prof.profID}}</td>
+                                </tr>
+                                <tr>
+                                    <th>ชื่อ - นามสกุล</th>
+                                    <td>{{teachObj.prof.firstName}} {{teachObj.prof.lastName}}</td>
+                                </tr>
+                                <tr>
+                                    <th>ตัวย่อ</th>
+                                    <td>{{teachObj.prof.shortName}}</td>
+                                </tr>
+                                <tr>
+                                    <th>ภาควิชา</th>
+                                    <td>{{teachObj.prof.department}}</td>
+                                </tr>
+                                <tr>
+                                    <th>คณะ</th>
+                                    <td>{{teachObj.prof.faculty}}</td>
+                                </tr>
+                                <tr>
+                                    <th>บัญชีสหกรณ์</th>
+                                    <td>{{teachObj.prof.sahakornAccount}}</td>
+                                </tr>
+                                <tr>
+                                    <th>เบอร์โทรศัพท์</th>
+                                    <td>{{teachObj.prof.tell}}</td>
+                                </tr>
+                                <tr>
+                                    <th>E-mail</th>
+                                    <td>{{teachObj.prof.email}}</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4>ข้อมูลวิชาที่สอน</h4>
+                        </div>
+                        <div class="panel-body">
+                            <table class="table table-responsive table-hover">
+                                <tr>
+                                    <th>รหัสวิชา</th>
+                                    <td>{{teachObj.subject.subjectID}}</td>
+                                </tr>
+                                <tr>
+                                    <th>ชื่อวิชา</th>
+                                    <td>{{teachObj.section.subject.subjectName}}</td>
+                                </tr>
+                                <tr>
+                                    <th>Section</th>
+                                    <td>{{teachObj.section.section}}</td>
+                                </tr>
+                                <tr>
+                                    <th>ห้องเรียน</th>
+                                    <td>{{teachObj.section.classroom}}</td>
+                                </tr>
+                                <tr>
+                                    <th>เวลาเรียน</th>
+                                    <td>{{teachObj.section.startTime|time:"H.i"}} - 
+                                        {{teachObj.section.endTime|time:"H.i"}}
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <a class="btn btn-default" href="{% url 'group3:prof2lang_index' %}">
+                <span class="glyphicon glyphicon-arrow-left"></span>
+                ย้อนกลับ
+            </a>
+        </div>
+    {% else %}
+        <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-md-6">
+                <div class="alert alert-danger" role="alert">
+                    <strong>ไม่พบข้อมูล!</strong>
+                    <a class="alert-link" href="{% url 'group3:prof2lang_index' %}">ย้อนกลับ</a>
+                </div>
+            </div>
+            <div class="col-md-3"></div>
+        </div>
+    {% endif %}
+{% endblock %}
