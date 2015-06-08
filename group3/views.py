@@ -11,3 +11,17 @@ def prof2lang_index(request):
         template,
         {'teachList': teachList}
     )
+
+def prof2lang_view(request, profID):
+    template = 'group3/prof2lang_view.html'             # get view template
+    try:
+        teachObj = Teach.objects.get(pk = int(profID))  # get a Teach object
+        context = {'teachObj': teachObj}
+    except: # can't get a Teach object
+        context = {}
+
+    return render(
+        request,
+        template,
+        context
+    )
