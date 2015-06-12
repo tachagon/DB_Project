@@ -51,6 +51,7 @@
                                 <a class="btn btn-info btn-xs" href="{% url 'group3:prof2lang_view' teach.id %}">ดูข้อมูล</a>
                                 <a class="btn btn-default btn-xs" href="#">แก้ไข</a>
                                 <a class="btn btn-danger btn-xs" href="#">ลบ</a>
+                                <a class="btn btn-default btn-xs" href="{% url 'group3:genpdf' %}" target = _blank><span class="glyphicon glyphicon-print"></span></a>
                             </td>
                         </tr>
                     {% endfor %}

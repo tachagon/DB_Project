@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from group3.models import *
+from django.http import HttpResponse
 
 # Create your views here.
 def prof2lang_index(request):
@@ -25,3 +26,14 @@ def prof2lang_view(request, profID):
         template,
         context
     )
+
+def genpdf(request):
+    with open('group3/uni.pdf', 'rb') as pdf:
+        response = HttpResponse(pdf.read(),content_type='application/pdf')
+        response['Content-Disposition'] = 'filename=uni.pdf'
+        return response
+    pdf.closed
+    
+    #template = 'group3/hello.html'
+    #return render(request, template, {})
+
