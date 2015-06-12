@@ -57,7 +57,7 @@
                     </tbody>
                 </table>
             </div>
-            <a class="btn btn-primary" href="#">เพิ่มข้อมูล</a>
+            <a class="btn btn-primary" data-toggle="modal" data-target="#modal1">เพิ่มข้อมูล</a>
         </div>
     {% else %}
         <div class="row">
@@ -71,4 +71,107 @@
             <div class="col-md-3"></div>
         </div>
     {% endif %}
+    
+    <div class="modal fade" id="modal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- Form for add Prof2lang Object-->
+                <form class="form-horizontal" id="addProf2lang" method="post" action="" enctype="multipart/form-data">
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title" id="myModalLabel">เพิ่มข้อมูล <small>อาจารย์สองภาษา</small></h4>
+                    </div>
+                    <!-- Modal Body -->
+                    <div class="modal-body">
+                    
+                        {% csrf_token %}
+                        
+                        <h4>ข้อมูลอาจารย์</h4>
+                        
+                        <!-- รหัสอาจารย์ -->
+                        <div class="form-group form-group-sm">
+                            <label class="col-sm-3 control-label"><font color="red">* </font>รหัสอาจารย์: </label>
+                            <div class="col-sm-9">
+                                <input type="text" name="profID" class="form-control" value="" placeholder="รหัสอาจารย์ " maxlength="10" required>
+                            </div>
+                        </div>
+                        
+                        <!-- ชื่อ -->
+                        <div class="form-group form-group-sm">
+                            <label class="col-sm-3 control-label"><font color="red">* </font>ชื่อ: </label>
+                            <div class="col-sm-9">
+                                <input type="text" name="firstName" class="form-control" value="" placeholder="ชื่อ " maxlength="50" required>
+                            </div>
+                        </div>
+                        
+                        <!-- นามสกุล -->
+                        <div class="form-group form-group-sm">
+                            <label class="col-sm-3 control-label"><font color="red">* </font>นามสกุล: </label>
+                            <div class="col-sm-9">
+                                <input type="text" name="lastName" class="form-control" value="" placeholder="นามสกุล " maxlength="80" required>
+                            </div>
+                        </div>
+                        
+                        <!-- ตัวย่อชื่อ -->
+                        <div class="form-group form-group-sm">
+                            <label class="col-sm-3 control-label"><font color="red">* </font>ตัวย่อชื่อ: </label>
+                            <div class="col-sm-9">
+                                <input type="text" name="shortName" class="form-control" value="" placeholder="ตัวย่อชื่อ " maxlength="3" required>
+                            </div>
+                        </div>
+                        
+                        <!-- เบอร์โทรศัพท์ -->
+                        <div class="form-group form-group-sm">
+                            <label class="col-sm-3 control-label">เบอร์โทรศัพท์: </label>
+                            <div class="col-sm-9">
+                                <input type="tel" name="tell" class="form-control" value="" placeholder="เบอร์โทรศัพท์ " maxlength="15">
+                            </div>
+                        </div>
+                        
+                        <!-- email -->
+                        <div class="form-group form-group-sm">
+                            <label class="col-sm-3 control-label">email: </label>
+                            <div class="col-sm-9">
+                                <input type="email" name="email" class="form-control" value="" placeholder="email ">
+                            </div>
+                        </div>
+                        
+                        <!-- บัญชีสหกรณื -->
+                        <div class="form-group form-group-sm">
+                            <label class="col-sm-3 control-label">บัญชีสหกรณ์: </label>
+                            <div class="col-sm-9">
+                                <input type="text" name="sahakornAccount" class="form-control" value="" placeholder="บัญชีสหกรณ์ " maxlength="100">
+                            </div>
+                        </div>
+                        
+                        <!-- ภาควิชา -->
+                        <div class="form-group form-group-sm">
+                            <label class="col-sm-3 control-label"><font color="red">* </font>ภาควิชา: </label>
+                            <div class="col-sm-9">
+                                <input type="text" name="department" class="form-control" value="" placeholder="ภาควิชา " maxlength="200" required>
+                            </div>
+                        </div>
+                        
+                        <!-- คณะ -->
+                        <div class="form-group form-group-sm">
+                            <label class="col-sm-3 control-label"><font color="red">* </font>คณะ: </label>
+                            <div class="col-sm-9">
+                                <input type="text" name="faculty" class="form-control" value="" placeholder="คณะ " maxlength="200" required>
+                            </div>
+                        </div>
+                    
+                    </div>
+                    <!-- Modal Footer -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">ยกเลิก</button>
+                        <input type="submit" class="btn btn-primary" value="บันทึก">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
 {% endblock %}

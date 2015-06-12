@@ -25,3 +25,12 @@ def prof2lang_view(request, profID):
         template,
         context
     )
+
+def prof2lang_add(request):
+    template = 'group3/prof2lang_add.html'
+    
+    return render(
+        request,
+        template,
+        {}
+    )
