@@ -1,11 +1,9 @@
-<<<<<<< HEAD
-from django.shortcuts import render, HttpResponseRedirect
-from django.core.urlresolvers import reverse
-=======
 #!/usr/bin/env python
 #-*- coding: utf-8 -*-
+from django.shortcuts import render, HttpResponseRedirect
+from django.core.urlresolvers import reverse
 from django.shortcuts import render
->>>>>>> boss
+
 from group3.models import *
 from django.http import HttpResponse
 from fpdf import FPDF
@@ -34,7 +32,6 @@ def prof2lang_view(request, profID):
         context
     )
 
-<<<<<<< HEAD
 def prof2lang_add(request, option = '0'):
     template = 'group3/prof2lang_add.html'
     # get all Prof2Lang objects
@@ -188,7 +185,7 @@ def addSection(request):
             return HttpResponseRedirect(reverse('group3:prof2lang_add', args=['5']))
         except:
             return HttpResponseRedirect(reverse('group3:prof2lang_add', args=['6']))
-=======
+
 def genpdf(request, profID):
     teachObj = Teach.objects.get(pk= int(profID)) 
     pdf = FPDF('P', 'mm', 'A4')
@@ -353,4 +350,3 @@ def genpdf(request, profID):
     pdf.closed
     
 
->>>>>>> boss
