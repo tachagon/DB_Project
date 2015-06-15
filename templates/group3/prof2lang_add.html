@@ -1,30 +1,435 @@
 {% extends "base.html" %}
 
-{% block pageHeader %}<h3>เพิ่มข้อมูล <small>อาจารย์สองภาษา</small></h3>{% endblock %}
+{% block title %}เพิ่มข้อมูล อาจารย์สองภาษา{% endblock %}
+
+{% block pageHeader %}
+<h2>เพิ่มข้อมูล <small>อาจารย์สองภาษา</small></h2>
+<ol class="breadcrumb">
+    <li><a href="{% url 'login:menu' %}">เมนู</a></li>
+    <li><a href="{% url 'group3:prof2lang_index' %}">ระบบอาจารย์สองภาษา</a></li>
+    <li class="active">เพิ่มข้อมูลอาจารย์สองภาษา</li>
+</ol>
+{% endblock %}
 
 {% block content %}
-    <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#modal1">
-        Test
-    </button>
+<script type="text/javascript">
+        function populate(in1, in2){
+            var s1 = document.getElementById(in1);
+            var s2 = document.getElementById(in2);
+            s2.innerHTML = "";
+            if(s1.value == ""){
+                var optionArray = ["|กรุณาเลือกวิชา"];
+            }
+            {% for subject in subjectObj %}
+                else if(s1.value == "{{ subject.subjectID }}"){
+                    var optionArray = [];
+                    {% for sec in subject.section_set.all %}
+                        var strTemp = "{{ sec.section }}|{{ sec.section }} {{ sec.subject.subjectName }}";
+                        optionArray.push(strTemp);
+                    {% empty %}
+                        optionArray.push("|กรุณาเพิ่ม Section");
+                    {% endfor %}
+                    console.log(optionArray);
+                }
+            {% empty %}
 
-    <!-- modal1 -->
-    <div class="modal fade" id="modal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
+            {% endfor %}
+
+            for(var option in optionArray){
+                var pair = optionArray[option].split("|");
+                var newOption = document.createElement("option");
+                newOption.value = pair[0];
+                newOption.text = pair[1];
+                s2.options.add(newOption);
+                console.log(newOption);
+            }
+
+        }
+</script>
+
+<div class="container">
+
+    <!-- ถ้าเพิ่มข้อมูลอาจารย์สำเร็จ จะมีข้อความ Alert บอก -->
+    {% if addProfSuccess %}
+    <div class="alert alert-success" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <strong>สำเร็จ! </strong>ระบบได้เพิ่มข้อมูลอาจารย์แล้ว
+    </div>
+    {% endif %}
+
+    <!-- ถ้าเพิ่มข้อมูลอาจารย์ไม่สำเร็จ จะมีข้อความ Alert บอก -->
+    {% if addProfError %}
+    <div class="alert alert-danger" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <strong>ล้มเหลว! </strong>ระบบไม่สามารถเพิ่มข้อมูลอาจารย์ได้
+    </div>
+    {% endif %}
+
+    <!-- ถ้าเพิ่มข้อมูลวิชาสำเร็จ จะมีข้อความ Alert บอก -->
+    {% if addSubjectSuccess %}
+    <div class="alert alert-success" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <strong>สำเร็จ! </strong>ระบบได้เพิ่มข้อมูลวิชาแล้ว
+    </div>
+    {% endif %}
+
+    <!-- ถ้าเพิ่มข้อมูลวิชาไม่สำเร็จ จะมีข้อความ Alert บอก -->
+    {% if addSubjectError %}
+    <div class="alert alert-danger" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <strong>ล้มเหลว! </strong>ระบบไม่สามารถเพิ่มข้อมูลวิชาได้
+    </div>
+    {% endif %}
+
+    <!-- ถ้าเพิ่มข้อมูล section สำเร็จ จะมีข้อความ Alert บอก -->
+    {% if addSectionSuccess %}
+    <div class="alert alert-success" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <strong>สำเร็จ! </strong>ระบบได้เพิ่มข้อมูล section แล้ว
+    </div>
+    {% endif %}
+
+    <!-- ถ้าเพิ่มข้อมูล section ไม่สำเร็จ จะมีข้อความ Alert บอก -->
+    {% if addSectionError %}
+    <div class="alert alert-danger" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <strong>ล้มเหลว! </strong>ระบบไม่สามารถเพิ่มข้อมูล section ได้
+    </div>
+    {% endif %}
+
+    <div class="row">
+
+        <form class="form-horizontal">
+            <!-- เลือกอาจารย์สองภาษา -->
+            <div class="form-group">
+                <label class="col-sm-3 control-label">อาจารย์สองภาษา: </label>
+                <div class="col-sm-6">
+                    <select multiple class="form-control" name="selectProf">
+                        <option value=""> </option>
+                        {% for prof in prof2langObj %}
+                        <option value="{{ prof.profID }}">{{ prof.shortName }}: {{ prof.firstName }} {{ prof.lastName }}</option>
+                        {% empty %}
+                        <option>กรุณาเพิ่มอาจารย์</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-sm-3">
+                    <button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal_addProf" style="color:green;">
+                        <span class="glyphicon glyphicon-plus"></span>
+                        เพิ่มอาจารย์
                     </button>
-                    <h4 class="modal-title" id="myModalLabel">Modal title</h4>
-                </div>
-                <div class="modal-body">
-                    ...
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
                 </div>
             </div>
+
+            <!-- เลือกวิชา -->
+            <div class="form-group">
+                <label class="col-sm-3 control-label">วิชา: </label>
+                <div class="col-sm-6">
+                    <select multiple class="form-control" id="selectSubject" name="selectSubject" onclick=populate("selectSubject","selectSection")>
+                        <option value=""> </option>
+                        {% for subject in subjectObj %}
+                        <option value="{{ subject.subjectID }}">{{ subject.subjectID }} {{ subject.subjectName }}</option>
+                        {% empty %}
+                        <option>กรุณาเพิ่มวิชา</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-sm-3">
+                    <button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal_addSubject" style="color:green;">
+                        <span class="glyphicon glyphicon-plus"></span>
+                        เพิ่มวิชา
+                    </button>
+                </div>
+            </div>
+
+            <!-- เลือก section -->
+            <div class="form-group">
+                <label class="col-sm-3 control-label">Section: </label>
+                <div class="col-sm-6">
+                    <select multiple class="form-control" id="selectSection" name="selectSection">
+
+                    </select>
+                </div>
+                <div class="col-sm-3">
+                    <button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal_addSection" style="color:green;">
+                        <span class="glyphicon glyphicon-plus"></span>
+                        เพิ่ม Section
+                    </button>
+                </div>
+            </div>
+
+        </form>
+
+    </div>
+
+
+
+    <!-- modal1 -->
+    <div class="modal fade" id="modal_addProf" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <!-- Form for add Prof2lang Object-->
+            <form class="form-horizontal" id="addProf2lang" method="post" action="{% url 'group3:addProf' %}" enctype="multipart/form-data">
+                <div class="modal-content">
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title">เพิ่มข้อมูล <small>อาจารย์</small></h4>
+                    </div>
+                    <!-- Modal Body -->
+                    <div class="modal-body">
+
+                        {% csrf_token %}
+
+                        <h4>ข้อมูลอาจารย์</h4>
+
+                        <!-- รหัสอาจารย์ -->
+                        <div class="form-group form-group-sm">
+                            <label class="col-sm-3 control-label"><font color="red">* </font>รหัสอาจารย์: </label>
+                            <div class="col-sm-9">
+                                <input type="text" name="profID" class="form-control" value="" placeholder="รหัสอาจารย์ " maxlength="10" required>
+                            </div>
+                        </div>
+
+                        <!-- ชื่อ -->
+                        <div class="form-group form-group-sm">
+                            <label class="col-sm-3 control-label"><font color="red">* </font>ชื่อ: </label>
+                            <div class="col-sm-9">
+                                <input type="text" name="firstName" class="form-control" value="" placeholder="ชื่อ " maxlength="50" required>
+                            </div>
+                        </div>
+
+                        <!-- นามสกุล -->
+                        <div class="form-group form-group-sm">
+                            <label class="col-sm-3 control-label"><font color="red">* </font>นามสกุล: </label>
+                            <div class="col-sm-9">
+                                <input type="text" name="lastName" class="form-control" value="" placeholder="นามสกุล " maxlength="80" required>
+                            </div>
+                        </div>
+
+                        <!-- ตัวย่อชื่อ -->
+                        <div class="form-group form-group-sm">
+                            <label class="col-sm-3 control-label"><font color="red">* </font>ตัวย่อชื่อ: </label>
+                            <div class="col-sm-9">
+                                <input type="text" name="shortName" class="form-control" value="" placeholder="ตัวย่อชื่อ " maxlength="3" required>
+                            </div>
+                        </div>
+
+                        <!-- เบอร์โทรศัพท์ -->
+                        <div class="form-group form-group-sm">
+                            <label class="col-sm-3 control-label">เบอร์โทรศัพท์: </label>
+                            <div class="col-sm-9">
+                                <input type="tel" name="tell" class="form-control" value="" placeholder="เบอร์โทรศัพท์ " maxlength="15">
+                            </div>
+                        </div>
+
+                        <!-- email -->
+                        <div class="form-group form-group-sm">
+                            <label class="col-sm-3 control-label">email: </label>
+                            <div class="col-sm-9">
+                                <input type="email" name="email" class="form-control" value="" placeholder="email ">
+                            </div>
+                        </div>
+
+                        <!-- บัญชีสหกรณื -->
+                        <div class="form-group form-group-sm">
+                            <label class="col-sm-3 control-label">บัญชีสหกรณ์: </label>
+                            <div class="col-sm-9">
+                                <input type="text" name="sahakornAccount" class="form-control" value="" placeholder="บัญชีสหกรณ์ " maxlength="100">
+                            </div>
+                        </div>
+
+                        <!-- ภาควิชา -->
+                        <div class="form-group form-group-sm">
+                            <label class="col-sm-3 control-label"><font color="red">* </font>ภาควิชา: </label>
+                            <div class="col-sm-9">
+                                <input type="text" name="department" class="form-control" value="" placeholder="ภาควิชา " maxlength="200" required>
+                            </div>
+                        </div>
+
+                        <!-- คณะ -->
+                        <div class="form-group form-group-sm">
+                            <label class="col-sm-3 control-label"><font color="red">* </font>คณะ: </label>
+                            <div class="col-sm-9">
+                                <input type="text" name="faculty" class="form-control" value="" placeholder="คณะ " maxlength="200" required>
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- Modal Footer -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">ยกเลิก</button>
+                        <input type="submit" class="btn btn-success" value="ยืนยัน">
+                    </div>
+                </div>
+
+            </form>
+
+        </div>
+    </div><!-- end modal_addProf -->
+
+    <!-- modal_addSubject -->
+    <div class="modal fade" id="modal_addSubject" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <!-- Form for add Subject Object -->
+            <form class="form-horizontal" method="post" action="{% url 'group3:addSubject' %}" enctype="multipart/form-data">
+                <div class="modal-content">
+                    <!-- modal header -->
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title">เพิ่มข้อมูล <small>วิชา</small></h4>
+                    </div>
+                    <!-- modal body -->
+                    <div class="modal-body">
+                        {% csrf_token %}
+                        <!-- รหัสวิชา -->
+                        <div class="form-group form-group-sm">
+                            <label class="col-sm-3 control-label"><font color="red">* </font>รหัสวิชา: </label>
+                            <div class="col-sm-9">
+                                <input type="text" name="subjectID" class="form-control" value="" placeholder="รหัสวิชา " maxlength="9" required>
+                            </div>
+                        </div>
+
+                        <!-- ชื่อวิชา -->
+                        <div class="form-group form-group-sm">
+                            <label class="col-sm-3 control-label"><font color="red">* </font>ชื่อวิชา: </label>
+                            <div class="col-sm-9">
+                                <input type="text" name="subjectName" class="form-control" value="" placeholder="ชื่อวิชา " maxlength="200" required>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- modal footer -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">ยกเลิก</button>
+                        <input type="submit" class="btn btn-success" value="ยืนยัน">
+                    </div>
+                </div><!-- end of modal-content -->
+            </form>
+        </div>
+    </div><!-- end of modal_addSubject -->
+
+    <!-- modal_addSection -->
+    <div class="modal fade" id="modal_addSection" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <!-- Form for add Section object -->
+            <form class="form-horizontal" method="post" action="{% url 'group3:addSection' %}" enctype="multipart/form-data">
+                <div class="modal-content">
+                    <!-- modal header -->
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title">เพิ่มข้อมูล <small>Section</small></h4>
+                    </div>
+                    <!-- modal body -->
+                    <div class="modal-body">
+                        {% csrf_token %}
+
+                        <!-- ชื่อ Section -->
+                        <div class="form-group form-group-sm">
+                            <label class="col-sm-3 control-label"><font color="red">* </font>ชื่อ Section (ตัวอย่าง S.1): </label>
+                            <div class="col-sm-9">
+                                <input type="text" name="section" class="form-control" value="" placeholder="ชื่อ Section " maxlength="7" required>
+                            </div>
+                        </div>
+
+                        <!-- ชื่อวิชา -->
+                        <div class="form-group form-group-sm">
+                            <label class="col-sm-3 control-label"><font color="red">* </font>เลือกวิชา: </label>
+                            <div class="col-sm-9">
+                                <select name="subject" class="form-control" required>
+                                    {% for subject in subjectObj %}
+                                        <option value="{{ subject.subjectID }}">{{ subject.subjectID }} {{ subject.subjectName }}</option>
+                                    {% empty %}
+                                        <option value="">กรุณาเพิ่มวิชาก่อน</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- ห้องเรียน -->
+                        <div class="form-group form-group-sm">
+                            <label class="col-sm-3 control-label"><font color="red">* </font>ห้องเรียน: </label>
+                            <div class="col-sm-9">
+                                <input type="text" name="classroom" class="form-control" value="" placeholder="ห้องเรียน " maxlength="20" required>
+                            </div>
+                        </div>
+
+                        <!-- เวลาเริ่ม และ สิ้นสุด -->
+                        <div class="form-group form-group-sm">
+                            <label class="col-sm-2 control-label"><font color="red">* </font>เวลา: </label>
+                            <!-- ชั่วโมง เริ่ม -->
+                            <div class="col-sm-2">
+                                <select name="startTime_hour" class="form-control">
+                                    <script>
+                                        for(var i = 0; i < 24; i++){
+                                            document.write('<option value="' + i + '">' + i + '</option>');
+                                        }
+                                    </script>
+                                </select>
+                            </div>
+
+                            <!-- นาที เริ่ม -->
+                            <div class="col-sm-2">
+                                <select name="startTime_minute" class="form-control">
+                                    <script>
+                                        for(var i = 0; i < 60; i++){
+                                            document.write('<option value="' + i + '">' + i + '</option>');
+                                        }
+                                    </script>
+                                </select>
+                            </div>
+                            <div class="col-sm-2"><center>ถึง</center></div>
+                            <!-- ชั่วโมง สิ้นสุด -->
+                            <div class="col-sm-2">
+                                <select name="endTime_hour" class="form-control">
+                                    <script>
+                                        for(var i = 0; i < 24; i++){
+                                            document.write('<option value="' + i + '">' + i + '</option>');
+                                        }
+                                    </script>
+                                </select>
+                            </div>
+                            <!-- นาที สิ้นสุด -->
+                            <div class="col-sm-2">
+                                <select name="endTime_minute" class="form-control">
+                                    <script>
+                                        for(var i = 0; i < 60; i++){
+                                            document.write('<option value="' + i + '">' + i + '</option>');
+                                        }
+                                    </script>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group form-group-sm">
+                            <label class="col-sm-3 control-label"><font color="red">* </font>เลือกวัน: </label>
+                            <div class="col-sm-9">
+                                <select name="date" class="form-control">
+                                    <option value="M">วันจันทร์</option>
+                                    <option value="T">วันอังคาร</option>
+                                    <option value="W">วันพุธ</option>
+                                    <option value="H">วันพฤหัสบดี</option>
+                                    <option value="F">วันศุกร์</option>
+                                    <option value="S">วันเสาร์</option>
+                                </select>
+                            </div>
+                        </div>
+
+                    </div><!-- end of modal body -->
+                    <!-- modal footer -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">ยกเลิก</button>
+                        <input type="submit" class="btn btn-success" value="ยืนยัน">
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
+
+
+</div><!-- end container -->
 {% endblock %}

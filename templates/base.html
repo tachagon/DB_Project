@@ -30,7 +30,7 @@
     </header>
 
 
-    <nav class="navbar navbar-default navbar-static-top" id="derp">
+    <nav class="navbar navbar-default navbar-static-top">
         <div class="container">
             <div class="navbar-header">
                 <button class="navbar-toggle collapsed" data-toggle="collapse" data-target="#id_nav2">
@@ -79,6 +79,7 @@
                                 <a tabindex="-1" href="#">อาจารย์สองภาษา</a>
                                 <ul class="dropdown-menu">
                                     <li><a tabindex="-1" href="{% url 'group3:prof2lang_index' %}">ดูข้อมูล</a> </li>
+                                    <li><a tabindex="-1" href="{% url 'group3:prof2lang_add' 0 %}">เพิ่มข้อมูล</a> </li>
                                 </ul>
                             </li>
                         </ul>
