@@ -8,6 +8,16 @@
     {% endif %}
 {% endblock %}
 
+{% block pageHeader %}
+    {% if teachObj %}
+        <ol class="breadcrumb">
+            <li><a href="{% url 'login:menu' %}">เมนู</a></li>
+            <li><a href="{% url 'group3:prof2lang_index' %}">ระบบอาจารย์สองภาษา</a></li>
+            <li class="active">{{ teachObj.prof }} {{ teachObj.section.subject }} {{ teachObj.section.section }}</li>
+        </ol>
+    {% endif %}
+{% endblock %}
+
 {% block content %}
     {% if teachObj %}
         <div class="container-fluid">
@@ -79,9 +89,32 @@
                                     <td>{{teachObj.section.classroom}}</td>
                                 </tr>
                                 <tr>
-                                    <th>เวลาเรียน</th>
+                                    <th>เวลาสอน</th>
                                     <td>{{teachObj.section.startTime|time:"H.i"}} - 
                                         {{teachObj.section.endTime|time:"H.i"}}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>วันที่สอน</th>
+                                    <td>
+                                        {% ifequal teachObj.section.date "M" %}
+                                            วันจันทร์
+                                        {% endifequal %}
+                                        {% ifequal teachObj.section.date "T" %}
+                                            วันอังคาร
+                                        {% endifequal %}
+                                        {% ifequal teachObj.section.date "W" %}
+                                            วันพุธ
+                                        {% endifequal %}
+                                        {% ifequal teachObj.section.date "H" %}
+                                            วันพฤหัสบดี
+                                        {% endifequal %}
+                                        {% ifequal teachObj.section.date "F" %}
+                                            วันศุกร์
+                                        {% endifequal %}
+                                        {% ifequal teachObj.section.date "S" %}
+                                            วันเสาร์
+                                        {% endifequal %}
                                     </td>
                                 </tr>
                             </table>
@@ -106,4 +139,5 @@
             <div class="col-md-3"></div>
         </div>
     {% endif %}
+    <br/>
 {% endblock %}

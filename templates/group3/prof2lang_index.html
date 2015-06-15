@@ -7,7 +7,13 @@
 
 {% block title %}ระบบอาจารย์สองภาษา{% endblock %}
 
-{% block pageHeader %}<h2>ระบบ <small>อาจารย์สองภาษา</small></h2>{% endblock %}
+{% block pageHeader %}
+<h2>ระบบ <small>อาจารย์สองภาษา</small></h2>
+<ol class="breadcrumb">
+    <li><a href="{% url 'login:menu' %}">เมนู</a></li>
+    <li class="active">ระบบอาจารย์สองภาษา</li>
+</ol>
+{% endblock %}
 
 {% block content %}
     <!-- check has Prof2Lang object -->
@@ -57,7 +63,7 @@
                     </tbody>
                 </table>
             </div>
-            <a class="btn btn-primary" href="#">เพิ่มข้อมูล</a>
+            <a class="btn btn-primary" href="{% url 'group3:prof2lang_add' 0 %}">เพิ่มข้อมูล</a>
         </div>
     {% else %}
         <div class="row">
@@ -71,4 +77,5 @@
             <div class="col-md-3"></div>
         </div>
     {% endif %}
+    
 {% endblock %}
