@@ -1,6 +1,7 @@
 #.pyc file
 *.pyc
 
+*.pdf
 # Office Temp Files
 ~$*
 
