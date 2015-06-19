@@ -1,0 +1,36 @@
+<body>
+<CENTER><H>คณะวิศวกรรมศาสตร์</H></CENTER></br>
+<CENTER><H>มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าพระนครเหนือ</H></CENTER></br>
+<CENTER><H>แบบเสนอโครงงานปริญญานิพนธ์</H></CENTER></br>
+<CENTER><H>ภาควิชาวิศวกรรมไฟฟ้าและคอมพิวเตอร์ </H></CENTER></br>
+<CENTER><H>ปีการศึกษา</H> <u>{{ offerProjectForm.project.yearOfEducation }}</u></CENTER></br>
+<H>ชื่อโครงงาน (ภาษาไทย):</H> <u>{{ offerProjectForm.project.name_thai }}</u></br>
+<H>ชื่อโครงงาน (อังกฤษ):</H> <u>{{ offerProjectForm.project.name_eng }}</u></br>
+<H>เสนอโดย :</H>
+<table border="0">
+	<tr><td><H>1. </H><u>{{ offerProjectForm.student1_name }}</u> </td>
+			<td><H>เลขประจำตุัว :</H><u>{{ offerProjectForm.student1_id }}</u> </td>
+	</tr>
+	<tr><td><H>2. </H><u>{{ offerProjectForm.student2_name }}</u> </td>
+			<td><H>เลขประจำตุัว :</H><u>{{ offerProjectForm.student2_id }}</u> </td>
+	</tr>
+	<tr><td><H>3. </H><u>{{ offerProjectForm.student3_name }}</u> </td>
+			<td><H>เลขประจำตุัว :</H><u>{{ offerProjectForm.student3_id }}</u> </td>
+	</tr>
+	<tr><td><H>4. </H><u>{{ offerProjectForm.student4_name }}</u> </td>
+			<td><H>เลขประจำตุัว :</H><u>{{ offerProjectForm.student4_id }}</u> </td>
+	</tr>
+</table>
+<label>ชื่ออาจารย์ที่ปรึกษา  :
+	<u>{{ offerProjectForm.teacher.name }}</u>></br>
+	<br/><H>วัตถุประสงค์:</Hn> </br><u>{{ offerProjectForm.project.objective }}</u></br>
+	<H>แนวเหตุผล ทฤฏีสำคัญหรือสมมุติฐาน:</Hn> </br><u>{{ offerProjectForm.project.reason }}</u></br>
+	<H>ขอบเขตของการทำโครงงาน</Hn> </br><u>{{ offerProjectForm.project.scope }}</u></br>
+	<H>ประมาณการค่าใช้จ่ายในโครงการ </H> </br>
+	<H>ค่าวัสดุ:</H> <u>{{ offerProjectForm.priceOfMaterial }}</u><H>บาท</H></br>
+	<H>ค่าใช้จ่ายเบ็ดเตล็ด:</H> <u>{{ offerProjectForm.priceOfOther }}</u><H>บาท</H></br>
+	<H>รวมค่าใช้จ่ายในโครงการ:</H> <u>{{ offerProjectForm.sumOfPrice }}</u><H>บาท (ดังรายระเอียดที่แนบมา)</H></br>
+	<H>ผลประโยชน์ที่คาดว่าจะได้รับ:</Hn> </br><u>{{ offerProjectForm.project.benefit }}</u></br>	
+	</label>
+<a href="{% url 'project_document:offerProjectMain' %}">ย้อนกลับ</a>
+</body>

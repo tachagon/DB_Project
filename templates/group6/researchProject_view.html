@@ -1,0 +1,16 @@
+<body>
+<CENTER><H>แบบฟอร์มสำรวจหัวข้อโครงงานปริญญานิพนธ์</H></CENTER></br>
+<CENTER><H>ภาควิชาวิศวกรรมไฟฟ้าและคอมพิวเตอร์ คณะวิศวกรรมศาสตร์</H></CENTER></br>
+<CENTER><H>มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าพระนครเหนือ</H></CENTER></br>
+<CENTER><H>ปีการศึกษา</H> <u>{{ researchProjectForm.project.yearOfEducation }}</u></CENTER></br>
+<H>ชื่อโครงงาน (ภาษาไทย):</H> <u>{{ researchProjectForm.project.name_thai }}</u></br></br>
+<H>ชื่อโครงงาน (อังกฤษ):</H> <u>{{ researchProjectForm.project.name_eng }}</u></br></br>
+<H>จำนวนนักศึกษา</Hn>: <u>{{ researchProjectForm.numberOfPeople }}</u> <H>คน</Hn> </br></br>
+<label>ชื่ออาจารย์ที่ปรึกษา  : <u>{{ researchProjectForm.teacher.name }}</u></br></br>
+	<H>วัตถุประสงค์:</Hn> </br><u>{{ researchProjectForm.project.objective }}</u></br></br>
+	<H>แนวเหตุผล ทฤฏีสำคัญหรือสมมุติฐาน:</Hn> </br><u>{{ researchProjectForm.project.reason }}</u></br></br>
+	<H>ขอบเขตของการทำโครงงาน</Hn> </br><u>{{ researchProjectForm.project.scope }}</u></br></br>
+	<H>ผลประโยชน์ที่คาดว่าจะได้รับ:</Hn> </br><u>{{ researchProjectForm.project.benefit }}</u></br></br>	
+	</label>
+<a href="{% url 'project_document:researchProjectMain' %}">ย้อนกลับ</a>
+</body>
