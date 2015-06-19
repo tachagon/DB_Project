@@ -1,6 +1,8 @@
 from django.db import models
+from login.models import UserProfile
 
 class StudentG6(models.Model):
+    field_name = models.OneToOneField(UserProfile)
     student_id = models.CharField(max_length=13)
     firstname_thai = models.CharField(max_length=200)
     lastname_thai = models.CharField(max_length=200)
@@ -19,6 +21,7 @@ class TeacherG6(models.Model):
     lastname_thai = models.CharField(max_length=200)
     firstname_eng = models.CharField(max_length=200)
     lastname_eng = models.CharField(max_length=200)
+    symbol_name = models.CharField(max_length=3)
     department = models.CharField(max_length=200)
     address = models.TextField()
     workplace = models.TextField()
