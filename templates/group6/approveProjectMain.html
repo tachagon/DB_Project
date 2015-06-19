@@ -1,0 +1,7 @@
+<center>แบบเสนอขออนุมัติโครงงานปริญญานิพนธ์</center>
+
+{% for selected_approveProjectForm in approveProjectForm %}
+<a href="{% url 'project_document:approveProject_view' selected_approveProjectForm.id %}">{{ selected_approveProjectForm.project.name_thai }}</a></br>
+{% endfor %}
+</br>
+<a href="{% url 'project_document:project_document' %}">ย้อนกลับ</a>

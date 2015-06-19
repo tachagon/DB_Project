@@ -1,0 +1,36 @@
+<body>
+<CENTER><H>คณะวิศวกรรมศาสตร์</H></CENTER></br>
+<CENTER><H>มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าพระนครเหนือ</H></CENTER></br>
+<CENTER><H>แบบเสนอขออนุมัติโครงงานปริญญานิพนธ์</H></CENTER></br>
+<CENTER><H>ปีการศึกษา</H> <u>{{ approveProjectForm.project.yearOfEducation }}</u></CENTER></br>
+<H>ด้วยข้าพเจ้า ชื่อและสกุล(ภาษาไทย):</H> <u>{{ approveProjectForm.student.name_thai }}</u></br>
+<H>ด้วยข้าพเจ้า ชื่อและสกุล(อังกฤษ):</H> <u>{{ approveProjectForm.student.name_eng }}</u></br>
+<H>ขณะนี้เป็นนักศึกษาปีที่:</H> <u>{{ approveProjectForm.student.year }}</u> <H>ของหลักสูตร:</H> <u>{{ approveProjectForm.student.course }}</u> <H>วิศวกรรมศาสตร์บัณฑิต</H></br>
+<H>ในภาควิชา</Hn>: <u>{{ approveProjectForm.student.department }}</u><H>สาขาวิชา</Hn>: <u>{{ approveProjectForm.student.main }}</u></br>
+<H>ตำบลที่อยู่ปัจจุบันของนักศึกษา:</Hn> </br><u>{{ approveProjectForm.student.address }}</u></br>
+<H>โทร:</H> <u>{{ approveProjectForm.student.tel }}</u></br>
+<H>สภานที่ทำงานปัจจุบันของนักศึกษา:</H> </br><u>{{ approveProjectForm.student.workplace }}</u></br>
+<H>มีความประสงค์ขออนุมัติทำปริญญานิพนธ์เพื่อเป็นส่วนหนึ่งของการศึกษาตามหลักสูตร</H> </br>
+<H>วิศวกรรมศาสตร์บัณฑิต ภาควิชาวิศวกรรมไฟฟ้าและคอมพิวเตอร์ จำนวน:</H><u>{{ approveProjectForm.credit }}</u> <H>หน่วย</H> </br>
+<H>ในวิชา:</H> <u>{{ approveProjectForm.course }}</u></br>
+<H>ชื่อเรื่อง(ภาษาไทย):</H> </br><u>{{ approveProjectForm.project.name_thai }}</u></br>
+<H>ชื่อเรื่อง(ภาษาอังกฤษ):</H></br><u>{{ approveProjectForm.project.name_eng }}</u></br>
+<label>ชื่ออาจารย์ที่ปรึกษา  : <u>{{ approveProjectForm.teacher.name }}</u></br>
+		</label>
+
+	<H>หมายเลขโทรศัพท์ที่ทำงานของอาจารย์ที่ปรึกษา โทร:</H> <u>{{ approveProjectForm.teacher.tel }}</u></br><H>ต่อ:</H> <u>{{ approveProjectForm.teacher.tel_con }}</u></br>
+	<H>คาดว่าจะเขียนปริญญานิพนธ์เสร็จภายในภาคที่:</H> <u>{{ approveProjectForm.semesterEnd }}</u></br><H>ปีการศึกษา:</H> <u>{{ approveProjectForm.yearEnd }}</u></br>
+	<H>จิงขอได้โปรดพิจารณาอนุมัติ โดยได้แนบโครงการเสนอปริญญานิพนธ์มาพร้อมนี้</H> </br>
+	<H>วัตถุประสงค์:</Hn> </br><u>{{ approveProjectForm.project.objective }}</u></br>
+	<H>แนวเหตุผล ทฤฏีสำคัญหรือสมมุติฐาน:</H> </br><u>{{ approveProjectForm.project.reason }}</u></br>
+	<H>ขอบเขตของการทำโครงงาน</H> </br><u>{{ approveProjectForm.project.scope }}</u></br>
+	<H>ผลประโยชน์ที่คาดว่าจะได้รับ:</H> </br><u>{{ approveProjectForm.project.benefit }}</u></br>	
+	 <p align = "right"><table border="0">
+	<tr><td><H>ลงชื่อ:</H><u>{{ approveProjectForm.student_sign }}</u><H>(ผู้ยื่นคำร้อง)</H></td></tr>
+	 <tr><td><u>{{ approveProjectForm.student_date }}</u></p></td></tr>
+</table>
+	 <CENTER><table border="1">
+	 <tr><td><CENTER><H>ความเห็นของอาจารย์ที่ปรึกษา</H></br><u>{{ approveProjectForm.teacher_comment }}</u></br><H>(ลงนาม)</H><u>{{ approveProjectForm.teacher_sign }}</u></br><u>{{ approveProjectForm.teacher_date }}</u></td>
+	 <td><CENTER><H>ความเห็นของหัวหน้าภาค</H></br><u>{{ approveProjectForm.department_comment }}</u></textarea></br><H>(ลงนาม)</H><u>{{ approveProjectForm.department_sign }}</u></br><u>{{ approveProjectForm.department_date }}</u></td></tr></table>
+<a href="{% url 'project_document:approveProjectMain' %}">ย้อนกลับ</a>
+</body>
