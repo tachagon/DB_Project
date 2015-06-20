@@ -24,7 +24,7 @@
                 else if(s1.value == "{{ subject.subjectID }}"){
                     var optionArray = [];
                     {% for sec in subject.section_set.all %}
-                        var strTemp = "{{ sec.section }}|{{ sec.section }} {{ sec.subject.subjectName }}";
+                        var strTemp = "{{ sec.id }}|{{ sec.section }} {{ sec.subject.subjectName }}";
                         optionArray.push(strTemp);
                     {% empty %}
                         optionArray.push("|กรุณาเพิ่ม Section");
@@ -45,6 +45,12 @@
             }
 
         }
+
+        {% if addTeachSuccess %}
+            $(document).ready(function(){
+                $('#addTeachSuccess').modal('show');
+            });
+        {% endif %}
 </script>
 
 <div class="container">
@@ -97,15 +103,48 @@
     </div>
     {% endif %}
 
+    <!-- ถ้าเพิ่มข้อมูล Teach ไม่สำเร็จ จะมีข้อความ Alert บอก -->
+    {% if addTeachError %}
+    <div class="alert alert-danger" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <strong>ล้มเหลว! </strong>ระบบไม่สามารถเพิ่มข้อมูลอาจารย์สองภาษาได้
+    </div>
+    {% endif %}
+
+    <div class="modal fade" id="addTeachSuccess" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title">สำเร็จ!!</h4>
+                </div><!-- end of modal-header -->
+                <div class="modal-body">
+                    <p>
+                        ระบบสามารถเพิ่มข้อมูลสำเร็จแล้ว<br/>
+                        กดปุ่ม <font color="green">ตกลง</font> เพื่อไปยังหน้าหลักระบบอาจารย์สองภาษา หรือ<br/>
+                        กดปุ่ม <font color="red">ปิด</font> ถ้าต้องการกลับไปเพิ่มข้อมูลอีก
+                    </p>
+                </div><!-- end of modal-body -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">ปิด</button>
+                    <a class="btn btn-success" href="{% url 'group3:prof2lang_index' %}">ตกลง</a>
+                </div><!-- end of modal-footer -->
+            </div><!-- end of modal-content -->
+        </div><!-- end of modal-dialog -->
+    </div><!-- end of modal -->
+
     <div class="row">
 
-        <form class="form-horizontal">
+        <form class="form-horizontal" method="post" action="{% url 'group3:prof2lang_add' 7 %}">
+            {% csrf_token %}
             <!-- เลือกอาจารย์สองภาษา -->
             <div class="form-group">
-                <label class="col-sm-3 control-label">อาจารย์สองภาษา: </label>
+                <label class="col-sm-3 control-label">อาจารย์ผู้สอน: </label>
                 <div class="col-sm-6">
-                    <select multiple class="form-control" name="selectProf">
-                        <option value=""> </option>
+                    <select multiple class="form-control" name="selectProf" required>
+                        <option value="null">ยังไม่เลือกอาจารย์ผู้สอน</option>
                         {% for prof in prof2langObj %}
                         <option value="{{ prof.profID }}">{{ prof.shortName }}: {{ prof.firstName }} {{ prof.lastName }}</option>
                         {% empty %}
@@ -123,9 +162,9 @@
 
             <!-- เลือกวิชา -->
             <div class="form-group">
-                <label class="col-sm-3 control-label">วิชา: </label>
+                <label class="col-sm-3 control-label"><font color="red">*</font> วิชา: </label>
                 <div class="col-sm-6">
-                    <select multiple class="form-control" id="selectSubject" name="selectSubject" onclick=populate("selectSubject","selectSection")>
+                    <select multiple class="form-control" id="selectSubject" name="selectSubject" onclick=populate("selectSubject","selectSection") required>
                         <option value=""> </option>
                         {% for subject in subjectObj %}
                         <option value="{{ subject.subjectID }}">{{ subject.subjectID }} {{ subject.subjectName }}</option>
@@ -144,9 +183,9 @@
 
             <!-- เลือก section -->
             <div class="form-group">
-                <label class="col-sm-3 control-label">Section: </label>
+                <label class="col-sm-3 control-label"><font color="red">*</font> Section: </label>
                 <div class="col-sm-6">
-                    <select multiple class="form-control" id="selectSection" name="selectSection">
+                    <select multiple class="form-control" id="selectSection" name="selectSection" required>
 
                     </select>
                 </div>
@@ -158,7 +197,14 @@
                 </div>
             </div>
 
-        </form>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">บันทึก </label>
+                <div class="col-sm-9">
+                    <button type="submit" class="btn btn-success">ตกลง</button>
+                </div>
+            </div>
+
+        </form><br/>
 
     </div>
 
@@ -428,7 +474,7 @@
                 </div>
             </form>
         </div>
-    </div>
+    </div><!-- end of modal_addSection -->
 
 
 </div><!-- end container -->
