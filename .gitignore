@@ -8,3 +8,6 @@
 # PyCharm Program DIR
 !/.idea
 /.idea/*
+
+# temp from ubuntu TextEdit
+*~
