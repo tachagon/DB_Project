@@ -29,6 +29,7 @@ class TeacherG6(models.Model):
     tel_con = models.CharField(max_length=200)
 
 class ProjectG6(models.Model):
+    student = models.ManyToManyField(StudentG6) #link to Student many to many
     name_thai = models.CharField(max_length=200)
     name_eng = models.CharField(max_length=200)
     yearOfEducation = models.IntegerField(default = 1)
@@ -45,7 +46,6 @@ class ResearchProjectForm(models.Model):
 class OfferProjectForm(models.Model):
     project = models.ForeignKey(ProjectG6) #Link to Project entity one to one
     teacher = models.ForeignKey(TeacherG6) #link to Teacher entity one to one
-    student = models.ManyToManyField(StudentG6) #link to Student many to many
     priceOfMaterial = models.FloatField(default=0.00)
     priceOfOther = models.FloatField(default=0.00)
 
