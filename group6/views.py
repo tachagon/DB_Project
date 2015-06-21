@@ -5,8 +5,8 @@ def index(request):
     return render(request, 'group6/index.html')
 
 def create_3forms(request):
-    teachers = TeacherG6.objects.all()
-    return render(request, 'group6/create_3forms.html', {'teachers': teachers,},)
+    #teachers = TeacherG6.objects.all()
+    return render(request)#, 'group6/create_3forms.html', {'teachers': teachers,},)
 
 def approveProject(request, apID):
     return render(request, 'group6/index.html')

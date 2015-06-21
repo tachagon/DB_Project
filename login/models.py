@@ -18,12 +18,14 @@ class UserProfile(models.Model):
     office = models.TextField()
     tel = models.CharField(max_length=20)
     departmentChoices = (
-        ('0', 'วิศวกรรมไฟฟ้าและคอมพิวเตอร์')
+        ('0', ''),
+        ('1', 'วิศวกรรมไฟฟ้าและคอมพิวเตอร์')
     )
     department = models.CharField(max_length=1, choices=departmentChoices)
 
     facultyChoices = (
-        ('0', 'วิศวกรรมศาสตร์')
+        ('0', ''),
+        ('1', 'วิศวกรรมศาสตร์')
     )
     faculty = models.CharField(max_length=1, choices=facultyChoices)
 
@@ -33,6 +35,13 @@ class UserProfile(models.Model):
         ('2', 'Officer')
     )
     type = models.CharField(max_length=1, choices=typeChoices)
+    
+    # Override the __unicode__() method to return out something meaningful!
+    #def __unicode__(self):
+    #    return self.user.username
+    
+    def __unicode__(self):
+        return self.firstname_en + " " + self.lastname_en
 
 class Student(models.Model):
     userprofile = models.OneToOneField(UserProfile)
@@ -51,16 +60,21 @@ class Student(models.Model):
         ('3', 'C')
     )
     main = models.CharField(max_length=1, choices=mainChoices)
+    
+    def __unicode__(self):
+        return self.userprofile.firstname_en + " " + self.userprofile.lastname_en
 
 class Teacher(models.Model):
     userprofile = models.OneToOneField(UserProfile)
     shortname = models.CharField(max_length=3)
     position = models.CharField(max_length=100)
+    
+    def __unicode__(self):
+        return self.userprofile.firstname_en + " " + self.userprofile.lastname_en
 
 class Officer(models.Model):
     userprofile = models.OneToOneField(UserProfile)
     position = models.CharField(max_length=100)
-
-    # Override the __unicode__() method to return out something meaningful!
+    
     def __unicode__(self):
-        return self.user.username
+        return self.userprofile.firstname_en + " " + self.userprofile.lastname_en
