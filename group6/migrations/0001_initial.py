@@ -7,6 +7,7 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
+        ('login', '0001_initial'),
     ]
 
     operations = [
@@ -77,6 +78,7 @@ class Migration(migrations.Migration):
                 ('address', models.TextField()),
                 ('tel', models.CharField(max_length=200)),
                 ('workplace', models.TextField()),
+                ('field_name', models.OneToOneField(to='login.UserProfile')),
             ],
             options={
             },
@@ -90,6 +92,7 @@ class Migration(migrations.Migration):
                 ('lastname_thai', models.CharField(max_length=200)),
                 ('firstname_eng', models.CharField(max_length=200)),
                 ('lastname_eng', models.CharField(max_length=200)),
+                ('symbol_name', models.CharField(max_length=3)),
                 ('department', models.CharField(max_length=200)),
                 ('address', models.TextField()),
                 ('workplace', models.TextField()),
@@ -107,15 +110,15 @@ class Migration(migrations.Migration):
             preserve_default=True,
         ),
         migrations.AddField(
-            model_name='offerprojectform',
-            name='project',
-            field=models.ForeignKey(to='group6.ProjectG6'),
+            model_name='projectg6',
+            name='student',
+            field=models.ManyToManyField(to='group6.StudentG6'),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='offerprojectform',
-            name='student',
-            field=models.ManyToManyField(to='group6.StudentG6'),
+            name='project',
+            field=models.ForeignKey(to='group6.ProjectG6'),
             preserve_default=True,
         ),
         migrations.AddField(
