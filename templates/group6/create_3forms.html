@@ -1,4 +1,5 @@
 ﻿{% extends "base.html" %}
+{% load custom_function %}
 
 {% block title %}ระบบ จัดการโครงงาน สำหรับนักศึกษา ปริญญาตรี - สร้างฟอร์มเสนอโครงงานใหม่{% endblock %}
 
@@ -65,7 +66,7 @@
        size:A4;
        margin:0;
    }
-   @media print {
+   /*@media print {
       .page {
           margin:0;
           font-size:20px;
@@ -77,7 +78,7 @@
           background: initial;
           page-break-after: always;
       }
-  }
+  }*/
   </style>
   <script>
   function myFunction() {
@@ -93,13 +94,15 @@ function yearselect(){
 		list.options[i].text = year.getFullYear()-i+543;
 		list.options[i].value = year.getFullYear()-i+543;
   }
+        var sel = document.getElementById("stdnumber");
+        sel.value = {{ numOP }}
 }
 function addMoreStd(){
 	var e1 = document.getElementById("stdnumber");
 	var stdnum = e1.options[e1.selectedIndex].value;
 	var txts = "";
-	for (i = 0; i < stdnum; i++) { 
-       txts += "<H>"+e1.options[i].text+". "+"</H><input id='stuentNAME" + (i) +"' type='text' name='stuentNAME" + (i) +"'><H>เลขประจำตัว :</H><input type='text' name='studentID" + (i) + "' maxlength='13' id='studentID" + (i) + "'><br>";
+	for (i = 1; i < stdnum; i++) { 
+       txts += "<H>"+e1.options[i].text+". "+"</H><input id='studentNAME" + (i) +"' type='text' name='studentNAME" + (i) +"'><H>เลขประจำตัว :</H><input type='text' name='studentID" + (i) + "' maxlength='13' id='studentID" + (i) + "'><br>";
    }
    document.getElementById("namestd").innerHTML = txts;
 
@@ -108,11 +111,12 @@ function addMoreStd(){
 function checkSUBMIT(){  //by jupiter ------------ A function to check the studentID and the rest of the number type input before submit ---- please use it  before perform any action in next step
     var e1 = document.getElementById("stdnumber");
     var stdnum = e1.options[e1.selectedIndex].value;
-
+    
     if(stdnum==1){
         var sid = document.getElementById("studentID0");
         if(sid.value.length!=13 || isNaN(sid.value)){
             alert("กรุณาตรวจสอบการกรอกรหัสนักศึกษาใหม่อีกครั้ง (ตัวเลขความยาว 13 ตัว)");
+            return false;
         }else{
             checkSUBMIT2();
         }
@@ -121,6 +125,7 @@ function checkSUBMIT(){  //by jupiter ------------ A function to check the stude
         var sid2 = document.getElementById("studentID1");
         if(sid1.value.length!=13 || sid2.value.length!=13 || isNaN(sid1.value) || isNaN(sid2.value)){
             alert("กรุณาตรวจสอบการกรอกรหัสนักศึกษาใหม่อีกครั้ง (ตัวเลขความยาว 13 ตัว)");
+            return false;
         }else{
             checkSUBMIT2();
         }        
@@ -130,6 +135,7 @@ function checkSUBMIT(){  //by jupiter ------------ A function to check the stude
         var sid3 = document.getElementById("studentID2");
         if(sid1.value.length!=13 || sid2.value.length!=13 || sid3.value.length!=13 || isNaN(sid1.value) || isNaN(sid2.value) || isNaN(sid3.value)){
             alert("กรุณาตรวจสอบการกรอกรหัสนักศึกษาใหม่อีกครั้ง (ตัวเลขความยาว 13 ตัว)");
+            return false;
         }else{
             checkSUBMIT2();
         }        
@@ -140,6 +146,7 @@ function checkSUBMIT(){  //by jupiter ------------ A function to check the stude
         var sid4 = document.getElementById("studentID3");
         if(sid1.value.length!=13 || sid2.value.length!=13 || sid3.value.length!=13 || sid4.value.length!=13 || isNaN(sid1.value) || isNaN(sid2.value) || isNaN(sid3.value) || isNaN(sid4.value)){
             alert("กรุณาตรวจสอบการกรอกรหัสนักศึกษาใหม่อีกครั้ง (ตัวเลขความยาว 13 ตัว)");
+            return false;
         }else{
             checkSUBMIT2();
         }        
@@ -152,6 +159,7 @@ function checkSUBMIT(){  //by jupiter ------------ A function to check the stude
         var sid5 = document.getElementById("studentID4");
         if(sid1.value.length!=13 || sid2.value.length!=13 || sid3.value.length!=13 || sid4.value.length!=13 || sid5.value.length!=13 || isNaN(sid1.value) || isNaN(sid2.value) || isNaN(sid3.value) || isNaN(sid4.value) || isNaN(sid5.value)){
             alert("กรุณาตรวจสอบการกรอกรหัสนักศึกษาใหม่อีกครั้ง (ตัวเลขความยาว 13 ตัว)");
+            return false;
         }else{
             checkSUBMIT2();
         }        
@@ -181,24 +189,34 @@ function checkSUBMIT2(){
 
     if(isNaN(matcost) || e2.value==''){ 
         alert("กรุณาใส่ค่าใช้จ่ายวัสดุให้ถูกต้อง (เป็นตัวเลข)");
+        return false;
     }else if(isNaN(othercost) || e3.value==''){ 
         alert("กรุณาใส่ค่าใช้จ่ายอื่นๆให้ถูกต้อง (เป็นตัวเลข)");
+        return false;
     }else if(isNaN(totalcost) || e4.value==''){
         alert("กรุณาใส่ค่าใช้จ่ายรวมให้ถูกต้อง (เป็นตัวเลข)");
+        return false;
     }else if(isNaN(stdyear) || e4_1.value==''){
         alert("กรุณาใส่ปีการศึกษาให้ถูกต้อง (เป็นตัวเลข)");
+        return false;
     }else if(isNaN(stdphone) || e5.value==''){
         alert("กรุณาใส่หมายเลขโทรศัพท์นักศึกษาให้ถูกต้อง (เป็นตัวเลข)");
+        return false;
     }else if(isNaN(tphone) || e6.value==''){
         alert("กรุณาใส่หมายเลขโทรศัพท์อาจารย์ที่ปรึกษาให้ถูกต้อง (เป็นตัวเลข)");
+        return false;
     }else if(isNaN(tphoneex)){
         alert("กรุณาใส่หมายเลขโทรศัพท์อาจารย์ที่ปรึกษาให้ถูกต้อง (เป็นตัวเลข)");
+        return false;
     }else if(isNaN(termend) || e8.value==''){
         alert("กรุณาใส่ข้อมูลภาคเรียนที่จะเขียนปริญญานิพนธ์เสร็จ ให้ถูกต้อง (เป็นตัวเลข)");
+        return false;
     }else if(isNaN(yearend) || e9.value==''){
         alert("กรุณาใส่ข้อมูลปีการศึกษาที่จะเขียนปริญญานิพนธ์เสร็จ ให้ถูกต้อง (เป็นตัวเลข)");
+        return false;
     }else{
         //and then do the next step of action
+        return true;
     }
 }
 </script>
@@ -218,7 +236,8 @@ adviser
 p_adviser
 -->
 <body onLoad="yearselect();">
-    <form action = "{% url 'group6:project_docs_index' %}" method = "post">
+    <form action = "{% url 'group6:project_docs_create_3forms_add' %}" method = "post">
+        {% csrf_token %}
         <div class="page">
             <center>
                 <H>แบบฟอร์มสำรวจหัวข้อโครงงานปริญญานิพนธ์</H><br>
@@ -234,38 +253,55 @@ p_adviser
                     <option>test7</option>
                     <option>test8</option>
                     <option>test9</option>
-                </select></H><br>
+                </select></H><br><font color = "FF0000" name="message">{{ error_yearOE }}</font><br>
             </center>
             <label class="form">
-                <H>ชื่อโครงงาน (ภาษาไทย): </H><input id="nameth" type="text" name="name_thai" maxlength="20"></br>
-                <H>ชื่อโครงงาน (อังกฤษ): </H><input id="nameen" type="text" name="name_eng" maxlength="20"></br>
+                <H>ชื่อโครงงาน (ภาษาไทย): </H><input id="nameth" type="text" name="name_thai" maxlength="20" value="{{ nameTH }}"> <font color = "FF0000" name="message">{{ error_nameTH }}</font></br>
+                <H>ชื่อโครงงาน (อังกฤษ): </H><input id="nameen" type="text" name="name_eng" maxlength="20" value="{{ nameEN }}"> <font color = "FF0000" name="message">{{ error_nameEN }}</font></br>
                 <H>จำนวนนักศึกษา: </H><select id="stdnumber" name="numberOfPeople">
                 <option value="1">1</option>
                 <option value="2">2</option>
                 <option value="3">3</option>
                 <option value="4">4</option>
                 <option value="5">5</option>
-            </select> คน <button type="button" onClick="addMoreStd()">ยืนยันจำนวน</button></br>
+            </select> คน <button type="button" onClick="addMoreStd()">ยืนยันจำนวน</button> <font color = "FF0000" name="message">{{ error_numOP }}</font></br>
 
-            <H>เสนอโดย :</H>
+            <H>เสนอโดย :</H><br>
+
+            {% if student_list %}
+                {% for student in student_list %}
+                    {% if forloop.counter == 1 %}
+                        <H>{{ forloop.counter }}. {{ student.userprofile.firstname_th }} {{ student.userprofile.lastname_th }} เลขประจำตัว : {{ student.std_id }}</H><br>
+                    {% else %}
+                        {% ifequal error_student|get_at_index:forloop.counter0 '' %}
+                        <H>{{ forloop.counter }}. </H><input type='text' name='studentNAME{{ forloop.counter0 }}' id="studentNAME{{ forloop.counter0 }}" value="{{ student.userprofile.firstname_th }} {{ student.userprofile.lastname_th }}"><H>เลขประจำตัว :</H><input type='text' name='studentID{{ forloop.counter0 }}' maxlength='13' id="studentID{{ forloop.counter0 }}" value="{{ student.std_id }}"><br>
+                        {% else %}
+                        <H>{{ forloop.counter }}. </H><input type='text' name='studentNAME{{ forloop.counter0 }}' id="studentNAME{{ forloop.counter0 }}"><H>เลขประจำตัว :</H><input type='text' name='studentID{{ forloop.counter0 }}' maxlength='13' id="studentID{{ forloop.counter0 }}"> <font color = "FF0000" name="message">{{ error_student|get_at_index:forloop.counter0 }}</font><br>
+                        {% endifequal %}
+                    {% endif %}
+                {% endfor %}
+            {% else %}
+            <H>1. {{ student.userprofile.firstname_th }} {{ student.userprofile.lastname_th }} <!--</H><input type='text' name='studentNAME0' id="studentNAME0"><H>-->เลขประจำตัว : {{ student.std_id }}</H><!--<input type='text' name='studentID0' maxlength='13' id="studentID0">--><br>
+            {% endif %}
+
             <div class="namestd" id="namestd">
-                <H>1. </H><input type='text' name='studentNAME0' id="studentNAME0"><H>เลขประจำตัว :</H><input type='text' name='studentID0' maxlength='13' id="studentID0"><br>
+                
             </div>
             <H>ชื่ออาจารย์ที่ปรึกษา  :</H>
-            <select id="p_adviser" name=”adviser”>
+            <select id="p_adviser" name="adviser">
               {% for teacher in teachers %}
-                <option value="{{ teacher.id }}">{{ teacher.firstname_thai }} {{ teacher.lastname_thai }} ({{ teacher.symbol_name }})</option>
+                <option value="{{ teacher.id }}">{{ teacher.userprofile.firstname_th }} {{ teacher.userprofile.lastname_th }} ({{ teacher.shortname }})</option>
               {% endfor %}
               <!--<option value=”adviser1”>ดร. ศิริชัย รุจิพัฒนพงศ์ (SRU)</option>
               <option value=”adviser2” selected=”selected”>รศ. ดร. วรา วราวิทย์ (VRV)</option>
               <option value=”adviser3”>รศ.ดร. ณชล ไชยรัตนะ (NCC)</option>-->
-          </select></br>
+          </select><font color = "FF0000" name="message">{{ error_adv }}</font></br>
 
 
-          <H>วัตถุประสงค์:</H> </br><textarea rows="6" cols="60" name="objective"></textarea></br>
-          <H>แนวเหตุผล ทฤฏีสำคัญหรือสมมุติฐาน:</H> </br><textarea rows="6" cols="60" name="reason"></textarea></br>
-          <H>ขอบเขตของการทำโครงงาน:</H> </br><textarea rows="6" cols="60" name="scope"></textarea></br>
-          <H>ผลประโยชน์ที่คาดว่าจะได้รับ:</H> </br><textarea rows="6" cols="60" name="benefit"></textarea></br>	
+          <H>วัตถุประสงค์:</H> <font color = "FF0000" name="message">{{ error_obj }}</font></br><textarea rows="6" cols="60" name="objective">{{ obj }}</textarea></br>
+          <H>แนวเหตุผล ทฤษฏีสำคัญหรือสมมุติฐาน:</H> <font color = "FF0000" name="message">{{ error_reasons }}</font></br><textarea rows="6" cols="60" name="reason">{{ reasons }}</textarea></br>
+          <H>ขอบเขตของการทำโครงงาน:</H> <font color = "FF0000" name="message">{{ error_scopes }}</font></br><textarea rows="6" cols="60" name="scope">{{ scopes }}</textarea></br>
+          <H>ผลประโยชน์ที่คาดว่าจะได้รับ:</H> <font color = "FF0000" name="message">{{ error_benefits }}</font></br><textarea rows="6" cols="60" name="benefit">{{ benefits }}</textarea></br>	
 	<!--</label>
     
 
@@ -289,8 +325,8 @@ p_adviser
         <H>แนวเหตุผล ทฤฏีสำคัญหรือสมมุติฐาน:</Hn> </br><textarea rows="10" cols="60"></textarea></br>
             <H>ขอบเขตของการทำโครงงาน</Hn> </br><textarea rows="10" cols="60"></textarea></br>-->
                 <H>ประมาณการค่าใช้จ่ายในโครงการ </H> <br>
-                <H>ค่าวัสดุ:</H> <input id='matCOST' type="text" name="priceOfMaterial"><H>บาท</H><br>
-                <H>ค่าใช้จ่ายเบ็ดเตล็ด:</H> <input id='otherCOST' type="text" name="priceOfOther"><H>บาท</H><br>
+                <H>ค่าวัสดุ:</H> <input id='matCOST' type="text" name="priceOfMaterial" value="{{ priceOM }}"><H>บาท</H> <font color = "FF0000" name="message">{{ error_priceOM }}</font><br>
+                <H>ค่าใช้จ่ายเบ็ดเตล็ด:</H> <input id='otherCOST' type="text" name="priceOfOther" value="{{ priceOO }}"><H>บาท</H> <font color = "FF0000" name="message">{{ error_priceOO }}</font><br>
                 <!--<H>รวมค่าใช้จ่ายในโครงการ:</H> <input id='totalCOST' type="text" name="text"><H>บาท (ดังรายระเอียดที่แนบมา)</H></br>
         <H>ผลประโยชน์ที่คาดว่าจะได้รับ:</Hn> </br><textarea rows="10" cols="60"></textarea></br>	
         </label> 
@@ -311,8 +347,8 @@ p_adviser
     <H>โทร:</H> <input id="stdPHONE" type="text" name="text"><br>
     <H>สภานที่ทำงานปัจจุบันของนักศึกษา:</H><br><textarea id="c_work" rows="10" cols="60"></textarea><br>-->
     <H>มีความประสงค์ขออนุมัติทำปริญญานิพนธ์เพื่อเป็นส่วนหนึ่งของการศึกษาตามหลักสูตร</H><br>
-    <H>วิศวกรรมศาสตร์บัณฑิต ภาควิชาวิศวกรรมไฟฟ้าและคอมพิวเตอร์ จำนวน:</H><input id="unit" type="text" name="credit"><H>หน่วย</H> <br>
-    <H>ในวิชา:</H><input id="course" type="text" name="course"><br>
+    <H>วิศวกรรมศาสตร์บัณฑิต ภาควิชาวิศวกรรมไฟฟ้าและคอมพิวเตอร์ จำนวน:</H><input id="unit" type="text" name="credit" value="{{ credits }}"><H>หน่วย</H> <font color = "FF0000" name="message">{{ error_credits }}</font><br>
+    <H>ในวิชา:</H><input id="course" type="text" name="course" value="{{ courses }}"> <font color = "FF0000" name="message">{{ error_courses }}</font><br>
     <!--<H>ชื่อเรื่อง(ภาษาไทย):</H> <br><textarea id="p_nameth" rows="10" cols="60"></textarea><br>
     <H>ชื่อเรื่อง(ภาษาอังกฤษ):</H><br><textarea id="p_nameen" rows="10" cols="60"></textarea><br>
     <H>ชื่ออาจารย์ที่ปรึกษา  :</H>
@@ -323,7 +359,7 @@ p_adviser
     </select></br>
     
     <H>หมายเลขโทรศัพท์ที่ทำงานของอาจารย์ที่ปรึกษา โทร:</H> <input id='tPHONE' type="text" name="text"></br><H>ต่อ:</H> <input id='tPHONEex' type="text" name="text"></br>-->
-    <H>คาดว่าจะเขียนปริญญานิพนธ์เสร็จภายในภาคที่:</H> <input id='termEND' type="text" name="semesterEnd"></br><H>ปีการศึกษา:</H> <input id='yearEND' type="text" name="yearEnd"></br>
+    <H>คาดว่าจะเขียนปริญญานิพนธ์เสร็จภายในภาคที่:</H> <input id='termEND' type="text" name="semesterEnd" value="{{ semester }}"> <font color = "FF0000" name="message">{{ error_semester }}</font></br><H>ปีการศึกษา:</H> <input id='yearEND' type="text" name="yearEnd" value="{{ yearEN }}"> <font color = "FF0000" name="message">{{ error_yearEN }}</font></br>
         <!--<H>จิงขอได้โปรดพิจารณาอนุมัติ โดยได้แนบโครงการเสนอปริญญานิพนธ์มาพร้อมนี้</H> 
         <H>วัตถุประสงค์:</Hn> </br><textarea rows="10" cols="60"></textarea></br>
         <H>แนวเหตุผล ทฤฏีสำคัญหรือสมมุติฐาน:</H> </br><textarea rows="10" cols="60"></textarea></br>
@@ -341,7 +377,7 @@ p_adviser
    </div>
    <center><br>
     <input class="btn btn-primary" type="submit" value="บันทึก" name='save' />
-    <input class="btn btn-primary" type="submit" value="ยกเลิก" name = 'cancel' />
+    <a href="{% url 'group6:project_docs_index' %}"><input class="btn btn-danger" type="button" value="ยกเลิก" name = 'cancel' /></a>
 </center>
 </form>
 
