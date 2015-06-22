@@ -185,20 +185,19 @@ def create_3forms_add(request):
     return HttpResponseRedirect(reverse('group6:project_docs_index')) #redirect to index
 
 def approveProject(request, apID):
-    return render(request, 'group6/index.html')
+    department = ['','วิศวกรรมไฟฟ้าและคอมพิวเตอร์']
+    faculty = ['','วิศวกรรมศาสตร์']
+    scheme = ['หลักสูตรปรับปรุง Cpr.E 54','หลักสูตรปรับปรุง EE 51','หลักสูตรปรับปรุง ECE 55']
+    main = ['Cpr.E','G','U','C']
+    approve = ApproveProjectForm.objects.get(id=apID)
+    year = int(datetime.now().year - 2000 + 43) - int(approve.student.std_id[:2])
+    return render(request, 'group6/approveProject_view.html', {'approve': approve, 'scheme': scheme[int(approve.student.scheme)], 'department': department[int(approve.student.userprofile.department)], 'main': main[int(approve.student.main)], 'currentYear': year},)
 
 def offerProject(request, opID):
-    return render(request, 'group6/index.html')
+    offer = OfferProjectForm.objects.get(id=opID)
+    sumofprice = offer.priceOfMaterial + offer.priceOfOther
+    return render(request, 'group6/offerProject_view.html', {'offer': offer, 'priceOfTotal': sumofprice},)
 
 def researchProject(request, rpID):
-    return render(request, 'group6/index.html')
-
-
-#django study view function Url /home (JA)
-#def home(request):	# show all chapter in django study
-#    personals = get_object_or_404(Personal,pk = get_id(request))	# get object id from  Personal id
-#    chapter = Chapter.objects.order_by('unit')				# sort objects from title of each chapter
-#    return render(request, 'home.html', {'chapter': chapter,'personals':personals, },)#return object with the result of the rendered template
-
-
-
+    research = ResearchProjectForm.objects.get(id=rpID)
+    return render(request, 'group6/researchProject_view.html', {'research': research},)
