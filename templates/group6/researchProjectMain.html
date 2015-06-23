@@ -1,0 +1,7 @@
+<center>แบบฟอร์มสำรวจหัวข้อโครงงานปริญญานิพนธ์ทั้งหมด</center>
+
+{% for selected_researchProjectForm in researchProjectForm %}
+<a href="{% url 'project_document:researchProject_view' selected_researchProjectForm.id %}">{{ selected_researchProjectForm.project.name_thai }}</a></br>
+{% endfor %}
+</br>
+<a href="{% url 'project_document:project_document' %}">ย้อนกลับ</a>

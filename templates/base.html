@@ -30,7 +30,7 @@
     </header>
 
 
-    <nav class="navbar navbar-default navbar-static-top">
+    <nav class="navbar navbar-default" id="navbar-menu">
         <div class="container">
             <div class="navbar-header">
                 <button class="navbar-toggle collapsed" data-toggle="collapse" data-target="#id_nav2">
@@ -107,11 +107,11 @@
 
                     <li class="dropdown" role="presentation">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                            App Group6<span class="caret"></span>
+                            โครงงาน ปริญญาตรี<span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a href="#">App1</a> </li>
-                            <li><a href="#">App2</a> </li>
+                            <li><a href="{% url 'group6:project_docs_index' %}">ฟอร์มเสนอโครงงานที่สร้างไว้</a></li>
+                            <li><a href="{% url 'group6:project_docs_create_3forms' %}">สร้างฟอร์มเสนอโครงงานใหม่</a></li>
                         </ul>
                     </li>
 

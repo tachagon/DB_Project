@@ -3,11 +3,18 @@
 from django.shortcuts import render, HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.shortcuts import render
+from login.models import UserProfile
+import django.shortcuts
 
 from group3.models import *
 from django.http import HttpResponse
 from fpdf import FPDF
 # Create your views here.
+def exampleCurrentUser(request):
+    thisuser = request.user
+    currentUser = UserProfile.objects.get(user = thisuser)
+    return django.shortcuts.HttpResponse(currentUser.user.username + " " + currentUser.user.first_name + " " + currentUser.user.last_name)
+
 def prof2lang_index(request):
     template = 'group3/prof2lang_index.html'    # get template
     teachList = Teach.objects.all()     # get all Prof2Lang objects
@@ -87,6 +94,50 @@ def prof2lang_add(request, option = '0'):
             'subjectObj': subjectObj,
             'addSectionError': True
         }
+    # option 7 is add Teach object
+    elif option == '7':
+        if request.method == 'POST':
+            try:
+                # get data from html template
+                # get object of Prof2Lang
+                profID = request.POST['selectProf']
+                if profID == 'null':
+                    prof = None
+                else:
+                    prof = Prof2Lang.objects.get(profID = profID)
+
+                # get object of Subject
+                subjectID = request.POST['selectSubject']
+                subject = Subject.objects.get(subjectID = subjectID)
+
+                # get object of Section
+                sectionID = request.POST['selectSection']
+                section = Section.objects.get(id = sectionID)
+
+                newTeach = Teach(
+                    prof = prof,
+                    subject = subject,
+                    section = section
+                )
+                newTeach.save()
+                context = {
+                    'prof2langObj': prof2langObj,
+                    'subjectObj': subjectObj,
+                    'addTeachSuccess': True
+                }
+
+            except:
+                context = {
+                    'prof2langObj': prof2langObj,
+                    'subjectObj': subjectObj,
+                    'addTeachError': True
+                }
+        else:
+            context = {
+                'prof2langObj': prof2langObj,
+                'subjectObj': subjectObj,
+                'addTeachError': True
+            }
     else:
         return prof2lang_index(request)
 

@@ -1,0 +1,356 @@
+﻿{% extends "base.html" %}
+
+{% block title %}ระบบ จัดการโครงงาน สำหรับนักศึกษา ปริญญาตรี - สร้างฟอร์มเสนอโครงงานใหม่{% endblock %}
+
+{% block pageHeader %}
+<h2>ระบบ <small>จัดการโครงงาน สำหรับนักศึกษา ปริญญาตรี</small></h2>
+<ol class="breadcrumb">
+    <li><a href="{% url 'login:menu' %}">เมนู</a></li>
+    <li><a href="{% url 'group6:project_docs_index' %}">ระบบ จัดการโครงงาน สำหรับนักศึกษา ปริญญาตรี</a></li>
+    <li class="active">สร้างแบบฟอร์มเสนอโครงงานใหม่</li>
+</ol>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <style>
+    body{
+       background-color:white;
+   }
+   .page{
+       width:210mm;
+       margin:auto;
+       position:relative;
+       padding: 2cm;
+       border: 1px #D3D3D3 solid;
+       border-radius: 5px;
+       background: white;
+   }
+   .form > H{
+       margin-left:10;
+   }
+   .namestd{
+       margin-left:10;
+   }
+   textarea {
+       margin-left:10;
+       resize:none;
+       outline:none;
+   }
+   H{
+       font:16pt "Angsana New";
+   }
+   input{
+       outline:none;
+       resize:none;
+   }
+   #o1{
+       text-align:center;
+   }
+/*#years{
+	margin-left:0;
+	}
+#nameth{
+	margin-left:0;
+	}
+#nameen{
+	margin-left:18;
+	}
+#numbers{
+	margin-left:56;
+	}
+	*/
+    @page{
+       size:A4;
+       margin:0;
+   }
+   @media print {
+      .page {
+          margin:0;
+          font-size:20px;
+          position:absolute;
+          border: initial;
+          width: initial;
+          height:initial;
+          box-shadow: initial;
+          background: initial;
+          page-break-after: always;
+      }
+  }
+  </style>
+  <script>
+  function myFunction() {
+   var year = new Date();
+   var x = document.getElementById("yearselect")
+   document.getElementById("demo").innerHTML = x.options[x.selectedIndex].value;
+}
+function yearselect(){
+	var year = new Date();
+	var list = document.getElementById("yearselect");
+	var i;
+	for (i=0;i<list.length;i++){
+		list.options[i].text = year.getFullYear()-i+543;
+		list.options[i].value = year.getFullYear()-i+543;
+  }
+}
+function addMoreStd(){
+	var e1 = document.getElementById("stdnumber");
+	var stdnum = e1.options[e1.selectedIndex].value;
+	var txts = "";
+	for (i = 0; i < stdnum; i++) { 
+       txts += "<H>"+e1.options[i].text+". "+"</H><input id='stuentNAME" + (i) +"' type='text' name='stuentNAME" + (i) +"'><H>เลขประจำตัว :</H><input type='text' name='studentID" + (i) + "' maxlength='13' id='studentID" + (i) + "'><br>";
+   }
+   document.getElementById("namestd").innerHTML = txts;
+
+
+}
+function checkSUBMIT(){  //by jupiter ------------ A function to check the studentID and the rest of the number type input before submit ---- please use it  before perform any action in next step
+    var e1 = document.getElementById("stdnumber");
+    var stdnum = e1.options[e1.selectedIndex].value;
+
+    if(stdnum==1){
+        var sid = document.getElementById("studentID0");
+        if(sid.value.length!=13 || isNaN(sid.value)){
+            alert("กรุณาตรวจสอบการกรอกรหัสนักศึกษาใหม่อีกครั้ง (ตัวเลขความยาว 13 ตัว)");
+        }else{
+            checkSUBMIT2();
+        }
+    }else if(stdnum==2){
+        var sid1 = document.getElementById("studentID0");
+        var sid2 = document.getElementById("studentID1");
+        if(sid1.value.length!=13 || sid2.value.length!=13 || isNaN(sid1.value) || isNaN(sid2.value)){
+            alert("กรุณาตรวจสอบการกรอกรหัสนักศึกษาใหม่อีกครั้ง (ตัวเลขความยาว 13 ตัว)");
+        }else{
+            checkSUBMIT2();
+        }        
+    }else if(stdnum==3){
+        var sid1 = document.getElementById("studentID0");
+        var sid2 = document.getElementById("studentID1");
+        var sid3 = document.getElementById("studentID2");
+        if(sid1.value.length!=13 || sid2.value.length!=13 || sid3.value.length!=13 || isNaN(sid1.value) || isNaN(sid2.value) || isNaN(sid3.value)){
+            alert("กรุณาตรวจสอบการกรอกรหัสนักศึกษาใหม่อีกครั้ง (ตัวเลขความยาว 13 ตัว)");
+        }else{
+            checkSUBMIT2();
+        }        
+    }else if(stdnum==4){
+        var sid1 = document.getElementById("studentID0");
+        var sid2 = document.getElementById("studentID1");
+        var sid3 = document.getElementById("studentID2");
+        var sid4 = document.getElementById("studentID3");
+        if(sid1.value.length!=13 || sid2.value.length!=13 || sid3.value.length!=13 || sid4.value.length!=13 || isNaN(sid1.value) || isNaN(sid2.value) || isNaN(sid3.value) || isNaN(sid4.value)){
+            alert("กรุณาตรวจสอบการกรอกรหัสนักศึกษาใหม่อีกครั้ง (ตัวเลขความยาว 13 ตัว)");
+        }else{
+            checkSUBMIT2();
+        }        
+    }
+    else if(stdnum==5){
+        var sid1 = document.getElementById("studentID0");
+        var sid2 = document.getElementById("studentID1");
+        var sid3 = document.getElementById("studentID2");
+        var sid4 = document.getElementById("studentID3");
+        var sid5 = document.getElementById("studentID4");
+        if(sid1.value.length!=13 || sid2.value.length!=13 || sid3.value.length!=13 || sid4.value.length!=13 || sid5.value.length!=13 || isNaN(sid1.value) || isNaN(sid2.value) || isNaN(sid3.value) || isNaN(sid4.value) || isNaN(sid5.value)){
+            alert("กรุณาตรวจสอบการกรอกรหัสนักศึกษาใหม่อีกครั้ง (ตัวเลขความยาว 13 ตัว)");
+        }else{
+            checkSUBMIT2();
+        }        
+    }
+
+}
+function checkSUBMIT2(){
+    var e2 = document.getElementById("matCOST");
+    console.log(e2.value);
+    var matcost = e2.value;
+    var e3 = document.getElementById("otherCOST");
+    var othercost = e3.value;
+    var e4 = document.getElementById("totalCOST");
+    var totalcost = e4.value;
+    var e4_1 = document.getElementById("stdYEAR");
+    var stdyear = e4_1.value;
+    var e5 = document.getElementById("stdPHONE");
+    var stdphone = e5.value;
+    var e6 = document.getElementById("tPHONE");
+    var tphone = e6.value;
+    var e7 = document.getElementById("tPHONEex");
+    var tphoneex = e7.value;
+    var e8 = document.getElementById("termEND");
+    var termend = e8.value;
+    var e9 = document.getElementById("yearEND");
+    var yearend = e9.value;
+
+    if(isNaN(matcost) || e2.value==''){ 
+        alert("กรุณาใส่ค่าใช้จ่ายวัสดุให้ถูกต้อง (เป็นตัวเลข)");
+    }else if(isNaN(othercost) || e3.value==''){ 
+        alert("กรุณาใส่ค่าใช้จ่ายอื่นๆให้ถูกต้อง (เป็นตัวเลข)");
+    }else if(isNaN(totalcost) || e4.value==''){
+        alert("กรุณาใส่ค่าใช้จ่ายรวมให้ถูกต้อง (เป็นตัวเลข)");
+    }else if(isNaN(stdyear) || e4_1.value==''){
+        alert("กรุณาใส่ปีการศึกษาให้ถูกต้อง (เป็นตัวเลข)");
+    }else if(isNaN(stdphone) || e5.value==''){
+        alert("กรุณาใส่หมายเลขโทรศัพท์นักศึกษาให้ถูกต้อง (เป็นตัวเลข)");
+    }else if(isNaN(tphone) || e6.value==''){
+        alert("กรุณาใส่หมายเลขโทรศัพท์อาจารย์ที่ปรึกษาให้ถูกต้อง (เป็นตัวเลข)");
+    }else if(isNaN(tphoneex)){
+        alert("กรุณาใส่หมายเลขโทรศัพท์อาจารย์ที่ปรึกษาให้ถูกต้อง (เป็นตัวเลข)");
+    }else if(isNaN(termend) || e8.value==''){
+        alert("กรุณาใส่ข้อมูลภาคเรียนที่จะเขียนปริญญานิพนธ์เสร็จ ให้ถูกต้อง (เป็นตัวเลข)");
+    }else if(isNaN(yearend) || e9.value==''){
+        alert("กรุณาใส่ข้อมูลปีการศึกษาที่จะเขียนปริญญานิพนธ์เสร็จ ให้ถูกต้อง (เป็นตัวเลข)");
+    }else{
+        //and then do the next step of action
+    }
+}
+</script>
+<!--
+id ################
+f_name
+l_name
+faculty
+major
+c_live
+c_work
+unit
+course
+p_nameth
+p_nameen
+adviser
+p_adviser
+-->
+<body onLoad="yearselect();">
+    <form action = "{% url 'group6:project_docs_index' %}" method = "post">
+        <div class="page">
+            <center>
+                <H>แบบฟอร์มสำรวจหัวข้อโครงงานปริญญานิพนธ์</H><br>
+                <H>ภาควิชาวิศวกรรมไฟฟ้าและคอมพิวเตอร์ คณะวิศวกรรมศาสตร์</H><br>
+                <H>มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าพระนครเหนือ</H><br>
+                <H>ปีการศึกษา <select id="yearselect" name="yearOfEducation">
+                    <option>test1</option>
+                    <option>test2</option>
+                    <option>test3</option>
+                    <option>test4</option>
+                    <option>test5</option>
+                    <option>test6</option>
+                    <option>test7</option>
+                    <option>test8</option>
+                    <option>test9</option>
+                </select></H><br>
+            </center>
+            <label class="form">
+                <H>ชื่อโครงงาน (ภาษาไทย): </H><input id="nameth" type="text" name="name_thai" maxlength="20"></br>
+                <H>ชื่อโครงงาน (อังกฤษ): </H><input id="nameen" type="text" name="name_eng" maxlength="20"></br>
+                <H>จำนวนนักศึกษา: </H><select id="stdnumber" name="numberOfPeople">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+            </select> คน <button type="button" onClick="addMoreStd()">ยืนยันจำนวน</button></br>
+
+            <H>เสนอโดย :</H>
+            <div class="namestd" id="namestd">
+                <H>1. </H><input type='text' name='studentNAME0' id="studentNAME0"><H>เลขประจำตัว :</H><input type='text' name='studentID0' maxlength='13' id="studentID0"><br>
+            </div>
+            <H>ชื่ออาจารย์ที่ปรึกษา  :</H>
+            <select id="p_adviser" name=”adviser”>
+              {% for teacher in teachers %}
+                <option value="{{ teacher.id }}">{{ teacher.firstname_thai }} {{ teacher.lastname_thai }} ({{ teacher.symbol_name }})</option>
+              {% endfor %}
+              <!--<option value=”adviser1”>ดร. ศิริชัย รุจิพัฒนพงศ์ (SRU)</option>
+              <option value=”adviser2” selected=”selected”>รศ. ดร. วรา วราวิทย์ (VRV)</option>
+              <option value=”adviser3”>รศ.ดร. ณชล ไชยรัตนะ (NCC)</option>-->
+          </select></br>
+
+
+          <H>วัตถุประสงค์:</H> </br><textarea rows="6" cols="60" name="objective"></textarea></br>
+          <H>แนวเหตุผล ทฤฏีสำคัญหรือสมมุติฐาน:</H> </br><textarea rows="6" cols="60" name="reason"></textarea></br>
+          <H>ขอบเขตของการทำโครงงาน:</H> </br><textarea rows="6" cols="60" name="scope"></textarea></br>
+          <H>ผลประโยชน์ที่คาดว่าจะได้รับ:</H> </br><textarea rows="6" cols="60" name="benefit"></textarea></br>	
+	<!--</label>
+    
+
+    <!--###############################Form 2################################-->
+    <!--
+    <CENTER><H>คณะวิศวกรรมศาสตร์</H><br>
+    <H>มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าพระนครเหนือ</H><br>
+    <H>แบบเสนอโครงงานปริญญานิพนธ์</H><br>
+    <H>ภาควิชาวิศวกรรมไฟฟ้าและคอมพิวเตอร์ </H><br>
+    <H>ปีการศึกษา</H> <input type="text" name="text"></CENTER><br>
+    <label class="form">
+    <H>ชื่อโครงงาน (ภาษาไทย):</H> <input type="text" name="text"></br>
+    <H>ชื่อโครงงาน (อังกฤษ):</H> <input type="text" name="text"></br>
+    <label>ชื่ออาจารย์ที่ปรึกษา  :
+        <select name=”adviser”>
+            <option value=”adviser1”>ดร. ศิริชัย รุจิพัฒนพงศ์ (SRU)</option>
+            <option value=”adviser2” selected=”selected”>รศ. ดร. วรา วราวิทย์ (VRV)</option>
+            <option value=”adviser2”>รศ.ดร. ณชล ไชยรัตนะ (NCC)</option>
+        </select></br>
+        <br/><H>วัตถุประสงค์:</Hn> </br><textarea rows="10" cols="60"></textarea></br>
+        <H>แนวเหตุผล ทฤฏีสำคัญหรือสมมุติฐาน:</Hn> </br><textarea rows="10" cols="60"></textarea></br>
+            <H>ขอบเขตของการทำโครงงาน</Hn> </br><textarea rows="10" cols="60"></textarea></br>-->
+                <H>ประมาณการค่าใช้จ่ายในโครงการ </H> <br>
+                <H>ค่าวัสดุ:</H> <input id='matCOST' type="text" name="priceOfMaterial"><H>บาท</H><br>
+                <H>ค่าใช้จ่ายเบ็ดเตล็ด:</H> <input id='otherCOST' type="text" name="priceOfOther"><H>บาท</H><br>
+                <!--<H>รวมค่าใช้จ่ายในโครงการ:</H> <input id='totalCOST' type="text" name="text"><H>บาท (ดังรายระเอียดที่แนบมา)</H></br>
+        <H>ผลประโยชน์ที่คาดว่าจะได้รับ:</Hn> </br><textarea rows="10" cols="60"></textarea></br>	
+        </label> 
+    </label>
+    
+    
+    <!--#####################################Form 3 ######################################## -->
+    <!--
+    <CENTER><H>คณะวิศวกรรมศาสตร์</H></CENTER></br>
+    <CENTER><H>มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าพระนครเหนือ</H></CENTER></br>
+    <CENTER><H>แบบเสนอขออนุมัติโครงงานปริญญานิพนธ์</H></CENTER></br>
+    <CENTER><H>ปีการศึกษา</H> <input type="text" name="text"></CENTER></br>-->
+    <!--<H>ด้วยข้าพเจ้า ชื่อและสกุล(ภาษาไทย):</H> <input id="f_name" type="text" name="text"><br>
+    <H>ด้วยข้าพเจ้า ชื่อและสกุล(อังกฤษ):</H> <input id="l_name" type="text" name="text"><br>
+    <H>ขณะนี้เป็นนักศึกษาปีที่:</H> <input id='stdYEAR' type="text" name="text"><H>ของหลักสูตร:</H> <input type="text" name="text"><H>วิศวกรรมศาสตร์บัณฑิต</H><br>
+    <H>ในภาควิชา</H>: <input id="faculty" type="text" name="text"><H>สาขาวิชา</H>: <input id="major" type="text" name="text"><br>
+    <H>ตำบลที่อยู่ปัจจุบันของนักศึกษา:</H><br><textarea id="c_live" rows="10" cols="60"></textarea><br>
+    <H>โทร:</H> <input id="stdPHONE" type="text" name="text"><br>
+    <H>สภานที่ทำงานปัจจุบันของนักศึกษา:</H><br><textarea id="c_work" rows="10" cols="60"></textarea><br>-->
+    <H>มีความประสงค์ขออนุมัติทำปริญญานิพนธ์เพื่อเป็นส่วนหนึ่งของการศึกษาตามหลักสูตร</H><br>
+    <H>วิศวกรรมศาสตร์บัณฑิต ภาควิชาวิศวกรรมไฟฟ้าและคอมพิวเตอร์ จำนวน:</H><input id="unit" type="text" name="credit"><H>หน่วย</H> <br>
+    <H>ในวิชา:</H><input id="course" type="text" name="course"><br>
+    <!--<H>ชื่อเรื่อง(ภาษาไทย):</H> <br><textarea id="p_nameth" rows="10" cols="60"></textarea><br>
+    <H>ชื่อเรื่อง(ภาษาอังกฤษ):</H><br><textarea id="p_nameen" rows="10" cols="60"></textarea><br>
+    <H>ชื่ออาจารย์ที่ปรึกษา  :</H>
+    <select id="adviser" name=”adviser”>
+        <option value=”adviser1”>ดร. ศิริชัย รุจิพัฒนพงศ์ (SRU)</option>
+        <option value=”adviser2” selected=”selected”>รศ. ดร. วรา วราวิทย์ (VRV)</option>
+        <option value=”adviser2”>รศ.ดร. ณชล ไชยรัตนะ (NCC)</option>
+    </select></br>
+    
+    <H>หมายเลขโทรศัพท์ที่ทำงานของอาจารย์ที่ปรึกษา โทร:</H> <input id='tPHONE' type="text" name="text"></br><H>ต่อ:</H> <input id='tPHONEex' type="text" name="text"></br>-->
+    <H>คาดว่าจะเขียนปริญญานิพนธ์เสร็จภายในภาคที่:</H> <input id='termEND' type="text" name="semesterEnd"></br><H>ปีการศึกษา:</H> <input id='yearEND' type="text" name="yearEnd"></br>
+        <!--<H>จิงขอได้โปรดพิจารณาอนุมัติ โดยได้แนบโครงการเสนอปริญญานิพนธ์มาพร้อมนี้</H> 
+        <H>วัตถุประสงค์:</Hn> </br><textarea rows="10" cols="60"></textarea></br>
+        <H>แนวเหตุผล ทฤฏีสำคัญหรือสมมุติฐาน:</H> </br><textarea rows="10" cols="60"></textarea></br>
+        <H>ขอบเขตของการทำโครงงาน</H> </br><textarea rows="10" cols="60"></textarea></br>
+        <H>ผลประโยชน์ที่คาดว่าจะได้รับ:</H> </br><textarea rows="10" cols="60"></textarea></br>	
+         <p align = "right"><table border="0">
+        <tr><td><H>ลงชื่อ:</H><input type="text" name="text"><H>(ผู้ยื่นคำร้อง)</H></td></tr>
+         <tr><td><input type="date" name="date"></p></td></tr>
+    </table>
+    <!--
+         <CENTER><table border="1">
+         <tr><td><CENTER><H>ความเห็นของอาจารย์ที่ปรึกษา</H></br><textarea rows="10" cols="60"></textarea></br><H>(ลงนาม)</H><input type="text" name="text"></br><input type="date" name="date"></td>
+           <td><CENTER><H>ความเห็นของหัวหน้าภาค</H></br><textarea rows="10" cols="60"></textarea></br><H>(ลงนาม)</H><input type="text" name="text"></br><input type="date" name="date"></td></tr> -->
+       </label>
+   </div>
+   <center><br>
+    <input class="btn btn-primary" type="submit" value="บันทึก" name='save' />
+    <input class="btn btn-primary" type="submit" value="ยกเลิก" name = 'cancel' />
+</center>
+</form>
+
+
+<!--
+<H id="myTextarea">Form HTML</H>
+<p>Click the button to get the content of the text area.</p>
+<button type="button" onClick="myFunction()">Try it</button>
+<p id="demo"></p>
+-->
+</div>
+{% endblock %}
