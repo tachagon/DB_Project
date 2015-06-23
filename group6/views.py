@@ -9,7 +9,17 @@ from login.models import *
 from datetime import datetime
 
 def index(request):
-    return render(request, 'group6/index.html')
+    u = UserProfile.objects.get(user=request.user)
+    s = Student.objects.get(userprofile=u)
+    project = s.projectg6_set.all()
+    research = []
+    offer = []
+    approve = []
+    for p in project:
+        research.append(ResearchProjectForm.objects.get(project=p))
+        offer.append(OfferProjectForm.objects.get(project=p))
+        approve.append(ApproveProjectForm.objects.get(project=p))
+    return render(request, 'group6/index.html', {'project_list': project, 'research': research, 'offer': offer, 'approve': approve},)
 
 def create_3forms(request):
     u = UserProfile.objects.get(user=request.user)

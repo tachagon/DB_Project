@@ -1,13 +1,14 @@
-﻿{% extends "base.html" %}
+﻿<!DOCTYPE>
+{% extends "base.html" %}
 
-{% block title %}ระบบ จัดการโครงงาน สำหรับนักศึกษา ปริญญาตรี - แบบเสนอโครงงานปริญญานิพนธ์ - {{ approve.project.name_thai }}{% endblock %}
+{% block title %}ระบบ จัดการโครงงาน สำหรับนักศึกษา ปริญญาตรี - แบบเสนอขออนุมัติโครงงานปริญญานิพนธ์ - {{ approve.project.name_thai }}{% endblock %}
 
 {% block pageHeader %}
 <h2>ระบบ <small>จัดการโครงงาน สำหรับนักศึกษา ปริญญาตรี</small></h2>
 <ol class="breadcrumb">
     <li><a href="{% url 'login:menu' %}">เมนู</a></li>
     <li><a href="{% url 'group6:project_docs_index' %}">ระบบ จัดการโครงงาน สำหรับนักศึกษา ปริญญาตรี</a></li>
-    <li class="active">แบบเสนอโครงงานปริญญานิพนธ์ - {{ approve.project.name_thai }}</li>
+    <li class="active">แบบเสนอขออนุมัติโครงงานปริญญานิพนธ์ - {{ approve.project.name_thai }}</li>
 </ol>
 {% endblock %}
 
@@ -109,16 +110,15 @@ table,tr,td{
 <H>ขอบเขตของการทำโครงงาน :</H><br><div class="text">{{ approve.project.scope }}</div>
 <H>ผลประโยชน์ที่คาดว่าจะได้รับ :</H><br><div class="text">{{ approve.project.benefit }}</div>
 <br>
-<div align="right"><H>ลงชื่อ:</H>................................<H>(ผู้ยื่นคำร้อง)</H>
+<div align="right"><H>ลงชื่อ:</H>................................<H>(ผู้ยื่นคำร้อง)</H></div>
 <div align="right" style="margin-right:36mm">{dd/mm/yyyy}</div>
 <br>
 
-	 <CENTER><table border="0">
+	 <CENTER><table border="1">
 	 <tr><td><CENTER><H>ความเห็นของอาจารย์ที่ปรึกษา</H><div class="comment"></div><H>(ลงนาม)</H>...............<br>{dd/mm/yyyy}</td>
-	 <td><CENTER><H>ความเห็นของหัวหน้าภาค</H><div class="comment"></div><H>(ลงนาม)</H>...............<br>{dd/mm/yyyy}</td></tr>
+	 <td><CENTER><H>ความเห็นของหัวหน้าภาค</H><div class="comment"></div><H>(ลงนาม)</H>...............<br>{dd/mm/yyyy}</td></tr></table>
      	</label>
-</div>
-
+</div><br>
 <a href="{% url 'group6:project_docs_index' %}"><input class="btn btn-danger" type="button" value="ย้อนกลับ" name = 'cancel' /></a>
-</div>
+</div><br>
 {% endblock %}

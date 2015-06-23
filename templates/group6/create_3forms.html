@@ -97,16 +97,18 @@ function yearselect(){
         var sel = document.getElementById("stdnumber");
         sel.value = {{ numOP }}
 }
+var oldnum=0;
 function addMoreStd(){
 	var e1 = document.getElementById("stdnumber");
 	var stdnum = e1.options[e1.selectedIndex].value;
 	var txts = "";
-	for (i = 1; i < stdnum; i++) { 
-       txts += "<H>"+e1.options[i].text+". "+"</H><input id='studentNAME" + (i) +"' type='text' name='studentNAME" + (i) +"'><H>เลขประจำตัว :</H><input type='text' name='studentID" + (i) + "' maxlength='13' id='studentID" + (i) + "'><br>";
-   }
-   document.getElementById("namestd").innerHTML = txts;
-
-
+	if (oldnum!=stdnum){
+		oldnum=stdnum;
+		for (i = 1; i < stdnum; i++) { 
+			txts += "<H>"+e1.options[i].text+". "+"</H><input id='studentNAME" + (i) +"' type='text' name='studentNAME" + (i) +"'><H>เลขประจำตัว :</H><input type='text' name='studentID" + (i) + "' maxlength='13' id='studentID" + (i) + "'><br>";
+		}
+	document.getElementById("namestd").innerHTML = txts;
+	}
 }
 function checkSUBMIT(){  //by jupiter ------------ A function to check the studentID and the rest of the number type input before submit ---- please use it  before perform any action in next step
     var e1 = document.getElementById("stdnumber");
@@ -238,7 +240,7 @@ p_adviser
 <body onLoad="yearselect();">
     <form action = "{% url 'group6:project_docs_create_3forms_add' %}" method = "post">
         {% csrf_token %}
-        <div class="page">
+        <div class="page" onMouseMove="return addMoreStd();">
             <center>
                 <H>แบบฟอร์มสำรวจหัวข้อโครงงานปริญญานิพนธ์</H><br>
                 <H>ภาควิชาวิศวกรรมไฟฟ้าและคอมพิวเตอร์ คณะวิศวกรรมศาสตร์</H><br>
@@ -264,7 +266,7 @@ p_adviser
                 <option value="3">3</option>
                 <option value="4">4</option>
                 <option value="5">5</option>
-            </select> คน <button type="button" onClick="addMoreStd()">ยืนยันจำนวน</button> <font color = "FF0000" name="message">{{ error_numOP }}</font></br>
+            </select> คน <font color = "FF0000" name="message">{{ error_numOP }}</font></br>
 
             <H>เสนอโดย :</H><br>
 

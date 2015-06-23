@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load custom_function %}
 
 {% block title %}ระบบ จัดการโครงงาน สำหรับนักศึกษา ปริญญาตรี{% endblock %}
 
@@ -15,54 +16,34 @@
     {% for message in messages %}
         <br><font color = "FF0000" name="message">*{{ message }}</font>
     {% endfor %}
-    {% if teachList %}  
+    {% if project_list %}  
             <div class="table-responsive">
                 <table class="table table-hover table-bordered" id="no-more-tables">
                     <thead>
                         <tr>
                             <th>ลำดับ</th>
-                            <th>ชื่อ-สกุล</th>
-                            <th>ตัวย่อ</th>
-                            <th>รหัสวิชา</th>
-                            <th>ชื่อวิชา</th>
-                            <th>ตอนเรียน</th>
-                            <th>วัน</th>
-                            <th>เวลา</th>
-                            <th>ห้องเรียน</th>
-                            <th>เบอร์โทรศัพท์</th>
-                            <th>E-mail</th>
-                            <th>บ/ช สหกรณ์</th>
-                            <th>เมนู</th>
+                            <th>ชื่อโครงงาน (ภาษาไทย)</th>
+                            <th>ชื่อโครงงาน (ภาษาอังกฤษ)</th>
+                            <th>แบบฟอร์มสำรวจหัวข้อโครงงานปริญญานิพนธ์</th>
+                            <th>แบบเสนอโครงงานปริญญานิพนธ์</th>
+                            <th>แบบเสนอขออนุมัติโครงงานปริญญานิพนธ์</th>
                         </tr>
                     </thead>
                     <tbody>
-                    {% for teach in teachList %}
+                    {% for project in project_list %}
                         <tr>
                             <td data-title="ลำดับ">{{ forloop.counter }}</td>
-                            <td data-title="ชื่อ-สกุล">{{ teach.prof }}</td>
-                            <td data-title="ตัวย่อ">{{ teach.prof.shortName }}</td>
-                            <td data-title="รหัสวิชา">{{ teach.subject.subjectID }}</td>
-                            <td data-title="ชื่อวิชา">{{ teach.subject.subjectName }}</td>
-                            <td data-title="ตอนเรียน">{{ teach.section.section }}</td>
-                            <td data-title="วัน">{{ teach.section.date }}</td>
-                            <td data-title="เวลา">{{ teach.section.startTime|time:"H.i" }} - {{teach.section.endTime|time:"H.i" }}</td>
-                            <td data-title="ห้องเรียน">{{ teach.section.classroom }}</td>
-                            <td data-title="เบอร์โทรศัพท์">{{ teach.prof.tell }}</td>
-                            <td data-title="E-mail">{{ teach.prof.email }}</td>
-                            <td data-title="บ/ช สหกรณ์">{{ teach.prof.sahakornAccount }}</td>
-                            <td data-title="เมนู">
-                                <a class="btn btn-info btn-xs" href="{% url 'group3:prof2lang_view' teach.id %}">ดูข้อมูล</a>
-                                <a class="btn btn-default btn-xs" href="#">แก้ไข</a>
-                                <a class="btn btn-danger btn-xs" href="#">ลบ</a>
-                                <a class="btn btn-default btn-xs" href="{% url 'group3:genpdf' teach.id %}" target = _blank><span class="glyphicon glyphicon-print"></span></a>
-                            </td>
+                            <td data-title="ชื่อโครงงาน (ภาษาไทย)">{{ project.name_thai }}</td>
+                            <td data-title="ชื่อโครงงาน (ภาษาอังกฤษ)">{{ project.name_eng }}</td>
+                            <td data-title="แบบฟอร์มสำรวจหัวข้อโครงงานปริญญานิพนธ์"><a class="btn btn-info" href="{% url 'group6:project_docs_researchProject' research|get_id_at_index:forloop.counter0 %}">ดูฟอร์ม</a></td>
+                            <td data-title="แบบเสนอโครงงานปริญญานิพนธ์"><a class="btn btn-warning" href="{% url 'group6:project_docs_offerProject' offer|get_id_at_index:forloop.counter0 %}">ดูฟอร์ม</a></td>
+                            <td data-title="แบบเสนอขออนุมัติโครงงานปริญญานิพนธ์"><a class="btn btn-success" href="{% url 'group6:project_docs_approveProject' approve|get_id_at_index:forloop.counter0 %}">ดูฟอร์ม</a></td>
+                            
                         </tr>
                     {% endfor %}
                     </tbody>
                 </table>
             </div>
-            <a class="btn btn-primary" href="{% url 'group3:prof2lang_add' 0 %}">เพิ่มข้อมูล</a>
-        </div>
     {% else %}
         <div class="row">
             <div class="col-md-3"></div>
@@ -75,6 +56,6 @@
             <div class="col-md-3"></div>
         </div>
     {% endif %}
-    <a class="btn btn-primary" href="{% url 'group6:project_docs_create_3forms' %}">สร้างฟอร์มเสนอโครงงานใหม่</a>
+    <a class="btn btn-primary" href="{% url 'group6:project_docs_create_3forms' %}">สร้างฟอร์มเสนอโครงงานใหม่</a><br>
 </div>
 {% endblock %}
