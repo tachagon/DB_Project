@@ -1,3 +1,60 @@
+/* Tatchagon custom */
+header {
+  background: #36648B;
+  height:auto;
+  color:#fefeee;
+}
+
+header h1 {
+    color: #fff;
+}
+
+header p {
+  color:#ececec;
+}
+
+nav.affix {
+    position: fixed;
+    top: 0;
+    width: 100%
+}
+
+/* ismartuby-nav in template start_base.html in navbar */
+.ismartuby-nav {
+    margin-bottom: 0px;
+    border-bottom: 0px none;
+}
+
+/* ismartuby-masthead in template login/index.html */
+.ismartuby-masthead{
+    padding: 80px 0px;
+    position: relative;
+    text-align: center;
+    text-shawdow: 0px 1px 0px rgba(0, 0, 0, 0.1);
+    background-color: #00CDCD;
+    background-repeat: repeat-x;
+    color: #FFF;
+}
+.ismartuby-masthead small {
+    color: #BFEFFF;
+}
+
+.ismartuby-masthead .lead {
+    width: 80%;
+    font-size: 30px;
+    margin: 0px auto 30px;
+    color: #FFF;
+}
+
+.ismartuby-masthead .lead-brand {
+    width: 80%;
+    font-size: 50px;
+    margin: 0px auto 30px;
+    color: #FFF;
+}
+
+/* end of Tatchagon custom */
+
 /* this part for submenu in dropdown menu */
 .dropdown-submenu {
     position: relative;
@@ -165,25 +222,7 @@
 }
 /*================ END of custom navbar collapse (screen size) ================*/
 
-header {
-  background: #36648B;
-  height:auto;
-  color:#fefeee;
-}
 
-header h1 {
-    color: #fff;
-}
-
-header p {
-  color:#ececec;
-}
-
-nav.affix {
-    position: fixed;
-    top: 0;
-    width: 100%
-}
 
 
 
