@@ -598,3 +598,15 @@ def hourpdf(request): # use to see working of temporary employee.
         response['Content-Disposition'] = 'filename=hour.pdf'
         return response
     pdf.closed
+    
+def prof2lang_delete(request, profID): # delete teacher data from index page.
+    teachObj = Teach.objects.get(pk= int(profID))
+    teachObj.delete()
+    
+    teachList = Teach.objects.all()
+    template = 'group3/prof2lang_index.html'
+    return render(
+        request,
+        template,
+        {'teachList':teachList}
+    )
