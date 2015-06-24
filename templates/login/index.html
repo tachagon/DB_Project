@@ -5,124 +5,58 @@
 {% block content %}
 
     {% if user.is_authenticated %}
-        <h1>{{ user.username }}</h1>
-        <a href="{% url 'login:menu' %}">Menu</a><br />
+        <div class="row">
+            <div class="container">
+                <h1><span class="glyphicon glyphicon-user"></span> {{ user.username }}</h1>
+                <a class="btn btn-default" href="{% url 'login:menu' %}">Menu</a><br />
+            </div>
+        </div>
     {% else %}
         <div class="row">
             <div class="container-fluid">
                 <main id="content" class="ismartuby-masthead" tabindex="-1" role="main">
                     <p class="container">
-                    <img src="{% static 'images/ece_logo.gif' %}" height="200px">
-                    <p class="lead-brand">eOffice</p>
-                    <p class="lead">ระบบสารสนเทศ ภาควิชาวิศวกรรมไฟฟ้าและคอมพิวเตอร์<br/>
+                    <img src="{% static 'images/ece_logo_edit.gif' %}" height="200px">
+                    <p class="lead-brand">e-Office ECE</p>
+                    <p class="lead">สำนักงานอิเล็กทรอนิกส์ ภาควิชาวิศวกรรมไฟฟ้าและคอมพิวเตอร์<br/>
                     คณะวิศวกรรมศาสตร์ มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าพระนครเหนือ</p>
-                    <a class="btn btn-success btn-lg" data-toggle="modal" data-target="#register-modal">ลงทะเบียน</a>
+                    <a class="btn btn-success btn-lg" href="{% url 'login:register' %}">ลงทะเบียน</a>
+                    <p class="lead lead-label">สำหรับนักศึกษา</p>
                 </main>
             </div>
         </div>
 
         <div class="row">
             <div class="container">
-                <div class="col-md-6">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h3>Welcome <small>ยินดีต้อนรับ</small></h3>
-                        </div>
-                        <div class="panel-body">
-                            <p>ยินดีต้อนรับเข้าสู่ระบบสารสนเทศ<br>
-                                คุณสามารถ<b>เข้าสู่ระบบ</b>เพื่อใช้บริการระบบ<br>
-                                หรือ<b>ลงทะเบียน</b>เพื่อสมัครเข้าใช้บริการ</p>
-                        </div>
-                    </div>
-                </div>
 
-                <div class="col-md-6">
-                    <!-- >
-                    <div class="panel panel-info">
-                        <div class="panel-heading">
-                            <h3>Sign up <small>ลงทะเบียน</small></h3>
-                        </div>
-                        <div class="panel-body">
-                            {% if registered %}
-                                <div class="alert alert-success" role="alert"><strong>Well done!</strong> ลงทะเบียนสำเร็จ</div>
-                                <div class="alert alert-info" role="alert"><strong>ขอบคุณสำหรับการลงทะเบียน</strong></div>
-                            {% endif %}
-                                {% if errors %}
-                                    <ul>
-                                        {% for error in errors %}
-                                            {% if error == 1 %}
-                                                <div class="alert alert-danger alert-dismissible" role="alert">
-                                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                                    <strong>Warning!</strong> รหัสผ่านไม่ตรงกัน
-                                                </div>
-                                            {% endif %}
-                                            {% if error == 2 %}
-                                                <div class="alert alert-danger alert-dismissible" role="alert">
-                                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                                    <strong>Warning!</strong> มีผู้อื่นใช้ Username นี้แล้ว
-                                                </div>
-                                            {% endif %}
-                                        {% endfor %}
-                                    </ul>
-                                {% endif %}
-                                <form class="form-horizontal" id="register_form" method="post" action="{% url 'login:index' %}" enctype="multipart/form-data">
-                                    {% csrf_token %}
 
-                                    <div class="form-group">
-                                        <label for="username" class="col-sm-3 control-label">Username</label>
-                                        <div class="col-sm-9">
-                                            <input type="text" id="username" name="username" class="form-control"
-                                                   value="" placeholder="ชื่อผู้ใช้"
-                                                   required="โปรดกรอก Username">
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label class="col-sm-3 control-label">Name</label>
-                                        <div class="col-sm-9">
-                                            <input type="text" id="name" name="first_name" class="form-control"
-                                                   value="" placeholder="ชื่อจริง"
-                                                   required="โปรดกรอกชื่อจริง">
-
-                                            <input type="text" name="last_name" value="" class="form-control"
-                                                   placeholder="นามสกุล"
-                                                   required="โปรดกรอกนามสกุล">
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label class="col-sm-3 control-label">E-mail</label>
-                                        <div class="col-sm-9">
-                                            <input type="email" name="email" class="form-control" value="" placeholder="อีเมล">
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label class="col-sm-3 control-label">Password</label>
-                                        <div class="col-sm-9">
-                                            <input type="password" name="password" value="" class="form-control"
-                                                   placeholder="รหัสผ่าน"
-                                                   required="โปรดกรอกรหัสผ่าน">
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label class="col-sm-3 control-label">Re-Password</label>
-                                        <div class="col-sm-9">
-                                             <input type="password" name="check_password" value="" class="form-control"
-                                                    placeholder="รหัสผ่านอีกครั้ง"
-                                                    required="โปรดกรอกรหัสผ่านอีกครั้ง">
-                                        </div>
-                                    </div>
-
-                                    <br>
-                                    <input class="btn btn-success" type="submit" name="submit" value="ลงทะเบียน">
-                                </form>
-                        </div>
-                    </div>< -->
-                </div>
             </div>
         </div>
     {% endif %}
 
 {% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

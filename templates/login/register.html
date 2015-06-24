@@ -1,30 +1,247 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Rango</title>
-    </head>
+{% extends "start_base.html" %}
 
-    <body>
-        <h1>Register with Rango</h1>
+{% block title %}.: ลงทะเบียน สำหรับนักศึกษา :.{% endblock %}
 
-        {% if registered %}
-            Rango says: <strong>thank you for registering!</strong>
-            <a href="{% url 'login:index' %}">Return to the homepage.</a><br />
-        {% else %}
-            Rango says: <strong>register here!</strong><br />
+{% block content %}
+<div class="row">
+    <div class="container">
+        <div class="page-header">
+            <h2>ลงทะเบียน <small>สำหรับนักศึกษา</small></h2>
+        </div>
 
-            <form id="user_form" method="post" action="{% url 'login:register' %}" enctype="multipart/form-data">
-                {% csrf_token %}
+        <form class="form-horizontal" method="post" action="{% url 'login:register' %}">
+            {% csrf_token %}
 
-                <!-- Display each form. The as_p method wraps each element in a paragraph
-                    (<p>) element. This ensures each element appears on a new line,
-                    making everything look neater. -->
-                {{ user_form.as_p }}
-                {{ profile_form.as_p }}
+            <!-- 1. username -->
+            <div class="form-group">
+                <label class="col-sm-3 control-label"><font color="red">*</font> Username:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="username" value="{{username}}" class="form-control" placeholder="username" maxlength="30" title="กรุณากรอก Username" required>
+                </div>
+            </div>
 
-                <!-- Provide a button to click to submit the form. -->
-                <input type="submit" name="submit" value="Register" />
-            </form>
-        {% endif %}
-    </body>
-</html>
+            <!-- 2. std_id -->
+            <div class="form-group">
+                <label class="col-sm-3 control-label"><font color="red">*</font> รหัสนักศึกษา:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="std_id" value="{{std_id}}" class="form-control" placeholder="รหัสนักศึกษา" title="กรุณากรอกรหัสนักศึกษา" required>
+                </div>
+            </div>
+
+            <!-- 3. firstname_th -->
+            <!-- 4. lastname_th -->
+            <div class="form-group">
+                <label class="col-sm-3 control-label"><font color="red">*</font> ชื่อ-นามสกุล ภาษาไทย:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="firstname_th" value="{{firstname_th}}" class="form-control" placeholder="ชื่อจริง" title="กรุณากรอกชื่อจริงเป็นภาษาไทย" required>
+                    <input type="text" name="lastname_th" value="{{lastname_th}}" class="form-control" placeholder="นามสกุล" title="กรุณากรอกนามสกุลเป็นภาษาไทย" required>
+                </div>
+            </div>
+
+            <!-- 5. firstname_en -->
+            <!-- 6. lastname_en -->
+            <div class="form-group">
+                <label class="col-sm-3 control-label"><font color="red">*</font> ชื่อ-นามสกุล ภาษาอังกฤษ:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="firstname_en" value="{{firstname_en}}" class="form-control" placeholder="First Name" maxlength="30" title="กรุณากรอกชื่อจริงเป็นภาษาอังกฤษ" required>
+                    <input type="text" name="lastname_en" value="{{lastname_en}}" class="form-control" placeholder="Last Name" maxlength="30" title="กรุณากรอกนามสกุลเป็นภาษาอังกฤษ" required>
+                </div>
+            </div>
+
+            <!-- 7. address -->
+            <div class="form-group">
+                <label class="col-sm-3 control-label"><font color="red">*</font> ที่อยู่:</label>
+                <div class="col-sm-9">
+                    <textarea class="form-control" rows="3" name="address" placeholder="ที่อยู่" title="กรุณากรอกที่อยู่" required>{{address}}</textarea>
+                </div>
+            </div>
+
+            <!-- 8. office -->
+            <div class="form-group">
+                <label class="col-sm-3 control-label"><font color="red">*</font> ที่ทำงาน:</label>
+                <div class="col-sm-9">
+                    <textarea class="form-control" rows="3" name="office" placeholder="ที่อยู่" title="กรุณากรอกที่ทำงาน" required>{{office}}</textarea>
+                </div>
+            </div>
+
+            <!-- 9. email -->
+            <div class="form-group">
+                <label class="col-sm-3 control-label">E-mail:</label>
+                <div class="col-sm-9">
+                    <input type="email" name="email" class="form-control" value="{{email}}" placeholder="อีเมล">
+                </div>
+            </div>
+
+            <!-- 10. tel  -->
+            <div class="form-group">
+                <label class="col-sm-3 control-label"><font color="red">*</font> เบอร์โทรศัพท์:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="tel" value="{{tel}}" class="form-control" placeholder="เบอร์โทรศัพท์" title="กรุณากรอกเบอร์โทรศัพท์" required>
+                </div>
+            </div>
+
+            <!-- 11. scheme  -->
+            <div class="form-group">
+                <label class="col-sm-3 control-label"><font color="red">*</font> หลักสูตร:</label>
+                <div class="col-sm-9">
+                    <select name="scheme" class="form-control" title="กรุณาเลือกหลักสูตรที่ศึกษา" required>
+                        <option value=""></option>
+                        <option value="0">หลักสูตรปรับปรุง Cpr.E 54</option>
+                        <option value="1">หลักสูตรปรับปรุง EE 51</option>
+                        <option value="2">หลักสูตรปรับปรุง ECE 55</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- 12. main -->
+            <div class="form-group">
+                <label class="col-sm-3 control-label"><font color="red">*</font> สาขา:</label>
+                <div class="col-sm-9">
+                    <select name="main" class="form-control" title="กรุณาเลือกสาขาที่ศึกษา" required>
+                        <option value=""></option>
+                        <option value="0">Cpr.E</option>
+                        <option value="1">G</option>
+                        <option value="2">U</option>
+                        <option value="3">C</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- 13. department -->
+            <div class="form-group">
+                <label class="col-sm-3 control-label"><font color="red">*</font> ภาควิชา:</label>
+                <div class="col-sm-9">
+                    <select name="department" class="form-control" title="กรุณาเลือกภาควิชา" required>
+                        <option value="1">วิศวกรรมไฟฟ้าและคอมพิวเตอร์</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- 14. faculty -->
+            <div class="form-group">
+                <label class="col-sm-3 control-label"><font color="red">*</font> คณะ:</label>
+                <div class="col-sm-9">
+                    <select name="faculty" class="form-control" title="กรุณาเลือกคณะ" required>
+                        <option value="1">วิศวกรรมศาสตร์</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- 15. password -->
+            <div class="form-group">
+                <label class="col-sm-3 control-label"><font color="red">*</font> Password:</label>
+                <div class="col-sm-9">
+                    <input type="password" name="password" value="" class="form-control" placeholder="รหัสผ่าน" title="กรุณากรอกรหัสผ่าน" required>
+                </div>
+            </div>
+
+            <!-- 16. check_password -->
+            <div class="form-group">
+                <label class="col-sm-3 control-label"><font color="red">*</font> Re-Password:</label>
+                <div class="col-sm-9">
+                    <input type="password" name="check_password" value="" class="form-control" placeholder="รหัสผ่านอีกครั้ง" title="กรุณากรอกรหัสผ่านอีกครั้ง" required>
+                </div>
+            </div>
+
+            <!-- save button -->
+            <div class="form-group">
+                <label class="col-sm-3 control-label"></label>
+                <div class="col-sm-9">
+                    <input type="submit" class="btn btn-success" value="ตกลง"/>
+                </div>
+            </div>
+
+        </form>
+
+        <script type="text/javascript">
+            {% if errors %}
+                $(document).ready(function(){
+                    $('#errors-modal').modal('show');
+                });
+            {% endif %}
+
+            {% if registered %}
+                $(document).ready(function(){
+                    $('#registered-modal').modal('show');
+                });
+            {% endif %}
+
+        </script>
+
+        <!-- errors-modal -->
+        <div class="modal fade" id="errors-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel"><font color="red"><span class="glyphicon glyphicon-remove"></span> ลงทะเบียนไม่สำเร็จ</font></h4>
+                    </div><!-- /modal-header -->
+                    <div class="modal-body">
+                        {% for error in errors %}
+                            {% if error == 1 %}
+                                <div class="alert alert-danger" role="alert">
+                                    <strong>Error!</strong> คุณกรอกรหัสผ่านไม่ตรงกัน
+                                </div>
+                            {% endif %}
+                            {% if error == 2 %}
+                                <div class="alert alert-danger" role="alert">
+                                    <strong>Error!</strong> มีผู้อื่นใช้ Username นี้แล้ว
+                                </div>
+                            {% endif %}
+                            {% if error == 3 %}
+                                <div class="alert alert-danger" role="alert">
+                                    <strong>Error!</strong> รหัสนักศึกษานี้เคยลงทะเบียนแล้ว
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div><!-- /modal-body -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">ปิด</button>
+                    </div><!-- /modal-footer -->
+                </div><!-- /modal-content -->
+            </div><!-- /modal-dialog -->
+        </div><!-- /modal -->
+
+        <!-- registered-modal -->
+        <div class="modal fade" id="registered-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 content="modal-title"><font color="green"><span class="glyphicon glyphicon-ok"></span> ลงทะเบียนสำเร็จ</font></h4>
+                    </div><!-- /modal-header -->
+                    <div class="modal-body">
+                        <p>ขอบคุณสำหรับการลงทะเบียน<br/>
+                        คุณสามารถ <a class="btn btn-primary btn-sm" href="{% url 'login:login' %}">เข้าสู่ระบบ</a> เพื่อใช้งานระบบ</p>
+                    </div><!-- /modal-body -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">ปิด</button>
+                    </div><!-- /modal-footer -->
+                </div><!-- /modal-content -->
+            </div><!-- /modal-dialog -->
+        </div><!-- /modal -->
+
+    </div>
+</div>
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

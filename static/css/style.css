@@ -1,4 +1,4 @@
-/* Tatchagon custom */
+/* Tatchagon edit */
 header {
   background: #36648B;
   height:auto;
@@ -53,7 +53,11 @@ nav.affix {
     color: #FFF;
 }
 
-/* end of Tatchagon custom */
+.ismartuby-masthead .lead-label {
+    font-size: 16px;
+}
+
+/* end of Tatchagon edit */
 
 /* this part for submenu in dropdown menu */
 .dropdown-submenu {

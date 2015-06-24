@@ -1,3 +1,4 @@
+#-*- coding: utf-8 -*-
 from django.shortcuts import render, render_to_response, RequestContext, HttpResponseRedirect, HttpResponse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -171,3 +172,118 @@ def user_logout(request):
 
     # Take the user back to the homepage.
     return HttpResponseRedirect(reverse('login:index'))
+
+def user_register(request):
+    template = 'login/register.html'
+    context = {}
+    errors = []
+
+    if request.method == 'POST':
+        # get all User objects
+        users = User.objects.all()
+
+        # get data from template login/register.html
+        username        = request.POST['username']          # get 1. username
+        std_id          = request.POST['std_id']            # get 2. std_id
+        firstname_th    = request.POST['firstname_th']      # get 3. firstname_th
+        lastname_th     = request.POST['lastname_th']       # get 4. lastname_th
+        firstname_en    = request.POST['firstname_en']      # get 5. firstname_en
+        lastname_en     = request.POST['lastname_en']       # get 6. lastname_en
+        address         = request.POST['address']           # get 7. address
+        office          = request.POST['office']            # get 8. office
+        email           = request.POST['email']             # get 9. email
+        tel             = request.POST['tel']               # get 10. tel
+        scheme          = request.POST['scheme']            # get 11. scheme
+        main            = request.POST['main']              # get 12. main
+        department      = request.POST['department']        # get 13. department
+        faculty         = request.POST['faculty']           # get 14. faculty
+        password        = request.POST['password']          # get 15. password
+        check_password  = request.POST['check_password']    # get 16. check_password
+
+        # errors 1: User fill invalid password
+        if password != check_password:
+            print 'password is invalid'
+            errors.append(1)
+
+        # errors 2: username is duplicate
+        try:
+            user = User.objects.get(username = username)
+            errors.append(2)
+        except:
+            pass
+
+        # errors 3: std_id is duplicate
+        try:
+            std = Student.objects.get(std_id = std_id)
+            errors.append(3)
+        except:
+            pass
+
+        # if don't have an error
+        if len(errors) == 0:
+            # create new User object
+            newUser = User(
+                username        = username,
+                first_name      = firstname_en,
+                last_name       = lastname_en,
+                email           = email
+            )
+            newUser.set_password(password)
+            newUser.save()  # save new User object into database
+
+            # create new UserProfile object
+            newUserProfile = UserProfile(
+                user = newUser,
+                firstname_th    = firstname_th,
+                lastname_th     = lastname_th,
+                firstname_en    = firstname_en,
+                lastname_en     = lastname_en,
+                address         = address,
+                office          = office,
+                tel             = tel,
+                department      = department,
+                faculty         = faculty,
+                type            = '0' # type '0' is Student
+            )
+            newUserProfile.save() # save new UserProfile object into database
+
+            # create new Student object
+            newStudent = Student(
+                userprofile     = newUserProfile,
+                std_id          = std_id,
+                scheme          = scheme,
+                main            = main
+            )
+            newStudent.save() # save new Srudent object into database
+
+            # redirect to template with register is success
+            context['registered'] = True
+        # if have an error
+        else:
+            # redirect to template with errors list
+            context['errors'] = errors
+
+            # redirect to template with some data
+            context['username']     = username
+            context['std_id']       = std_id
+            context['firstname_th'] = firstname_th
+            context['lastname_th']  = lastname_th
+            context['firstname_en'] = firstname_en
+            context['lastname_en']  = lastname_en
+            context['address']      = address
+            context['office']       = office
+            context['email']        = email
+            context['tel']          = tel
+
+            # delete some context dict that user fill invalid
+            for error in errors:
+                if error == 2:
+                    del context['username']
+                elif error == 3:
+                    del context['std_id']
+
+    return render(
+        request,
+        template,
+        context
+    )

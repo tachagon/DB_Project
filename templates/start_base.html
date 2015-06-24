@@ -19,7 +19,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="{% url 'login:index' %}" style="color:white; font-size:25px;">Database Systems</a>
+                <a class="navbar-brand" href="{% url 'login:index' %}" style="color:white; font-size:25px;">e-Office ECE</a>
             </div>
 
             <div class="collapse navbar-collapse" id="id_nav1">
@@ -37,6 +37,7 @@
                             <input type="password" name="password" class="form-control" placeholder="Password" required="">
                         </div>
                         <button class="btn btn-primary navbar-btn" type="submit">เข้าสู่ระบบ</button>
+                        <a class="btn btn-success navbar-btn" href="{% url 'login:register' %}">ลงทะเบียน</a>
                     </form>
                 {% endif %}
 
