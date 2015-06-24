@@ -10,4 +10,6 @@ urlpatterns = patterns('',
     url(r'^addSubject/$', views.addSubject, name='addSubject'),
     url(r'^addSection/$', views.addSection, name='addSection'),
     url(r'^testpdf/(\d+)/$', views.genpdf, name='genpdf'),
+    url(r'^genallpdf/$', views.genallpdf, name='genallpdf'),
+    url(r'^hourpdf/$', views.hourpdf, name='hourpdf'),
 )
