@@ -191,7 +191,7 @@ def create_3forms_add(request):
     offer.save()
     approve = ApproveProjectForm(project = project, student = s, course = courses, semesterEnd = semester, yearEnd = yearEN, credit = credits)
     approve.save()
-    messages.add_message(request, messages.INFO, "Your form create is successful")
+    messages.add_message(request, messages.INFO, "การสร้างฟอร์มของโปรเจคสำเร็จ")
     return HttpResponseRedirect(reverse('group6:project_docs_index')) #redirect to index
 
 def approveProject(request, apID):
@@ -211,3 +211,11 @@ def offerProject(request, opID):
 def researchProject(request, rpID):
     research = ResearchProjectForm.objects.get(id=rpID)
     return render(request, 'group6/researchProject_view.html', {'research': research},)
+
+def deleteForm(request, pjID):
+    p = ProjectG6.objects.get(id=pjID)
+    research = ResearchProjectForm.objects.get(project=p)
+    offer = OfferProjectForm.objects.get(project=p)
+    approve = ApproveProjectForm.objects.get(project=p)
+    messages.add_message(request, messages.INFO, "การลบฟอร์มของโปรเจคสำเร็จ")
+    return HttpResponseRedirect(reverse('group6:project_docs_index')) #redirect to index
