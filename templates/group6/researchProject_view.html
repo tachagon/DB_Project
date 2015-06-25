@@ -90,6 +90,7 @@ input{
 	<H>ผลประโยชน์ที่คาดว่าจะได้รับ :</H><br><div class="text">{{ research.project.benefit }}</div>	
 	</label>
 </div>
-<a href="{% url 'group6:project_docs_index' %}"><input class="btn btn-danger" type="button" value="ย้อนกลับ" name = 'cancel' /></a>
+<a href="{% url 'group6:project_docs_index' %}"><input class="btn btn-danger" type="button" value="ย้อนกลับ" name = 'cancel' /></a> 
+<a class="btn btn-default" href="{% url 'group6:project_docs_researchProject_print' research.id %}" target = _blank><span class="glyphicon glyphicon-print"></span></a>
 </div>
 {% endblock %}

@@ -42,8 +42,8 @@ def create_3forms_add(request):
     if request.user.is_authenticated():
         u = UserProfile.objects.get(user=request.user)
         s = Student.objects.get(userprofile=u)
-        s_list = []
-        s_list.append(s)
+        s_list = set()
+        s_list.add(s)
         yearOE, nameTH, nameEN, numOP, adv, obj, scopes, benefits, reasons, priceOM, priceOO, credits, courses, semester, yearEN = "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""
         error_yearOE, error_nameTH, error_nameEN, error_numOP, error_adv, error_obj, error_scopes, error_benefits, error_reasons, error_priceOM, error_priceOO, error_credits, error_courses, error_semester, error_yearEN = "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""
         error_student = []
@@ -259,3 +259,31 @@ def deleteForm(request, pjID):
     else:
         return render(request, 'base.html')
 
+def approveProjectPrint(request, apID):
+    if request.user.is_authenticated():
+        department = ['','วิศวกรรมไฟฟ้าและคอมพิวเตอร์']
+        faculty = ['','วิศวกรรมศาสตร์']
+        scheme = ['หลักสูตรปรับปรุง Cpr.E 54','หลักสูตรปรับปรุง EE 51','หลักสูตรปรับปรุง ECE 55']
+        main = ['Cpr.E','G','U','C']
+        approve = ApproveProjectForm.objects.get(id=apID)
+        year = int(datetime.now().year - 2000 + 43) - int(approve.student.std_id[:2])
+        return render(request, 'group6/approveProject_view_print.html', {'approve': approve, 'scheme': scheme[int(approve.student.scheme)], 'department': department[int(approve.student.userprofile.department)], 'main': main[int(approve.student.main)], 'currentYear': year},)
+    else:
+        return render(request, 'base.html')
+
+
+def offerProjectPrint(request, opID):
+    if request.user.is_authenticated():
+        offer = OfferProjectForm.objects.get(id=opID)
+        sumofprice = offer.priceOfMaterial + offer.priceOfOther
+        return render(request, 'group6/offerProject_view_print.html', {'offer': offer, 'priceOfTotal': sumofprice},)
+    else:
+        return render(request, 'base.html')
+
+
+def researchProjectPrint(request, rpID):
+    if request.user.is_authenticated():
+        research = ResearchProjectForm.objects.get(id=rpID)
+        return render(request, 'group6/researchProject_view_print.html', {'research': research},)
+    else:
+        return render(request, 'base.html')

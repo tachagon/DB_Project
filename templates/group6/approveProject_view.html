@@ -119,6 +119,7 @@ table,tr,td{
 	 <td><CENTER><H>ความเห็นของหัวหน้าภาค</H><div class="comment"></div><H>(ลงนาม)</H>...............<br>{dd/mm/yyyy}</td></tr></table>
      	</label>
 </div><br>
-<a href="{% url 'group6:project_docs_index' %}"><input class="btn btn-danger" type="button" value="ย้อนกลับ" name = 'cancel' /></a>
+<a href="{% url 'group6:project_docs_index' %}"><input class="btn btn-danger" type="button" value="ย้อนกลับ" name = 'cancel' /></a> 
+<a class="btn btn-default" href="{% url 'group6:project_docs_approveProject_print' approve.id %}" target = _blank><span class="glyphicon glyphicon-print"></span></a>
 </div><br>
 {% endblock %}
