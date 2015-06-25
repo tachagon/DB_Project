@@ -96,6 +96,7 @@ function yearselect(){
   }
         var sel = document.getElementById("stdnumber");
         sel.value = {{ numOP }}
+        list.value = {{ yearOE }}
 }
 var oldnum=0;
 function addMoreStd(){
@@ -104,10 +105,19 @@ function addMoreStd(){
 	var txts = "";
 	if (oldnum!=stdnum){
 		oldnum=stdnum;
-		for (i = 1; i < stdnum; i++) { 
-			txts += "<H>"+e1.options[i].text+". "+"</H><input id='studentNAME" + (i) +"' type='text' name='studentNAME" + (i) +"'><H>เลขประจำตัว :</H><input type='text' name='studentID" + (i) + "' maxlength='13' id='studentID" + (i) + "'><br>";
+		for (i = 1; i < 5; i++) { 
+			var e2 = document.getElementById("studentElement"+i);
+                        if(i < stdnum){
+				if(e2 == null){
+					txts += "<div id='studentElement" + i + "'><H>"+e1.options[i].text+". "+"</H><input id='studentNAME" + (i) +"' type='text' name='studentNAME" + (i) +"'><H>เลขประจำตัว :</H><input type='text' name='studentID" + (i) + "' maxlength='13' id='studentID" + (i) + "'></div>";
+				}
+			}else{
+				if(e2 != null){
+					e2.remove();
+				}
+			}
 		}
-	document.getElementById("namestd").innerHTML = txts;
+	document.getElementById("namestd").innerHTML += txts;
 	}
 }
 function checkSUBMIT(){  //by jupiter ------------ A function to check the studentID and the rest of the number type input before submit ---- please use it  before perform any action in next step
@@ -238,7 +248,11 @@ adviser
 p_adviser
 -->
 <body onLoad="yearselect();">
+    {% ifequal edit '1' %}
     <form action = "{% url 'group6:project_docs_create_3forms_add' %}" method = "post">
+    {% else %}
+    <form action = "{% url 'group6:project_docs_edit_update' project_id %}" method = "post">
+    {% endifequal %}
         {% csrf_token %}
         <div class="page" onMouseMove="return addMoreStd();">
             <center>
@@ -273,20 +287,24 @@ p_adviser
             {% if student_list %}
                 {% for student in student_list %}
                     {% if forloop.counter == 1 %}
-                        <H>{{ forloop.counter }}. {{ student.userprofile.firstname_th }} {{ student.userprofile.lastname_th }} เลขประจำตัว : {{ student.std_id }}</H><br>
+                        <H>{{ forloop.counter }}. {{ student.userprofile.firstname_th }} {{ student.userprofile.lastname_th }} เลขประจำตัว : {{ student.std_id }}</H><br> <div class="namestd" id="namestd">
                     {% else %}
-                        {% ifequal error_student|get_at_index:forloop.counter0 '' %}
-                        <H>{{ forloop.counter }}. </H><input type='text' name='studentNAME{{ forloop.counter0 }}' id="studentNAME{{ forloop.counter0 }}" value="{{ student.userprofile.firstname_th }} {{ student.userprofile.lastname_th }}"><H>เลขประจำตัว :</H><input type='text' name='studentID{{ forloop.counter0 }}' maxlength='13' id="studentID{{ forloop.counter0 }}" value="{{ student.std_id }}"><br>
+                        {% ifequal edit '1' %}
+                            {% ifequal error_student|get_at_index:forloop.counter0 '' %}
+                            <div id='studentElement{{ forloop.counter0 }}'><H>{{ forloop.counter }}. </H><input type='text' name='studentNAME{{ forloop.counter0 }}' id="studentNAME{{ forloop.counter0 }}" value="{{ student.userprofile.firstname_th }} {{ student.userprofile.lastname_th }}"><H>เลขประจำตัว :</H><input type='text' name='studentID{{ forloop.counter0 }}' maxlength='13' id="studentID{{ forloop.counter0 }}" value="{{ student.std_id }}"></div>
+                            {% else %}
+                            <div id='studentElement{{ forloop.counter0 }}'><H>{{ forloop.counter }}. </H><input type='text' name='studentNAME{{ forloop.counter0 }}' id="studentNAME{{ forloop.counter0 }}"><H>เลขประจำตัว :</H><input type='text' name='studentID{{ forloop.counter0 }}' maxlength='13' id="studentID{{ forloop.counter0 }}"> <font color = "FF0000" name="message">{{ error_student|get_at_index:forloop.counter0 }}</font></div>
+                            {% endifequal %}
                         {% else %}
-                        <H>{{ forloop.counter }}. </H><input type='text' name='studentNAME{{ forloop.counter0 }}' id="studentNAME{{ forloop.counter0 }}"><H>เลขประจำตัว :</H><input type='text' name='studentID{{ forloop.counter0 }}' maxlength='13' id="studentID{{ forloop.counter0 }}"> <font color = "FF0000" name="message">{{ error_student|get_at_index:forloop.counter0 }}</font><br>
+                            <div id='studentElement{{ forloop.counter0 }}'><H>{{ forloop.counter }}. </H><input type='text' name='studentNAME{{ forloop.counter0 }}' id="studentNAME{{ forloop.counter0 }}" value="{{ student.userprofile.firstname_th }} {{ student.userprofile.lastname_th }}"><H>เลขประจำตัว :</H><input type='text' name='studentID{{ forloop.counter0 }}' maxlength='13' id="studentID{{ forloop.counter0 }}" value="{{ student.std_id }}"></div>
                         {% endifequal %}
                     {% endif %}
                 {% endfor %}
             {% else %}
-            <H>1. {{ student.userprofile.firstname_th }} {{ student.userprofile.lastname_th }} <!--</H><input type='text' name='studentNAME0' id="studentNAME0"><H>-->เลขประจำตัว : {{ student.std_id }}</H><!--<input type='text' name='studentID0' maxlength='13' id="studentID0">--><br>
+            <H>1. {{ student.userprofile.firstname_th }} {{ student.userprofile.lastname_th }} <!--</H><input type='text' name='studentNAME0' id="studentNAME0"><H>-->เลขประจำตัว : {{ student.std_id }}</H><!--<input type='text' name='studentID0' maxlength='13' id="studentID0">--><br> <div class="namestd" id="namestd">
             {% endif %}
 
-            <div class="namestd" id="namestd">
+            
                 
             </div>
             <H>ชื่ออาจารย์ที่ปรึกษา  :</H>
@@ -382,7 +400,7 @@ p_adviser
     <a href="{% url 'group6:project_docs_index' %}"><input class="btn btn-danger" type="button" value="ยกเลิก" name = 'cancel' /></a>
 </center>
 </form>
-
+<br>
 
 <!--
 <H id="myTextarea">Form HTML</H>

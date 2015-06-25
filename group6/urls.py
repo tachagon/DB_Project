@@ -12,5 +12,7 @@ urlpatterns = patterns('',
     url(r'^Project_Docs/view_offerProject/(\d+)/print/$', views.offerProjectPrint, name='project_docs_offerProject_print'),
     url(r'^Project_Docs/view_researchProject/(\d+)/print/$', views.researchProjectPrint, name='project_docs_researchProject_print'),
     url(r'^Project_Docs/delete/(\d+)/$', views.deleteForm, name='project_docs_delete'),
+    url(r'^Project_Docs/edit/(\d+)/$', views.edit_3forms, name='project_docs_edit'),
+    url(r'^Project_Docs/edit/(\d+)/update$', views.edit_3forms_update, name='project_docs_edit_update'),
     #url(r'^testpdf/(\d+)/$', views.genpdf, name='genpdf'),
 )
