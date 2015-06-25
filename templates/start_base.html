@@ -5,12 +5,13 @@
     {% load staticfiles %}
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}"/>
     <script type="text/javascript" src="{% static 'js/jquery-1.11.2.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}"></script>
     <title>{% block title %}{% endblock %}</title>
 </head>
 <body>
-    <nav class="navbar navbar-inverse navbar-static-top" style="background-color:#00B2EE;">
+    <nav class="navbar navbar-inverse navbar-static-top ismartuby-nav" style="background-color:#00B2EE;">
         <div class="container">
             <div class="navbar-header">
                 <button class="navbar-toggle collapsed" data-toggle="collapse" data-target="#id_nav1">
@@ -18,7 +19,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="{% url 'login:index' %}" style="color:white; font-size:25px;">Database Systems</a>
+                <a class="navbar-brand" href="{% url 'login:index' %}" style="color:white; font-size:25px;">e-Office ECE</a>
             </div>
 
             <div class="collapse navbar-collapse" id="id_nav1">
@@ -36,6 +37,7 @@
                             <input type="password" name="password" class="form-control" placeholder="Password" required="">
                         </div>
                         <button class="btn btn-primary navbar-btn" type="submit">เข้าสู่ระบบ</button>
+                        <a class="btn btn-success navbar-btn" href="{% url 'login:register' %}">ลงทะเบียน</a>
                     </form>
                 {% endif %}
 
@@ -43,9 +45,7 @@
         </div>
     </nav>
 
-
-    <div class="container">
         {% block content %}{% endblock %}
-    </div>
+
 </body>
 </html>
