@@ -10,23 +10,41 @@ from group3.models import *
 from django.http import HttpResponse
 from fpdf import FPDF
 # Create your views here.
-def exampleCurrentUser(request):
-    thisuser = request.user
-    currentUser = UserProfile.objects.get(user = thisuser)
-    return django.shortcuts.HttpResponse(currentUser.user.username + " " + currentUser.user.first_name + " " + currentUser.user.last_name)
+def getUserType(request):
+    user = request.user
+    try:
+        userprofile = UserProfile.objects.get(user = user)
+        return userprofile.type
+    except:
+        return 'admin'
 
 def prof2lang_index(request):
     template = 'group3/prof2lang_index.html'    # get template
+    context = {}
     teachList = Teach.objects.all()     # get all Prof2Lang objects
 
+    # get current user type
+    # user type is Student that can not access this system
+    if getUserType(request) == '0':
+        template = 'group3/disable_student.html'
+        return render(request, template, {})
+
+    context['teachList'] = teachList
     return render(
         request,
         template,
-        {'teachList': teachList}
+        context
     )
 
 def prof2lang_view(request, profID):
     template = 'group3/prof2lang_view.html'             # get view template
+
+    # get current user type
+    # user type is Student that can not access this system
+    if getUserType(request) == '0':
+        template = 'group3/disable_student.html'
+        return render(request, template, {})
+
     try:
         teachObj = Teach.objects.get(pk = int(profID))  # get a Teach object
         context = {'teachObj': teachObj}
@@ -45,6 +63,12 @@ def prof2lang_add(request, option = '0'):
     prof2langObj = Prof2Lang.objects.all().order_by('shortName')
     # get all Subject objects
     subjectObj = Subject.objects.all().order_by('subjectID')
+
+    # get current user type
+    # user type is Student that can not access this system
+    if getUserType(request) == '0':
+        template = 'group3/disable_student.html'
+        return render(request, template, {})
 
     # option 0 is get prof2lang_add web page
     if request.method == 'GET' and option == '0':
@@ -598,3 +622,30 @@ def hourpdf(request): # use to see working of temporary employee.
         response['Content-Disposition'] = 'filename=hour.pdf'
         return response
     pdf.closed
+
+# This function fot update data in Teach object
+def prof2lang_update(request, teachID):
+    template = 'group3/prof2lang_update.html'             # get view template
+    context = {}
+
+    # get current user type
+    # user type is Student that can not access this system
+    if getUserType(request) == '0':
+        template = 'group3/disable_student.html'
+        return render(request, template, {})
+
+    try:
+        teachObj = Teach.objects.get(pk = int(teachID))  # get a Teach object
+        context = {'teachObj': teachObj}
+    except: # can't get a Teach object
+        pass
+
+    return render(
+        request,
+        template,
+        context
+    )
+
+def updateProf(request, teachID):
+
+    return HttpResponseRedirect(request, args=[teachID])
