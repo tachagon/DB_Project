@@ -7,7 +7,7 @@
 body{
 	}
 .page{
-	font:16pt "Angsana New";
+	font:14pt "Angsana New";
 	width:210mm;
 	height:auto;
 	margin:auto;
@@ -16,6 +16,7 @@ body{
     border: 1px #D3D3D3 solid;
     border-radius: 5px;
     background: white;
+	word-break:break-all;
 	}
 .form > H{
 	margin-left:0;
@@ -29,6 +30,7 @@ body{
 	}
 #nameeng{
 	padding-left:20mm;
+	word-break:break-all;
 	}
 #yearspace{
 	display:block;
@@ -36,6 +38,7 @@ body{
 	 }
 #nameth{
 	padding-left:2mm;
+	word-break:break-all;
 	}
 @media print {
 	.page {
@@ -46,9 +49,9 @@ body{
 		padding:0;
 		width:initial;
 		height:initial;
-		size:portrait auto;
+		size:portrait;
 		position:absolute;
-		border:1;
+		border:0;
 		border-radius:0;
 		box-shadow: initial;
 		background: initial;
@@ -59,8 +62,6 @@ body{
 		padding-left:18mm;
 		}
 	.text{
-		border:none; /* Use for change border width*/
-		resize:none;
 		margin-left:0;
 	}
 	#yearspace{
@@ -89,11 +90,11 @@ body{
 <H>ชื่อโครงการ</H><H id="nameth">(ภาษาไทย) {{ research.project.name_thai }}</H><br>
 <H id="nameeng">(ภาษาอังกฤษ) {{ research.project.name_eng }}</H><br>
 <H>จำนวนนักศึกษา {{ research.numberOfPeople }} คน </H><br>
-<H>ชื่ออาจารย์ที่ปรึกษา {{ research.project.teacher.userprofile.firstname_th }} {{ research.project.teacher.userprofile.lastname_th }} ({{ research.project.teacher.shortname }})</H><br>
-	<H>วัตถุประสงค์ </H><H class="text">{{ research.project.objective }}</H><br>
-	<H>แนวเหตุผล ทฤฏีสำคัญหรือสมมุติฐาน </H><H class="text">{{ research.project.reason }}</H><br>
-	<H>ขอบเขตของการทำโครงงาน </H><H class="text">{{ research.project.scope }}</H><br>
-	<H>ผลประโยชน์ที่คาดว่าจะได้รับ </H><H class="text">{{ research.project.benefit }}</H><br>
+<H>ชื่ออาจารย์ที่ปรึกษา {{ research.project.teacher.userprofile.firstname_th }} {{ research.project.teacher.userprofile.lastname_th }} ({{ research.project.teacher.shortname }})</H>
+	<div class="text">วัตถุประสงค์ {{ research.project.objective }}</div>
+	<div class="text">แนวเหตุผล ทฤฏีสำคัญหรือสมมุติฐาน {{ research.project.reason }}</div>
+	<div class="text">ขอบเขตของการทำโครงงาน {{ research.project.scope }}</div>
+	<div class="text">ผลประโยชน์ที่คาดว่าจะได้รับ {{ research.project.benefit }}</div>
 	</label>
 </div>
 </body>
