@@ -1,16 +1,95 @@
-<body>
-<CENTER><H>แบบฟอร์มสำรวจหัวข้อโครงงานปริญญานิพนธ์</H></CENTER></br>
-<CENTER><H>ภาควิชาวิศวกรรมไฟฟ้าและคอมพิวเตอร์ คณะวิศวกรรมศาสตร์</H></CENTER></br>
-<CENTER><H>มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าพระนครเหนือ</H></CENTER></br>
-<CENTER><H>ปีการศึกษา</H> <u>{{ researchProjectForm.project.yearOfEducation }}</u></CENTER></br>
-<H>ชื่อโครงงาน (ภาษาไทย):</H> <u>{{ researchProjectForm.project.name_thai }}</u></br></br>
-<H>ชื่อโครงงาน (อังกฤษ):</H> <u>{{ researchProjectForm.project.name_eng }}</u></br></br>
-<H>จำนวนนักศึกษา</Hn>: <u>{{ researchProjectForm.numberOfPeople }}</u> <H>คน</Hn> </br></br>
-<label>ชื่ออาจารย์ที่ปรึกษา  : <u>{{ researchProjectForm.teacher.name }}</u></br></br>
-	<H>วัตถุประสงค์:</Hn> </br><u>{{ researchProjectForm.project.objective }}</u></br></br>
-	<H>แนวเหตุผล ทฤฏีสำคัญหรือสมมุติฐาน:</Hn> </br><u>{{ researchProjectForm.project.reason }}</u></br></br>
-	<H>ขอบเขตของการทำโครงงาน</Hn> </br><u>{{ researchProjectForm.project.scope }}</u></br></br>
-	<H>ผลประโยชน์ที่คาดว่าจะได้รับ:</Hn> </br><u>{{ researchProjectForm.project.benefit }}</u></br></br>	
+﻿{% extends "base.html" %}
+
+{% block title %}ระบบ จัดการโครงงาน สำหรับนักศึกษา ปริญญาตรี - แบบฟอร์มสำรวจหัวข้อโครงงานปริญญานิพนธ์ - {{ research.project.name_thai }}{% endblock %}
+
+{% block pageHeader %}
+<h2>ระบบ <small>จัดการโครงงาน สำหรับนักศึกษา ปริญญาตรี</small></h2>
+<ol class="breadcrumb">
+    <li><a href="{% url 'login:menu' %}">เมนู</a></li>
+    <li><a href="{% url 'group6:project_docs_index' %}">ระบบ จัดการโครงงาน สำหรับนักศึกษา ปริญญาตรี</a></li>
+    <li class="active">แบบฟอร์มสำรวจหัวข้อโครงงานปริญญานิพนธ์ - {{ research.project.name_thai }}</li>
+</ol>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+<meta http-equiv="content-type" content="text/html;charset=utf-8">
+<style>
+.page{
+	width:210mm;
+	height:297mm;
+	margin:auto;
+	position:relative;
+    padding: 2cm;
+    border: 1px #D3D3D3 solid;
+    border-radius: 5px;
+    background: white;
+	}
+.form > H{
+	margin-left:50;
+}
+H{
+        font:16pt "Angsana New";
+}
+textarea {
+	margin-left:50;
+	resize:none;
+	outline:none;
+	}
+input{
+	outline:none;
+	resize:none;
+	}
+#o1{
+	text-align:center;
+	}
+@page{
+	size:A4;
+	margin:0;
+	}
+.text{
+	border: 1px solid #000; /* Use for change border width*/
+	width:120mm;
+	height:26mm;
+	resize:none;
+	margin-left:50;
+	
+	}
+/*@media print {
+  .page {
+		margin:0;
+		font-size:20px;
+		position:absolute;
+		border: initial;
+		width: initial;
+		height:initial;
+		box-shadow: initial;
+		background: initial;
+		page-break-after: always;
+		}
+}*/
+</style>
+<div class="page">
+<center>
+<H>แบบฟอร์มสำรวจหัวข้อโครงงานปริญญานิพนธ์</H><br>
+<H>ภาควิชาวิศวกรรมไฟฟ้าและคอมพิวเตอร์ คณะวิศวกรรมศาสตร์</H><br>
+<H>มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าพระนครเหนือ</H><br>
+<H>ปีการศึกษา {{ research.project.yearOfEducation }}</H><br>
+</center>
+<label class="form">
+<H>ชื่อโครงงาน (ภาษาไทย) : {{ research.project.name_thai }}</H><br>
+<H>ชื่อโครงงาน (อังกฤษ) : {{ research.project.name_eng }}</H><br>
+<H>จำนวนนักศึกษา : {{ research.numberOfPeople }} คน </H><br>
+
+<H>ชื่ออาจารย์ที่ปรึกษา  : {{ research.project.teacher.userprofile.firstname_th }} {{ research.project.teacher.userprofile.lastname_th }} ({{ research.project.teacher.shortname }})</H><br>
+    
+    
+	<H>วัตถุประสงค์ :</H><br><div class="text">{{ research.project.objective }}</div>
+	<H>แนวเหตุผล ทฤฏีสำคัญหรือสมมุติฐาน :</H><div class="text">{{ research.project.reason }}</div>
+	<H>ขอบเขตของการทำโครงงาน :</H><br><div class="text">{{ research.project.scope }}</div>
+	<H>ผลประโยชน์ที่คาดว่าจะได้รับ :</H><br><div class="text">{{ research.project.benefit }}</div>	
 	</label>
-<a href="{% url 'project_document:researchProjectMain' %}">ย้อนกลับ</a>
-</body>
+</div>
+<a href="{% url 'group6:project_docs_index' %}"><input class="btn btn-danger" type="button" value="ย้อนกลับ" name = 'cancel' /></a>
+</div>
+{% endblock %}
