@@ -3,6 +3,7 @@
 from django.shortcuts import render, HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.shortcuts import render
+from pygame.base import register_quit
 from login.models import UserProfile
 import django.shortcuts
 
@@ -162,6 +163,13 @@ def prof2lang_add(request, option = '0'):
                 'subjectObj': subjectObj,
                 'addTeachError': True
             }
+    # option 8 Section is duplicate
+    elif option == '8':
+        context = {
+            'prof2langObj': prof2langObj,
+            'subjectObj': subjectObj,
+            'sectionDuplicate': True
+        }
     else:
         return prof2lang_index(request)
 
@@ -246,6 +254,12 @@ def addSection(request):
             # get Subject object that selected
             subjectObj = Subject.objects.get(subjectID = subject)
 
+            allSection = subjectObj.section_set.all()
+            for sec in allSection:
+                if str(sec.section).upper() == str(section).upper():
+                    return HttpResponseRedirect(reverse('group3:prof2lang_add', args=['8']))
+
+            section = str(section).upper()
             # create new Section object
             newSection = Section(
                 section = section,
@@ -623,29 +637,80 @@ def hourpdf(request): # use to see working of temporary employee.
         return response
     pdf.closed
 
-# This function fot update data in Teach object
-def prof2lang_update(request, teachID):
-    template = 'group3/prof2lang_update.html'             # get view template
-    context = {}
-
-    # get current user type
-    # user type is Student that can not access this system
-    if getUserType(request) == '0':
-        template = 'group3/disable_student.html'
-        return render(request, template, {})
-
-    try:
-        teachObj = Teach.objects.get(pk = int(teachID))  # get a Teach object
-        context = {'teachObj': teachObj}
-    except: # can't get a Teach object
-        pass
-
-    return render(
-        request,
-        template,
-        context
-    )
-
 def updateProf(request, teachID):
+    if request.method == 'POST':
+        # get current Teach object that user want to modifies
+        currentTeach = Teach.objects.get(id = teachID)
 
-    return HttpResponseRedirect(request, args=[teachID])
+        # get new data from 'group3/prof2lang_update.html' template
+        firstName       = request.POST['firstName']         # 2. get firstName
+        lastName        = request.POST['lastName']          # 3. get lastName
+        shortName       = request.POST['shortName']         # 4. get shortName
+        tell            = request.POST['tell']              # 5. get tell
+        email           = request.POST['email']             # 6. get email
+        sahakornAccount = request.POST['sahakornAccount']   # 7. get sahakornAccount
+        department      = request.POST['department']        # 8. get department
+        faculty         = request.POST['faculty']           # 9. get faculty
+
+        # get current Prof2Lang object
+        currentProf = Prof2Lang.objects.get(profID = currentTeach.prof.profID)
+
+        # modifiles data
+        currentProf.firstName       = firstName
+        currentProf.lastName        = lastName
+        currentProf.shortName       = shortName
+        currentProf.tell            = tell
+        currentProf.email           = email
+        currentProf.sahakornAccount = sahakornAccount
+        currentProf.department      = department
+        currentProf.faculty         = faculty
+
+        currentProf.save()  # save Prof2Lang modifiles into database
+
+    return HttpResponseRedirect(reverse('group3:prof2lang_view', args=[teachID]))
+
+def updateSubject(request, teachID):
+    # get current Teach object that user want to modifies
+    currentTeach = Teach.objects.get(id = teachID)
+
+    # get new data from 'group3/prof2lang_update.html' template
+    subjectName     = request.POST['subjectName']
+
+    # get current Subject object
+    currentSubject = currentTeach.subject
+    # modify data
+    currentSubject.subjectName = subjectName
+    # save Subject modify into database
+    currentSubject.save()
+
+    return HttpResponseRedirect(reverse('group3:prof2lang_view', args=[teachID]))
+
+def updateSection(request, teachID):
+    # get current Teach object that user want to modifies
+    currentTeach = Teach.objects.get(id = teachID)
+
+    # get new data from 'group3/prof2lang_update.html' template
+    classroom = request.POST['classroom']
+    startTime_hour = request.POST['startTime_hour']
+    startTime_minute = request.POST['startTime_minute']
+    endTime_hour = request.POST['endTime_hour']
+    endTime_minute = request.POST['endTime_minute']
+    date = request.POST['date']
+
+    # create startTime
+    startTime = startTime_hour + ":" + startTime_minute + ":" + "00"
+    # create endTime
+    endTime = endTime_hour + ":" + endTime_minute + ":" + "00"
+
+    # get current Section Object
+    section = currentTeach.section
+    # modify data
+    section.classroom   = classroom
+    section.startTime   = startTime
+    section.endTime     = endTime
+    section.date        = date
+
+    # save Section modify into database
+    section.save()
+
+    return HttpResponseRedirect(reverse('group3:prof2lang_view', args=[teachID]))

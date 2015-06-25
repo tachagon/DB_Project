@@ -171,92 +171,92 @@
                                 <div class="modal-header">
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                     <h4 class="modal-title" id="myModalLabel">แก้ไขข้อมูลอาจารย์ผู้สอน</h4>
-                                </div>
+                                </div><!-- /modal-header -->
                                 <div class="modal-body">
 
                                     {% csrf_token %}
 
-                                    <!-- รหัสอาจารย์ -->
+                                    <!-- 1. รหัสอาจารย์ -->
                                     <div class="form-group form-group-sm">
                                         <label class="col-sm-3 control-label"><font color="red">* </font>รหัสอาจารย์: </label>
                                         <div class="col-sm-9">
-                                            <p class="form-control-static">{{ teachObj.prof.profID }}</p>
+                                            <input type="text" name="profID" class="form-control" value="{{ teachObj.prof.profID }}" placeholder="รหัสอาจารย์ " maxlength="10" required>
                                         </div>
                                     </div>
 
-                                    <!-- ชื่อ -->
+                                    <!-- 2. ชื่อ -->
                                     <div class="form-group form-group-sm">
                                         <label class="col-sm-3 control-label"><font color="red">* </font>ชื่อ: </label>
                                         <div class="col-sm-9">
-                                            <input type="text" name="firstName" class="form-control" value="" placeholder="ชื่อ " maxlength="50" required>
+                                            <input type="text" name="firstName" class="form-control" value="{{ teachObj.prof.firstName }}" placeholder="ชื่อ " maxlength="50" required>
                                         </div>
                                     </div>
 
-                                    <!-- นามสกุล -->
+                                    <!-- 3. นามสกุล -->
                                     <div class="form-group form-group-sm">
                                         <label class="col-sm-3 control-label"><font color="red">* </font>นามสกุล: </label>
                                         <div class="col-sm-9">
-                                            <input type="text" name="lastName" class="form-control" value="" placeholder="นามสกุล " maxlength="80" required>
+                                            <input type="text" name="lastName" class="form-control" value="{{ teachObj.prof.lastName }}" placeholder="นามสกุล " maxlength="80" required>
                                         </div>
                                     </div>
 
-                                    <!-- ตัวย่อชื่อ -->
+                                    <!-- 4. ตัวย่อชื่อ -->
                                     <div class="form-group form-group-sm">
                                         <label class="col-sm-3 control-label"><font color="red">* </font>ตัวย่อชื่อ: </label>
                                         <div class="col-sm-9">
-                                            <input type="text" name="shortName" class="form-control" value="" placeholder="ตัวย่อชื่อ " maxlength="3" required>
+                                            <input type="text" name="shortName" class="form-control" value="{{ teachObj.prof.shortName }}" placeholder="ตัวย่อชื่อ " maxlength="3" required>
                                         </div>
                                     </div>
 
-                                    <!-- เบอร์โทรศัพท์ -->
+                                    <!-- 5. เบอร์โทรศัพท์ -->
                                     <div class="form-group form-group-sm">
                                         <label class="col-sm-3 control-label">เบอร์โทรศัพท์: </label>
                                         <div class="col-sm-9">
-                                            <input type="tel" name="tell" class="form-control" value="" placeholder="เบอร์โทรศัพท์ " maxlength="15">
+                                            <input type="tel" name="tell" class="form-control" value="{{ teachObj.prof.tell }}" placeholder="เบอร์โทรศัพท์ " maxlength="15">
                                         </div>
                                     </div>
 
-                                    <!-- email -->
+                                    <!-- 6. email -->
                                     <div class="form-group form-group-sm">
                                         <label class="col-sm-3 control-label">email: </label>
                                         <div class="col-sm-9">
-                                            <input type="email" name="email" class="form-control" value="" placeholder="email ">
+                                            <input type="email" name="email" class="form-control" value="{{ teachObj.prof.email }}" placeholder="email ">
                                         </div>
                                     </div>
 
-                                    <!-- บัญชีสหกรณื -->
+                                    <!-- 7. บัญชีสหกรณื -->
                                     <div class="form-group form-group-sm">
                                         <label class="col-sm-3 control-label">บัญชีสหกรณ์: </label>
                                         <div class="col-sm-9">
-                                            <input type="text" name="sahakornAccount" class="form-control" value="" placeholder="บัญชีสหกรณ์ " maxlength="100">
+                                            <input type="text" name="sahakornAccount" class="form-control" value="{{ teachObj.prof.sahakornAccount }}" placeholder="บัญชีสหกรณ์ " maxlength="100">
                                         </div>
                                     </div>
 
-                                    <!-- ภาควิชา -->
+                                    <!-- 8. ภาควิชา -->
                                     <div class="form-group form-group-sm">
                                         <label class="col-sm-3 control-label"><font color="red">* </font>ภาควิชา: </label>
                                         <div class="col-sm-9">
-                                            <input type="text" name="department" class="form-control" value="" placeholder="ภาควิชา " maxlength="200" required>
+                                            <input type="text" name="department" class="form-control" value="{{ teachObj.prof.department }}" placeholder="ภาควิชา " maxlength="200" required>
                                         </div>
                                     </div>
 
-                                    <!-- คณะ -->
+                                    <!-- 9. คณะ -->
                                     <div class="form-group form-group-sm">
                                         <label class="col-sm-3 control-label"><font color="red">* </font>คณะ: </label>
                                         <div class="col-sm-9">
-                                            <input type="text" name="faculty" class="form-control" value="" placeholder="คณะ " maxlength="200" required>
+                                            <input type="text" name="faculty" class="form-control" value="{{ teachObj.prof.faculty }}" placeholder="คณะ " maxlength="200" required>
                                         </div>
                                     </div>
 
-                                </div>
+                                </div><!-- /modal-body -->
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-default" data-dismiss="modal">ปิด</button>
                                     <input type="submit" class="btn btn-primary" value="บันทึกการเปลี่ยนแปลง"/>
-                                </div>
-                            </div>
+                                </div><!-- /modal-footer -->
+                            </div><!-- /modal-content -->
                         </form>
-                    </div>
-                </div>
+                    </div><!-- /modal-dialog -->
+                </div><!-- /change-prof-modal -->
 
             </div><!-- /container -->
         </div><!-- /row -->

@@ -2,8 +2,9 @@ from django.conf.urls import patterns, include, url
 from group3 import views
 
 urlpatterns = patterns('',
-    url(r'/prof2lang/update/(\d+)/$', views.prof2lang_update, name='prof2lang_update'),
-    url(r'/updateProf/(\d+)/$', views.prof2lang_update, name='updateProf'),
+    url(r'/updateProf/(\d+)/$', views.updateProf, name='updateProf'),
+    url(r'/updateSubject/(\d+)/$', views.updateSubject, name='updateSubject'),
+    url(r'/updateSection/(\d+)/$', views.updateSection, name='updateSection'),
     url(r'^prof2lang/$', views.prof2lang_index, name='prof2lang_index'),
     url(r'^prof2lang/(\d+)/$', views.prof2lang_view, name='prof2lang_view'),
     url(r'^prof2lang/add/(\d+)$', views.prof2lang_add, name='prof2lang_add'),

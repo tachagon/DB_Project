@@ -111,6 +111,14 @@
     </div>
     {% endif %}
 
+    <!-- ถ้าเพิ่มข้อมูล section ไม่สำเร็จ จะมีข้อความ Alert บอก -->
+    {% if sectionDuplicate %}
+    <div class="alert alert-danger" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <strong>ล้มเหลว! </strong>ไม่สามารถเพิ่มข้อมูล section ได้เนื่องจากชื่อ Section นี้มีอยู่ในฐานข้อมูลแล้ว
+    </div>
+    {% endif %}
+
     <div class="modal fade" id="addTeachSuccess" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
