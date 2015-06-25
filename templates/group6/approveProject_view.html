@@ -1,36 +1,124 @@
-<body>
-<CENTER><H>คณะวิศวกรรมศาสตร์</H></CENTER></br>
-<CENTER><H>มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าพระนครเหนือ</H></CENTER></br>
-<CENTER><H>แบบเสนอขออนุมัติโครงงานปริญญานิพนธ์</H></CENTER></br>
-<CENTER><H>ปีการศึกษา</H> <u>{{ approveProjectForm.project.yearOfEducation }}</u></CENTER></br>
-<H>ด้วยข้าพเจ้า ชื่อและสกุล(ภาษาไทย):</H> <u>{{ approveProjectForm.student.name_thai }}</u></br>
-<H>ด้วยข้าพเจ้า ชื่อและสกุล(อังกฤษ):</H> <u>{{ approveProjectForm.student.name_eng }}</u></br>
-<H>ขณะนี้เป็นนักศึกษาปีที่:</H> <u>{{ approveProjectForm.student.year }}</u> <H>ของหลักสูตร:</H> <u>{{ approveProjectForm.student.course }}</u> <H>วิศวกรรมศาสตร์บัณฑิต</H></br>
-<H>ในภาควิชา</Hn>: <u>{{ approveProjectForm.student.department }}</u><H>สาขาวิชา</Hn>: <u>{{ approveProjectForm.student.main }}</u></br>
-<H>ตำบลที่อยู่ปัจจุบันของนักศึกษา:</Hn> </br><u>{{ approveProjectForm.student.address }}</u></br>
-<H>โทร:</H> <u>{{ approveProjectForm.student.tel }}</u></br>
-<H>สภานที่ทำงานปัจจุบันของนักศึกษา:</H> </br><u>{{ approveProjectForm.student.workplace }}</u></br>
-<H>มีความประสงค์ขออนุมัติทำปริญญานิพนธ์เพื่อเป็นส่วนหนึ่งของการศึกษาตามหลักสูตร</H> </br>
-<H>วิศวกรรมศาสตร์บัณฑิต ภาควิชาวิศวกรรมไฟฟ้าและคอมพิวเตอร์ จำนวน:</H><u>{{ approveProjectForm.credit }}</u> <H>หน่วย</H> </br>
-<H>ในวิชา:</H> <u>{{ approveProjectForm.course }}</u></br>
-<H>ชื่อเรื่อง(ภาษาไทย):</H> </br><u>{{ approveProjectForm.project.name_thai }}</u></br>
-<H>ชื่อเรื่อง(ภาษาอังกฤษ):</H></br><u>{{ approveProjectForm.project.name_eng }}</u></br>
-<label>ชื่ออาจารย์ที่ปรึกษา  : <u>{{ approveProjectForm.teacher.name }}</u></br>
-		</label>
+﻿<!DOCTYPE>
+{% extends "base.html" %}
 
-	<H>หมายเลขโทรศัพท์ที่ทำงานของอาจารย์ที่ปรึกษา โทร:</H> <u>{{ approveProjectForm.teacher.tel }}</u></br><H>ต่อ:</H> <u>{{ approveProjectForm.teacher.tel_con }}</u></br>
-	<H>คาดว่าจะเขียนปริญญานิพนธ์เสร็จภายในภาคที่:</H> <u>{{ approveProjectForm.semesterEnd }}</u></br><H>ปีการศึกษา:</H> <u>{{ approveProjectForm.yearEnd }}</u></br>
-	<H>จิงขอได้โปรดพิจารณาอนุมัติ โดยได้แนบโครงการเสนอปริญญานิพนธ์มาพร้อมนี้</H> </br>
-	<H>วัตถุประสงค์:</Hn> </br><u>{{ approveProjectForm.project.objective }}</u></br>
-	<H>แนวเหตุผล ทฤฏีสำคัญหรือสมมุติฐาน:</H> </br><u>{{ approveProjectForm.project.reason }}</u></br>
-	<H>ขอบเขตของการทำโครงงาน</H> </br><u>{{ approveProjectForm.project.scope }}</u></br>
-	<H>ผลประโยชน์ที่คาดว่าจะได้รับ:</H> </br><u>{{ approveProjectForm.project.benefit }}</u></br>	
-	 <p align = "right"><table border="0">
-	<tr><td><H>ลงชื่อ:</H><u>{{ approveProjectForm.student_sign }}</u><H>(ผู้ยื่นคำร้อง)</H></td></tr>
-	 <tr><td><u>{{ approveProjectForm.student_date }}</u></p></td></tr>
-</table>
+{% block title %}ระบบ จัดการโครงงาน สำหรับนักศึกษา ปริญญาตรี - แบบเสนอขออนุมัติโครงงานปริญญานิพนธ์ - {{ approve.project.name_thai }}{% endblock %}
+
+{% block pageHeader %}
+<h2>ระบบ <small>จัดการโครงงาน สำหรับนักศึกษา ปริญญาตรี</small></h2>
+<ol class="breadcrumb">
+    <li><a href="{% url 'login:menu' %}">เมนู</a></li>
+    <li><a href="{% url 'group6:project_docs_index' %}">ระบบ จัดการโครงงาน สำหรับนักศึกษา ปริญญาตรี</a></li>
+    <li class="active">แบบเสนอขออนุมัติโครงงานปริญญานิพนธ์ - {{ approve.project.name_thai }}</li>
+</ol>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+<meta http-equiv="content-type" content="text/html;charset=utf-8">
+<style>
+.page{
+	width:210mm;
+	height:auto;
+	margin:auto;
+	position:relative;
+    padding: 2cm;
+    border: 1px #D3D3D3 solid;
+    border-radius: 5px;
+    background: white;
+	}
+.form > H{
+	margin-left:50;
+}
+H{
+        font:16pt "Angsana New";
+}
+textarea {
+	margin-left:50;
+	resize:none;
+	outline:none;
+	}
+input{
+	outline:none;
+	resize:none;
+	}
+#o1{
+	text-align:center;
+	}
+@page{
+	size:A4;
+	margin:0;
+	}
+.text{
+	border: 1px solid #000; /* Use for change border width*/
+	width:120mm;
+	height:16mm;
+	resize:none;
+	margin-left:50;
+	}
+.namestd{
+	margin-left:50;
+	}
+.comment{
+	border: 1px solid #000; /* Use for change border width*/
+	width:80mm;
+	height:60mm;
+	resize:none;
+	
+}
+table,tr,td{
+	border-collapse: collapse;
+	font:16pt "Angsana New";
+	}
+@media print {
+  .page {
+		margin:0;
+		font:16pt "Angsana New";
+		position:absolute;
+		border: initial;
+		width: initial;
+		height:initial;
+		box-shadow: initial;
+		background: initial;
+		page-break-after: always;
+		}
+}
+</style>
+<div class="page">
+<CENTER><H>คณะวิศวกรรมศาสตร์</H><br>
+<H>มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าพระนครเหนือ</H><br>
+<H>แบบเสนอขออนุมัติโครงงานปริญญานิพนธ์</H><br>
+<H>ปีการศึกษา {{ approve.project.yearOfEducation }}</H></CENTER>
+<label class="form">
+<H>ด้วยข้าพเจ้า ชื่อและสกุล(ภาษาไทย) : {{ approve.student.userprofile.firstname_th }} {{ approve.student.userprofile.lastname_th }}</H><br>
+<H>ด้วยข้าพเจ้า ชื่อและสกุล(อังกฤษ) : {{ approve.student.userprofile.firstname_en }} {{ approve.student.userprofile.lastname_en }}</H><br>
+<H>ขณะนี้เป็นนักศึกษาปีที่ : {{ currentYear }}</H><H style="margin-left:0;"> ของหลักสูตร : {{ scheme }}</H><H style="margin-left:0;"> วิศวกรรมศาสตร์บัณฑิต</H><br>
+<H>ในภาควิชา : {{ department }}</H><H style="margin-left:0;"> สาขาวิชา : {{ main }}</H><br>
+<H>ตำบลที่อยู่ปัจจุบันของนักศึกษา : </H><br><div class="text">{{ approve.student.userprofile.address }}</div>
+<H>โทร : {{ approve.student.userprofile.tel }}</H><br>
+<H>สภานที่ทำงานปัจจุบันของนักศึกษา : </H><br><div class="text">{{ approve.student.userprofile.office }}</div>
+<H>มีความประสงค์ขออนุมัติทำปริญญานิพนธ์เพื่อเป็นส่วนหนึ่งของการศึกษาตามหลักสูตร</H><br>
+<H>วิศวกรรมศาสตร์บัณฑิต ภาควิชาวิศวกรรมไฟฟ้าและคอมพิวเตอร์ จำนวน : {{ approve.credit }}</H><H style="margin-left:0;"> หน่วย</H> <br>
+<H>ในวิชา : {{ approve.course }}</H><br>
+<H>ชื่อเรื่อง(ภาษาไทย) : {{ approve.project.name_thai }}</H><br>
+<H>ชื่อเรื่อง(ภาษาอังกฤษ) : {{ approve.project.name_eng }}</H><br>
+<H>ชื่ออาจารย์ที่ปรึกษา : {{ approve.project.teacher.userprofile.firstname_th }} {{ approve.project.teacher.userprofile.lastname_th }} ({{ approve.project.teacher.shortname }})</H><br>
+<H>หมายเลขโทรศัพท์ที่ทำงานของอาจารย์ที่ปรึกษา โทร: {{ approve.project.teacher.userprofile.tel }}</H><br><H>ต่อ : -</H><br>
+<H>คาดว่าจะเขียนปริญญานิพนธ์เสร็จภายในภาคที่ : {{ approve.semesterEnd }}</H><br><H> ปีการศึกษา : {{ approve.yearEnd }}</H><br>
+<H>จิงขอได้โปรดพิจารณาอนุมัติ โดยได้แนบโครงการเสนอปริญญานิพนธ์มาพร้อมนี้</H><br>
+<H>วัตถุประสงค์ :</H><br><div class="text">{{ approve.project.objective }}</div>
+<H>แนวเหตุผล ทฤฏีสำคัญหรือสมมุติฐาน :</H><div class="text">{{ approve.project.reason }}</div>
+<H>ขอบเขตของการทำโครงงาน :</H><br><div class="text">{{ approve.project.scope }}</div>
+<H>ผลประโยชน์ที่คาดว่าจะได้รับ :</H><br><div class="text">{{ approve.project.benefit }}</div>
+<br>
+<div align="right"><H>ลงชื่อ:</H>................................<H>(ผู้ยื่นคำร้อง)</H></div>
+<div align="right" style="margin-right:36mm">{dd/mm/yyyy}</div>
+<br>
+
 	 <CENTER><table border="1">
-	 <tr><td><CENTER><H>ความเห็นของอาจารย์ที่ปรึกษา</H></br><u>{{ approveProjectForm.teacher_comment }}</u></br><H>(ลงนาม)</H><u>{{ approveProjectForm.teacher_sign }}</u></br><u>{{ approveProjectForm.teacher_date }}</u></td>
-	 <td><CENTER><H>ความเห็นของหัวหน้าภาค</H></br><u>{{ approveProjectForm.department_comment }}</u></textarea></br><H>(ลงนาม)</H><u>{{ approveProjectForm.department_sign }}</u></br><u>{{ approveProjectForm.department_date }}</u></td></tr></table>
-<a href="{% url 'project_document:approveProjectMain' %}">ย้อนกลับ</a>
-</body>
+	 <tr><td><CENTER><H>ความเห็นของอาจารย์ที่ปรึกษา</H><div class="comment"></div><H>(ลงนาม)</H>...............<br>{dd/mm/yyyy}</td>
+	 <td><CENTER><H>ความเห็นของหัวหน้าภาค</H><div class="comment"></div><H>(ลงนาม)</H>...............<br>{dd/mm/yyyy}</td></tr></table>
+     	</label>
+</div><br>
+<a href="{% url 'group6:project_docs_index' %}"><input class="btn btn-danger" type="button" value="ย้อนกลับ" name = 'cancel' /></a>
+</div><br>
+{% endblock %}
