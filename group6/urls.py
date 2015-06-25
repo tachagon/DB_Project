@@ -8,5 +8,6 @@ urlpatterns = patterns('',
     url(r'^Project_Docs/view_approveProject/(\d+)/$', views.approveProject, name='project_docs_approveProject'),
     url(r'^Project_Docs/view_offerProject/(\d+)/$', views.offerProject, name='project_docs_offerProject'),
     url(r'^Project_Docs/view_researchProject/(\d+)/$', views.researchProject, name='project_docs_researchProject'),
+    url(r'^Project_Docs/delete/(\d+)/$', views.deleteForm, name='project_docs_delete'),
     #url(r'^testpdf/(\d+)/$', views.genpdf, name='genpdf'),
 )

@@ -12,6 +12,12 @@
 {% endblock %}
 
 {% block content %}
+<script type="type/javascript">
+function confirmLeave() {
+if(!confirm("Do you wish to continue without finishing the payment process? Your account will not be setup...")) return;
+window.open('popup.html','width=400,height=400');
+}
+</script>
 <div class="container-fluid">
     {% for message in messages %}
         <br><font color = "FF0000" name="message">*{{ message }}</font>
@@ -27,6 +33,7 @@
                             <th>แบบฟอร์มสำรวจหัวข้อโครงงานปริญญานิพนธ์</th>
                             <th>แบบเสนอโครงงานปริญญานิพนธ์</th>
                             <th>แบบเสนอขออนุมัติโครงงานปริญญานิพนธ์</th>
+                            <th>ลบแบบฟอร์มทั้งหมด</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -38,7 +45,8 @@
                             <td data-title="แบบฟอร์มสำรวจหัวข้อโครงงานปริญญานิพนธ์"><a class="btn btn-info" href="{% url 'group6:project_docs_researchProject' research|get_id_at_index:forloop.counter0 %}">ดูฟอร์ม</a></td>
                             <td data-title="แบบเสนอโครงงานปริญญานิพนธ์"><a class="btn btn-warning" href="{% url 'group6:project_docs_offerProject' offer|get_id_at_index:forloop.counter0 %}">ดูฟอร์ม</a></td>
                             <td data-title="แบบเสนอขออนุมัติโครงงานปริญญานิพนธ์"><a class="btn btn-success" href="{% url 'group6:project_docs_approveProject' approve|get_id_at_index:forloop.counter0 %}">ดูฟอร์ม</a></td>
-                            
+                            <td data-title="ลบแบบฟอร์มทั้งหมด"><a class="btn btn-danger" href="javascript:if(confirm('คุณต้องการจะลบฟอร์มนี้ใช่หรือไม่ หากใช่ให้กด OK'))
+window.location='{% url 'group6:project_docs_delete' project.id %}';" target="_blank">ลบแบบฟอร์ม</a></td>
                         </tr>
                     {% endfor %}
                     </tbody>
