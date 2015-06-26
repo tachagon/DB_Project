@@ -78,6 +78,7 @@ class Spouse(models.Model):
     office      = models.CharField(max_length=255)
     position    = models.CharField(max_length=255)
 
+
 class Child(models.Model):
     family      = models.OneToOneField(Family)
     birthDate   = models.DateField()
