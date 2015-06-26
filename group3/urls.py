@@ -2,6 +2,8 @@ from django.conf.urls import patterns, include, url
 from group3 import views
 
 urlpatterns = patterns('',
+    url(r'/shiftProf/(\d+)/$', views.shiftProf, name='shiftProf'),
+    url(r'/shiftSubject/(\d+)/$', views.shiftSubject, name='shiftSubject'),
     url(r'/updateProf/(\d+)/$', views.updateProf, name='updateProf'),
     url(r'/updateSubject/(\d+)/$', views.updateSubject, name='updateSubject'),
     url(r'/updateSection/(\d+)/$', views.updateSection, name='updateSection'),

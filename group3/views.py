@@ -4,7 +4,6 @@
 from django.shortcuts import render, HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.shortcuts import render
-from pygame.base import register_quit
 from login.models import UserProfile
 import django.shortcuts
 
@@ -50,6 +49,15 @@ def prof2lang_view(request, profID):
     try:
         teachObj = Teach.objects.get(pk = int(profID))  # get a Teach object
         context = {'teachObj': teachObj}
+
+        # get all Prof2Lang objects
+        profList = Prof2Lang.objects.all().order_by('shortName')
+        context['profList'] = profList
+
+        # get all Subject objects
+        subjectList = Subject.objects.all().order_by('subjectID')
+        context['subjectList'] = subjectList
+
     except: # can't get a Teach object
         context = {}
 
@@ -731,3 +739,43 @@ def prof2lang_delete(request, profID): # delete teacher data from index page.
 def hour_index(request):
     template = 'group3/hour_index.html'
     return render(request, template)
+
+def shiftProf(request, teachID):
+    if request.method == 'POST':
+        # get Teach Object
+        currentTeach = Teach.objects.get(id = teachID)
+
+        # get data from 'group3/prof2lang_view.html' template
+        profID = request.POST['shift-prof']
+
+        # get Prof2Lang object
+        selectProf = Prof2Lang.objects.get(profID = profID)
+
+        # change Prof2Lang object in current Teach object
+        currentTeach.prof = selectProf
+        # save modify Teach object
+        currentTeach.save()
+
+    return HttpResponseRedirect(reverse('group3:prof2lang_view', args=[teachID]))
+
+def shiftSubject(request, teachID):
+    if request.method == 'POST':
+        # get Teach Object
+        currentTeach = Teach.objects.get(id = teachID)
+
+        # get data from 'group3/prof2lang_view.html' template
+        subjectID = request.POST['shift-subject']
+        sectionID = request.POST['shift-subject-section']
+
+        # get Subject object
+        selectSubject = Subject.objects.get(subjectID = subjectID)
+        # get Section object
+        selectSection = Section.objects.get(id = int(sectionID))
+
+        # change Subject and Section object in current Teach object
+        currentTeach.subject = selectSubject
+        currentTeach.section = selectSection
+        # save modify Teach object
+        currentTeach.save()
+
+    return HttpResponseRedirect(reverse('group3:prof2lang_view', args=[teachID]))
