@@ -14,4 +14,6 @@ urlpatterns = patterns('',
     url(r'^testpdf/(\d+)/$', views.genpdf, name='genpdf'),
     url(r'^genallpdf/$', views.genallpdf, name='genallpdf'),
     url(r'^hourpdf/$', views.hourpdf, name='hourpdf'),
+    url(r'^prof2lang/delete/(\d+)$', views.prof2lang_delete, name='prof2lang_delete'),
+    url(r'^hourindex/$', views.hour_index, name='hour_index'),
 )

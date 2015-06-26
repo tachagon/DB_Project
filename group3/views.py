@@ -614,7 +614,7 @@ def hourpdf(request): # use to see working of temporary employee.
     pdf.set_font('Kinnari', '', 12)
     
     gen_single_text(pdf, 60, u'ใบลงเวลาทำงานลูกจ้างชั่วคราวรายชั่วโมง')
-    gen_single_text(pdf, 45, u'มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าพระนครเนือ')
+    gen_single_text(pdf, 45, u'มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าพระนครเหนือ')
     gen_single_text(pdf, 70, u'ชื่อ')
     
     pdf.ln(8)
@@ -714,3 +714,19 @@ def updateSection(request, teachID):
     section.save()
 
     return HttpResponseRedirect(reverse('group3:prof2lang_view', args=[teachID]))
+    
+def prof2lang_delete(request, profID): # delete teacher data from index page.
+    teachObj = Teach.objects.get(pk= int(profID))
+    teachObj.delete()
+    
+    teachList = Teach.objects.all()
+    template = 'group3/prof2lang_index.html'
+    return render(
+        request,
+        template,
+        {'teachList':teachList}
+    )
+
+def hour_index(request):
+    template = 'group3/hour_index.html'
+    return render(request, template)
