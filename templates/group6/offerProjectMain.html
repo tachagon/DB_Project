@@ -1,7 +1,0 @@
-<center>แบบเสนอโครงงานปริญญานิพนธ์</center>
-
-{% for selected_offerProjectForm in offerProjectForm %}
-<a href="{% url 'project_document:offerProject_view' selected_offerProjectForm.id %}">{{ selected_offerProjectForm.project.name_thai }}</a></br>
-{% endfor %}
-</br>
-<a href="{% url 'project_document:project_document' %}">ย้อนกลับ</a>
