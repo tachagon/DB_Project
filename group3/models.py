@@ -1,4 +1,6 @@
+#-*- coding: utf-8 -*-
 from django.db import models
+from login.models import *
 
 # Create your models here.
 class Prof2Lang(models.Model):
@@ -55,20 +57,20 @@ class Teach(models.Model):
     section = models.ForeignKey(Section)
 
 class HourlyEmployee(models.Model):
-    firstName = models.CharField(max_length=50)
-    lastName = models.CharField(max_length=80)
-    numberTaxpayment = models.CharField(max_length=20)
-    status = models.CharField(max_length=50)
-    employmentRate = models.FloatField(max_length=10, default=0.0)
+    user = models.OneToOneField(UserProfile)
+    numberTaxpayment = models.CharField(max_length=20, blank=True, default="")  # เลขประจำตัวผู้เสียภาษี
+    status = models.CharField(max_length=50, blank=True, default="")            # ตำแหน่ง
+    employmentRate = models.FloatField(max_length=10, default=0.0)              # อัตรารายได้
 
     def __unicode__(self):
-        return self.firstName + " " + self.lastName
+        return self.user.firstname_en + " " + self.user.lastname_en
 
 class Work(models.Model):
-    releaseDate = models.DateField(auto_now=True)
-    startTime = models.TimeField()
-    endTime = models.TimeField()
-    employee = models.ForeignKey(HourlyEmployee)
+    releaseDate = models.DateField(auto_now=True)   # วันที่เพิ่มข้อมูล
+    startTime = models.TimeField()                      # เวลาเริ่มทำงาน
+    endTime = models.TimeField()                        # เวลาเลิกงาน
+    note = models.TextField(blank=True)                 # หมายเหตุ
+    employee = models.ForeignKey(HourlyEmployee)        # เป็นของพนักงานคนใด
 
     class meta:
         unique_together = ('employee', 'id')
