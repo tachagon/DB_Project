@@ -1,0 +1,276 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {% if teachObj %}
+        {{ teachObj.prof }} {{ teachObj.subject }}
+    {% else %}
+        ไม่พบข้อมูล
+    {% endif %}
+{% endblock %}
+
+{% block pageHeader %}
+    {% if teachObj %}
+        <ol class="breadcrumb">
+            <li><a href="{% url 'login:menu' %}">เมนู</a></li>
+            <li><a href="{% url 'group3:prof2lang_index' %}">ระบบอาจารย์สองภาษา</a></li>
+            <li class="active">แก้ไขข้อมูลอาจารย์สองภาษา</li>
+        </ol>
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    <style>
+        .not-active {
+   pointer-events: none;
+   cursor: default;
+}
+    </style>
+    {% if teachObj %}
+        <div class="row">
+            <div class="container">
+                <table class="table table-responsive table-hover">
+                    <tr>
+                        <th>อาจารย์ผู้สอน</th>
+                        <td>{{teachObj.prof.firstName}} {{teachObj.prof.lastName}}</td>
+                        <td><a href="#">เปลี่ยนอาจารย์ผู้สอน</a></td>
+                        {% if teachObj.prof %}
+                            <td><a href="#" data-toggle="modal" data-target="#change-prof-modal">แก้ไขข้อมูลอาจารย์ผู้สอน</a></td>
+                        {% else %}
+                            <td><a href="#" class="not-active">แก้ไขข้อมูลอาจารย์ผู้สอน</a></td>
+                        {% endif %}
+                    </tr>
+                    <tr>
+                        <th>วิชา</th>
+                        <td>{{teachObj.subject.subjectID}} {{teachObj.section.subject.subjectName}}</td>
+                        <td><a href="#">เปลี่ยนวิชา</a></td>
+                        <td><a href="#">แก้ไขข้อมูลวิชา</a></td>
+                    </tr>
+                    <tr>
+                        <th>Section</th>
+                        <td>{{teachObj.section.section}} {{teachObj.section.subject.subjectName}}</td>
+                        <td><a href="#">เปลี่ยน Section</a></td>
+                        <td><a href="#">แก้ไขข้อมูล Section</a></td>
+                    </tr>
+                </table>
+
+                <div class="col-md-6">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4>ข้อมูลอาจารย์ผู้สอน</h4>
+                        </div>
+                        <div class="panel-body">
+                            <table class="table table-responsive table-hover">
+                                <tr>
+                                    <th>รหัสอาจารย์</th>
+                                    <td>{{teachObj.prof.profID}}</td>
+                                </tr>
+                                <tr>
+                                    <th>ชื่อ - นามสกุล</th>
+                                    <td>{{teachObj.prof.firstName}} {{teachObj.prof.lastName}}</td>
+                                </tr>
+                                <tr>
+                                    <th>ตัวย่อ</th>
+                                    <td>{{teachObj.prof.shortName}}</td>
+                                </tr>
+                                <tr>
+                                    <th>ภาควิชา</th>
+                                    <td>{{teachObj.prof.department}}</td>
+                                </tr>
+                                <tr>
+                                    <th>คณะ</th>
+                                    <td>{{teachObj.prof.faculty}}</td>
+                                </tr>
+                                <tr>
+                                    <th>บัญชีสหกรณ์</th>
+                                    <td>{{teachObj.prof.sahakornAccount}}</td>
+                                </tr>
+                                <tr>
+                                    <th>เบอร์โทรศัพท์</th>
+                                    <td>{{teachObj.prof.tell}}</td>
+                                </tr>
+                                <tr>
+                                    <th>E-mail</th>
+                                    <td>{{teachObj.prof.email}}</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4>ข้อมูลวิชาที่สอน</h4>
+                        </div>
+                        <div class="panel-body">
+                            <table class="table table-responsive table-hover">
+                                <tr>
+                                    <th>รหัสวิชา</th>
+                                    <td>{{teachObj.subject.subjectID}}</td>
+                                </tr>
+                                <tr>
+                                    <th>ชื่อวิชา</th>
+                                    <td>{{teachObj.section.subject.subjectName}}</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4>ข้อมูล Section</h4>
+                        </div>
+                        <div class="panel-body">
+                            <table class="table table-responsive table-hover">
+                                <tr>
+                                    <th>Section</th>
+                                    <td>{{teachObj.section.section}}</td>
+                                </tr>
+                                <tr>
+                                    <th>ห้องเรียน</th>
+                                    <td>{{teachObj.section.classroom}}</td>
+                                </tr>
+                                <tr>
+                                    <th>เวลาสอน</th>
+                                    <td>{{teachObj.section.startTime|time:"H.i"}} -
+                                        {{teachObj.section.endTime|time:"H.i"}}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>วันที่สอน</th>
+                                    <td>
+                                        {% ifequal teachObj.section.date "M" %}
+                                        วันจันทร์
+                                        {% endifequal %}
+                                        {% ifequal teachObj.section.date "T" %}
+                                        วันอังคาร
+                                        {% endifequal %}
+                                        {% ifequal teachObj.section.date "W" %}
+                                        วันพุธ
+                                        {% endifequal %}
+                                        {% ifequal teachObj.section.date "H" %}
+                                        วันพฤหัสบดี
+                                        {% endifequal %}
+                                        {% ifequal teachObj.section.date "F" %}
+                                        วันศุกร์
+                                        {% endifequal %}
+                                        {% ifequal teachObj.section.date "S" %}
+                                        วันเสาร์
+                                        {% endifequal %}
+                                    </td>
+                                </tr>
+                            </table>
+                        </div><!-- /panel-body -->
+                    </div><!-- /panel -->
+                </div><!-- /col-md-6 -->
+
+                <!-- change-prof-modal -->
+                <div class="modal fade" id="change-prof-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                    <div class="modal-dialog" role="document">
+                        <!-- Form for add Prof2lang Object-->
+                        <form class="form-horizontal" id="addProf2lang" method="post" action="{% url 'group3:updateProf' teachObj.id %}" enctype="multipart/form-data">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    <h4 class="modal-title" id="myModalLabel">แก้ไขข้อมูลอาจารย์ผู้สอน</h4>
+                                </div><!-- /modal-header -->
+                                <div class="modal-body">
+
+                                    {% csrf_token %}
+
+                                    <!-- 1. รหัสอาจารย์ -->
+                                    <div class="form-group form-group-sm">
+                                        <label class="col-sm-3 control-label"><font color="red">* </font>รหัสอาจารย์: </label>
+                                        <div class="col-sm-9">
+                                            <input type="text" name="profID" class="form-control" value="{{ teachObj.prof.profID }}" placeholder="รหัสอาจารย์ " maxlength="10" required>
+                                        </div>
+                                    </div>
+
+                                    <!-- 2. ชื่อ -->
+                                    <div class="form-group form-group-sm">
+                                        <label class="col-sm-3 control-label"><font color="red">* </font>ชื่อ: </label>
+                                        <div class="col-sm-9">
+                                            <input type="text" name="firstName" class="form-control" value="{{ teachObj.prof.firstName }}" placeholder="ชื่อ " maxlength="50" required>
+                                        </div>
+                                    </div>
+
+                                    <!-- 3. นามสกุล -->
+                                    <div class="form-group form-group-sm">
+                                        <label class="col-sm-3 control-label"><font color="red">* </font>นามสกุล: </label>
+                                        <div class="col-sm-9">
+                                            <input type="text" name="lastName" class="form-control" value="{{ teachObj.prof.lastName }}" placeholder="นามสกุล " maxlength="80" required>
+                                        </div>
+                                    </div>
+
+                                    <!-- 4. ตัวย่อชื่อ -->
+                                    <div class="form-group form-group-sm">
+                                        <label class="col-sm-3 control-label"><font color="red">* </font>ตัวย่อชื่อ: </label>
+                                        <div class="col-sm-9">
+                                            <input type="text" name="shortName" class="form-control" value="{{ teachObj.prof.shortName }}" placeholder="ตัวย่อชื่อ " maxlength="3" required>
+                                        </div>
+                                    </div>
+
+                                    <!-- 5. เบอร์โทรศัพท์ -->
+                                    <div class="form-group form-group-sm">
+                                        <label class="col-sm-3 control-label">เบอร์โทรศัพท์: </label>
+                                        <div class="col-sm-9">
+                                            <input type="tel" name="tell" class="form-control" value="{{ teachObj.prof.tell }}" placeholder="เบอร์โทรศัพท์ " maxlength="15">
+                                        </div>
+                                    </div>
+
+                                    <!-- 6. email -->
+                                    <div class="form-group form-group-sm">
+                                        <label class="col-sm-3 control-label">email: </label>
+                                        <div class="col-sm-9">
+                                            <input type="email" name="email" class="form-control" value="{{ teachObj.prof.email }}" placeholder="email ">
+                                        </div>
+                                    </div>
+
+                                    <!-- 7. บัญชีสหกรณื -->
+                                    <div class="form-group form-group-sm">
+                                        <label class="col-sm-3 control-label">บัญชีสหกรณ์: </label>
+                                        <div class="col-sm-9">
+                                            <input type="text" name="sahakornAccount" class="form-control" value="{{ teachObj.prof.sahakornAccount }}" placeholder="บัญชีสหกรณ์ " maxlength="100">
+                                        </div>
+                                    </div>
+
+                                    <!-- 8. ภาควิชา -->
+                                    <div class="form-group form-group-sm">
+                                        <label class="col-sm-3 control-label"><font color="red">* </font>ภาควิชา: </label>
+                                        <div class="col-sm-9">
+                                            <input type="text" name="department" class="form-control" value="{{ teachObj.prof.department }}" placeholder="ภาควิชา " maxlength="200" required>
+                                        </div>
+                                    </div>
+
+                                    <!-- 9. คณะ -->
+                                    <div class="form-group form-group-sm">
+                                        <label class="col-sm-3 control-label"><font color="red">* </font>คณะ: </label>
+                                        <div class="col-sm-9">
+                                            <input type="text" name="faculty" class="form-control" value="{{ teachObj.prof.faculty }}" placeholder="คณะ " maxlength="200" required>
+                                        </div>
+                                    </div>
+
+                                </div><!-- /modal-body -->
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">ปิด</button>
+                                    <input type="submit" class="btn btn-primary" value="บันทึกการเปลี่ยนแปลง"/>
+                                </div><!-- /modal-footer -->
+                            </div><!-- /modal-content -->
+                        </form>
+                    </div><!-- /modal-dialog -->
+                </div><!-- /change-prof-modal -->
+
+            </div><!-- /container -->
+        </div><!-- /row -->
+    {% else %}
+        <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-md-6">
+                <div class="alert alert-danger" role="alert">
+                    <strong>ไม่พบข้อมูล!</strong>
+                    <a class="alert-link" href="{% url 'group3:prof2lang_index' %}">ย้อนกลับ</a>
+                </div>
+            </div>
+            <div class="col-md-3"></div>
+        </div>
+    {% endif %}<!-- /if teachObj -->
+    <br/>
+{% endblock %}<!-- /block content -->
