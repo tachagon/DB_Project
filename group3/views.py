@@ -58,6 +58,10 @@ def prof2lang_view(request, profID):
         subjectList = Subject.objects.all().order_by('subjectID')
         context['subjectList'] = subjectList
 
+        # get all Section objects
+        sectionList = teachObj.subject.section_set.all().order_by('section')
+        context['sectionList'] = sectionList
+
     except: # can't get a Teach object
         context = {}
 
@@ -774,6 +778,24 @@ def shiftSubject(request, teachID):
 
         # change Subject and Section object in current Teach object
         currentTeach.subject = selectSubject
+        currentTeach.section = selectSection
+        # save modify Teach object
+        currentTeach.save()
+
+    return HttpResponseRedirect(reverse('group3:prof2lang_view', args=[teachID]))
+
+def shiftSection(request, teachID):
+    if request.method == 'POST':
+        # get Teach Object
+        currentTeach = Teach.objects.get(id = teachID)
+
+        # get data from 'group3/prof2lang_view.html' template
+        sectionID = request.POST['shift-section']
+
+        # get Section object
+        selectSection = Section.objects.get(id = int(sectionID))
+
+        # change Section object in current Teach object
         currentTeach.section = selectSection
         # save modify Teach object
         currentTeach.save()
