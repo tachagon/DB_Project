@@ -576,7 +576,7 @@ def hourpdf(request): # use to see working of temporary employee.
     pdf.set_font('Kinnari', '', 12)
     
     gen_single_text(pdf, 60, u'ใบลงเวลาทำงานลูกจ้างชั่วคราวรายชั่วโมง')
-    gen_single_text(pdf, 45, u'มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าพระนครเนือ')
+    gen_single_text(pdf, 45, u'มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าพระนครเหนือ')
     gen_single_text(pdf, 70, u'ชื่อ')
     
     pdf.ln(8)
@@ -610,3 +610,7 @@ def prof2lang_delete(request, profID): # delete teacher data from index page.
         template,
         {'teachList':teachList}
     )
+
+def hour_index(request):
+    template = 'group3/hour_index.html'
+    return render(request, template)

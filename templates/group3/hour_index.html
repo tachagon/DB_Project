@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}Menu เมนู{% endblock %}
+
+{% block pageHeader %}<h1>ระบบ<small> พนักงานรายชั่วโมง</small></h1>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="container-fluid">
+        <div class="col-md-3">
+            <a class="btn btn-primary btn-block" href="#" target = _blank><span class="glyphicon glyphicon-plus"></span> เพิ่มข้อมูล </a>
+            <a class="btn btn-default btn-block" href="{% url 'group3:hourpdf'%}" target = _blank><span class="glyphicon glyphicon-print"></span> พิมพ์ข้อมูล </a>
+        </div>
+        <div class="col-md-9">
+             <div class="table-responsive">
+             <table class="table table-hover table-bordered" id="no-more-tables">
+               <thead>
+                 <tr>
+                   <th>วัน</th>
+                   <th>วันที่ เดือน ปี</th>
+                   <th>เวลาทำงาน</th>
+                   <th>รวมชั่วโมง</th>
+                   <th>หมายเหตุ</th>
+                 </tr>
+               </thead>
+               <tbody>
+                 <tr>
+                   <td data-title="ลำตัว">John</td>
+                   <td>Doe</td>
+                   <td>john@example.com</td>
+                 </tr>
+                 <tr>
+                   <td>Mary</td>
+                   <td>Moe</td>
+                   <td>mary@example.com</td>
+                 </tr>
+                 <tr>
+                   <td>July</td>
+                   <td>Dooley</td>
+                   <td>july@example.com</td>
+                 </tr>
+               </tbody>
+             </table>
+             <p>รวมจำนวนชั่วโมง <span>6</span> ชั่วโมง</p>
+             <p>อัตรา <span>45.45</span> บาท/ชั่วโมง</p>
+             <p>รวมเป็นเงินทั้งสิ้น <span></span> บาท</p>
+             </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
