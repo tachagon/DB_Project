@@ -7,6 +7,7 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
+        ('login', '0002_auto_20150621_1618'),
     ]
 
     operations = [
@@ -14,11 +15,10 @@ class Migration(migrations.Migration):
             name='HourlyEmployee',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('firstName', models.CharField(max_length=50)),
-                ('lastName', models.CharField(max_length=80)),
-                ('numberTaxpayment', models.CharField(max_length=20)),
-                ('status', models.CharField(max_length=50)),
+                ('numberTaxpayment', models.CharField(default=b'', max_length=20, blank=True)),
+                ('status', models.CharField(default=b'', max_length=50, blank=True)),
                 ('employmentRate', models.FloatField(default=0.0, max_length=10)),
+                ('user', models.OneToOneField(to='login.UserProfile')),
             ],
             options={
             },
@@ -69,7 +69,7 @@ class Migration(migrations.Migration):
             name='Teach',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('prof', models.ForeignKey(to='group3.Prof2Lang')),
+                ('prof', models.ForeignKey(blank=True, to='group3.Prof2Lang', null=True)),
                 ('section', models.ForeignKey(to='group3.Section')),
                 ('subject', models.ForeignKey(to='group3.Subject')),
             ],
@@ -84,6 +84,7 @@ class Migration(migrations.Migration):
                 ('releaseDate', models.DateField(auto_now=True)),
                 ('startTime', models.TimeField()),
                 ('endTime', models.TimeField()),
+                ('note', models.TextField(blank=True)),
                 ('employee', models.ForeignKey(to='group3.HourlyEmployee')),
             ],
             options={

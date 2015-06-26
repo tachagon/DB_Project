@@ -1,3 +1,4 @@
+#-*- coding: utf-8 -*-
 from django.contrib import admin
 from group3.models import *
 
@@ -26,18 +27,18 @@ class TeachAdmin(admin.ModelAdmin):
 class WorkInline(admin.StackedInline):
     model = Work
     extra = 1
-
+"""
 class HourlyEmployeeAdmin(admin.ModelAdmin):
-    list_display = ('firstName', 'lastName', 'numberTaxpayment', 'status', 'employmentRate')
+    list_display = ('user', 'numberTaxpayment', 'status', 'employmentRate')
     inlines = [WorkInline]
 
 class WorkAdmin(admin.ModelAdmin):
-    list_display = ('employee', 'releaseDate', 'startTime', 'endTime')
-
+    list_display = ('employee', 'releaseDate', 'startTime', 'endTime', 'note')
+"""
 admin.site.register(Prof2Lang, Prof2LangAdmin)
 admin.site.register(Subject, SubjectAdmin)
 admin.site.register(Section, SectionAdmin)
 admin.site.register(Teach, TeachAdmin)
 
-admin.site.register(HourlyEmployee, HourlyEmployeeAdmin)
-admin.site.register(Work, WorkAdmin)
+#admin.site.register(HourlyEmployee, HourlyEmployeeAdmin)
+#admin.site.register(Work, WorkAdmin)
