@@ -368,12 +368,27 @@ def edit_3forms(request, pjID):
                     break
             if error == True:
                 return HttpResponseRedirect(reverse('group6:project_docs_index')) #redirect to index
+            process, myCheck = [], []
             teachers = Teacher.objects.all()
             research = ResearchProjectForm.objects.get(project=p)
             offer = OfferProjectForm.objects.get(project=p)
             approve = ApproveProjectForm.objects.get(project=p)
             timeLine = TimeLineForm.objects.get(project=p)
-            return render(request, 'group6/create_3forms.html', {'teachers': teachers, 'student': s, 'nameTH': p.name_thai, 'nameEN': p.name_eng, 'obj': p.objective, 'scopes': p.scope, 'benefits': p.benefit, 'reasons': p.reason, 'priceOM': offer.priceOfMaterial, 'priceOO': offer.priceOfOther, 'credits': approve.credit, 'courses': approve.course, 'semester': approve.semesterEnd, 'yearEN': approve.yearEnd, 'student_list': p.student.all(), 'numOP': research.numberOfPeople, 'yearOE': p.yearOfEducation, 'edit': '0', 'project_id': p.id, },)
+            #for pro in timeLine.stepintimeline_set.all():
+            #    process.append(pro.processDescription)
+            #    myCheck.append([pro.month1, pro.month2, pro.month3, pro.month4, pro.month5, pro.month6, pro.month7, pro.month8, pro.month9, pro.month10, pro.month11, pro.month12])
+            #for i in range(len(process),8):
+                #process.append("")
+                #myCheck.append([])
+            for i in range(8):
+                pro = StepInTimeLine.objects.filter(timeline=timeLine, numberOfProcess=i+1)
+                if len(pro) == 0:
+                    process.append("")
+                    myCheck.append([])
+                else:
+                    process.append(pro[0].processDescription)
+                    myCheck.append([pro[0].month1, pro[0].month2, pro[0].month3, pro[0].month4, pro[0].month5, pro[0].month6, pro[0].month7, pro[0].month8, pro[0].month9, pro[0].month10, pro[0].month11, pro[0].month12])
+            return render(request, 'group6/create_3forms.html', {'teachers': teachers, 'student': s, 'nameTH': p.name_thai, 'nameEN': p.name_eng, 'obj': p.objective, 'scopes': p.scope, 'benefits': p.benefit, 'reasons': p.reason, 'priceOM': offer.priceOfMaterial, 'priceOO': offer.priceOfOther, 'credits': approve.credit, 'courses': approve.course, 'semester': approve.semesterEnd, 'yearEN': approve.yearEnd, 'student_list': p.student.all(), 'numOP': research.numberOfPeople, 'yearOE': p.yearOfEducation, 'edit': '0', 'project_id': p.id, 'dateST': timeLine.day, 'monthST': timeLine.month, 'yearST': timeLine.year, 'note': timeLine.note, 'process1': process[0], 'checkList1': myCheck[0], 'process2': process[1], 'checkList2': myCheck[1], 'process3': process[2], 'checkList3': myCheck[2], 'process4': process[3], 'checkList4': myCheck[3], 'process5': process[4], 'checkList5': myCheck[4], 'process6': process[5], 'checkList6': myCheck[5], 'process7': process[6], 'checkList7': myCheck[6], 'process8': process[7], 'checkList8': myCheck[7]},)
     else:
         return render(request, 'base.html')
 
@@ -689,8 +704,36 @@ def edit_3forms_update(request, pjID):
         approve.yearEnd = yearEN
         approve.credit = credits
         approve.save()
-        timeLine = TimeLineForm.objects.get(project=p)
-        ##########################
+        timeline = TimeLineForm.objects.get(project=p)
+        timeline.day = dateST
+        timeline.month = monthST
+        timeline.year = yearST
+        timeline.note = note
+        timeline.save()
+        for i in range(8):
+            step_list = StepInTimeLine.objects.filter(timeline=timeline, numberOfProcess=i+1)
+            if process[i] != '':
+                if len(step_list) == 0:
+                    step = StepInTimeLine(timeline = timeline, numberOfProcess = i+1, processDescription = process[i], month1 = myCheck[i][0], month2 = myCheck[i][1], month3 = myCheck[i][2], month4 = myCheck[i][3], month5 = myCheck[i][4], month6 = myCheck[i][5], month7 = myCheck[i][6], month8 = myCheck[i][7], month9 = myCheck[i][8], month10 = myCheck[i][9], month11 = myCheck[i][10], month12 = myCheck[i][11])
+                    step.save()
+                else:
+                    step_list[0].processDescription = process[i]
+                    step_list[0].month1 = myCheck[i][0]
+                    step_list[0].month2 = myCheck[i][1]
+                    step_list[0].month3 = myCheck[i][2]
+                    step_list[0].month4 = myCheck[i][3]
+                    step_list[0].month5 = myCheck[i][4]
+                    step_list[0].month6 = myCheck[i][5]
+                    step_list[0].month7 = myCheck[i][6]
+                    step_list[0].month8 = myCheck[i][7]
+                    step_list[0].month9 = myCheck[i][8]
+                    step_list[0].month10 = myCheck[i][9]
+                    step_list[0].month11 = myCheck[i][10]
+                    step_list[0].month12 = myCheck[i][11]
+                    step_list[0].save()
+            else:
+                if len(step_list) == 1:
+                    step_list[0].delete()
         messages.add_message(request, messages.INFO, "การแก้ไขฟอร์มของโปรเจคสำเร็จ")
         return HttpResponseRedirect(reverse('group6:project_docs_index')) #redirect to index
     else:
@@ -728,9 +771,16 @@ def researchProject(request, rpID):
 def timeLineProject(request, tlID):
     if request.user.is_authenticated():
         timeLine = TimeLineForm.objects.get(id=tlID)
-        processList = list(timeLine.stepintimeline_set.all().order_by('numberOfProcess'))
-        while(len(processList)<8):
-            processList.append([])
+        processList = []
+        #processList = list(timeLine.stepintimeline_set.all().order_by('numberOfProcess'))
+        #while(len(processList)<8):
+        #    processList.append([])
+        for i in range(8):
+            pro = StepInTimeLine.objects.filter(timeline=timeLine, numberOfProcess=i+1)
+            if len(pro) == 0:
+                processList.append([])
+            else:
+                processList.append(pro[0])
         return render(request, 'group6/timeLineProject_view.html', {'timeLine': timeLine, 'processList': processList},)
     else:
         return render(request, 'base.html')
@@ -794,9 +844,16 @@ def researchProjectPrint(request, rpID):
 def timeLineProjectPrint(request, tlID):
     if request.user.is_authenticated():
         timeLine = TimeLineForm.objects.get(id=tlID)
-        processList = list(timeLine.stepintimeline_set.all().order_by('numberOfProcess'))
-        while(len(processList)<8):
-            processList.append([])
+        processList = []
+        #processList = list(timeLine.stepintimeline_set.all().order_by('numberOfProcess'))
+        #while(len(processList)<8):
+        #    processList.append([])
+        for i in range(8):
+            pro = StepInTimeLine.objects.filter(timeline=timeLine, numberOfProcess=i+1)
+            if len(pro) == 0:
+                processList.append([])
+            else:
+                processList.append(pro[0])
         return render(request, 'group6/timeLineProject_view_print.html', {'timeLine': timeLine, 'processList': processList},)
     else:
         return render(request, 'base.html')
