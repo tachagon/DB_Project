@@ -11,7 +11,7 @@
         <div class="col-md-3">
             <a class="btn btn-primary btn-block" href="#" target = _blank><span class="glyphicon glyphicon-plus"></span> เพิ่มข้อมูล </a>
             <a class="btn btn-default btn-block" href="{% url 'group3:hourpdf'%}" target = _blank><span class="glyphicon glyphicon-print"></span> พิมพ์ข้อมูล </a>
-        </div>
+        </div> <p>{{check}}</p>
         <div class="col-md-9">
              <div class="table-responsive">
              <table class="table table-hover table-bordered" id="no-more-tables">
@@ -27,8 +27,16 @@
                <tbody>
                     {% for working in ListWork %}
                         <tr>
-                            <td data-title="วัน">working.releaseDate.day</td>
-                            <td data-title="วันที่ เดือน ปี">working.releaseDate</td>
+                            <td data-title="วัน">
+                                {% ifequal working.day|date:"l" "Monday" %}วันจันทร์{%endifequal%}
+                                {% ifequal working.day|date:"l" "Tuesday" %}วันอังคาร{%endifequal%}
+                                {% ifequal working.day|date:"l" "Wednesday" %}วันพุธ{%endifequal%}
+                                {% ifequal working.day|date:"l" "Thursday" %}วันพฤหัสบดี{%endifequal%}
+                                {% ifequal working.day|date:"l" "Friday" %}วันศุกร์{%endifequal%}
+                                {% ifequal working.day|date:"l" "Saturday" %}วันเสาร์{%endifequal%}
+                                {% ifequal working.day|date:"l" "Sunday" %}วันอาทิตย์{%endifequal%}
+                            </td>
+                            <td data-title="วันที่ เดือน ปี">{{working.releaseDate}}</td>
                             <td data-title="เวลาทำงาน">{{working.startTime}}</td>
                             <td data-title="รวมชั่วโมง">{{working.endTime}} - {{working.startTime}}</td>
                             <td data-title="หมายเหตุ">{{working.note}}</td>

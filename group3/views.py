@@ -783,6 +783,15 @@ def prof2lang_delete(request, profID): # delete teacher data from index page.
         {'teachList':teachList}
     )
 
+def create_list_work(request):
+    userprofile = UserProfile.objects.get(user = request.user)
+    employeeObj = HourlyEmployee.objects.get(user=userprofile)
+    #try:
+    list_work = employeeObj.work_set.all()
+    #except:
+    #    list_work = []
+    return list_work
+
 def hour_index(request):
     template = 'group3/hour_index.html'
     userprofile = UserProfile.objects.get(user = request.user)
@@ -791,14 +800,20 @@ def hour_index(request):
     except:
         employeeObj = HourlyEmployee(user=userprofile, employmentRate=45.45)
         employeeObj.save()
-    try:
-        ListWork = Work.objects.get(employee=employeeObj)
-        return render(request, template,
+    #try:
+    ListWork = create_list_work(request)
+    print ListWork[0].day.strftime('%A')
+    return render(request, template,
                       {'ListWork':ListWork}
                       )
-    except:
-        return render(request, template)
-
+    #except:
+    #    return render(request, template, {'check':"no Ok"})
+    
+def add_hour_page(request):
+    template = 'group3/hour_index.html'
+  
+    
+    
 def shiftProf(request, teachID):
     if request.method == 'POST':
         # get Teach Object

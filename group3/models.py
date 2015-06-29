@@ -71,6 +71,6 @@ class Work(models.Model):
     endTime = models.TimeField()                        # เวลาเลิกงาน
     note = models.TextField(blank=True)                 # หมายเหตุ
     employee = models.ForeignKey(HourlyEmployee)        # เป็นของพนักงานคนใด
-
+    day = models.DateTimeField(auto_now=True)
     class meta:
         unique_together = ('employee', 'id')
