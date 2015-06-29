@@ -25,21 +25,15 @@
                  </tr>
                </thead>
                <tbody>
-                 <tr>
-                   <td data-title="ลำตัว">John</td>
-                   <td>Doe</td>
-                   <td>john@example.com</td>
-                 </tr>
-                 <tr>
-                   <td>Mary</td>
-                   <td>Moe</td>
-                   <td>mary@example.com</td>
-                 </tr>
-                 <tr>
-                   <td>July</td>
-                   <td>Dooley</td>
-                   <td>july@example.com</td>
-                 </tr>
+                    {% for working in ListWork %}
+                        <tr>
+                            <td data-title="วัน">working.releaseDate.day</td>
+                            <td data-title="วันที่ เดือน ปี">working.releaseDate</td>
+                            <td data-title="เวลาทำงาน">{{working.startTime}}</td>
+                            <td data-title="รวมชั่วโมง">{{working.endTime}} - {{working.startTime}}</td>
+                            <td data-title="หมายเหตุ">{{working.note}}</td>
+                        </tr>
+                    {% endfor %}
                </tbody>
              </table>
              <p>รวมจำนวนชั่วโมง <span>6</span> ชั่วโมง</p>

@@ -666,15 +666,15 @@ def hourpdf(request): # use to see working of temporary employee.
     pdf.add_page()
     ganY = [46, 54]  # line bettwen collumn.
     
-    pdf.add_font('Kinnari', '', 'Kinnari.ttf', uni=True)
-    pdf.set_font('Kinnari', '', 12)
+    pdf.add_font('THSarabun', '', 'THSarabun.ttf', uni=True)
+    pdf.set_font('THSarabun', '', 16)
     
     gen_single_text(pdf, 60, u'ใบลงเวลาทำงานลูกจ้างชั่วคราวรายชั่วโมง')
-    gen_single_text(pdf, 45, u'มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าพระนครเหนือ')
+    gen_single_text(pdf, 52, u'มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าพระนครเหนือ')
     gen_single_text(pdf, 70, u'ชื่อ')
     
     pdf.ln(8)
-    pdf.cell(0, 18, u'    วัน           วันที่ เดือน ปี          เวลาทำงาน      รวมชั่วโมง       ลายมือชื่อ          หมายเหตุ')
+    pdf.cell(0, 18, u'      วัน                 วันที่ เดือน ปี              เวลาทำงาน          รวมชั่วโมง            ลายมือชื่อ                หมายเหตุ')
     drawAttr2(pdf, ganY[0], ganY[1], True)
     
     gen_single_text(pdf, 90, u'รวมจำนวนชั่วโมง ' + u'ชั่วโมง') # call spacial funtion to write a text per line.
@@ -785,7 +785,19 @@ def prof2lang_delete(request, profID): # delete teacher data from index page.
 
 def hour_index(request):
     template = 'group3/hour_index.html'
-    return render(request, template)
+    userprofile = UserProfile.objects.get(user = request.user)
+    try:
+        employeeObj = HourlyEmployee.objects.get(user=userprofile)
+    except:
+        employeeObj = HourlyEmployee(user=userprofile, employmentRate=45.45)
+        employeeObj.save()
+    try:
+        ListWork = Work.objects.get(employee=employeeObj)
+        return render(request, template,
+                      {'ListWork':ListWork}
+                      )
+    except:
+        return render(request, template)
 
 def shiftProf(request, teachID):
     if request.method == 'POST':
