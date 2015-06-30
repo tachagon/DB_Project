@@ -13,8 +13,10 @@
 <div class="row">
     <div class="container-fluid">
         <div class="col-md-3">
-            <a class="btn btn-primary btn-block" href="{% url 'group3:add_hour_page'%}" target = _blank><span class="glyphicon glyphicon-plus"></span> เพิ่มข้อมูล </a>
+            <a class="btn btn-primary btn-block" href="{% url 'group3:add_hour_page'%}" target = _blank><span class="glyphicon glyphicon-plus"></span> บันทึกเเวลาข้าทำงาน </a>
+            <a class="btn btn-primary btn-block" href="{% url 'group3:add_hour_page'%}" target = _blank><span class="glyphicon glyphicon-plus"></span> บันทึกเเวลาออกทำงาน </a>
             <a class="btn btn-default btn-block" href="{% url 'group3:hourpdf'%}" target = _blank><span class="glyphicon glyphicon-print"></span> พิมพ์ข้อมูล </a>
+            
         </div> <p>{{check}}</p>
         <div class="col-md-9">
              <div class="table-responsive">
@@ -26,6 +28,7 @@
                    <th>เวลาทำงาน</th>
                    <th>รวมชั่วโมง</th>
                    <th>หมายเหตุ</th>
+                   <th>เมนู</th>
                  </tr>
                </thead>
                <tbody>
@@ -44,6 +47,9 @@
                             <td data-title="เวลาทำงาน">{{working.startTime}}</td>
                             <td data-title="รวมชั่วโมง">{{working.endTime}} - {{working.startTime}}</td>
                             <td data-title="หมายเหตุ">{{working.note}}</td>
+                            <td data-title="เมนู">
+                                <a class="btn btn-info btn-xs" href="#">เพิ่ม/แก้ไขหมายเหตุ</a>
+                            </td>
                         </tr>
                     {% endfor %}
                </tbody>
