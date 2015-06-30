@@ -17,24 +17,25 @@ class UserProfile(models.Model):
     address         = models.TextField()                                        # 8. address
     office          = models.TextField()                                        # 9. office
     tel             = models.CharField(max_length=20)                           # 10. telephone number
+    ext             = models.CharField(max_length=10, blank=True)               # 11. ต่อ สำหรับเบอร์โทร
     departmentChoices = (
         ('0', ''),
         ('1', 'วิศวกรรมไฟฟ้าและคอมพิวเตอร์')
     )
-    department      = models.CharField(max_length=1, choices=departmentChoices) # 11. department
+    department      = models.CharField(max_length=1, choices=departmentChoices) # 12. department
 
     facultyChoices = (
         ('0', ''),
         ('1', 'วิศวกรรมศาสตร์')
     )
-    faculty         = models.CharField(max_length=1, choices=facultyChoices)    # 12. faculty
+    faculty         = models.CharField(max_length=1, choices=facultyChoices)    # 13. faculty
 
     typeChoices = (
         ('0', 'Student'),
         ('1', 'Teacher'),
         ('2', 'Officer')
     )
-    type            = models.CharField(max_length=1, choices=typeChoices)       # 13. type of user
+    type            = models.CharField(max_length=1, choices=typeChoices)       # 14. type of user
     
     # Override the __unicode__() method to return out something meaningful!
     #def __unicode__(self):
