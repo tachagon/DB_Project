@@ -10,6 +10,8 @@ import django.shortcuts
 from group3.models import *
 from django.http import HttpResponse
 from fpdf import FPDF
+
+from django.contrib.auth.models import User
 # Create your views here.
 def getUserType(request):
     user = request.user
@@ -802,7 +804,7 @@ def hour_index(request):
         employeeObj.save()
     #try:
     ListWork = create_list_work(request)
-    print ListWork[0].day.strftime('%A')
+    #print ListWork[0].day.strftime('%A')
     return render(request, template,
                       {'ListWork':ListWork}
                       )
@@ -871,3 +873,53 @@ def shiftSection(request, teachID):
         currentTeach.save()
 
     return HttpResponseRedirect(reverse('group3:prof2lang_view', args=[teachID]))
+
+def search_hour_worker(request):
+    if request.method == 'POST':
+        name = request.POST["username"]
+        try:
+            template = "group3/hour_profile.html"
+            context = {}
+            user = User.objects.get(username=name)
+            profile = UserProfile.objects.get(user=user)
+            worker = HourlyEmployee.objects.get(user=profile)
+
+            listwork = worker.work_set.all()
+            context['ListWork'] = listwork
+            context['name_th'] = profile.firstname_th
+            context['last_th'] = profile.lastname_th
+            context['name_en'] = profile.firstname_en
+            context['last_en'] = profile.lastname_en
+
+            if profile.department == '0':
+                department = 'ตกงาน'
+            elif profile.department == '1':
+                department = 'วิศวกรรมไฟฟ้าและคอมพิวเตอร์'
+
+            context['department'] = department
+
+            if profile.faculty == '0':
+                faculty = 'โดนทาย'
+            elif profile.faculty == '1':
+                faculty = 'วิศวกรรมศาสตร์'
+
+            context['faculty'] = faculty
+            context['tel'] = profile.tel
+
+
+
+
+        except:
+            template = "group3/hour_index.html"
+            context = {}
+            context["error"] = "โปรดตรวจสอบ username ใหม่อีกครั้ง"
+
+        return render(
+            request,
+            template,
+            context
+        )
+
+
+
+

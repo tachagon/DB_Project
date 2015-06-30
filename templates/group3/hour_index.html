@@ -3,52 +3,37 @@
 {% block title %}Menu เมนู{% endblock %}
 
 {% block pageHeader %}<h1>ระบบ<small> พนักงานรายชั่วโมง</small></h1>
+<ol class="breadcrumb">
+    <li><a href="{% url 'login:menu' %}">เมนู</a></li>
+    <li class="active">ระบบพนักงานรายชั่วโมง</li>
+</ol>
 {% endblock %}
 
 {% block content %}
 <div class="row">
-    <div class="container-fluid">
-        <div class="col-md-3">
-            <a class="btn btn-primary btn-block" href="#" target = _blank><span class="glyphicon glyphicon-plus"></span> เพิ่มข้อมูล </a>
-            <a class="btn btn-default btn-block" href="{% url 'group3:hourpdf'%}" target = _blank><span class="glyphicon glyphicon-print"></span> พิมพ์ข้อมูล </a>
-        </div> <p>{{check}}</p>
-        <div class="col-md-9">
-             <div class="table-responsive">
-             <table class="table table-hover table-bordered" id="no-more-tables">
-               <thead>
-                 <tr>
-                   <th>วัน</th>
-                   <th>วันที่ เดือน ปี</th>
-                   <th>เวลาทำงาน</th>
-                   <th>รวมชั่วโมง</th>
-                   <th>หมายเหตุ</th>
-                 </tr>
-               </thead>
-               <tbody>
-                    {% for working in ListWork %}
-                        <tr>
-                            <td data-title="วัน">
-                                {% ifequal working.day|date:"l" "Monday" %}วันจันทร์{%endifequal%}
-                                {% ifequal working.day|date:"l" "Tuesday" %}วันอังคาร{%endifequal%}
-                                {% ifequal working.day|date:"l" "Wednesday" %}วันพุธ{%endifequal%}
-                                {% ifequal working.day|date:"l" "Thursday" %}วันพฤหัสบดี{%endifequal%}
-                                {% ifequal working.day|date:"l" "Friday" %}วันศุกร์{%endifequal%}
-                                {% ifequal working.day|date:"l" "Saturday" %}วันเสาร์{%endifequal%}
-                                {% ifequal working.day|date:"l" "Sunday" %}วันอาทิตย์{%endifequal%}
-                            </td>
-                            <td data-title="วันที่ เดือน ปี">{{working.releaseDate}}</td>
-                            <td data-title="เวลาทำงาน">{{working.startTime}}</td>
-                            <td data-title="รวมชั่วโมง">{{working.endTime}} - {{working.startTime}}</td>
-                            <td data-title="หมายเหตุ">{{working.note}}</td>
-                        </tr>
-                    {% endfor %}
-               </tbody>
-             </table>
-             <p>รวมจำนวนชั่วโมง <span>6</span> ชั่วโมง</p>
-             <p>อัตรา <span>45.45</span> บาท/ชั่วโมง</p>
-             <p>รวมเป็นเงินทั้งสิ้น <span></span> บาท</p>
-             </div>
+    <div class="container">
+        {%if error%}
+        <div class="alert alert-danger alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <strong>Error!</strong> {{error}}
         </div>
+        {%endif%}
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+            <form class="form-horizontal" method="post" action="{% url 'group3:worker_name' %}">
+                {%csrf_token%}
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">Username: </label>
+                    <div class="col-sm-6">
+                        <input type="text" name="username"  class="form-control" placeholder="username">
+                    </div>
+                    <div class="col-sm-3">
+                        <input type="submit" value="search" class="btn btn-primary">
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-3"></div>
     </div>
 </div>
 {% endblock %}
