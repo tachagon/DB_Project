@@ -457,7 +457,7 @@ def genpdf(request, profID): # use to generate pdf file for lend another teacher
     pdf.cell(10, 10, u'วัน')
     pdf.cell(40, 10, u'' + day)
     pdf.cell(15, 10, u'เวลา')
-    pdf.cell(20, 10, u'' + time)
+    pdf.cell(20, 10, u'' + str(time)[:5] + u' น.')
     pdf.ln(8)
     pdf.cell(0, 10, u'         ได้จัดการเรียนการสอนเป็น ')
     pdf.ln(8)
@@ -470,19 +470,19 @@ def genpdf(request, profID): # use to generate pdf file for lend another teacher
     
     pdf.ln(8)
     pdf.cell(100, 10, u'')
-    pdf.cell(100, 10, u'ลงชื่อ......................................อาจารย์ผู้สอน ')
-    pdf.ln(8)
-    pdf.cell(110, 10, u'')
-    pdf.cell(110, 10, u'(..............................................) ')
-    pdf.ln(8)
-    pdf.cell(110, 10, u'')
-    pdf.cell(110, 10, u'ลงชื่อ......................................')
+    pdf.cell(100, 10, u'ลงชื่อ................................................อาจารย์ผู้สอน ')
     pdf.ln(8)
     pdf.cell(110, 10, u'')
     pdf.cell(110, 10, u'(..............................................) ')
     pdf.ln(8)
     pdf.cell(100, 10, u'')
-    pdf.cell(100, 10, u'หัวหน้าภาควิชา............................................')
+    pdf.cell(100, 10, u'ลงชื่อ................................................')
+    pdf.ln(8)
+    pdf.cell(110, 10, u'')
+    pdf.cell(110, 10, u'(..............................................) ')
+    pdf.ln(8)
+    pdf.cell(100, 10, u'')
+    pdf.cell(100, 10, u'หัวหน้าภาควิชา......................................................')
     pdf.ln(8)
 
     pdf.output("group3/uni.pdf", 'F')
@@ -786,10 +786,10 @@ def prof2lang_delete(request, profID): # delete teacher data from index page.
 def create_list_work(request):
     userprofile = UserProfile.objects.get(user = request.user)
     employeeObj = HourlyEmployee.objects.get(user=userprofile)
-    #try:
-    list_work = employeeObj.work_set.all()
-    #except:
-    #    list_work = []
+    try:
+        list_work = employeeObj.work_set.all()
+    except:
+        list_work = []
     return list_work
 
 def hour_index(request):
@@ -800,18 +800,18 @@ def hour_index(request):
     except:
         employeeObj = HourlyEmployee(user=userprofile, employmentRate=45.45)
         employeeObj.save()
-    #try:
-    ListWork = create_list_work(request)
-    print ListWork[0].day.strftime('%A')
-    return render(request, template,
+    try:
+        ListWork = create_list_work(request)
+        print ListWork[0].day.strftime('%A')
+        return render(request, template,
                       {'ListWork':ListWork}
                       )
-    #except:
-    #    return render(request, template, {'check':"no Ok"})
+    except:
+        return render(request, template)
     
 def add_hour_page(request):
-    template = 'group3/hour_index.html'
-  
+    template = 'group3/add_hour.html'
+    return render(request, template)
     
     
 def shiftProf(request, teachID):

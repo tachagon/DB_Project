@@ -3,13 +3,17 @@
 {% block title %}Menu เมนู{% endblock %}
 
 {% block pageHeader %}<h1>ระบบ<small> พนักงานรายชั่วโมง</small></h1>
+<ol class="breadcrumb">
+    <li><a href="{% url 'login:menu' %}">เมนู</a></li>
+    <li class="active">ระบบพนักงานรายชั่วโมง</li>
+</ol>
 {% endblock %}
 
 {% block content %}
 <div class="row">
     <div class="container-fluid">
         <div class="col-md-3">
-            <a class="btn btn-primary btn-block" href="#" target = _blank><span class="glyphicon glyphicon-plus"></span> เพิ่มข้อมูล </a>
+            <a class="btn btn-primary btn-block" href="{% url 'group3:add_hour_page'%}" target = _blank><span class="glyphicon glyphicon-plus"></span> เพิ่มข้อมูล </a>
             <a class="btn btn-default btn-block" href="{% url 'group3:hourpdf'%}" target = _blank><span class="glyphicon glyphicon-print"></span> พิมพ์ข้อมูล </a>
         </div> <p>{{check}}</p>
         <div class="col-md-9">
