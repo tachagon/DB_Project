@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load staticfiles %}
 
 {% block title %}Menu เมนู{% endblock %}
 
@@ -72,7 +73,8 @@
                 </div>
                 <div class="panel-body">
                     <a href="{% url 'group6:project_docs_index' %}">ฟอร์มเสนอโครงงานที่สร้างไว้</a><br>
-                    <a href="{% url 'group6:project_docs_create_3forms' %}">สร้างฟอร์มเสนอโครงงานใหม่</a>
+                    <a href="{% url 'group6:project_docs_create_3forms' %}">สร้างฟอร์มเสนอโครงงานใหม่</a><br>
+                    <a href="{% static "group6/template_ECE_.docx" %}">ตัวอย่างรูปเล่มโปรเจค</a>
                 </div>
             </div>
         </div>
