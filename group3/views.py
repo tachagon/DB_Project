@@ -810,11 +810,28 @@ def hour_index(request):
                       )
     #except:
     #    return render(request, template, {'check':"no Ok"})
-    
-def add_hour_page(request):
-    template = 'group3/hour_index.html'
-  
-    
+
+
+def add_starthour_page(request, id):                #ทำไม่ถูกคอมเม้นไว้ก่อน
+    worker = HourlyEmployee.objects.get(id=id)
+    try:
+        listwork = worker.work_set.all()
+        listwork.startTime
+        return HttpResponse("เสร็จ")
+    except:
+        return HttpResponse("ไม่เสร็จ")
+
+
+
+def add_stophour_page(request):
+    worker = HourlyEmployee.objects.get(id=id)
+    listwork = worker.work_set.all().order_by[id]
+
+
+
+
+    return HttpResponse("เสร็จ")
+
     
 def shiftProf(request, teachID):
     if request.method == 'POST':
@@ -883,32 +900,7 @@ def search_hour_worker(request):
             user = User.objects.get(username=name)
             profile = UserProfile.objects.get(user=user)
             worker = HourlyEmployee.objects.get(user=profile)
-
-            listwork = worker.work_set.all()
-            context['ListWork'] = listwork
-            context['name_th'] = profile.firstname_th
-            context['last_th'] = profile.lastname_th
-            context['name_en'] = profile.firstname_en
-            context['last_en'] = profile.lastname_en
-
-            if profile.department == '0':
-                department = 'ตกงาน'
-            elif profile.department == '1':
-                department = 'วิศวกรรมไฟฟ้าและคอมพิวเตอร์'
-
-            context['department'] = department
-
-            if profile.faculty == '0':
-                faculty = 'โดนทาย'
-            elif profile.faculty == '1':
-                faculty = 'วิศวกรรมศาสตร์'
-
-            context['faculty'] = faculty
-            context['tel'] = profile.tel
-
-
-
-
+            return HttpResponseRedirect(reverse("group3:returnsearch", args=[worker.id]))
         except:
             template = "group3/hour_index.html"
             context = {}
@@ -920,6 +912,39 @@ def search_hour_worker(request):
             context
         )
 
+def returnsearch(request, id):
+    template = "group3/hour_profile.html"
+    context = {}
+    worker = HourlyEmployee.objects.get(id=id)
+    profile = worker.user
 
+    listwork = worker.work_set.all()
+    context['ListWork'] = listwork
+    context['name_th'] = profile.firstname_th
+    context['last_th'] = profile.lastname_th
+    context['name_en'] = profile.firstname_en
+    context['last_en'] = profile.lastname_en
+
+    if profile.department == '0':
+        department = 'ตกงาน'
+    elif profile.department == '1':
+        department = 'วิศวกรรมไฟฟ้าและคอมพิวเตอร์'
+
+    context['department'] = department
+
+    if profile.faculty == '0':
+        faculty = 'โดนทาย'
+    elif profile.faculty == '1':
+        faculty = 'วิศวกรรมศาสตร์'
+
+    context['faculty'] = faculty
+    context['tel'] = profile.tel
+    context['worker'] = worker
+
+    return render(
+        request,
+        template,
+        context
+    )
 
 

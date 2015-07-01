@@ -10,8 +10,8 @@
 <div class="row">
     <div class="container-fluid">
         <div class="col-md-3">
-            <a class="btn btn-primary btn-block" href="{% url 'group3:add_hour_page'%}" target = _blank><span class="glyphicon glyphicon-plus"></span> บันทึกเเวลาข้าทำงาน </a>
-            <a class="btn btn-primary btn-block" href="{% url 'group3:add_hour_page'%}" target = _blank><span class="glyphicon glyphicon-plus"></span> บันทึกเเวลาออกทำงาน </a>
+            <a class="btn btn-primary btn-block" href="{% url 'group3:add_starthour_page' worker.id %}" ><span class="glyphicon glyphicon-plus"></span> บันทึกเเวลาข้าทำงาน </a>
+            <a class="btn btn-primary btn-block" href="{% url 'group3:add_stophour_page'%}" target = _blank><span class="glyphicon glyphicon-plus"></span> บันทึกเเวลาออกทำงาน </a>
             <a class="btn btn-default btn-block" href="{% url 'group3:hourpdf'%}" target = _blank><span class="glyphicon glyphicon-print"></span> พิมพ์ข้อมูล </a>
         </div> <p>{{check}}</p>
         <div class="col-md-9">
@@ -79,7 +79,7 @@
                             </tbody>
                         </table>
                         <p>รวมจำนวนชั่วโมง <span>6</span> ชั่วโมง</p>
-                        <p>อัตรา <span>45.45</span> บาท/ชั่วโมง</p>
+                        <p>อัตรา <span>{{worker.employmentRate}}</span> บาท/ชั่วโมง</p>
                         <p>รวมเป็นเงินทั้งสิ้น <span></span> บาท</p>
                     </div>
                 </div>
