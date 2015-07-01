@@ -10,6 +10,8 @@ import time, datetime
 from group3.models import *
 from django.http import HttpResponse
 from fpdf import FPDF
+
+from django.contrib.auth.models import User
 # Create your views here.
 def getUserType(request):
     user = request.user
@@ -802,33 +804,16 @@ def hour_index(request):
     except:
         employeeObj = HourlyEmployee(user=userprofile, employmentRate=45.45)
         employeeObj.save()
-        print "New User"
-    try:
-        ListWork = create_list_work(request)
-        print ListWork[0].day.strftime('%A')
-        try:
-            order_work = ListWork.order_by('day')
-            if str(order_work[len(order_work)-1].endTime) == time.strftime("00:00:01"):
-                status_on = 'disabled'
-                status_off = 'active'
-            else:
-                status_on = 'active'
-                status_off = 'disabled'         
-        except:
-                status_on = 'active'
-                status_off = 'disabled'
-        return render(request, template,
-                      {'ListWork':ListWork, 'employObj':employeeObj, 'status_on':status_on, 'status_off':status_off}
+
+    ListWork = create_list_work(request)
+    return render(request, template,
+                      {'ListWork':ListWork}
                       )
-    except:
-        print "Except"
-        return render(request, template, { 'employObj':employeeObj, 'status_on':'active', 'status_off':'disabled'})
     
 def add_hour_page(request, workID):
     workObj = Work.objects.get(pk=int(workID))
     template = 'group3/add_hour.html'
     return render(request, template, {'work_obj':workObj})
-    
     
 def shiftProf(request, teachID):
     if request.method == 'POST':
@@ -888,20 +873,98 @@ def shiftSection(request, teachID):
 
     return HttpResponseRedirect(reverse('group3:prof2lang_view', args=[teachID]))
 
+def search_hour_worker(request):
+    if request.method == 'POST':
+        name = request.POST["username"]
+        try:
+            template = "group3/hour_profile.html"
+            context = {}
+            user = User.objects.get(username=name)
+            profile = UserProfile.objects.get(user=user)
+            worker = HourlyEmployee.objects.get(user=profile)
+            return HttpResponseRedirect(reverse("group3:returnsearch", args=[worker.id]))
+        except:
+            template = "group3/hour_index.html"
+            context = {}
+            context["error"] = "โปรดตรวจสอบ username ใหม่อีกครั้ง"
+
+        return render(
+            request,
+            template,
+            context
+        )
+
+def returnsearch(request, id):
+    template = "group3/hour_profile.html"
+    context = {}
+    worker = HourlyEmployee.objects.get(id=int(id))
+    ListWork = worker.work_set.all().order_by('day')
+    try:
+        profile = worker.user
+
+        context['name_th'] = profile.firstname_th
+        context['last_th'] = profile.lastname_th
+        context['name_en'] = profile.firstname_en
+        context['last_en'] = profile.lastname_en
+
+        if profile.department == '0':
+            department = 'ตกงาน'
+        elif profile.department == '1':
+            department = 'วิศวกรรมไฟฟ้าและคอมพิวเตอร์'
+
+        context['department'] = department
+
+        if profile.faculty == '0':
+            faculty = 'โดนทาย'
+        elif profile.faculty == '1':
+            faculty = 'วิศวกรรมศาสตร์'
+
+        context['faculty'] = faculty
+        context['tel'] = profile.tel
+        context['worker'] = worker
+
+        #ListWork = create_list_work(request)
+
+        #order_work = ListWork.order_by('day')
+        if str(ListWork[len(ListWork)-1].endTime) == time.strftime("00:00:01"):
+            status_on = 'disabled'
+            status_off = 'active'
+        else:
+            status_on = 'active'
+            status_off = 'disabled'
+
+        context['ListWork'] = ListWork
+        context['employObj'] = worker
+        context['status_on'] = status_on
+        context['status_off'] = status_off
+    except:
+        print "Except"
+        #ListWork = create_list_work(request)
+        context['ListWork'] = ListWork
+        context['employObj'] = worker
+        context['status_on'] = 'active'
+        context['status_off'] = 'disabled'
+
+    return render(
+        request,
+        template,
+        context
+    )
+
 def add_hour_note(request, workID):
     workObj = Work.objects.get(pk=int(workID))
     if 'input_note_hour' in request.GET:
         workObj.note = request.GET['input_note_hour']
         workObj.save()
-
-    return hour_index(request)
+    employee = workObj.employee
+    return HttpResponseRedirect(reverse('group3:returnsearch', args=[employee.id]))
 
 def add_hour_date(request, employeeID):
     userprofile = UserProfile.objects.get(user = request.user)
     emploeeObj = HourlyEmployee.objects.get(user=userprofile)
     workObj = Work(employee=emploeeObj, startTime=time.strftime("%H:%M"), endTime=time.strftime("00:00:01"))
     workObj.save()
-    return hour_index(request)
+    return HttpResponseRedirect(reverse('group3:returnsearch', args=[employeeID]))
 
 def add_hour_date2(request, employeeID):
     userprofile = UserProfile.objects.get(user = request.user)
@@ -910,4 +973,4 @@ def add_hour_date2(request, employeeID):
     workObj = Work.objects.filter(employee=emploeeObj)[lenworkObj]
     workObj.endTime = endTime=time.strftime("%H:%M")
     workObj.save()
-    return hour_index(request)
+    return HttpResponseRedirect(reverse('group3:returnsearch', args=[employeeID]))
