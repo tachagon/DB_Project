@@ -13,6 +13,9 @@
     <li><a href="{% url 'login:menu' %}">เมนู</a></li>
     <li><a href="{% url 'group3:prof2lang_index' %}">ระบบอาจารย์สองภาษา</a></li>
     <li><a href="{% url 'group3:prof_index' %}">อาจารย์ผู้สอนทั้งหมด</a></li>
+    {% if prof %}
+    <li><a href="{% url 'group3:prof_view' prof.profID %}">{{ prof.firstName }} {{ prof.lastName }}</a></li>
+    {% endif %}
     <li class="active">{{ menuName }}</li>
 </ol>
 {% endblock %}

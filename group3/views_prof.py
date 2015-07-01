@@ -85,3 +85,38 @@ def prof_add(request):
         template,
         context
     )
+
+def prof_view(request, profID):
+    template = 'group3/prof/prof_view.html'
+    context = {}
+    try:
+        prof = Prof2Lang.objects.get(profID = profID)
+        context['prof'] = prof
+    except:
+        pass
+    return render(
+        request,
+        template,
+        context
+    )
+
+def prof_update(request, profID):
+    template = 'group3/prof/prof_form.html'
+    context = {}
+
+    # get Prof2Lang object
+    prof = Prof2Lang.objects.get(profID = profID)
+
+    context['prof'] = prof
+    context['menuName'] = 'แก้ไขข้อมูล'
+
+    context['profID']           = prof.profID           # 1. profID
+    context['firstName']        = prof.firstName        # 2. firstName
+    context['lastName']         = prof.lastName         # 3. lastName
+    context['sahakornAccount']  = prof.sahakornAccount  # 7. sahakornAccount
+
+    return render(
+        request,
+        template,
+        context
+    )
