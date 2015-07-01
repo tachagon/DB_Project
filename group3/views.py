@@ -6,7 +6,7 @@ from django.core.urlresolvers import reverse
 from django.shortcuts import render
 from login.models import UserProfile
 import django.shortcuts
-
+import time, datetime
 from group3.models import *
 from django.http import HttpResponse
 from fpdf import FPDF
@@ -459,7 +459,7 @@ def genpdf(request, profID): # use to generate pdf file for lend another teacher
     pdf.cell(10, 10, u'วัน')
     pdf.cell(40, 10, u'' + day)
     pdf.cell(15, 10, u'เวลา')
-    pdf.cell(20, 10, u'' + time)
+    pdf.cell(20, 10, u'' + str(time)[:5] + u' น.')
     pdf.ln(8)
     pdf.cell(0, 10, u'         ได้จัดการเรียนการสอนเป็น ')
     pdf.ln(8)
@@ -472,19 +472,19 @@ def genpdf(request, profID): # use to generate pdf file for lend another teacher
     
     pdf.ln(8)
     pdf.cell(100, 10, u'')
-    pdf.cell(100, 10, u'ลงชื่อ......................................อาจารย์ผู้สอน ')
-    pdf.ln(8)
-    pdf.cell(110, 10, u'')
-    pdf.cell(110, 10, u'(..............................................) ')
-    pdf.ln(8)
-    pdf.cell(110, 10, u'')
-    pdf.cell(110, 10, u'ลงชื่อ......................................')
+    pdf.cell(100, 10, u'ลงชื่อ................................................อาจารย์ผู้สอน ')
     pdf.ln(8)
     pdf.cell(110, 10, u'')
     pdf.cell(110, 10, u'(..............................................) ')
     pdf.ln(8)
     pdf.cell(100, 10, u'')
-    pdf.cell(100, 10, u'หัวหน้าภาควิชา............................................')
+    pdf.cell(100, 10, u'ลงชื่อ................................................')
+    pdf.ln(8)
+    pdf.cell(110, 10, u'')
+    pdf.cell(110, 10, u'(..............................................) ')
+    pdf.ln(8)
+    pdf.cell(100, 10, u'')
+    pdf.cell(100, 10, u'หัวหน้าภาควิชา......................................................')
     pdf.ln(8)
 
     pdf.output("group3/uni.pdf", 'F')
@@ -528,11 +528,11 @@ def drawAttr2(pdf, start, end, attr=False): # draw  table for houfpdf()
     
     pdf.line(10, Y[0], 10, Y[1])
     pdf.line(30, Y[0], 30, Y[1])
-    pdf.line(75, Y[0], 75, Y[1])
-    pdf.line(105, Y[0], 105, Y[1])
+    pdf.line(65, Y[0], 65, Y[1])
+    pdf.line(92, Y[0], 92, Y[1])
     
-    pdf.line(130, Y[0], 130, Y[1])
-    pdf.line(163,Y[0], 163, Y[1])
+    pdf.line(122, Y[0], 122, Y[1])
+    pdf.line(157,Y[0], 157, Y[1])
     pdf.line(198, Y[0], 198, Y[1])
 
 def genallpdf(request): # grnerate pdf for show all section data.
@@ -663,7 +663,7 @@ def gen_single_text(pdf, position, text=""): # use to create a single text for o
     pdf.cell(position, 18, u'' + text)
     pdf.ln(8)
 
-def hourpdf(request): # use to see working of temporary employee.
+def hourpdf(request, employeeID): # use to see working of temporary employee.
     pdf = FPDF('P', 'mm', 'A4')
     pdf.add_page()
     ganY = [46, 54]  # line bettwen collumn.
@@ -676,13 +676,15 @@ def hourpdf(request): # use to see working of temporary employee.
     gen_single_text(pdf, 70, u'ชื่อ')
     
     pdf.ln(8)
-    pdf.cell(0, 18, u'      วัน                 วันที่ เดือน ปี              เวลาทำงาน          รวมชั่วโมง            ลายมือชื่อ                หมายเหตุ')
+    pdf.cell(0, 18, u'      วัน             วันที่ เดือน ปี          เวลาทำงาน          รวมชั่วโมง              ลายมือชื่อ                  หมายเหตุ')
     drawAttr2(pdf, ganY[0], ganY[1], True)
+    
+    
     
     gen_single_text(pdf, 90, u'รวมจำนวนชั่วโมง ' + u'ชั่วโมง') # call spacial funtion to write a text per line.
     gen_single_text(pdf, 90, u'อัตรา 45.45 บาท ชั่วโมง')
     gen_single_text(pdf, 90, u'รวมเป็นเงินทั้งสิ้น' + u'บาท')
-    gen_single_text(pdf, 90, u'(                   )')
+    gen_single_text(pdf, 90, u'(                        )')
     gen_single_text(pdf, 90, u'ได้ตรวจสอบถูกต้องแล้ว')
     gen_single_text(pdf, 75, u'ลงชื่อ.......................................................')
     gen_single_text(pdf, 80, u'(...................................................)')
@@ -776,7 +778,6 @@ def updateSection(request, teachID):
 def prof2lang_delete(request, profID): # delete teacher data from index page.
     teachObj = Teach.objects.get(pk= int(profID))
     teachObj.delete()
-    
     teachList = Teach.objects.all()
     template = 'group3/prof2lang_index.html'
     return render(
@@ -788,10 +789,10 @@ def prof2lang_delete(request, profID): # delete teacher data from index page.
 def create_list_work(request):
     userprofile = UserProfile.objects.get(user = request.user)
     employeeObj = HourlyEmployee.objects.get(user=userprofile)
-    #try:
-    list_work = employeeObj.work_set.all()
-    #except:
-    #    list_work = []
+    try:
+        list_work = employeeObj.work_set.all()
+    except:
+        list_work = []
     return list_work
 
 def hour_index(request):
@@ -799,39 +800,20 @@ def hour_index(request):
     userprofile = UserProfile.objects.get(user = request.user)
     try:
         employeeObj = HourlyEmployee.objects.get(user=userprofile)
+        print "Old User"
     except:
         employeeObj = HourlyEmployee(user=userprofile, employmentRate=45.45)
         employeeObj.save()
-    #try:
+
     ListWork = create_list_work(request)
-    #print ListWork[0].day.strftime('%A')
     return render(request, template,
                       {'ListWork':ListWork}
                       )
-    #except:
-    #    return render(request, template, {'check':"no Ok"})
-
-
-def add_starthour_page(request, id):                #ทำไม่ถูกคอมเม้นไว้ก่อน
-    worker = HourlyEmployee.objects.get(id=id)
-    try:
-        listwork = worker.work_set.all()
-        listwork.startTime
-        return HttpResponse("เสร็จ")
-    except:
-        return HttpResponse("ไม่เสร็จ")
-
-
-
-def add_stophour_page(request):
-    worker = HourlyEmployee.objects.get(id=id)
-    listwork = worker.work_set.all().order_by[id]
-
-
-
-
-    return HttpResponse("เสร็จ")
-
+    
+def add_hour_page(request, workID):
+    workObj = Work.objects.get(pk=int(workID))
+    template = 'group3/add_hour.html'
+    return render(request, template, {'work_obj':workObj})
     
 def shiftProf(request, teachID):
     if request.method == 'POST':
@@ -915,31 +897,53 @@ def search_hour_worker(request):
 def returnsearch(request, id):
     template = "group3/hour_profile.html"
     context = {}
-    worker = HourlyEmployee.objects.get(id=id)
-    profile = worker.user
+    worker = HourlyEmployee.objects.get(id=int(id))
+    ListWork = worker.work_set.all().order_by('day')
+    try:
+        profile = worker.user
 
-    listwork = worker.work_set.all()
-    context['ListWork'] = listwork
-    context['name_th'] = profile.firstname_th
-    context['last_th'] = profile.lastname_th
-    context['name_en'] = profile.firstname_en
-    context['last_en'] = profile.lastname_en
+        context['name_th'] = profile.firstname_th
+        context['last_th'] = profile.lastname_th
+        context['name_en'] = profile.firstname_en
+        context['last_en'] = profile.lastname_en
 
-    if profile.department == '0':
-        department = 'ตกงาน'
-    elif profile.department == '1':
-        department = 'วิศวกรรมไฟฟ้าและคอมพิวเตอร์'
+        if profile.department == '0':
+            department = 'ตกงาน'
+        elif profile.department == '1':
+            department = 'วิศวกรรมไฟฟ้าและคอมพิวเตอร์'
 
-    context['department'] = department
+        context['department'] = department
 
-    if profile.faculty == '0':
-        faculty = 'โดนทาย'
-    elif profile.faculty == '1':
-        faculty = 'วิศวกรรมศาสตร์'
+        if profile.faculty == '0':
+            faculty = 'โดนทาย'
+        elif profile.faculty == '1':
+            faculty = 'วิศวกรรมศาสตร์'
 
-    context['faculty'] = faculty
-    context['tel'] = profile.tel
-    context['worker'] = worker
+        context['faculty'] = faculty
+        context['tel'] = profile.tel
+        context['worker'] = worker
+
+        #ListWork = create_list_work(request)
+
+        #order_work = ListWork.order_by('day')
+        if str(ListWork[len(ListWork)-1].endTime) == time.strftime("00:00:01"):
+            status_on = 'disabled'
+            status_off = 'active'
+        else:
+            status_on = 'active'
+            status_off = 'disabled'
+
+        context['ListWork'] = ListWork
+        context['employObj'] = worker
+        context['status_on'] = status_on
+        context['status_off'] = status_off
+    except:
+        print "Except"
+        #ListWork = create_list_work(request)
+        context['ListWork'] = ListWork
+        context['employObj'] = worker
+        context['status_on'] = 'active'
+        context['status_off'] = 'disabled'
 
     return render(
         request,
@@ -947,4 +951,26 @@ def returnsearch(request, id):
         context
     )
 
+def add_hour_note(request, workID):
+    workObj = Work.objects.get(pk=int(workID))
+    if 'input_note_hour' in request.GET:
+        workObj.note = request.GET['input_note_hour']
+        workObj.save()
+    employee = workObj.employee
+    return HttpResponseRedirect(reverse('group3:returnsearch', args=[employee.id]))
 
+def add_hour_date(request, employeeID):
+    userprofile = UserProfile.objects.get(user = request.user)
+    emploeeObj = HourlyEmployee.objects.get(user=userprofile)
+    workObj = Work(employee=emploeeObj, startTime=time.strftime("%H:%M"), endTime=time.strftime("00:00:01"))
+    workObj.save()
+    return HttpResponseRedirect(reverse('group3:returnsearch', args=[employeeID]))
+
+def add_hour_date2(request, employeeID):
+    userprofile = UserProfile.objects.get(user = request.user)
+    emploeeObj = HourlyEmployee.objects.get(user=userprofile)
+    lenworkObj = len(Work.objects.filter(employee=emploeeObj)) - 1
+    workObj = Work.objects.filter(employee=emploeeObj)[lenworkObj]
+    workObj.endTime = endTime=time.strftime("%H:%M")
+    workObj.save()
+    return HttpResponseRedirect(reverse('group3:returnsearch', args=[employeeID]))

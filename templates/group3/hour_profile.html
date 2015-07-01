@@ -10,9 +10,9 @@
 <div class="row">
     <div class="container-fluid">
         <div class="col-md-3">
-            <a class="btn btn-primary btn-block" href="{% url 'group3:add_starthour_page' worker.id %}" ><span class="glyphicon glyphicon-plus"></span> บันทึกเเวลาข้าทำงาน </a>
-            <a class="btn btn-primary btn-block" href="{% url 'group3:add_stophour_page'%}" target = _blank><span class="glyphicon glyphicon-plus"></span> บันทึกเเวลาออกทำงาน </a>
-            <a class="btn btn-default btn-block" href="{% url 'group3:hourpdf'%}" target = _blank><span class="glyphicon glyphicon-print"></span> พิมพ์ข้อมูล </a>
+            <a class="btn btn-primary btn-block {{status_on}}" href="{% url 'group3:add_hour_date' employObj.id %}" ><span class="glyphicon glyphicon-plus"></span> บันทึกเเวลาเข้าทำงาน </a>
+            <a class="btn btn-primary btn-block {{status_off}}" href="{% url 'group3:add_hour_date2' employObj.id %}"><span class="glyphicon glyphicon-plus"></span> บันทึกเเวลาออกทำงาน </a>
+            <a class="btn btn-default btn-block" href="{% url 'group3:hourpdf' employObj.id %}" target = _blank><span class="glyphicon glyphicon-print"></span> พิมพ์ข้อมูล </a>
         </div> <p>{{check}}</p>
         <div class="col-md-9">
             <div class="row">
@@ -42,7 +42,7 @@
                 </div>
             </div>
 
-            {% for working in ListWork %}
+            {% if ListWork %}
                 <div class="row">
                     <div class="table-responsive">
                         <table class="table table-hover table-bordered" id="no-more-tables">
@@ -56,6 +56,7 @@
                                 <th>เมนู</th>
                             </tr>
                             </thead>
+                            {% for working in ListWork %}
                             <tbody>
                             <tr>
                                 <td data-title="วัน">
@@ -68,14 +69,14 @@
                                     {% ifequal working.day|date:"l" "Sunday" %}วันอาทิตย์{%endifequal%}
                                 </td>
                                 <td data-title="วันที่ เดือน ปี">{{working.releaseDate}}</td>
-                                <td data-title="เวลาทำงาน">{{working.startTime}}</td>
-                                <td data-title="รวมชั่วโมง">{{working.endTime}} - {{working.startTime}}</td>
+                                <td data-title="เวลาทำงาน">{{working.startTime|time:"H.i"}} น.</td>
+                                <td data-title="รวมชั่วโมง">{{working.startTime|time:"H.i"}} - {{ working.endTime|time:"H.i"}}</td>
                                 <td data-title="หมายเหตุ">{{working.note}}</td>
                                 <td data-title="เมนู">
-                                    <a class="btn btn-info btn-xs" href="#">เพิ่ม/แก้ไขหมายเหตุ</a>
+                                    <a class="btn btn-info btn-xs" href="{% url 'group3:add_hour_page' working.id%}">เพิ่ม/แก้ไขหมายเหตุ </a>
                                 </td>
                             </tr>
-
+                            {% endfor %}
                             </tbody>
                         </table>
                         <p>รวมจำนวนชั่วโมง <span>6</span> ชั่วโมง</p>
@@ -83,9 +84,9 @@
                         <p>รวมเป็นเงินทั้งสิ้น <span></span> บาท</p>
                     </div>
                 </div>
-            {%empty%}
+            {% else %}
                 <div class="alert alert-warning" role="alert">ไม่มีข้อมูลสำหรับรายการนี้</div>
-            {% endfor %}
+            {% endif %}
         </div>
     </div>
 </div>
