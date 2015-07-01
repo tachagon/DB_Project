@@ -1,7 +1,11 @@
 from django.conf.urls import patterns, include, url
-from group3 import views
+from group3 import views, views_prof
 
 urlpatterns = patterns('',
+    # prof only
+    url(r'/prof/index/$', views_prof.prof_index, name='prof_index'),
+    url(r'/prof/add/$', views_prof.prof_add, name='prof_add'),
+    #----------------------------------------------------------------------------
     url(r'/shiftProf/(\d+)/$', views.shiftProf, name='shiftProf'),
     url(r'/shiftSubject/(\d+)/$', views.shiftSubject, name='shiftSubject'),
     url(r'/shiftSection/(\d+)/$', views.shiftSection, name='shiftSection'),
