@@ -93,14 +93,26 @@ class Student(models.Model):
 class Teacher(models.Model):
     userprofile = models.OneToOneField(UserProfile) # 1. user profile
     shortname = models.CharField(max_length=3)      # 2. short name ตัวย่อชื่อ
-    position = models.CharField(max_length=100)     # 3. ตำแหน่ง
+    positionChoices = (
+        ('0', 'ข้าราชการ'),
+        ('1', 'ลูกจ้างประจำ'),
+        ('2', 'ข้าราชการบำนาญ'),
+        ('3', 'พนักงานมหาวิทยาลัย')
+    )
+    position = models.CharField(max_length=1, choices=positionChoices)     # 3. ตำแหน่ง
     
     def __unicode__(self):
         return self.userprofile.firstname_en + " " + self.userprofile.lastname_en
 
 class Officer(models.Model):
     userprofile = models.OneToOneField(UserProfile) # 1. user profile
-    position = models.CharField(max_length=100)     # 2. ตำแหน่ง
+    positionChoices = (
+        ('0', 'ข้าราชการ'),
+        ('1', 'ลูกจ้างประจำ'),
+        ('2', 'ข้าราชการบำนาญ'),
+        ('3', 'พนักงานมหาวิทยาลัย')
+    )
+    position = models.CharField(max_length=1, choices=positionChoices)     # 2. ตำแหน่ง
     
     def __unicode__(self):
         return self.userprofile.firstname_en + " " + self.userprofile.lastname_en
