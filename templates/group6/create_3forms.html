@@ -281,8 +281,8 @@ p_adviser
                 </select></H><br><font color = "FF0000" name="message">{{ error_yearOE }}</font><br>
             </center>
             <label class="form">
-                <H>ชื่อโครงงาน (ภาษาไทย): </H><input id="nameth" type="text" name="name_thai" maxlength="20" value="{{ nameTH }}"> <font color = "FF0000" name="message">{{ error_nameTH }}</font></br>
-                <H>ชื่อโครงงาน (อังกฤษ): </H><input id="nameen" type="text" name="name_eng" maxlength="20" value="{{ nameEN }}"> <font color = "FF0000" name="message">{{ error_nameEN }}</font></br>
+                <H>ชื่อโครงงาน (ภาษาไทย): </H><input id="nameth" type="text" name="name_thai" maxlength="200" value="{{ nameTH }}"> <font color = "FF0000" name="message">{{ error_nameTH }}</font></br>
+                <H>ชื่อโครงงาน (อังกฤษ): </H><input id="nameen" type="text" name="name_eng" maxlength="200" value="{{ nameEN }}"> <font color = "FF0000" name="message">{{ error_nameEN }}</font></br>
                 <H>จำนวนนักศึกษา: </H><select id="stdnumber" name="numberOfPeople">
                 <option value="1">1</option>
                 <option value="2">2</option>
@@ -752,7 +752,7 @@ and last is note is 'notation'
 <font color = "FF0000" name="message">{{ error_yearST }}</font>
 <font color = "FF0000" name="message">{{ error_process }}</font></br>
 <div class="row">
-<h4 class='col-sm-offset-1'>หมายเหตุ:</h4><textarea class="col-sm-offset-1 col-sm-10" name="notation" rows="10" maxlength='2000'>{{ note }}</textarea>
+<h4 class='col-sm-offset-1'>หมายเหตุ:</h4><textarea class="col-sm-offset-1 col-sm-10" name="notation" rows="10">{{ note }}</textarea>
 </div>
 
    </div>

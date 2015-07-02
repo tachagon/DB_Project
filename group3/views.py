@@ -4,6 +4,7 @@
 from django.shortcuts import render, HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.shortcuts import render
+
 from login.models import UserProfile
 import django.shortcuts
 import time, datetime
@@ -1000,6 +1001,7 @@ def returnsearch(request, id):
         context['employObj'] = worker
         context['status_on'] = status_on
         context['status_off'] = status_off
+
     except:
         print "Except"
         #ListWork = create_list_work(request)
@@ -1023,14 +1025,16 @@ def add_hour_note(request, workID):
     return HttpResponseRedirect(reverse('group3:returnsearch', args=[employee.id]))
 
 def add_hour_date(request, employeeID):
-    userprofile = UserProfile.objects.get(user = request.user)
+    employee = HourlyEmployee.objects.get(id=employeeID)
+    userprofile = employee.user
     emploeeObj = HourlyEmployee.objects.get(user=userprofile)
     workObj = Work(employee=emploeeObj, startTime=time.strftime("%H:%M"), endTime=time.strftime("00:00:01"))
     workObj.save()
     return HttpResponseRedirect(reverse('group3:returnsearch', args=[employeeID]))
 
 def add_hour_date2(request, employeeID):
-    userprofile = UserProfile.objects.get(user = request.user)
+    employee = HourlyEmployee.objects.get(id=employeeID)
+    userprofile = employee.user
     emploeeObj = HourlyEmployee.objects.get(user=userprofile)
     lenworkObj = len(Work.objects.filter(employee=emploeeObj)) - 1
     workObj = Work.objects.filter(employee=emploeeObj)[lenworkObj]
