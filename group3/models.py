@@ -1,7 +1,7 @@
 #-*- coding: utf-8 -*-
 from django.db import models
 from login.models import *
-
+import datetime, time
 # Create your models here.
 class Prof2Lang(models.Model):
     # the professor ID is primary key
@@ -71,6 +71,18 @@ class Work(models.Model):
     endTime = models.TimeField()                        # เวลาเลิกงาน
     note = models.TextField(blank=True)                 # หมายเหตุ
     employee = models.ForeignKey(HourlyEmployee)        # เป็นของพนักงานคนใด
-
+    day = models.DateTimeField(auto_now=True)
     class meta:
         unique_together = ('employee', 'id')
+        
+    def get_time_diff(self):
+        if str(self.endTime) == '00:00:01':
+            return ''
+        else:
+            t_start = str(self.startTime.hour)+':'+str(self.startTime.minute) # time that employee come to work.
+            t_end = str(self.endTime.hour)+':'+str(self.endTime.minute) # time that employee go home
+            diff_min = int(t_end.split(':')[1]) - int(t_start.split(':')[1])    # calculate differ value of come_time
+            diff_hour = int(t_end.split(':')[0]) - int(t_start.split(':')[0])  # calculate differ value of back_time
+            if diff_min < 0:
+                diff_min = 60 - diff_min
+            return str(diff_hour) + ':'+str(diff_min)
