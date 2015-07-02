@@ -11,18 +11,44 @@ from datetime import datetime
 def index(request):
     if request.user.is_authenticated():
         u = UserProfile.objects.get(user=request.user)
-        s = Student.objects.get(userprofile=u)
-        project = s.projectg6_set.all()
-        research = []
-        offer = []
-        approve = []
-        timeLine = []
-        for p in project:
-            research.append(ResearchProjectForm.objects.get(project=p))
-            offer.append(OfferProjectForm.objects.get(project=p))
-            approve.append(ApproveProjectForm.objects.get(project=p))
-            timeLine.append(TimeLineForm.objects.get(project=p))
-        return render(request, 'group6/index.html', {'project_list': project, 'research': research, 'offer': offer, 'approve': approve, 'timeLine': timeLine},)
+        if u.type == '0':
+            s = Student.objects.get(userprofile=u)
+            project = s.projectg6_set.all()
+            research = []
+            offer = []
+            approve = []
+            timeLine = []
+            for p in project:
+                research.append(ResearchProjectForm.objects.get(project=p))
+                offer.append(OfferProjectForm.objects.get(project=p))
+                approve.append(ApproveProjectForm.objects.get(project=p))
+                timeLine.append(TimeLineForm.objects.get(project=p))
+            return render(request, 'group6/index.html', {'project_list': project, 'research': research, 'offer': offer, 'approve': approve, 'timeLine': timeLine},)
+        elif u.type == '1':
+            t = Teacher.objects.get(userprofile=u)
+            project = ProjectG6.objects.filter(teacher=t)
+            research = []
+            offer = []
+            approve = []
+            timeLine = []
+            for p in project:
+                research.append(ResearchProjectForm.objects.get(project=p))
+                offer.append(OfferProjectForm.objects.get(project=p))
+                approve.append(ApproveProjectForm.objects.get(project=p))
+                timeLine.append(TimeLineForm.objects.get(project=p))
+            return render(request, 'group6/index_teacher_officer.html', {'project_list': project, 'research': research, 'offer': offer, 'approve': approve, 'timeLine': timeLine},)
+        elif u.type == '2':
+            project = ProjectG6.objects.all()
+            research = []
+            offer = []
+            approve = []
+            timeLine = []
+            for p in project:
+                research.append(ResearchProjectForm.objects.get(project=p))
+                offer.append(OfferProjectForm.objects.get(project=p))
+                approve.append(ApproveProjectForm.objects.get(project=p))
+                timeLine.append(TimeLineForm.objects.get(project=p))
+            return render(request, 'group6/index_teacher_officer.html', {'project_list': project, 'research': research, 'offer': offer, 'approve': approve, 'timeLine': timeLine},)
     else:
         return render(request, 'base.html')
 
