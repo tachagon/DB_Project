@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block head %}
+    <style>
+
+    </style>
+{% endblock %}
+
+{% block title %}ระบบการเบิกจ่ายค่ารักษาพยาบาลฐ{% endblock %}
+
+{% block pageHeader %}
+<h2>ระบบ<small>การเบิกจ่ายค่ารักษาพยาบาล</small></h2>
+<ol class="breadcrumb">
+    <li><a href="{% url 'login:menu' %}">เมนู</a></li>
+    <li class="active">ระบบการเบิกจ่ายค่ารักษาพยาบาล</li>
+</ol>
+{% endblock %}
+
+{% block content %}
+    <!-- check has AdminShow object -->
+    {% if dataFromWebList %}
+        <div class="container-fluid">
+            <div class="table-responsive">
+                <table class="table table-hover table bordered" id="no-more-tables">
+                    <thead>
+                        <tr>
+                            <th>ลำดับ</th>
+                            <th>ชื่อ-สกุล</th>
+                            <th>วันที่</th>
+                            <th>เลขที่บัญชี</th>
+                            <th>จำนวนเงิน</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for officer in dataFromWebList %}
+                        <tr>
+                            <td data-title="ลำดับ">{{ forloop.counter }}</td>
+                            <td data-title="ชื่อ-สกุล">{{ officer.user }}</td>
+                            <td data-title="วันที่">{{ officer.date }}</td>
+                            <td data-title="เลขที่บัญชี">{{ officer.account_id }}</td>
+                            <td data-title="จำนวนเงิน">{{ officer.price }}</td>
+                {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}

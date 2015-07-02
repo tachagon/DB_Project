@@ -10,7 +10,7 @@
 		
 {% endblock %}
 {% block content %}
-
+{% if com %}
 <br><center><table border = '1' width= 80%>
     <tr>
 	<td>
@@ -22,8 +22,29 @@
 	<td>
 	    เบอร์โทรศัพท์
 	</td>
+	<td>
+	    Fax
+	</td>
     </tr>
+    {% for item in com %}
+    <tr>
+	<td>
+	    {{item.name_Internship}}
+	</td>
+	<td>
+	    {{item.add_Internship}}
+	</td>
+	<td>
+	   {{item.Tel}}
+	</td>
+	<td>
+	   {{item.Fax}}
+	</td>
+    </tr>
+    {% endfor %}
 </table></center><br>
-
+{% else %}    
+หมายเหตุ
+{% endif %}
 {% endblock %}
 
