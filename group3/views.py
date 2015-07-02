@@ -4,6 +4,7 @@
 from django.shortcuts import render, HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.shortcuts import render
+
 from login.models import UserProfile
 import django.shortcuts
 
