@@ -46,6 +46,9 @@
                     {% if formAction == '0' %}
                         action="{% url 'group3:prof_add' %}"
                     {% endif %}
+                    {% if formAction == '1' %}
+                        action="{% url 'group3:prof_update' prof.profID %}"
+                    {% endif %}
                     ><!-- form -->
 
                         {% csrf_token %}
@@ -54,7 +57,11 @@
                         <div class="form-group">
                             <label class="col-sm-3 control-label"><font color="red">*</font> รหัสอาจารย์: </label>
                             <div class="col-sm-9">
-                                <input type="text" name="profID" value="{{ profID }}" maxlength="10" class="form-control" placeholder="รหัสอาจารย์" title="รหัสอาจารย์" required>
+                                {% if update %}
+                                    <p class="form-control-static">{{ prof.profID }}</p>
+                                {% else %}
+                                    <input type="text" name="profID" value="{{ profID }}" maxlength="10" class="form-control" placeholder="รหัสอาจารย์" title="รหัสอาจารย์" required>
+                                {% endif %}
                             </div>
                         </div>
 

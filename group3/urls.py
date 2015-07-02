@@ -7,6 +7,7 @@ urlpatterns = patterns('',
     url(r'/prof/add/$',         views_prof.prof_add,    name='prof_add'),
     url(r'/prof/view/(\w+)/$',  views_prof.prof_view,   name='prof_view'),
     url(r'/prof/update/(\w+)/$',views_prof.prof_update, name='prof_update'),
+    url(r'/prof/delete/(\w+)/$',views_prof.prof_delete, name='prof_delete'),
     #----------------------------------------------------------------------------
     url(r'/shiftProf/(\d+)/$', views.shiftProf, name='shiftProf'),
     url(r'/shiftSubject/(\d+)/$', views.shiftSubject, name='shiftSubject'),

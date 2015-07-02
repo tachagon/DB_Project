@@ -107,16 +107,70 @@ def prof_update(request, profID):
     # get Prof2Lang object
     prof = Prof2Lang.objects.get(profID = profID)
 
-    context['prof'] = prof
-    context['menuName'] = 'แก้ไขข้อมูล'
+    context['prof']         = prof              # Prof2Lang object
+    context['menuName']     = 'แก้ไขข้อมูล'      # name of menu in breadcrumb
+    context['formAction']   = '1'               # select action of form
+    context['update']       = True
+
+    error = False
+    errorMessage = []
 
     context['profID']           = prof.profID           # 1. profID
     context['firstName']        = prof.firstName        # 2. firstName
     context['lastName']         = prof.lastName         # 3. lastName
+    context['shortName']        = prof.shortName        # 4. shortName
+    context['tell']             = prof.tell             # 5. tell
+    context['email']            = prof.email            # 6. email
     context['sahakornAccount']  = prof.sahakornAccount  # 7. sahakornAccount
+    context['department']       = prof.department       # 8. department
+    context['faculty']          = prof.faculty          # 9. faculty
+
+    if request.method == 'POST':
+        firstName       = request.POST['firstName']         # 2. firstName
+        lastName        = request.POST['lastName']          # 3. lastName
+        shortName       = request.POST['shortName']         # 4. shortName
+        tell            = request.POST['tell']              # 5. tell
+        email           = request.POST['email']             # 6. email
+        sahakornAccount = request.POST['sahakornAccount']   # 7. sahakornAccount
+        department      = request.POST['department']        # 8. department
+        faculty         = request.POST['faculty']           # 9. faculty
+
+        # ปรับ shortName ให้เป็นตัวพิมพ์ใหญ่
+        shortName = str(shortName).upper()
+
+        if error:
+            context['firstName']        = firstName         # 2. firstName
+            context['lastName']         = lastName          # 3. lastName
+            context['shortName']        = shortName         # 4. shortName
+            context['tell']             = tell              # 5. tell
+            context['email']            = email             # 6. email
+            context['sahakornAccount']  = sahakornAccount   # 7. sahakornAccount
+            context['department']       = department        # 8. department
+            context['faculty']          = faculty           # 9. faculty
+
+            context['errorMessage']     = errorMessage
+        else:
+            prof.firstName          = firstName
+            prof.lastName           = lastName
+            prof.shortName          = shortName
+            prof.tell               = tell
+            prof.email              = email
+            prof.sahakornAccount    = sahakornAccount
+            prof.department         = department
+            prof.faculty            = faculty
+            prof.save()
+            return HttpResponseRedirect(reverse('group3:prof_view', args=[prof.profID]))
 
     return render(
         request,
         template,
         context
     )
+
+def prof_delete(request, profID):
+    try:
+        prof = Prof2Lang.objects.get(profID = profID)
+        prof.delete()
+    except:
+        pass
+    return HttpResponseRedirect(reverse('group3:prof_index'))
