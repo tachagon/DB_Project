@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block pageHeader %}
+
+<ol class="breadcrumb">
+    <li><a href="{% url 'login:menu' %}">เมนู</a></li>
+    <li class="active">ตรวจสอบสถานะการฝึกงาน</li>
+    <li><a href="{% url 'group5:company' %}">รายชื่อบริษัทฝึกงาน</a></li>
+</ol>
+		
+{% endblock %}
+{% block content %}
+
+รหัสนักศึกษา
+<br>ชื่อ-สกุล
+<br><center><table border = '1' width= 80%>
+    <tr>
+	<td>
+	    สถานะที่ฝึกงาน
+	</td>
+	<td>
+	    วันที่ยื่นใบคำร้องขอ
+	</td>
+	<td>
+	    สถานะ
+	</td>
+    </tr>
+</table></center><br>
+    
+หมายเหตุ
+
+{% endblock %}
+

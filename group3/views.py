@@ -4,7 +4,7 @@
 from django.shortcuts import render, HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.shortcuts import render
-from pygame.base import register_quit
+#from pygame.base import register_quit
 from login.models import UserProfile
 import django.shortcuts
 
