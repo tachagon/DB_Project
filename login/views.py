@@ -193,12 +193,20 @@ def user_register(request):
         office          = request.POST['office']            # get 8. office
         email           = request.POST['email']             # get 9. email
         tel             = request.POST['tel']               # get 10. tel
-        scheme          = request.POST['scheme']            # get 11. scheme
-        main            = request.POST['main']              # get 12. main
-        department      = request.POST['department']        # get 13. department
-        faculty         = request.POST['faculty']           # get 14. faculty
-        password        = request.POST['password']          # get 15. password
-        check_password  = request.POST['check_password']    # get 16. check_password
+        ext             = request.POST['ext']               # get 11. ext
+        scheme          = request.POST['scheme']            # get 12. scheme
+        main            = request.POST['main']              # get 13. main
+        department      = request.POST['department']        # get 14. department
+        faculty         = request.POST['faculty']           # get 15. faculty
+        sex             = request.POST['sex']               # get 16. sex
+        degree          = request.POST['degree']            # get 17. degree
+        id_number       = request.POST['id_number']         # get 18. id_number
+        nationality     = request.POST['nationality']       # get 19. nationality
+        religion        = request.POST['religion']          # get 20. religion
+        blood_type      = request.POST['blood_type']        # get 21. blood_type
+        birthDate       = request.POST['birthDate']         # get 22. birthDate
+        password        = request.POST['password']          # get 23. password
+        check_password  = request.POST['check_password']    # get 24. check_password
 
         # errors 1: User fill invalid password
         if password != check_password:
@@ -216,6 +224,13 @@ def user_register(request):
         try:
             std = Student.objects.get(std_id = std_id)
             errors.append(3)
+        except:
+            pass
+
+        # errors 4: id_number is duplicate
+        try:
+            std = Student.objects.get(id_number = id_number)
+            errors.append(4)
         except:
             pass
 
@@ -241,6 +256,7 @@ def user_register(request):
                 address         = address,
                 office          = office,
                 tel             = tel,
+                ext             = ext,
                 department      = department,
                 faculty         = faculty,
                 type            = '0' # type '0' is Student
@@ -252,7 +268,14 @@ def user_register(request):
                 userprofile     = newUserProfile,
                 std_id          = std_id,
                 scheme          = scheme,
-                main            = main
+                main            = main,
+                sex             = sex,
+                degree          = degree,
+                id_number       = id_number,
+                nationality     = nationality,
+                religion        = religion,
+                blood_type      = blood_type,
+                birthDate       = birthDate
             )
             newStudent.save() # save new Srudent object into database
 
@@ -274,6 +297,11 @@ def user_register(request):
             context['office']       = office
             context['email']        = email
             context['tel']          = tel
+            context['ext']          = ext
+            context['id_number']    = id_number
+            context['nationality']  = nationality
+            context['religion']     = religion
+            context['birthDate']    = birthDate
 
             # delete some context dict that user fill invalid
             for error in errors:
@@ -281,6 +309,8 @@ def user_register(request):
                     del context['username']
                 elif error == 3:
                     del context['std_id']
+                elif error == 4:
+                    del context['id_number']
 
     return render(
         request,

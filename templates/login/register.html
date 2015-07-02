@@ -72,15 +72,18 @@
                 </div>
             </div>
 
-            <!-- 10. tel  -->
+            <!-- 10. tel 11. ext -->
             <div class="form-group">
                 <label class="col-sm-3 control-label"><font color="red">*</font> เบอร์โทรศัพท์:</label>
-                <div class="col-sm-9">
+                <div class="col-sm-7">
                     <input type="text" name="tel" value="{{tel}}" class="form-control" placeholder="เบอร์โทรศัพท์" title="กรุณากรอกเบอร์โทรศัพท์" required>
+                </div>
+                <div class="col-sm-2">
+                    <input type="text" name="ext" value="{{ext}}" class="form-control" placeholder="ต่อ" title="ต่อ">
                 </div>
             </div>
 
-            <!-- 11. scheme  -->
+            <!-- 12. scheme  -->
             <div class="form-group">
                 <label class="col-sm-3 control-label"><font color="red">*</font> หลักสูตร:</label>
                 <div class="col-sm-9">
@@ -93,7 +96,7 @@
                 </div>
             </div>
 
-            <!-- 12. main -->
+            <!-- 13. main -->
             <div class="form-group">
                 <label class="col-sm-3 control-label"><font color="red">*</font> สาขา:</label>
                 <div class="col-sm-9">
@@ -107,7 +110,7 @@
                 </div>
             </div>
 
-            <!-- 13. department -->
+            <!-- 14. department -->
             <div class="form-group">
                 <label class="col-sm-3 control-label"><font color="red">*</font> ภาควิชา:</label>
                 <div class="col-sm-9">
@@ -117,7 +120,7 @@
                 </div>
             </div>
 
-            <!-- 14. faculty -->
+            <!-- 15. faculty -->
             <div class="form-group">
                 <label class="col-sm-3 control-label"><font color="red">*</font> คณะ:</label>
                 <div class="col-sm-9">
@@ -127,7 +130,78 @@
                 </div>
             </div>
 
-            <!-- 15. password -->
+            <!-- 16. sex -->
+            <div class="form-group">
+                <label class="col-sm-3 control-label"><font color="red">*</font> เพศ:</label>
+                <div class="col-sm-9">
+                    <select name="sex" class="form-control" title="เพศ" required>
+                        <option value=""></option>
+                        <option value="0">ชาย</option>
+                        <option value="1">หญิง</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- 17. degree -->
+            <div class="form-group">
+                <label class="col-sm-3 control-label"><font color="red">*</font> ระดับ:</label>
+                <div class="col-sm-9">
+                    <select name="degree" class="form-control" title="ระดับ" required>
+                        <option value=""></option>
+                        <option value="0">ปริญญาตรี</option>
+                        <option value="1">ปริญญาโท</option>
+                        <option value="2">ปริญญาเอก</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- 18. id_number -->
+            <div class="form-group">
+                <label class="col-sm-3 control-label"><font color="red">*</font> เลขประจำตัวประชาชน:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="id_number" value="{{id_number}}" class="form-control" placeholder="เลขประจำตัวประชาชน" title="เลขประจำตัวประชาชน" required>
+                </div>
+            </div>
+
+            <!-- 19. nationality -->
+            <div class="form-group">
+                <label class="col-sm-3 control-label"><font color="red">*</font> เชื้อชาตื:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="nationality" value="{{nationality}}" class="form-control" placeholder="เชื้อชาติ" title="เชื้อชาติ" required>
+                </div>
+            </div>
+
+            <!-- 20. religion -->
+            <div class="form-group">
+                <label class="col-sm-3 control-label"><font color="red">*</font> ศาสนา:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="religion" value="{{religion}}" class="form-control" placeholder="ศาสนา" title="ศาสนา" required>
+                </div>
+            </div>
+
+            <!-- 21. blood_type -->
+            <div class="form-group">
+                <label class="col-sm-3 control-label"><font color="red">*</font> หมู่เลือด:</label>
+                <div class="col-sm-9">
+                    <select name="blood_type" class="form-control" title="หมู่เลือด" required>
+                        <option value=""></option>
+                        <option value="0">O</option>
+                        <option value="1">A</option>
+                        <option value="2">B</option>
+                        <option value="3">AB</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- 22. birthDate -->
+            <div class="form-group">
+                <label class="col-sm-3 control-label"><font color="red">*</font> วันเกิด:</label>
+                <div class="col-sm-9">
+                    <input type="date" name="birthDate" value="{{birthDate}}" class="form-control" placeholder="วันเกิด" title="วันเกิด" required>
+                </div>
+            </div>
+
+            <!-- 23. password -->
             <div class="form-group">
                 <label class="col-sm-3 control-label"><font color="red">*</font> Password:</label>
                 <div class="col-sm-9">
@@ -135,7 +209,7 @@
                 </div>
             </div>
 
-            <!-- 16. check_password -->
+            <!-- 24. check_password -->
             <div class="form-group">
                 <label class="col-sm-3 control-label"><font color="red">*</font> Re-Password:</label>
                 <div class="col-sm-9">
@@ -191,6 +265,11 @@
                             {% if error == 3 %}
                                 <div class="alert alert-danger" role="alert">
                                     <strong>Error!</strong> รหัสนักศึกษานี้เคยลงทะเบียนแล้ว
+                                </div>
+                            {% endif %}
+                            {% if error == 4 %}
+                                <div class="alert alert-danger" role="alert">
+                                    <strong>Error!</strong> เลขประจำตัวประชาชนนี้เคยลงทะเบียนแล้ว
                                 </div>
                             {% endif %}
                         {% endfor %}
