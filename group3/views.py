@@ -528,11 +528,11 @@ def drawAttr2(pdf, start, end, attr=False): # draw  table for houfpdf()
     
     pdf.line(10, Y[0], 10, Y[1])
     pdf.line(30, Y[0], 30, Y[1])
-    pdf.line(65, Y[0], 65, Y[1])
-    pdf.line(92, Y[0], 92, Y[1])
+    pdf.line(75, Y[0], 75, Y[1])
+    pdf.line(94, Y[0], 94, Y[1])
     
-    pdf.line(122, Y[0], 122, Y[1])
-    pdf.line(157,Y[0], 157, Y[1])
+    pdf.line(112, Y[0], 112, Y[1])
+    pdf.line(150,Y[0], 150, Y[1])
     pdf.line(198, Y[0], 198, Y[1])
 
 def genallpdf(request): # grnerate pdf for show all section data.
@@ -668,26 +668,90 @@ def hourpdf(request, employeeID): # use to see working of temporary employee.
     pdf.add_page()
     ganY = [46, 54]  # line bettwen collumn.
     
+    employeeObj = HourlyEmployee.objects.get(pk=int(employeeID))
+    ListWork = create_list_work(request)
+    
     pdf.add_font('THSarabun', '', 'THSarabun.ttf', uni=True)
     pdf.set_font('THSarabun', '', 16)
     
     gen_single_text(pdf, 60, u'ใบลงเวลาทำงานลูกจ้างชั่วคราวรายชั่วโมง')
     gen_single_text(pdf, 52, u'มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าพระนครเหนือ')
-    gen_single_text(pdf, 70, u'ชื่อ')
+    gen_single_text(pdf, 70, u'ชื่อ' + employeeObj.user.firstname_th + '   '+employeeObj.user.lastname_th)
     
     pdf.ln(8)
-    pdf.cell(0, 18, u'      วัน             วันที่ เดือน ปี          เวลาทำงาน          รวมชั่วโมง              ลายมือชื่อ                  หมายเหตุ')
+    pdf.cell(0, 18, u'      วัน                 วันที่ เดือน ปี           เวลาทำงาน  รวมชั่วโมง          ลายมือชื่อ                       หมายเหตุ')
     drawAttr2(pdf, ganY[0], ganY[1], True)
+    pdf.ln(12)
+
+    numLine = 0
+    payment = 0
+    for working in ListWork:
+        numLine += 1
+        drawAttr2(pdf, ganY[0] + (numLine*8), ganY[1] + (numLine*8))
+        if working.day.weekday() == 0:  # geting day to pdf
+            pdf.cell(20, 10, u'วันจันทร์')
+        elif working.day.weekday() == 1:
+            pdf.cell(20, 10, u'วันอังคาร')
+        elif working.day.weekday() == 2:
+            pdf.cell(20, 10, u'วันพุธ')
+        elif working.day.weekday() == 3:
+            pdf.cell(20, 10, u'วันพฤหัสบดี')
+        elif working.day.weekday() == 4:
+            pdf.cell(20, 10, u'วันศุกร์')
+        elif working.day.weekday() == 5:
+            pdf.cell(20, 10, u'วันเสาร์')
+        else:
+            pdf.cell(20, 10, u'วันอาทิตย์')
+        
+        space = 26
+        pdf.cell(5, 10, u''+ str(working.releaseDate.day)) # get day
+        if working.releaseDate.month == 1:  # get month
+            pdf.cell(space, 10, u' มกราคม พ.ศ. ' )
+        elif working.releaseDate.month == 2:
+            pdf.cell(space, 10, u' กุมภาพันธ์ พ.ศ. ' )
+        elif working.releaseDate.month == 3:
+            pdf.cell(space, 10, u' มีนาคม พ.ศ. ' )
+        elif working.releaseDate.month == 4:
+            pdf.cell(space, 10, u' เมษายน พ.ศ. ' )
+        elif working.releaseDate.month == 5:
+            pdf.cell(space, 10, u' พฤษภาคม พ.ศ. ' )
+        elif working.releaseDate.month == 6:
+            pdf.cell(space, 10, u' มิถุนายน พ.ศ. ' )
+        elif working.releaseDate.month == 7:
+            pdf.cell(space, 10, u' พฤศจิกายน พ.ศ. ')#กรกฏาคม พ.ศ. ' )
+        elif working.releaseDate.month == 8:
+            pdf.cell(space, 10, u' สิงหาคม พ.ศ. ' )
+        elif working.releaseDate.month == 9:
+            pdf.cell(space, 10, u' กันยายน พ.ศ. ' )
+        elif working.releaseDate.month == 10:
+            pdf.cell(space, 10, u' ตุลาคม พ.ศ. ' )
+        elif working.releaseDate.month == 11:
+            pdf.cell(space, 10, u' พฤศจิกายน พ.ศ. ' )
+        else:
+            pdf.cell(space, 10, u' ธันวาคม พ.ศ. ' )
+        
+        pdf.cell(17, 10, u''+ str(543+int(str(working.releaseDate.year))) )
+        pdf.cell(20, 10, u''+ str(working.startTime.hour)+':'+str(working.startTime.minute))
+        come_time = str(working.startTime.hour)+':'+str(working.startTime.minute)
+        back_time = str(working.endTime.hour)+':'+str(working.endTime.minute)
+        diff_min = int(back_time.split(':')[1]) - int(come_time.split(':')[1])
+        diff_hour = int(back_time.split(':')[0]) - int(come_time.split(':')[0])
+        diff_min = float(str(diff_min))/60
+        
+        pdf.cell(52, 10, u''+ str(diff_hour)+'.'+str(diff_min)[2:4])
+        pdf.cell(90, 10, u''+working.note)
+        pdf.ln(8)
     
+        payment = payment + (float(str(diff_min)[:4]) + float(diff_hour))
     
-    
-    gen_single_text(pdf, 90, u'รวมจำนวนชั่วโมง ' + u'ชั่วโมง') # call spacial funtion to write a text per line.
+    gen_single_text(pdf, 90, u'รวมจำนวนชั่วโมง ' +str(payment)+ u' ชั่วโมง') # call spacial funtion to write a text per line.
     gen_single_text(pdf, 90, u'อัตรา 45.45 บาท ชั่วโมง')
-    gen_single_text(pdf, 90, u'รวมเป็นเงินทั้งสิ้น' + u'บาท')
-    gen_single_text(pdf, 90, u'(                        )')
+    payment = payment * 45.45
+    gen_single_text(pdf, 85, u'รวมเป็นเงินทั้งสิ้น ' + str(payment) +u' บาท')
+    gen_single_text(pdf, 85, u'(                                     )')
     gen_single_text(pdf, 90, u'ได้ตรวจสอบถูกต้องแล้ว')
-    gen_single_text(pdf, 75, u'ลงชื่อ.......................................................')
-    gen_single_text(pdf, 80, u'(...................................................)')
+    gen_single_text(pdf, 65, u'ลงชื่อ........................................................................................')
+    gen_single_text(pdf, 70, u'(.....................................................................................)')
     
     pdf.output("group3/hour.pdf", 'F')
     
