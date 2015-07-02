@@ -674,9 +674,9 @@ def hourpdf(request, employeeID): # use to see working of temporary employee.
     pdf.add_font('THSarabun', '', 'THSarabun.ttf', uni=True)
     pdf.set_font('THSarabun', '', 16)
     
-    gen_single_text(pdf, 60, u'ใบลงเวลาทำงานลูกจ้างชั่วคราวรายชั่วโมง')
-    gen_single_text(pdf, 52, u'มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าพระนครเหนือ')
-    gen_single_text(pdf, 70, u'ชื่อ' + employeeObj.user.firstname_th + '   '+employeeObj.user.lastname_th)
+    gen_single_text(pdf, 65, u'ใบลงเวลาทำงานลูกจ้างชั่วคราวรายชั่วโมง')
+    gen_single_text(pdf, 57, u'มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าพระนครเหนือ')
+    gen_single_text(pdf, 75, u'ชื่อ' + employeeObj.user.firstname_th + '   '+employeeObj.user.lastname_th)
     
     pdf.ln(8)
     pdf.cell(0, 18, u'      วัน                 วันที่ เดือน ปี           เวลาทำงาน  รวมชั่วโมง          ลายมือชื่อ                       หมายเหตุ')
@@ -685,6 +685,7 @@ def hourpdf(request, employeeID): # use to see working of temporary employee.
 
     numLine = 0
     payment = 0
+    show_payment = 0
     for working in ListWork:
         numLine += 1
         drawAttr2(pdf, ganY[0] + (numLine*8), ganY[1] + (numLine*8))
@@ -718,7 +719,7 @@ def hourpdf(request, employeeID): # use to see working of temporary employee.
         elif working.releaseDate.month == 6:
             pdf.cell(space, 10, u' มิถุนายน พ.ศ. ' )
         elif working.releaseDate.month == 7:
-            pdf.cell(space, 10, u' พฤศจิกายน พ.ศ. ')#กรกฏาคม พ.ศ. ' )
+            pdf.cell(space, 10, u' กรกฏาคม พ.ศ. ' )
         elif working.releaseDate.month == 8:
             pdf.cell(space, 10, u' สิงหาคม พ.ศ. ' )
         elif working.releaseDate.month == 9:
@@ -732,22 +733,24 @@ def hourpdf(request, employeeID): # use to see working of temporary employee.
         
         pdf.cell(17, 10, u''+ str(543+int(str(working.releaseDate.year))) )
         pdf.cell(20, 10, u''+ str(working.startTime.hour)+':'+str(working.startTime.minute))
-        come_time = str(working.startTime.hour)+':'+str(working.startTime.minute)
-        back_time = str(working.endTime.hour)+':'+str(working.endTime.minute)
-        diff_min = int(back_time.split(':')[1]) - int(come_time.split(':')[1])
-        diff_hour = int(back_time.split(':')[0]) - int(come_time.split(':')[0])
-        diff_min = float(str(diff_min))/60
+        come_time = str(working.startTime.hour)+':'+str(working.startTime.minute) # time that employee come to work.
+        back_time = str(working.endTime.hour)+':'+str(working.endTime.minute) # time that employee go home
+        diff_min = int(back_time.split(':')[1]) - int(come_time.split(':')[1])    # calculate differ value of come_time
+        diff_hour = int(back_time.split(':')[0]) - int(come_time.split(':')[0])  # calculate differ value of back_time
+        if diff_min < 0:
+            diff_min = 60 - diff_min
+        diff_min_100 = float(str(diff_min))/60
         
-        pdf.cell(52, 10, u''+ str(diff_hour)+'.'+str(diff_min)[2:4])
+        show_payment = show_payment + ( float(diff_hour)+ (float(diff_min)/100) ) 
+        pdf.cell(52, 10, u''+ str(diff_hour)+'.'+str(diff_min))
         pdf.cell(90, 10, u''+working.note)
         pdf.ln(8)
-    
-        payment = payment + (float(str(diff_min)[:4]) + float(diff_hour))
-    
-    gen_single_text(pdf, 90, u'รวมจำนวนชั่วโมง ' +str(payment)+ u' ชั่วโมง') # call spacial funtion to write a text per line.
+        payment = payment + (float(str(diff_min_100)[:4]) + float(diff_hour))
+        
+    gen_single_text(pdf, 90, u'รวมจำนวนชั่วโมง ' +str(show_payment)+ u' ชั่วโมง') # call spacial funtion to write a text per line.
     gen_single_text(pdf, 90, u'อัตรา 45.45 บาท ชั่วโมง')
     payment = payment * 45.45
-    gen_single_text(pdf, 85, u'รวมเป็นเงินทั้งสิ้น ' + str(payment) +u' บาท')
+    gen_single_text(pdf, 85, u'รวมเป็นเงินทั้งสิ้น ' + str(payment)[:4] +u' บาท')
     gen_single_text(pdf, 85, u'(                                     )')
     gen_single_text(pdf, 90, u'ได้ตรวจสอบถูกต้องแล้ว')
     gen_single_text(pdf, 65, u'ลงชื่อ........................................................................................')
@@ -861,17 +864,9 @@ def create_list_work(request):
 
 def hour_index(request):
     template = 'group3/hour_index.html'
-    userprofile = UserProfile.objects.get(user = request.user)
-    try:
-        employeeObj = HourlyEmployee.objects.get(user=userprofile)
-        print "Old User"
-    except:
-        employeeObj = HourlyEmployee(user=userprofile, employmentRate=45.45)
-        employeeObj.save()
-
     ListWork = create_list_work(request)
     return render(request, template,
-                      {'ListWork':ListWork}
+                      {}
                       )
     
 def add_hour_page(request, workID):
@@ -945,7 +940,11 @@ def search_hour_worker(request):
             context = {}
             user = User.objects.get(username=name)
             profile = UserProfile.objects.get(user=user)
-            worker = HourlyEmployee.objects.get(user=profile)
+            try:    
+                worker = HourlyEmployee.objects.get(user=profile)
+            except:
+                worker = HourlyEmployee(user=profile, employmentRate=45.45)
+                worker.save()
             return HttpResponseRedirect(reverse("group3:returnsearch", args=[worker.id]))
         except:
             template = "group3/hour_index.html"

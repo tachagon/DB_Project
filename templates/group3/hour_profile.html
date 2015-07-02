@@ -3,6 +3,7 @@
 {% block pageHeader %}<h1>ระบบ<small> พนักงานรายชั่วโมง</small></h1>
 <ol class="breadcrumb">
     <li><a href="{% url 'login:menu' %}">เมนู</a></li>
+    <li><a href="{% url 'group3:hour_index' %}">ค้นหา</a></li>
     <li class="active">ระบบพนักงานรายชั่วโมง</li>
 </ol>
 {% endblock %}
@@ -13,6 +14,8 @@
             <a class="btn btn-primary btn-block {{status_on}}" href="{% url 'group3:add_hour_date' employObj.id %}" ><span class="glyphicon glyphicon-plus"></span> บันทึกเเวลาเข้าทำงาน </a>
             <a class="btn btn-primary btn-block {{status_off}}" href="{% url 'group3:add_hour_date2' employObj.id %}"><span class="glyphicon glyphicon-plus"></span> บันทึกเเวลาออกทำงาน </a>
             <a class="btn btn-default btn-block" href="{% url 'group3:hourpdf' employObj.id %}" target = _blank><span class="glyphicon glyphicon-print"></span> พิมพ์ข้อมูล </a>
+            <a class="btn btn-default btn-block" href="{% url 'group3:hour_index' %}" ><span class="glyphicon glyphicon-arrow-left"> ย้อนกลับ</span></a>
+
         </div> <p>{{check}}</p>
         <div class="col-md-9">
             <div class="row">
@@ -70,7 +73,7 @@
                                 </td>
                                 <td data-title="วันที่ เดือน ปี">{{working.releaseDate}}</td>
                                 <td data-title="เวลาทำงาน">{{working.startTime|time:"H.i"}} น.</td>
-                                <td data-title="รวมชั่วโมง">{{working.startTime|time:"H.i"}} - {{ working.endTime|time:"H.i"}}</td>
+                                <td data-title="รวมชั่วโมง">{{working.get_time_diff}}</td>
                                 <td data-title="หมายเหตุ">{{working.note}}</td>
                                 <td data-title="เมนู">
                                     <a class="btn btn-info btn-xs" href="{% url 'group3:add_hour_page' working.id%}">เพิ่ม/แก้ไขหมายเหตุ </a>
