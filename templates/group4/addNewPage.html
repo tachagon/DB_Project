@@ -1,0 +1,176 @@
+{% extends "base.html" %}
+{% block head %}
+<style>
+
+</style>
+{% endblock %}
+
+{% block title %}ระบบการเบิกจ่ายค่ารักษาพยาบาล{% endblock %}
+
+{% block pageHeader %}
+<h2>ระบบ<small>การเบิกจ่ายค่ารักษาพยาบาล</small></h2>
+<ol class="breadcrumb">
+    <li><a href="{% url 'login:menu' %}">เมนู</a></li>
+    <li class="active">สร้างใบเบิกจ่ายค่ารักษาพยาบาล</li>
+</ol>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="container-fluid">
+        <div class="col-md-1"></div>
+        <div class="col-md-8">
+            <form class="form-horizontal" method="post" action="{%url 'group4:commit'%}">
+                {% csrf_token %}
+                <fieldset disabled>
+                    <b>ข้าพเจ้า </b><input type="text" class="form-control" name='name' value="{{objUsers.firstname_th}} {{objUsers.lastname_th}}"><br>
+                </fieldset>
+                <b>เลขที่บัญชีออมทรัพย์</b><input type="text" class="form-control" name='account_id' required><br>
+                <b>สถานะ</b>
+                <fieldset disabled>
+                    <select class="form-control" name="status" >
+                        <option selected="selected">{{typeUser.position}}</option>
+                    </select><br>
+                </fieldset>
+                <b>ขอเบิกค่ารักษาพยาบาลของ</b><select name='typeWithdraw' class="form-control">
+                <option value="0">ตนเอง</option>
+                <option value="1">พ่อ</option>
+                <option value="2">แม่</option>
+                <option value="3">คู่สมรส</option>
+                <option value="4">ลูก</option>
+                <option value="5" selected="selected">-- Please Select --</option>
+            </select><br>
+
+
+                <b>ป่วยเป็นโรค</b><input type='text' class="form-control" name='disease'><br>
+                <b>ได้รับการตรวจรักษาพยาบาลจาก</b><input type='text' class="form-control" name='hospital'><br>
+                <b>เป็นสถานพยบาลของ</b>
+                <select class="form-control" name='hospitalOf'>
+                    <option value="0">ของทางราชการ</option>
+                    <option value="1">เอกชน</option>
+                    <option value="2" selected="selected">-- Please Select --</option>
+                </select><br>
+                <b>ตั้งแต่วันที่</b><input type='date' class="form-control" name='startDate'><br>
+                <b>ถึงวันที่</b><input type='date' class="form-control" name='stopDate'><br>
+                <b>เป็นเงินรวมทั้งสิ้น(บาท)</b><input type='text' class="form-control" name='value'><br>
+                <b>(จำนวนเงินเป็นภาษาไทย)</b><input type='text' class="form-control" name='valueChar'><br>
+                <b>ตามใบเสร็จรับเงินที่แนบจำนวน</b><input type='text' class="form-control" name='numBill'><br>
+
+                <div><br>
+                    <div class="container-fluid">
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li role="presentation" class="active"><a href="#self" aria-controls="self" role="tab" data-toggle="tab">ตนเอง</a></li>
+                            <li role="presentation"><a href="#father" aria-controls="father" role="tab" data-toggle="tab">พ่อ</a></li>
+                            <li role="presentation"><a href="#mother" aria-controls="mother" role="tab" data-toggle="tab">แม่</a></li>
+                            <li role="presentation"><a href="#spouse" aria-controls="spouse" role="tab" data-toggle="tab">คู่สมรส</a></li>
+                            <li role="presentation"><a href="#child" aria-controls="child" role="tab" data-toggle="tab">ลูก</a></li>
+                        </ul><br>
+                        <div class="col-md-2"></div>
+                        <div class="col-md-8">
+                            <div class="tab-content">
+                                <div role="tabpanel" class="tab-pane active" id="self">
+                                    <select name="selfClaim" class="form-control">
+                                        <b>ข้าพเจ้า</b>
+                                        <option value="0"></option>
+                                        <option value="1">ไม่มีสิทธิได้รับค่ารักษาพยาบาลจากหน่วยงานอื่น</option>
+                                        <option value="2">มีสิทธิได้รับค่ารักษาพยาบาลจากหน่วยงานอื่นแต่เลือกใช้สิทธิจากทางราชการ</option>
+                                        <option value="3">มีสิทธิได้รับค่ารักษาพยาบาลตามสัญญาประกันภัย</option>
+                                        <option value="4">เป็นผู้ใช้สิทธิเบิกค่ารักษาพยาบาลสำหรับบุตรแต่เพียงฝ่ายเดียว</option>
+                                    </select><br><br>
+                                </div>
+
+                                <div role="tabpanel" class="tab-pane" id="father">
+                                    <b>ชื่อ</b><input type='text' class="form-control" name='firstnameFam1'><br>
+                                    <b>นามสกุล</b><input type='text' class="form-control" name='lastnameFam1'><br>
+                                    <b>เลขบัตรประจำตัวประชาชน</b><input type='text' class="form-control" name='pidFam1'><br>
+                                    <b>สิทธิของบุคคลที่ข้าพเจ้าเบิกให้</b>
+                                    <select name="familyClaim1" class="form-control">
+                                        <option value="0"></option>
+                                        <option value="1">ไม่มีสิทธิได้รับค่ารักษาพยาบาลจากหน่วยงานอื่น</option>
+                                        <option value="2">มีสิทธิได้รับค่ารักษาพยาบาลจากหน่วยงานอื่นแตค่ารักษาพยาบาลที่ได้รับต่ำกว่าสิทธิตามพระราชกฤษฎีกา</option>
+                                        <option value="3">มีสิทธิได้รับค่ารักษาพยาบาลตามสัญญาประกันภัย</option>
+                                        <option value="4">มีสิทธิได้รับค่ารักษาพยาบาลจากหน่วยงานอื่นในฐานะเป็นผู้อาศัยสิทธิของผู้อื่น</option>
+                                    </select><br><br>
+                                </div>
+
+
+
+                                <div role="tabpanel" class="tab-pane" id="mother">
+                                    <b>ชื่อ</b><input type='text' class="form-control" name='firstnameFam2'><br>
+                                    <b>นามสกุล</b><input type='text' class="form-control" name='lastnameFam2'><br>
+                                    <b>เลขบัตรประจำตัวประชาชน</b><input type='text' class="form-control" name='pidFam2'><br>
+                                    <b>สิทธิของบุคคลที่ข้าพเจ้าเบิกให้</b>
+                                    <select name="familyClaim2" class="form-control">
+                                        <option value="0"></option>
+                                        <option value="1">ไม่มีสิทธิได้รับค่ารักษาพยาบาลจากหน่วยงานอื่น</option>
+                                        <option value="2">มีสิทธิได้รับค่ารักษาพยาบาลจากหน่วยงานอื่นแตค่ารักษาพยาบาลที่ได้รับต่ำกว่าสิทธิตามพระราชกฤษฎีกา</option>
+                                        <option value="3">มีสิทธิได้รับค่ารักษาพยาบาลตามสัญญาประกันภัย</option>
+                                        <option value="4">มีสิทธิได้รับค่ารักษาพยาบาลจากหน่วยงานอื่นในฐานะเป็นผู้อาศัยสิทธิของผู้อื่น</option>
+                                    </select><br><br>
+                                </div>
+
+                                <div role="tabpanel" class="tab-pane" id="spouse">
+                                    <b>ชื่อ</b><input type='text' class="form-control" name='firstnameFam3'><br>
+                                    <b>นามสกุล</b><input type='text' class="form-control" name='lastnameFam3'><br>
+                                    <b>เลขบัตรประจำตัวประชาชน</b><input type='text' class="form-control" name='pidFam3'><br>
+                                    <b>ที่ทำงาน</b><input type='text' class="form-control" name='officeFam3'><br>
+                                    <b>ตำแหน่ง</b><input type='text' class="form-control" name='positionFam3'><br>
+                                    <b>สิทธิของบุคคลที่ข้าพเจ้าเบิกให้</b>
+                                    <select name="familyClaim3" class="form-control">
+                                        <option value="0"></option>
+                                        <option value="1">ไม่มีสิทธิได้รับค่ารักษาพยาบาลจากหน่วยงานอื่น</option>
+                                        <option value="2">มีสิทธิได้รับค่ารักษาพยาบาลจากหน่วยงานอื่นแตค่ารักษาพยาบาลที่ได้รับต่ำกว่าสิทธิตามพระราชกฤษฎีกา</option>
+                                        <option value="3">มีสิทธิได้รับค่ารักษาพยาบาลตามสัญญาประกันภัย</option>
+                                        <option value="4">มีสิทธิได้รับค่ารักษาพยาบาลจากหน่วยงานอื่นในฐานะเป็นผู้อาศัยสิทธิของผู้อื่น</option>
+                                    </select><br><br>
+                                </div>
+
+                                <div role="tabpanel" class="tab-pane" id="child">
+                                    <b>ชื่อ</b><input type='text' class="form-control" name='firstnameFam4'><br>
+                                    <b>นามสกุล</b><input type='text' class="form-control" name='lastnameFam4'><br>
+                                    <b>เลขบัตรประจำตัวประชาชน</b><input type='text' class="form-control" name='pidFam4'><br>
+                                    <b>เกิดเมื่อ</b><input type='date' class="form-control" name='birthDateFam4'><br>
+                                    <b>เป็นบุตลำดับที่(ของบิดา)</b><input type='text' class="form-control" name='orderF4'><br>
+                                    <b>เป็นบุตรลำดับที่(ของมารดา)</b><input type='text' class="form-control" name='orderM4'><br>
+                                    <b>เป็นบุตรไร้ความสามารถหรือเสมือนไร้ความสามารถ</b>
+                                    <select name="disable4" class="form-control">
+                                        <option value="0"></option>
+                                        <option value="1">เป็นบุตรไร้ความสามารถหรือเสมือนไร้ความสามารถ</option>
+                                    </select><br><br>
+                                    <b>สิทธิของบุคคลที่ข้าพเจ้าเบิกให้</b>
+                                    <select name="familyClaim4" class="form-control">
+                                        <option value="0"></option>
+                                        <option value="1">ไม่มีสิทธิได้รับค่ารักษาพยาบาลจากหน่วยงานอื่น</option>
+                                        <option value="2">มีสิทธิได้รับค่ารักษาพยาบาลจากหน่วยงานอื่นแตค่ารักษาพยาบาลที่ได้รับต่ำกว่าสิทธิตามพระราชกฤษฎีกา</option>
+                                        <option value="3">มีสิทธิได้รับค่ารักษาพยาบาลตามสัญญาประกันภัย</option>
+                                        <option value="4">มีสิทธิได้รับค่ารักษาพยาบาลจากหน่วยงานอื่นในฐานะเป็นผู้อาศัยสิทธิของผู้อื่น</option>
+                                    </select><br><br>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2"></div>
+                    </div>
+                </div>
+
+                <b>ข้าพเจ้ามีสิทธิ์ได้รับเงินสวัสดิการเกี่ยวกับการรักษาพยาบาล ตามพระราชกฤษฎีกาเงินสวัสดิการการรักษาพยาบาล</b>
+                <select name="claim" class="form-control">
+                    <option value="0"></option>
+                    <option value="1">ตามสิทธิ</option>
+                    <option value="2">เฉพาะส่วนที่ขาดอยู่จากสิทธิที่ได้รับจากหน่วยงานอื่น</option>
+                    <option value="3">เฉพาะส่วนที่ขาดอยู่จากสัญญาประกันภัย</option>
+                </select><br>
+                <b>เป็นเงิน(บาท)</b><input type='text' class="form-control" name='credit'><br>
+                <b>(จำนวนเงินภาษาไทย)</b><input type='text' class="form-control" name='creditChar'><br>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+        <div class="col-md-3"></div><br><br>
+
+    </div>
+</div>
+
+
+{% endblock %}
+
+

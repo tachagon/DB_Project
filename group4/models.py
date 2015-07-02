@@ -23,7 +23,7 @@ class Family(models.Model):
 
 
 class Withdraw(models.Model):
-    user        = models.OneToOneField(UserProfile)
+    user        = models.ForeignKey(UserProfile)
     account_id  = models.CharField(max_length=255)
     disease     = models.CharField(max_length=255)
     hospital    = models.CharField(max_length=255)
@@ -33,7 +33,7 @@ class Withdraw(models.Model):
     )
     hospitalOf = models.CharField(max_length=1, choices=hospitalOfChoices)
     startDate   = models.DateField()
-    stopData    = models.DateField()
+    stopDate    = models.DateField()
     value       = models.FloatField()
     valueChar   = models.CharField(max_length=255)
     numBill     = models.IntegerField(max_length=10)
@@ -66,21 +66,21 @@ class Withdraw(models.Model):
     familyClaim = models.CharField(max_length=1, choices=familyClaimChoices)
     typeWithdrawChoices = (
         ('0', 'ตนเอง'),
-        ('1', 'พ่อ่'),
+        ('1', 'พ่อ'),
         ('2', 'แม่'),
         ('3', 'คู่สมรส'),
         ('4', 'ลูก'),
     )
     typeWithdraw = models.CharField(max_length=1, choices=typeWithdrawChoices)
+    dateCommit  = models.DateTimeField(auto_now=True)
 
 class Spouse(models.Model):
     family      = models.OneToOneField(Family)
     office      = models.CharField(max_length=255)
     position    = models.CharField(max_length=255)
 
-
 class Child(models.Model):
-    family      = models.OneToOneField(Family)
+    family      = models.ForeignKey(Family)
     birthDate   = models.DateField()
     orderF      = models.IntegerField(max_length=10)
     orderM      = models.IntegerField(max_length=10)
@@ -91,7 +91,10 @@ class Child(models.Model):
     disable = models.CharField(max_length=1, choices=disableChoices)
 
 class DataFromWeb(models.Model):
-    user = models.OneToOneField(UserProfile)
-    date = models.DateField()
+    user = models.ForeignKey(UserProfile)
+    date = models.CharField(max_length=255)
     account_id = models.CharField(max_length=50)
     price = models.FloatField()
+
+class Olddate(models.Model):
+    date = models.CharField(max_length=255)

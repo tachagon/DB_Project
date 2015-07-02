@@ -4,7 +4,7 @@ from group4.models import *
 
 
 class WithdrawAdmin(admin.ModelAdmin):
-    list_display = ('account_id','disease')
+    list_display = ('id','account_id','disease','dateCommit')
 
 
 admin.site.register(Withdraw, WithdrawAdmin)
@@ -12,3 +12,4 @@ admin.site.register(Family)
 admin.site.register(Spouse)
 admin.site.register(Child)
 admin.site.register(DataFromWeb)
+admin.site.register(Olddate)
