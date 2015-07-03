@@ -15,7 +15,7 @@
     <div class="row">
         <div class="col-md-4"></div>
         <div class="col-md-4">
-            <form class="form-horizontal" method="get" action="{%url 'group3:add_hour_note' work_obj.id%}"> {% csrf_token %}
+            <form class="form-horizontal" method="post" action="{%url 'group3:add_hour_note' work_obj.id%}"> {% csrf_token %}
               <div class="form-group">
                 <label for="inputPassword3" class="col-sm-2 control-label">หมายเหตุ</label>
                 <div class="col-sm-10">

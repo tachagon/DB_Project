@@ -953,7 +953,7 @@ def returnsearch(request, id):
     template = "group3/hour_profile.html"
     context = {}
     worker = HourlyEmployee.objects.get(id=int(id))
-    ListWork = worker.work_set.all().order_by('day')
+    ListWork = worker.work_set.all().order_by('id')
     try:
         profile = worker.user
 
@@ -963,14 +963,14 @@ def returnsearch(request, id):
         context['last_en'] = profile.lastname_en
 
         if profile.department == '0':
-            department = 'ตกงาน'
+            department = ''
         elif profile.department == '1':
             department = 'วิศวกรรมไฟฟ้าและคอมพิวเตอร์'
 
         context['department'] = department
 
         if profile.faculty == '0':
-            faculty = 'โดนทาย'
+            faculty = ''
         elif profile.faculty == '1':
             faculty = 'วิศวกรรมศาสตร์'
 
@@ -1004,12 +1004,12 @@ def returnsearch(request, id):
     )
 
 def add_hour_note(request, workID):
-    workObj = Work.objects.get(pk=int(workID))
-    if 'input_note_hour' in request.GET:
-        workObj.note = request.GET['input_note_hour']
+    if request.method == 'POST':
+        workObj = Work.objects.get(id=int(workID))
+        workObj.note = request.POST['input_note_hour']
         workObj.save()
-    employee = workObj.employee
-    return HttpResponseRedirect(reverse('group3:returnsearch', args=[employee.id]))
+        employee = workObj.employee
+        return HttpResponseRedirect(reverse('group3:returnsearch', args=[employee.id]))
 
 def add_hour_date(request, employeeID):
     employee = HourlyEmployee.objects.get(id=employeeID)

@@ -72,7 +72,7 @@
                                     {% ifequal working.day|date:"l" "Sunday" %}วันอาทิตย์{%endifequal%}
                                 </td>
                                 <td data-title="วันที่ เดือน ปี">{{working.releaseDate}}</td>
-                                <td data-title="เวลาทำงาน">{{working.startTime|time:"H.i"}} น.</td>
+                                <td data-title="เวลาทำงาน">{{working.startTime|time:"H.i"}} น.{% if working.endTime|time:"H.i" != '00.00' %} - {{working.endTime|time:"H.i"}} น.{% endif %}</td>
                                 <td data-title="รวมชั่วโมง">{{working.get_time_diff}}</td>
                                 <td data-title="หมายเหตุ">{{working.note}}</td>
                                 <td data-title="เมนู">
