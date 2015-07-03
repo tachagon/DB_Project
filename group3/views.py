@@ -942,7 +942,7 @@ def search_hour_worker(request):
             template = "group3/hour_index.html"
             context = {}
             context["error"] = "โปรดตรวจสอบ username ใหม่อีกครั้ง"
-
+            
         return render(
             request,
             template,
@@ -954,6 +954,7 @@ def returnsearch(request, id):
     context = {}
     worker = HourlyEmployee.objects.get(id=int(id))
     ListWork = worker.work_set.all().order_by('id')
+    print ListWork[0].releaseDate
     try:
         profile = worker.user
 
