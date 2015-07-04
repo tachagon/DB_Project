@@ -748,6 +748,16 @@ def hourpdf(request, employeeID): # use to see working of temporary employee.
         pdf.ln(8)
         payment = payment + (float(str(diff_min_100)[:4]) + float(diff_hour))
         
+    
+    index_str = 0
+    show_complete_pay = ''
+    for i in str(payment)[:4][::-1]:
+        index_str = index_str + 1
+        if (index_str % 3) == 0:
+            show_complete_pay = ',' + i + show_complete_pay 
+        else:
+            show_complete_pay = i + show_complete_pay 
+    
     gen_single_text(pdf, 90, u'รวมจำนวนชั่วโมง ' +str(show_payment)+ u' ชั่วโมง') # call spacial funtion to write a text per line.
     gen_single_text(pdf, 90, u'อัตรา 45.45 บาท ชั่วโมง')
     payment = payment * 45.45
