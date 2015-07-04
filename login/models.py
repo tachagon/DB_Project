@@ -68,7 +68,9 @@ class Student(models.Model):
     schemeChoices = (
         ('0', 'หลักสูตรปรับปรุง Cpr.E 54'),
         ('1', 'หลักสูตรปรับปรุง EE 51'),
-        ('2', 'หลักสูตรปรับปรุง ECE 55')
+        ('2', 'หลักสูตรปรับปรุง ECE 55'),
+        ('3', 'หลักสูตรมหาบัณฑิต 55'),      # ของ ป.โท
+        ('4', 'หลักสูตรดุษฎีบัณฑิต 55')       # ของ ป.เอก
     )
     scheme = models.CharField(max_length=1, choices=schemeChoices)  # 3. scheme หลักสูตร
 
