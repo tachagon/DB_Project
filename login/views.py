@@ -6,6 +6,7 @@ from django.core.urlresolvers import reverse
 from login.forms import *
 from login.models import *
 from django.contrib.auth.models import User
+from datetime import datetime
 
 # Create your views here.
 def index(request):
@@ -205,8 +206,9 @@ def user_register(request):
         religion        = request.POST['religion']          # get 20. religion
         blood_type      = request.POST['blood_type']        # get 21. blood_type
         birthDate       = request.POST['birthDate']         # get 22. birthDate
-        password        = request.POST['password']          # get 23. password
-        check_password  = request.POST['check_password']    # get 24. check_password
+        prefix_name     = request.POST['prefix_name']       # get 23. prefix_name
+        password        = request.POST['password']          # get 24. password
+        check_password  = request.POST['check_password']    # get 25. check_password
 
         # errors 1: User fill invalid password
         if password != check_password:
@@ -248,34 +250,37 @@ def user_register(request):
 
             # create new UserProfile object
             newUserProfile = UserProfile(
-                user = newUser,
-                firstname_th    = firstname_th,
-                lastname_th     = lastname_th,
-                firstname_en    = firstname_en,
-                lastname_en     = lastname_en,
-                address         = address,
-                office          = office,
-                tel             = tel,
-                ext             = ext,
-                department      = department,
-                faculty         = faculty,
-                type            = '0' # type '0' is Student
+                user            = newUser,          # set 1. user
+                # set 2. website
+                # set 3. picture
+                firstname_th    = firstname_th,     # set 4. first name in Thai
+                lastname_th     = lastname_th,      # set 5. last name in Thai
+                firstname_en    = firstname_en,     # set 6. first name in English
+                lastname_en     = lastname_en,      # set 7. last name in English
+                address         = address,          # set 8. address
+                office          = office,           # set 9. office
+                tel             = tel,              # set 10. telephone number
+                ext             = ext,              # set 11. ต่อ สำหรับเบอร์โทร
+                department      = department,       # set 12. department
+                faculty         = faculty,          # set 13. faculty
+                type            = '0',              # set 14. type '0' is Student
+                prefix_name     = prefix_name       # set 15. prefix_name
             )
             newUserProfile.save() # save new UserProfile object into database
 
             # create new Student object
             newStudent = Student(
-                userprofile     = newUserProfile,
-                std_id          = std_id,
-                scheme          = scheme,
-                main            = main,
-                sex             = sex,
-                degree          = degree,
-                id_number       = id_number,
-                nationality     = nationality,
-                religion        = religion,
-                blood_type      = blood_type,
-                birthDate       = birthDate
+                userprofile     = newUserProfile,   # set 1. user profile
+                std_id          = std_id,           # set 2. student id
+                scheme          = scheme,           # set 3. scheme หลักสูตร
+                main            = main,             # set 4. main สาขา
+                sex             = sex,              # set 5. sex
+                degree          = degree,           # set 6. degree
+                id_number       = id_number,        # set 7. เลขประจำตัวประชาชน
+                nationality     = nationality,      # set 8. เชื้อชาติ
+                religion        = religion,         # set 9. ศาสนา
+                blood_type      = blood_type,       # set 10. หมู่เลือด
+                birthDate       = birthDate         # set 11. วันเกิด
             )
             newStudent.save() # save new Srudent object into database
 
@@ -311,6 +316,23 @@ def user_register(request):
                     del context['std_id']
                 elif error == 4:
                     del context['id_number']
+
+    return render(
+        request,
+        template,
+        context
+    )
+
+def testDateField(request):
+    template = 'login/test_date_field.html'
+    context = {}
+
+    if request.method == 'POST':
+        date = request.POST['date']     # ตัวที่ได้มาจากหน้าเว็บรูปแบบจะเป็น วัน-เดือน-ปี
+
+        # ทำการแปลงให้เป็น ปี-เดือน-วัน แล้วเป็นเป็นตัวแปรประเภท datetime.date ให้พร้อมสำหรับบันทึกลง database
+        valid_date = datetime.strptime(date, '%d-%m-%Y').date()
+        print ">>> ", valid_date, " ", type(valid_date), " <<<"
 
     return render(
         request,
