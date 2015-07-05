@@ -249,7 +249,7 @@ def create_3forms_add(request):
                     date = dateST.split("-")
                     if len(date) != 3:
                         error = True
-                        error_dateST = "*กรุณาตรวจสอบวันที่ใหม่2"
+                        error_dateST = "*กรุณาตรวจสอบวันที่ใหม่"
                 if process1 == "":
                     error_process = "*กรุณาระบุขั้นตอนการดำเนินงาน อย่างน้อย 1 ขั้นตอน" #If empty set error message and error to true
                     error = True
@@ -564,7 +564,7 @@ def edit_3forms_update(request, pjID):
                         else:
                             error_student.append(("*เลขประจำตัว "+str(studentID)+" มีอยู่แล้ว"))
                         error = True
-                if numOP != len(s_list):
+                if int(numOP) != len(s_list):
                     error == True
                 if dateST == "":
                     error = True
@@ -573,7 +573,7 @@ def edit_3forms_update(request, pjID):
                     date = dateST.split("-")
                     if len(date) != 3:
                         error = True
-                        error_dateST = "*กรุณาตรวจสอบวันที่ใหม่2"
+                        error_dateST = "*กรุณาตรวจสอบวันที่ใหม่"
                 if process1 == "":
                     error_process = "*กรุณาระบุขั้นตอนการดำเนินงาน อย่างน้อย 1 ขั้นตอน" #If empty set error message and error to true
                     error = True

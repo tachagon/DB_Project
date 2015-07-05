@@ -12,6 +12,11 @@ class ProjectG6(models.Model):
     scope = models.TextField()
     benefit = models.TextField()
 
+class CategoriesProject(models.Model):
+    project = models.ForeignKey(ProjectG6) #Link to Project entity one to one
+    project_catagories = models.CharField(max_length=5, null=True)
+    teacher =models.ManyToManyField(Teacher) #link to Student many to many
+
 class ResearchProjectForm(models.Model):
     project = models.ForeignKey(ProjectG6) #Link to Project entity one to one
     numberOfPeople = models.IntegerField(default = 1)
