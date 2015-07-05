@@ -211,6 +211,13 @@ def addProf(request):
         department  = request.POST['department']
         faculty     = request.POST['faculty']
 
+        # check profID is duplicate
+        try:
+            prof = Prof2Lang.objects.get(profID = profID)
+            return HttpResponseRedirect(reverse('group3:prof2lang_add', args=['2']))
+        except:
+            pass
+
         try:
             # create new Prof2Lang object
             newProf = Prof2Lang(

@@ -169,7 +169,13 @@ def prof_update(request, profID):
 
 def prof_delete(request, profID):
     try:
-        prof = Prof2Lang.objects.get(profID = profID)
+        prof = Prof2Lang.objects.get(profID = profID)   # get Prof2Lang object
+        teachList = prof.teach_set.all()                # get all Teach of this Prof2Lang object
+        # set all Teach of this Prof2Lang as None
+        for teach in teachList:
+            teach.prof = None
+            teach.save()
+        # delete this Prof2Lang object
         prof.delete()
     except:
         pass
