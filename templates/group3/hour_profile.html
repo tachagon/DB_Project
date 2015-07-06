@@ -63,15 +63,32 @@
                             <tbody>
                             <tr>
                                 <td data-title="วัน">
-                                    {% ifequal working.day|date:"l" "Monday" %}วันจันทร์{%endifequal%}
-                                    {% ifequal working.day|date:"l" "Tuesday" %}วันอังคาร{%endifequal%}
-                                    {% ifequal working.day|date:"l" "Wednesday" %}วันพุธ{%endifequal%}
-                                    {% ifequal working.day|date:"l" "Thursday" %}วันพฤหัสบดี{%endifequal%}
-                                    {% ifequal working.day|date:"l" "Friday" %}วันศุกร์{%endifequal%}
-                                    {% ifequal working.day|date:"l" "Saturday" %}วันเสาร์{%endifequal%}
-                                    {% ifequal working.day|date:"l" "Sunday" %}วันอาทิตย์{%endifequal%}
+                                    {% ifequal working.day|date:"l" "Monday" %}จันทร์{%endifequal%}
+                                    {% ifequal working.day|date:"l" "Tuesday" %}อังคาร{%endifequal%}
+                                    {% ifequal working.day|date:"l" "Wednesday" %}พุธ{%endifequal%}
+                                    {% ifequal working.day|date:"l" "Thursday" %}พฤหัสบดี{%endifequal%}
+                                    {% ifequal working.day|date:"l" "Friday" %}ศุกร์{%endifequal%}
+                                    {% ifequal working.day|date:"l" "Saturday" %}เสาร์{%endifequal%}
+                                    {% ifequal working.day|date:"l" "Sunday" %}อาทิตย์{%endifequal%}
                                 </td>
-                                <td data-title="วันที่ เดือน ปี">{{working.releaseDate}}</td>
+                                <td data-title="วันที่ เดือน ปี">{{working.releaseDate|date:"j"}}
+                                
+                                    {% ifequal working.releaseDate|date:"F" "January" %} มกราคม {%endifequal%}
+                                    {% ifequal working.releaseDate|date:"F" "February" %} กุมภาพันธ์ {%endifequal%}
+                                    {% ifequal working.releaseDate|date:"F" "March" %} มีนาคม {%endifequal%}
+                                    {% ifequal working.releaseDate|date:"F" "April" %} เมษายน {%endifequal%}
+                                    {% ifequal working.releaseDate|date:"F" "May" %} พฤษภาคม {%endifequal%}
+                                    {% ifequal working.releaseDate|date:"F" "June" %} มิถุนายน {%endifequal%}
+                                    {% ifequal working.releaseDate|date:"F" "July" %} กรกฎาคม {%endifequal%}
+                                    {% ifequal working.releaseDate|date:"F" "August" %} สิงหาคม {%endifequal%}
+                                    {% ifequal working.releaseDate|date:"F" "September" %} กันยายน {%endifequal%}
+                                    {% ifequal working.releaseDate|date:"F" "October" %} ตุลาคม {%endifequal%}
+                                    {% ifequal working.releaseDate|date:"F" "November" %} พฤศจิกายน {%endifequal%}
+                                    {% ifequal working.releaseDate|date:"F" "December" %} ธันวาคม {%endifequal%}
+                                    
+                                                                                                พ.ศ. {{working.releaseDate|date:"Y"|add:"543" }}
+                        
+                                </td>
                                 <td data-title="เวลาทำงาน">{{working.startTime|time:"H.i"}} น.{% if working.endTime|time:"H.i" != '00.00' %} - {{working.endTime|time:"H.i"}} น.{% endif %}</td>
                                 <td data-title="รวมชั่วโมง">{{working.get_time_diff}}</td>
                                 <td data-title="หมายเหตุ">{{working.note}}</td>
