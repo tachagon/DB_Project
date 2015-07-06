@@ -299,7 +299,7 @@ def genpdf(request, profID): # use to generate pdf file for lend another teacher
     pdf.add_font('DejaVu', '', 'DejaVuSansCondensed.ttf', uni=True)  # add font
     pdf.set_font('DejaVu', '', 14)              # set font and font size
     
-    pdf.image('group3/trarachakarn.png',20,20,20)   # insert image
+    pdf.image('group3/trarachakarn.png',30,25,15)   # insert image
     pdf.ln(25)    # new line
     
     proID = ''
@@ -402,59 +402,94 @@ def genpdf(request, profID): # use to generate pdf file for lend another teacher
         day = 'None'
         
     pdf.add_font('THSarabun Bold', '', 'THSarabun Bold.ttf', uni=True)  # thai font bold
-    pdf.set_font('THSarabun Bold', '', 18)  
-    pdf.cell(0, 10, u'                         บันทึกข้อความ')
+    pdf.set_font('THSarabun Bold', '', 29)
+    pdf.cell(72, 10, u'')
+    pdf.cell(0, 10, u' บันทึกข้อความ')
+    pdf.line(105, 0, 105, 290)
+    pdf.line(126, 0,126, 80)
+    pdf.line(30, 0, 30, 290)
+    pdf.line(190, 0, 190, 290)
     pdf.ln(10)
-    pdf.add_font('THSarabun', '', 'THSarabun.ttf', uni=True)  # thai font
+    pdf.add_font('THSarabun Bold', '', 'THSarabun Bold.ttf', uni=True)  # thai font
+    pdf.set_font('THSarabun Bold', '', 20)
+    pdf.cell(19, 10, u'')
+    pdf.cell(22, 10, u'ส่วนราชการ')
+    pdf.add_font('THSarabun', '', 'THSarabun.ttf', uni=True)
     pdf.set_font('THSarabun', '', 16)
-    pdf.cell(0, 10, u'         ส่วนราชการ ภาควิชาวิศวกรรมไฟฟ้าและคอมพิวเตอร์ คณะวิศวกรรมศาสตร์  โทร. ๘๕๑๘')
+    pdf.cell(0, 11, u'  ภาควิชาวิศวกรรมไฟฟ้าและคอมพิวเตอร์ คณะวิศวกรรมศาสตร์  โทร. ๘๕๑๘')
     pdf.line(46,52,180,52)
     pdf.ln(8)
-    pdf.cell(0, 10, u'         ที่                                                    วันที่  ')
+    pdf.add_font('THSarabun Bold', '', 'THSarabun Bold.ttf', uni=True)
+    pdf.set_font('THSarabun Bold','', 20)
+    pdf.cell(19, 10, u'')
+    pdf.cell(75, 10, u'ที่')
+    pdf.cell(0, 10, u'วันที่')
     pdf.line(30,60,180,60)
     pdf.ln(8)
-    pdf.cell(0, 10, u'         เรื่อง การจัดการเรียนการสอนสำหรับนักศึกษาโครงการพิเศษ(สองภาษา) ')
+    pdf.cell(19, 10, u'')
+    pdf.cell(11, 10, u'เรื่อง')
+    pdf.add_font('THSarabun', '', 'THSarabun.ttf', uni=True)
+    pdf.set_font('THSarabun', '', 16)
+    pdf.cell(0, 11, u'การจัดการเรียนการสอนสำหรับนักศึกษาโครงการพิเศษ(สองภาษา)')
     pdf.line(30,68,180,68)
     pdf.ln(8)
-    pdf.cell(0, 10, u'         เรียน หัวหน้าภาควิชา ')
+    pdf.add_font('THSarabun Bold', '', 'THSarabun Bold.ttf', uni=True)
+    pdf.set_font('THSarabun Bold','', 20)
+    pdf.cell(19, 10, u'')
+    pdf.cell(10, 10, u'เรียน')
+    pdf.add_font('THSarabun', '', 'THSarabun.ttf', uni=True)
+    pdf.set_font('THSarabun', '', 16)
+    pdf.cell(24, 11, u'หัวหน้าภาควิชา' + department)
     pdf.ln(8)
-    pdf.cell(0, 10, u'                     ตามที่ภาควิชาวิศวกรรมไฟฟ้าและคอมพิวเตอร์  ได้ขอรับบริการจัดการเรียนการสอนจากท่านในราย')
+    pdf.cell(45, 10, u'')
+    pdf.cell(0, 10, u'ตามที่ภาควิชาวิศวกรรมไฟฟ้าและคอมพิวเตอร์  ได้ขอรับบริการจัดการเรียนการสอนจาก')
     pdf.ln(8)
-    pdf.cell(20, 10, u'         วิชา                                                                 สำหรับนักศึกษาโครงการพิเศษ (สองภาษา) ')
+    pdf.cell(19, 10, u'')
+    pdf.cell(23, 10, u'ท่านในรายวิชา                                                              สำหรับนักศึกษาโครงการพิเศษ (สองภาษา) ')
     pdf.cell(20, 10, u'' + subjectName + '  '  + subjectID) 
     pdf.ln(8)
-    pdf.cell(0, 10, u'         ภาคเรียนที่ .........  นั้น')
+    pdf.cell(19, 10, u'')
+    pdf.cell(0, 10, u'ภาคเรียนที่ .........  นั้น')
     pdf.ln(8)
-    pdf.cell(0, 10, u'                    ภาควิชาวิศวกรรมไฟฟ้าและคอมพิวเตอร์  ขอให้ท่านยืนยันการจัดการเรียนการสอนในรายวิชาดังกล่าว')
+    pdf.cell(45, 10, u'')
+    pdf.cell(0, 10, u'ภาควิชาวิศวกรรมไฟฟ้าและคอมพิวเตอร์  ขอให้ท่านยืนยันการจัดการเรียนการสอนในราย')
     pdf.ln(8)
-    pdf.cell(0, 10, u'         ตามแบบฟอร์มด้านล่าง พร้อมตารางสอนและใบเบิกค่าสอนของอาจารย์ผู้สอนและส่งคืนกลับภาควิชาวิศวกรรม ')
+    pdf.cell(19, 0, u'')
+    pdf.cell(0, 10, u'วิชาดังกล่าว  ตามแบบฟอร์มด้านล่าง พร้อมตารางสอนและใบเบิกค่าสอนของอาจารย์ผู้สอน  และส่งคืนกลับ ')
     pdf.ln(8)
-    pdf.cell(0, 10, u'         ไฟฟ้าและคอมพิวเตอร์  เพื่อจะได้ดำเนินการในส่วนที่เกี่ยวข้องต่อไป')
+    pdf.cell(19, 0, u'')
+    pdf.cell(0, 10, u'วิภาคชาวิศวกรรมไฟฟ้าและคอมพิวเตอร์  เพื่อจะได้ดำเนินการในส่วนที่เกี่ยวข้องต่อไป')
     pdf.ln(8)
-    pdf.cell(0, 10, u'                        จึงเรียนมาเพื่อโปรดทราบ')
+    pdf.cell(45, 10, u'')
+    pdf.cell(0, 10, u'จึงเรียนมาเพื่อโปรดทราบ')
     pdf.ln(20)
-    pdf.cell(100, 10, u'')
+    pdf.cell(107, 10, u'')
     pdf.cell(100, 10, u'(ดร.นภดล   วิวัชรโกเศศ)')
     pdf.ln(8)
-    pdf.cell(90, 10, u'')
+    pdf.cell(94, 10, u'')
     pdf.cell(90, 10, u'หัวหน้าภาควิศวกรรมไฟฟ้าและคอมพิวเตอร์')
     pdf.ln(14)
-    pdf.cell(0, 10, u'            .........................................................................................................................................................................')
+    pdf.cell(21, 10, u'')
+    pdf.cell(0, 10, u'.........................................................................................................................................................................')
     pdf.ln(8)
+    pdf.cell(8, 10,u'')
     pdf.cell(30, 10, u'         ชื่อผู้สอน                                                    รหัสผู้สอน')
     pdf.cell(80, 10, u'' + firstname + '   '+ lastname)
     pdf.cell(80, 10, u'' + proID)
     pdf.ln(8)
+    pdf.cell(8, 10,u'')
     pdf.cell(30, 10, u'         ภาควิชา')
     pdf.cell(60, 10, u'' + department)
     pdf.cell(20, 10, u'คณะ')
     pdf.cell(20, 10, u'' + faculty)
     pdf.ln(8)
+    pdf.cell(8, 10,u'')
     pdf.cell(30, 10, u'         รหัสวิชา')
     pdf.cell(60, 10, u'' +subjectID)
     pdf.cell(20, 10, u'ชื่อวิชา')
     pdf.cell(20, 10, u'' + subjectName) 
     pdf.ln(8)
+    pdf.cell(8, 10,u'')
     pdf.cell(30, 10, u'         ตอนเรียน')
     pdf.cell(40, 10, u'' + sec)
     pdf.cell(10, 10, u'วัน')
@@ -462,30 +497,31 @@ def genpdf(request, profID): # use to generate pdf file for lend another teacher
     pdf.cell(15, 10, u'เวลา')
     pdf.cell(20, 10, u'' + str(time)[:5] + u' น.')
     pdf.ln(8)
-    pdf.cell(0, 10, u'         ได้จัดการเรียนการสอนเป็น ')
+    pdf.cell(8, 10,u'')
+    pdf.cell(0, 10, u'         ได้ดำเนินการจัดการเรียนการสอนเป็น ')
     pdf.ln(8)
-    pdf.cell(0, 10, u'                           ภาษาอังกฤษ  ')
+    pdf.cell(0, 10, u'                                      ภาษาอังกฤษ  ')
     
-    pdf.rect(37, 219, 3, 3)
+    pdf.rect(52, 219, 3, 3)
     pdf.ln(8)
-    pdf.cell(0, 10, u'                           ภาษาไทย')
-    pdf.rect(37, 227, 3, 3)
+    pdf.cell(0, 10, u'                                      ภาษาไทย')
+    pdf.rect(52, 227, 3, 3)
     
     pdf.ln(8)
-    pdf.cell(100, 10, u'')
+    pdf.cell(94, 10, u'')
     pdf.cell(100, 10, u'ลงชื่อ................................................อาจารย์ผู้สอน ')
     pdf.ln(8)
-    pdf.cell(110, 10, u'')
-    pdf.cell(110, 10, u'(..............................................) ')
-    pdf.ln(8)
     pdf.cell(100, 10, u'')
+    pdf.cell(110, 10, u''+'( '+ firstname +'   '+ lastname+' )' )
+    pdf.ln(8)
+    pdf.cell(94, 10, u'')
     pdf.cell(100, 10, u'ลงชื่อ................................................')
     pdf.ln(8)
-    pdf.cell(110, 10, u'')
+    pdf.cell(100, 10, u'')
     pdf.cell(110, 10, u'(..............................................) ')
     pdf.ln(8)
-    pdf.cell(100, 10, u'')
-    pdf.cell(100, 10, u'หัวหน้าภาควิชา......................................................')
+    pdf.cell(94, 10, u'')
+    pdf.cell(100, 10, u'หัวหน้าภาควิชา' + department)
     pdf.ln(8)
 
     pdf.output("group3/uni.pdf", 'F')
@@ -748,6 +784,16 @@ def hourpdf(request, employeeID): # use to see working of temporary employee.
         pdf.ln(8)
         payment = payment + (float(str(diff_min_100)[:4]) + float(diff_hour))
         
+    
+    index_str = 0
+    show_complete_pay = ''
+    for i in str(payment)[:4][::-1]:
+        index_str = index_str + 1
+        if (index_str % 3) == 0:
+            show_complete_pay = ',' + i + show_complete_pay 
+        else:
+            show_complete_pay = i + show_complete_pay 
+    
     gen_single_text(pdf, 90, u'รวมจำนวนชั่วโมง ' +str(show_payment)+ u' ชั่วโมง') # call spacial funtion to write a text per line.
     gen_single_text(pdf, 90, u'อัตรา 45.45 บาท ชั่วโมง')
     payment = payment * 45.45
@@ -942,7 +988,7 @@ def search_hour_worker(request):
             template = "group3/hour_index.html"
             context = {}
             context["error"] = "โปรดตรวจสอบ username ใหม่อีกครั้ง"
-
+            
         return render(
             request,
             template,
@@ -954,6 +1000,7 @@ def returnsearch(request, id):
     context = {}
     worker = HourlyEmployee.objects.get(id=int(id))
     ListWork = worker.work_set.all().order_by('id')
+    print ListWork[0].releaseDate
     try:
         profile = worker.user
 
