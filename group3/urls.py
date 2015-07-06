@@ -5,6 +5,8 @@ urlpatterns = patterns('',
     # prof only
     url(r'/prof/index/$',       views_prof.prof_index,  name='prof_index'),
     url(r'/prof/add/$',         views_prof.prof_add,    name='prof_add'),
+    url(r'/prof/add/out/$',     views_prof.prof_add_out,name='prof_add_out'),
+    url(r'/prof/add/special/$', views_prof.prof_add_special, name='prof_add_special'),
     url(r'/prof/view/(\w+)/$',  views_prof.prof_view,   name='prof_view'),
     url(r'/prof/update/(\w+)/$',views_prof.prof_update, name='prof_update'),
     url(r'/prof/delete/(\w+)/$',views_prof.prof_delete, name='prof_delete'),

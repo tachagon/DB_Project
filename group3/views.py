@@ -23,6 +23,57 @@ def genProfID():
     else:
         return '1'
 
+def prof_add_in():
+    teachers = Teacher.objects.all()
+    if len(teachers) > 0:
+        for teacher in teachers:
+            profID      = genProfID()                       # 1. profID
+            firstName   = teacher.userprofile.firstname_th  # 2. firstName
+            lastName    = teacher.userprofile.lastname_th   # 3. lastName
+            shortName   = str(teacher.shortname).upper()    # 4. shortName
+            tell        = teacher.userprofile.tel           # 5. tell
+            email       = teacher.userprofile.user.email    # 6. email
+            sahakornAccount = ''                            # 7. sahakornAccount
+            department  = 'วิศวกรรมไฟฟ้าและคอมพิวเตอร์'     # 8. department
+            faculty     = 'วิศวกรรมศาสตร์'                  # 9. faculty
+            type        = '0'                               # 10. type 0 is อาจารย์ในภาค
+            prefix_name = teacher.userprofile.prefix_name   # 11. prefix_name
+            academic_position = teacher.academic_position   # 12. academic_position
+
+            # check prof is duplicate
+            try:
+                prof = Prof2Lang.objects.get(shortName = shortName)
+                # update prof
+                prof.firstName      = firstName         # 2. firstName
+                prof.lastName       = lastName          # 3. lastName
+                prof.shortName      = shortName         # 4. shortName
+                prof.tell           = tell              # 5. tell
+                prof.email          = email             # 6. email
+                prof.sahakornAccount= sahakornAccount   # 7. sahakornAccount
+                prof.department     = department        # 8. department
+                prof.faculty        = faculty           # 9. faculty
+                prof.type           = type              # 10 .type
+                prof.prefix_name    = prefix_name       # 11. prefix_name
+                prof.academic_position=academic_position# 12. academic_position
+                prof.save()
+            except:
+                # add new prof
+                newProf = Prof2Lang(
+                    profID          = profID,           # 1. profID
+                    firstName       = firstName,        # 2. firstName
+                    lastName        = lastName,         # 3. lastName
+                    shortName       = shortName,        # 4, shortName
+                    tell            = tell,             # 5. tell
+                    email           = email,            # 6. email
+                    sahakornAccount = sahakornAccount,  # 7. sahakornAccount
+                    department      = department,       # 8. department
+                    faculty         = faculty,          # 9. faculty
+                    type            = type,             # 10. type
+                    prefix_name     = prefix_name,      # 11. prefix_name
+                    academic_position=academic_position # 12. academic_position
+                )
+                newProf.save()
+
 def getUserType(request):
     user = request.user
     try:
@@ -32,6 +83,7 @@ def getUserType(request):
         return 'admin'
 
 def prof2lang_index(request):
+    prof_add_in()   # add Teacher to Prof2Lang
     template = 'group3/prof2lang_index.html'    # get template
     context = {}
     teachList = Teach.objects.all()     # get all Prof2Lang objects
@@ -50,6 +102,7 @@ def prof2lang_index(request):
     )
 
 def prof2lang_view(request, profID):
+    prof_add_in()   # add Teacher to Prof2Lang
     template = 'group3/prof2lang_view.html'             # get view template
 
     # get current user type
@@ -84,6 +137,7 @@ def prof2lang_view(request, profID):
     )
 
 def prof2lang_add(request, option = '0'):
+    prof_add_in()   # add Teacher to Prof2Lang
     template = 'group3/prof2lang_add.html'
     # get all Prof2Lang objects
     prof2langObj = Prof2Lang.objects.all().order_by('shortName')

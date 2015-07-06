@@ -154,7 +154,7 @@
                     <select class="form-control" name="selectProf" required>
                         <option value="null">ยังไม่เลือกอาจารย์ผู้สอน</option>
                         {% for prof in prof2langObj %}
-                        <option value="{{ prof.profID }}">{{ prof.shortName }}: {{ prof.firstName }} {{ prof.lastName }}</option>
+                        <option value="{{ prof.profID }}">{{ prof.shortName }}&ensp;{{ prof.firstName }}&ensp;{{ prof.lastName }}</option>
                         {% empty %}
                         <option>กรุณาเพิ่มอาจารย์</option>
                         {% endfor %}
