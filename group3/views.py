@@ -333,6 +333,29 @@ def genpdf(request, profID): # use to generate pdf file for lend another teacher
     sec = ''
     time = ''
     day = ''
+    
+    try:
+        academicPosition = teachObj.prof.academic_position
+        if (academicPosition == '0'):
+            academicPosition = u''
+        elif academicPosition == '1':
+            academicPosition = u'ผู้ช่วยศาสตราจารย์'
+        elif academicPosition == '2':
+            academicPosition =  u'รองศาสตราจารย์'
+        else:
+            academicPosition = u'ศาสตราจารย์'             
+    except:
+        academicPosition = ''
+                
+    try:
+        pre_name = teachObj.prof.prefix_name
+        if (pre_name == '0') or (pre_name == '1') or (pre_name == '2'):
+            pre_name = u'อ. '
+        else:
+            pre_name = u'ดร. '
+    except:
+        pre_name = u'อ. '
+    
     try: # check all data for beware blank data.
         proID = teachObj.prof.shortName
     except:
@@ -429,21 +452,26 @@ def genpdf(request, profID): # use to generate pdf file for lend another teacher
     pdf.add_font('THSarabun', '', 'THSarabun.ttf', uni=True)
     pdf.set_font('THSarabun', '', 16)
     pdf.cell(0, 11, u'  ภาควิชาวิศวกรรมไฟฟ้าและคอมพิวเตอร์ คณะวิศวกรรมศาสตร์  โทร. ๘๕๑๘')
-    pdf.line(46,52,180,52)
+    pdf.line(55,52.5,180,52.5)
     pdf.ln(8)
     pdf.add_font('THSarabun Bold', '', 'THSarabun Bold.ttf', uni=True)
     pdf.set_font('THSarabun Bold','', 20)
     pdf.cell(19, 10, u'')
-    pdf.cell(75, 10, u'ที่')
+    pdf.cell(5, 10, u'ที่')
+    pdf.add_font('THSarabun', '', 'THSarabun.ttf', uni=True)
+    pdf.set_font('THSarabun', '', 16)
+    pdf.cell(70, 10, u'   วฟ')
+    pdf.add_font('THSarabun Bold', '', 'THSarabun Bold.ttf', uni=True)
+    pdf.set_font('THSarabun Bold','', 20)
     pdf.cell(0, 10, u'วันที่')
-    pdf.line(30,60,180,60)
+    pdf.line(34,60.5,180,60.5)
     pdf.ln(8)
     pdf.cell(19, 10, u'')
     pdf.cell(11, 10, u'เรื่อง')
     pdf.add_font('THSarabun', '', 'THSarabun.ttf', uni=True)
     pdf.set_font('THSarabun', '', 16)
     pdf.cell(0, 11, u'การจัดการเรียนการสอนสำหรับนักศึกษาโครงการพิเศษ(สองภาษา)')
-    pdf.line(30,68,180,68)
+    pdf.line(40,68.5,180,68.5)
     pdf.ln(8)
     pdf.add_font('THSarabun Bold', '', 'THSarabun Bold.ttf', uni=True)
     pdf.set_font('THSarabun Bold','', 20)
@@ -486,7 +514,7 @@ def genpdf(request, profID): # use to generate pdf file for lend another teacher
     pdf.ln(8)
     pdf.cell(8, 10,u'')
     pdf.cell(30, 10, u'         ชื่อผู้สอน                                                    รหัสผู้สอน')
-    pdf.cell(80, 10, u'' + firstname + '   '+ lastname)
+    pdf.cell(80, 10, u'' + academicPosition +pre_name+ firstname + '   '+ lastname)
     pdf.cell(80, 10, u'' + proID)
     pdf.ln(8)
     pdf.cell(8, 10,u'')
@@ -615,10 +643,34 @@ def genallpdf(request): # grnerate pdf for show all section data.
         # write no.
         for Prof in sec: # access all teacher in each section
             cnt_line += 1
+
+            
+            try:
+                academicPosition = Prof.prof.academic_position
+                if (academicPosition == '0'):
+                    academicPosition = u''
+                elif academicPosition == '1':
+                    academicPosition = u'ผู้ช่วยศาสตราจารย์'
+                elif academicPosition == '2':
+                    academicPosition =  u'รองศาสตราจารย์'
+                else:
+                    academicPosition = u'ศาสตราจารย์'             
+            except:
+                academicPosition = ''
+                
+            try:
+                pre_name = Prof.prof.prefix_name
+                if (pre_name == '0') or (pre_name == '1') or (pre_name == '2'):
+                    pre_name = u'อ. '
+                else:
+                    pre_name = u'ดร. '
+            except:
+                pre_name = u'อ. '
+            
             try:
                 first_name = Prof.prof.firstName
                 last_name = Prof.prof.lastName
-                full_name = first_name + '  ' + last_name
+                full_name = academicPosition+pre_name+first_name + '   ' + last_name
             except:
                 full_name = 'None'
                 
@@ -673,7 +725,7 @@ def genallpdf(request): # grnerate pdf for show all section data.
                 sahakorn = 'None'
                 
             pdf.cell(8, 18, no)
-            pdf.cell(45, 18, full_name)
+            pdf.cell(45, 18,full_name)
             pdf.cell(8, 18, shortname)
             pdf.cell(17, 18, subjectID)
             pdf.cell(45, 18, subject)

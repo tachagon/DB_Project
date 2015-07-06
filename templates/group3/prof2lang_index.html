@@ -43,7 +43,18 @@
                                 {% for teach in teachList %}
                                 <tr>
                                     <td data-title="ลำดับ">{{ forloop.counter }}</td>
-                                    <td data-title="ชื่อ-สกุล">{{ teach.prof }}</td>
+                                    <td data-title="ชื่อ-สกุล">
+                                        {% ifequal teach.prof.prefix_name "0" %}อ.{% endifequal %}
+                                        {% ifequal teach.prof.prefix_name "1" %}อ.{% endifequal %}
+                                        {% ifequal teach.prof.prefix_name "2" %}อ.{% endifequal %}
+                                        {% ifequal teach.prof.prefix_name "3" %}ดร.{% endifequal %}
+                                        
+                                        {% ifequal teach.prof.academic_position "0"%}{% endifequal %}
+                                        {% ifequal teach.prof.academic_position "1"%}ผู้ช่วยศาสตราจารย์{% endifequal %}
+                                        {% ifequal teach.prof.academic_position "2"%}รองศาสตราจารย์{% endifequal %}
+                                        {% ifequal teach.prof.academic_position "3"%}ศาสตราจารย์{% endifequal %}
+                                        
+                                        {{ teach.prof }}</td>
                                     <td data-title="ตัวย่อ">{{ teach.prof.shortName }}</td>
                                     <td data-title="รหัสวิชา">{{ teach.subject.subjectID }}</td>
                                     <td data-title="ชื่อวิชา">{{ teach.subject.subjectName }}</td>
