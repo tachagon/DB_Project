@@ -1,5 +1,5 @@
 from django.conf.urls import patterns, include, url
-from group3 import views, views_prof
+from group3 import views, views_prof, views_hours
 
 urlpatterns = patterns('',
     # prof only
@@ -32,4 +32,9 @@ urlpatterns = patterns('',
     url(r'^add_hour_note/(\d+)/$', views.add_hour_note, name='add_hour_note'),
     url(r'^add_hour_date/(\d+)/$', views.add_hour_date, name='add_hour_date'),
     url(r'^add_hour_date2/(\d+)/$', views.add_hour_date2, name='add_hour_date2'),
+
+    #-------Book-------------#
+    url(r'^add_work/(\d+)/$', views_hours.add_work, name='add_work'),
+
+    #------------------------#
 )
