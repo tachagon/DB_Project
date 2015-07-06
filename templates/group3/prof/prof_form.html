@@ -21,35 +21,63 @@
 {% endblock %}
 
 {% block content %}
-    <!-- check has Prof2Lang object -->
-        <div class="row">
-            <div class="container-fluid">
-                <div class="col-md-2"></div>
-                <div class="col-md-8">
+<!----------------------------------------------------- Nav Tabs ------------------------------------------------------>
+    <div class="row">
+        <div class="container">
+            <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation"><a href="#in" aria-controls="in" role="tab" data-toggle="tab">อาจารย์ในภาควิชา</a></li>
+                <li role="presentation"><a href="#out" aria-controls="out" role="tab" data-toggle="tab">อาจารย์นอกภาควิชา</a></li>
+                <li role="presentation"><a href="#special" aria-controls="special" role="tab" data-toggle="tab">อาจารย์พิเศษ</a></li>
+            </ul>
+        </div><!-- /container -->
+    </div><!-- /row -->
 
-                    {% if successMessage %}
+<!----------------------------------------------------- Tab panes ----------------------------------------------------->
+    <div class="tab-content">
+        <!----------------------------------------------- อาจารย์ในภาค ------------------------------------------------->
+        <div role="tabpanel" class="tab-pane fade" id="in">
+            <br>
+            <div class="row">
+                <div class="container-fluid">
+                    <div class="col-md-2"></div>
+                    <div class="col-mad-8">
+                        อาจารย์ในภาค
+                    </div>
+                    <div class="col-md-2"></div>
+                </div>
+            </div>
+        </div>
+        <!----------------------------------------------- อาจารย์นอกภาค ------------------------------------------------>
+        <div role="tabpanel" class="tab-pane fade" id="out">
+            <br>
+            <div class="row">
+                <div class="container-fluid">
+                    <div class="col-md-2"></div>
+                    <div class="col-md-8">
+
+                        {% if successMessage %}
                         <div class="alert alert-success alert-dismissible" role="alert">
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                             <strong>สำเร็จ!</strong> {{ successMessage }}
                             <a href="{% url 'group3:prof_index' %}" class="alert-link">กลับไปยังอาจารย์ผู้สอนทั้งหมด</a>
                         </div>
-                    {% endif %}
+                        {% endif %}
 
-                    {% for error in errorMessage %}
+                        {% for error in errorMessage %}
                         <div class="alert alert-danger alert-dismissible" role="alert">
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                             <strong>ล้มเหลว!</strong> {{ error }}
                         </div>
-                    {% endfor %}
+                        {% endfor %}
 
-                    <form class="form-horizontal" method="post"
-                    {% if formAction == '0' %}
+                        <form class="form-horizontal" method="post"
+                              {% if formAction == '0' %}
                         action="{% url 'group3:prof_add' %}"
-                    {% endif %}
-                    {% if formAction == '1' %}
+                        {% endif %}
+                        {% if formAction == '1' %}
                         action="{% url 'group3:prof_update' prof.profID %}"
-                    {% endif %}
-                    ><!-- form -->
+                        {% endif %}
+                        ><!-- form -->
 
                         {% csrf_token %}
 
@@ -58,9 +86,9 @@
                             <label class="col-sm-3 control-label"><font color="red">*</font> รหัสอาจารย์: </label>
                             <div class="col-sm-9">
                                 {% if update %}
-                                    <p class="form-control-static">{{ prof.profID }}</p>
+                                <p class="form-control-static">{{ prof.profID }}</p>
                                 {% else %}
-                                    <input type="text" name="profID" value="{{ profID }}" maxlength="10" class="form-control" placeholder="รหัสอาจารย์" title="รหัสอาจารย์" required>
+                                <input type="text" name="profID" value="{{ profID }}" maxlength="10" class="form-control" placeholder="รหัสอาจารย์" title="รหัสอาจารย์" required>
                                 {% endif %}
                             </div>
                         </div>
@@ -127,10 +155,12 @@
                             </div>
                         </div>
 
-                    </form>
-                </div>
-                <div class="col-md-2"></div>
-            </div><!-- /container-fluid -->
-        </div><!-- /row -->
+                        </form>
+                    </div>
+                    <div class="col-md-2"></div>
+                </div><!-- /container-fluid -->
+            </div><!-- /row -->
+        </div>
+    </div>
 
 {% endblock %}

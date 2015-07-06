@@ -14,6 +14,15 @@ from fpdf import FPDF
 
 from django.contrib.auth.models import User
 # Create your views here.
+def genProfID():
+    profList = Prof2Lang.objects.all().order_by('profID')
+    if len(profList) > 0:
+        lastProf = profList[len(profList)-1]
+        id = int(lastProf.profID) + 1
+        return str(id)
+    else:
+        return '1'
+
 def getUserType(request):
     user = request.user
     try:

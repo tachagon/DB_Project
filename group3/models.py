@@ -5,18 +5,41 @@ import datetime, time
 # Create your models here.
 class Prof2Lang(models.Model):
     # the professor ID is primary key
-    profID = models.CharField(primary_key=True, max_length=10)
+    profID = models.CharField(primary_key=True, max_length=10)                      # 1. * profID
     # professor profile
-    firstName = models.CharField(max_length=50)
-    lastName = models.CharField(max_length=80)
-    shortName = models.CharField(max_length=3)
+    firstName = models.CharField(max_length=50)                                     # 2. * firstName
+    lastName = models.CharField(max_length=80)                                      # 3. * lastName
+    shortName = models.CharField(max_length=3)                                      # 4. * shortName
 
-    tell = models.CharField(blank=True, max_length=15)
-    email = models.EmailField(blank=True)
-    sahakornAccount = models.CharField(blank=True, max_length=100)
+    tell = models.CharField(blank=True, max_length=15)                              # 5. tell
+    email = models.EmailField(blank=True)                                           # 6. email
+    sahakornAccount = models.CharField(blank=True, max_length=100, default=True)    # 7. sahakornAccount
 
-    department = models.CharField(max_length=200)
-    faculty = models.CharField(max_length=200)
+    department = models.CharField(max_length=200, blank=True, default="")           # 8. department
+    faculty = models.CharField(max_length=200, blank=True, default="")              # 9. faculty
+
+    typeChoices = (
+        ('0','อาจารย์ในภาควิชา'),
+        ('1','อาจารย์นอกภาควิชา'),
+        ('2','อาจารย์พิเศษ')
+    )
+    type = models.CharField(max_length=1, choices=typeChoices)                      # 10. * type ประเภทอาจารย์
+
+    prefix_name_choices = (
+        ('0', 'นาย'),       # Mr.
+        ('1', 'นาง'),       # Mrs.
+        ('2', 'นางสาว'),    # Miss.
+        ('3', 'ดร.')        # Dr.
+    )
+    prefix_name  = models.CharField(max_length=1, choices=prefix_name_choices)      # 11. * คำนำหน้าชื่อ
+
+    academic_position_choice = (
+        ('0', ''),
+        ('1', 'ผู้ช่วยศาสตราจารย์'),    # ตัวย่อไทย ผศ.  ตัวย่อแบบอเมริกา  Asst.Prof.   มาจาก Assistant Professor
+        ('2', 'รองศาสตราจารย์'),     # ตัวย่อไทย รศ.  ตัวย่อแบบอเมริกา  Assoc.Prof.  มาจาก Associate Professor
+        ('3', 'ศาสตราจารย์')          # ตัวย่อไทย ศ.   ตัวย่อแบบอเมริกา Prof.         มาจาก Professor
+    )
+    academic_position = models.CharField(max_length=1, choices=academic_position_choice)    # 12. ตำแหน่งทางวิชาการ
 
     def __unicode__(self):
         return self.firstName + " " + self.lastName
