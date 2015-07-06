@@ -14,6 +14,15 @@ from fpdf import FPDF
 
 from django.contrib.auth.models import User
 # Create your views here.
+def genProfID():
+    profList = Prof2Lang.objects.all().order_by('profID')
+    if len(profList) > 0:
+        lastProf = profList[len(profList)-1]
+        id = int(lastProf.profID) + 1
+        return str(id)
+    else:
+        return '1'
+
 def getUserType(request):
     user = request.user
     try:
@@ -210,6 +219,13 @@ def addProf(request):
         sahakornAccount = request.POST['sahakornAccount']
         department  = request.POST['department']
         faculty     = request.POST['faculty']
+
+        # check profID is duplicate
+        try:
+            prof = Prof2Lang.objects.get(profID = profID)
+            return HttpResponseRedirect(reverse('group3:prof2lang_add', args=['2']))
+        except:
+            pass
 
         try:
             # create new Prof2Lang object

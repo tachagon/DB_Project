@@ -1,4 +1,4 @@
-n{% extends "base.html" %}
+{% extends "base.html" %}
 
 {% block title %}เพิ่มข้อมูล อาจารย์สองภาษา{% endblock %}
 
@@ -24,7 +24,7 @@ n{% extends "base.html" %}
                 else if(s1.value == "{{ subject.subjectID }}"){
                     var optionArray = [];
                     {% for sec in subject.section_set.all %}
-                        var strTemp = "{{ sec.id }}|{{ sec.section }} {{ sec.subject.subjectName }}";
+                        var strTemp = "{{ sec.id }}|{{ sec.section }}";
                         optionArray.push(strTemp);
                     {% empty %}
                         optionArray.push("|กรุณาเพิ่ม Section");
