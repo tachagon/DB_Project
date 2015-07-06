@@ -9,6 +9,10 @@ from login.models import *
 from datetime import datetime
 
 month = ['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม']
+department = ['','วิศวกรรมไฟฟ้าและคอมพิวเตอร์']
+faculty = ['','วิศวกรรมศาสตร์']
+scheme = ['หลักสูตรปรับปรุง Cpr.E 54','หลักสูตรปรับปรุง EE 51','หลักสูตรปรับปรุง ECE 55']
+main = ['Cpr.E','G','U','C']
 
 def index(request):
     if request.user.is_authenticated():
@@ -66,7 +70,6 @@ def create_3forms(request):
             return render(request, 'group6/create_3forms.html', {'teachers': teachers, 'student': s, 'numOP': 1, 'yearOE': int(datetime.now().year + 543), 'edit': '1'},)
     else:
         return render(request, 'base.html')
-
 
 def create_3forms_add(request):
     if request.user.is_authenticated():
@@ -709,16 +712,17 @@ def edit_3forms_update(request, pjID):
 
 def approveProject(request, apID):
     if request.user.is_authenticated():
-        department = ['','วิศวกรรมไฟฟ้าและคอมพิวเตอร์']
-        faculty = ['','วิศวกรรมศาสตร์']
-        scheme = ['หลักสูตรปรับปรุง Cpr.E 54','หลักสูตรปรับปรุง EE 51','หลักสูตรปรับปรุง ECE 55']
-        main = ['Cpr.E','G','U','C']
+        u = UserProfile.objects.get(user=request.user)
         approve = ApproveProjectForm.objects.get(id=apID)
-        year = int(datetime.now().year - 2000 + 43) - int(approve.student.std_id[:2])
-        return render(request, 'group6/approveProject_view.html', {'approve': approve, 'scheme': scheme[int(approve.student.scheme)], 'department': department[int(approve.student.userprofile.department)], 'main': main[int(approve.student.main)], 'currentYear': year},)
+        if u.type == '0':
+            s = Student.objects.get(userprofile=u)
+            year = int(datetime.now().year - 2000 + 43) - int(s.std_id[:2])
+            return render(request, 'group6/approveProject_view.html', {'approve': approve, 'scheme': scheme[int(s.scheme)], 'department': department[int(s.userprofile.department)], 'main': main[int(s.main)], 'currentYear': year, 'student': s},)
+        else:
+            year = int(datetime.now().year - 2000 + 43) - int(approve.student.std_id[:2])
+            return render(request, 'group6/approveProject_view.html', {'approve': approve, 'scheme': scheme[int(approve.student.scheme)], 'department': department[int(approve.student.userprofile.department)], 'main': main[int(approve.student.main)], 'currentYear': year},)
     else:
         return render(request, 'base.html')
-
 
 def offerProject(request, opID):
     if request.user.is_authenticated():
@@ -727,7 +731,6 @@ def offerProject(request, opID):
         return render(request, 'group6/offerProject_view.html', {'offer': offer, 'priceOfTotal': sumofprice},)
     else:
         return render(request, 'base.html')
-
 
 def researchProject(request, rpID):
     if request.user.is_authenticated():
@@ -740,9 +743,6 @@ def timeLineProject(request, tlID):
     if request.user.is_authenticated():
         timeLine = TimeLineForm.objects.get(id=tlID)
         processList = []
-        #processList = list(timeLine.stepintimeline_set.all().order_by('numberOfProcess'))
-        #while(len(processList)<8):
-        #    processList.append([])
         for i in range(8):
             pro = StepInTimeLine.objects.filter(timeline=timeLine, numberOfProcess=i+1)
             if len(pro) == 0:
@@ -752,7 +752,6 @@ def timeLineProject(request, tlID):
         return render(request, 'group6/timeLineProject_view.html', {'timeLine': timeLine, 'processList': processList},)
     else:
         return render(request, 'base.html')
-
 
 def deleteForm(request, pjID):
     if request.user.is_authenticated():
@@ -782,16 +781,17 @@ def deleteForm(request, pjID):
 
 def approveProjectPrint(request, apID):
     if request.user.is_authenticated():
-        department = ['','วิศวกรรมไฟฟ้าและคอมพิวเตอร์']
-        faculty = ['','วิศวกรรมศาสตร์']
-        scheme = ['หลักสูตรปรับปรุง Cpr.E 54','หลักสูตรปรับปรุง EE 51','หลักสูตรปรับปรุง ECE 55']
-        main = ['Cpr.E','G','U','C']
+        u = UserProfile.objects.get(user=request.user)
         approve = ApproveProjectForm.objects.get(id=apID)
-        year = int(datetime.now().year - 2000 + 43) - int(approve.student.std_id[:2])
-        return render(request, 'group6/approveProject_view_print.html', {'approve': approve, 'scheme': scheme[int(approve.student.scheme)], 'department': department[int(approve.student.userprofile.department)], 'main': main[int(approve.student.main)], 'currentYear': year},)
+        if u.type == '0':
+            s = Student.objects.get(userprofile=u)
+            year = int(datetime.now().year - 2000 + 43) - int(s.std_id[:2])
+            return render(request, 'group6/approveProject_view_print.html', {'approve': approve, 'scheme': scheme[int(s.scheme)], 'department': department[int(s.userprofile.department)], 'main': main[int(s.main)], 'currentYear': year, 'student': s},)
+        else:
+            year = int(datetime.now().year - 2000 + 43) - int(approve.student.std_id[:2])
+            return render(request, 'group6/approveProject_view_print.html', {'approve': approve, 'scheme': scheme[int(approve.student.scheme)], 'department': department[int(approve.student.userprofile.department)], 'main': main[int(approve.student.main)], 'currentYear': year},)
     else:
         return render(request, 'base.html')
-
 
 def offerProjectPrint(request, opID):
     if request.user.is_authenticated():
@@ -800,7 +800,6 @@ def offerProjectPrint(request, opID):
         return render(request, 'group6/offerProject_view_print.html', {'offer': offer, 'priceOfTotal': sumofprice},)
     else:
         return render(request, 'base.html')
-
 
 def researchProjectPrint(request, rpID):
     if request.user.is_authenticated():
