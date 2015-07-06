@@ -334,27 +334,53 @@ def genpdf(request, profID): # use to generate pdf file for lend another teacher
     time = ''
     day = ''
     
-    try:
+    try: # prefix_name and academic_name
         academicPosition = teachObj.prof.academic_position
         if (academicPosition == '0'):
             academicPosition = u''
+            try:
+                pre_name = teachObj.prof.prefix_name
+                if (pre_name == '0') or (pre_name == '1') or (pre_name == '2'):
+                    pre_name = u'อ. '
+                else:
+                    pre_name = u'ดร. '
+            except:
+                pre_name = u'อ. '
         elif academicPosition == '1':
-            academicPosition = u'ผู้ช่วยศาสตราจารย์'
+            academicPosition = u'ผู้ช่วยศาสตราจารย์ '
+            short_academicPosition = u'ผศ.'
+            try:
+                pre_name = teachObj.prof.prefix_name
+                if pre_name == '3':
+                    pre_name = u'ดร.'
+                else:
+                    pre_name = ''
+            except:
+                pre_name =''
         elif academicPosition == '2':
-            academicPosition =  u'รองศาสตราจารย์'
+            academicPosition =  u'รองศาสตราจารย์ '
+            short_academicPosition =  u'รศ.'
+            try:
+                pre_name = teachObj.prof.prefix_name
+                if pre_name == '3':
+                    pre_name = u'ดร.'
+                else:
+                    pre_name = ''
+            except:
+                pre_name =''
         else:
-            academicPosition = u'ศาสตราจารย์'             
+            academicPosition = u'ศาสตราจารย์ '
+            short_academicPosition = u'ศ.'
+            try:
+                pre_name = teachObj.prof.prefix_name
+                if pre_name == '3':
+                    pre_name = u'ดร.'
+                else:
+                    pre_name = ''
+            except:
+                pre_name =''
     except:
         academicPosition = ''
-                
-    try:
-        pre_name = teachObj.prof.prefix_name
-        if (pre_name == '0') or (pre_name == '1') or (pre_name == '2'):
-            pre_name = u'อ. '
-        else:
-            pre_name = u'ดร. '
-    except:
-        pre_name = u'อ. '
     
     try: # check all data for beware blank data.
         proID = teachObj.prof.shortName
@@ -503,8 +529,8 @@ def genpdf(request, profID): # use to generate pdf file for lend another teacher
     pdf.cell(45, 10, u'')
     pdf.cell(0, 10, u'จึงเรียนมาเพื่อโปรดทราบ')
     pdf.ln(20)
-    pdf.cell(107, 10, u'')
-    pdf.cell(100, 10, u'(ดร.นภดล   วิวัชรโกเศศ)')
+    pdf.cell(94, 10, u'')
+    pdf.cell(100, 10, u'(ผู้ช่วยศาสตราจารย์ ดร.นภดล   วิวัชรโกเศศ)')
     pdf.ln(8)
     pdf.cell(94, 10, u'')
     pdf.cell(90, 10, u'หัวหน้าภาควิศวกรรมไฟฟ้าและคอมพิวเตอร์')
@@ -513,9 +539,9 @@ def genpdf(request, profID): # use to generate pdf file for lend another teacher
     pdf.cell(0, 10, u'.........................................................................................................................................................................')
     pdf.ln(8)
     pdf.cell(8, 10,u'')
-    pdf.cell(30, 10, u'         ชื่อผู้สอน                                                    รหัสผู้สอน')
-    pdf.cell(80, 10, u'' + academicPosition +pre_name+ firstname + '   '+ lastname)
-    pdf.cell(80, 10, u'' + proID)
+    pdf.cell(30, 10, u'         ชื่อผู้สอน ' + academicPosition + pre_name + firstname + '   '+ lastname + u'            รหัสผู้สอน ' + proID )
+    #pdf.cell(80, 10, u'' + academicPosition +pre_name+ firstname + '   '+ lastname)
+    #pdf.cell(80, 10, u'' + proID)
     pdf.ln(8)
     pdf.cell(8, 10,u'')
     pdf.cell(30, 10, u'         ภาควิชา')
@@ -552,7 +578,7 @@ def genpdf(request, profID): # use to generate pdf file for lend another teacher
     pdf.cell(100, 10, u'ลงชื่อ................................................อาจารย์ผู้สอน ')
     pdf.ln(8)
     pdf.cell(100, 10, u'')
-    pdf.cell(110, 10, u''+'( '+ firstname +'   '+ lastname+' )' )
+    pdf.cell(110, 10, u''+u'( ' +short_academicPosition + pre_name + firstname +'   '+ lastname+u' )' )
     pdf.ln(8)
     pdf.cell(94, 10, u'')
     pdf.cell(100, 10, u'ลงชื่อ................................................')
@@ -643,34 +669,11 @@ def genallpdf(request): # grnerate pdf for show all section data.
         # write no.
         for Prof in sec: # access all teacher in each section
             cnt_line += 1
-
-            
-            try:
-                academicPosition = Prof.prof.academic_position
-                if (academicPosition == '0'):
-                    academicPosition = u''
-                elif academicPosition == '1':
-                    academicPosition = u'ผู้ช่วยศาสตราจารย์'
-                elif academicPosition == '2':
-                    academicPosition =  u'รองศาสตราจารย์'
-                else:
-                    academicPosition = u'ศาสตราจารย์'             
-            except:
-                academicPosition = ''
-                
-            try:
-                pre_name = Prof.prof.prefix_name
-                if (pre_name == '0') or (pre_name == '1') or (pre_name == '2'):
-                    pre_name = u'อ. '
-                else:
-                    pre_name = u'ดร. '
-            except:
-                pre_name = u'อ. '
             
             try:
                 first_name = Prof.prof.firstName
                 last_name = Prof.prof.lastName
-                full_name = academicPosition+pre_name+first_name + '   ' + last_name
+                full_name = first_name + '  ' + last_name
             except:
                 full_name = 'None'
                 
@@ -731,7 +734,7 @@ def genallpdf(request): # grnerate pdf for show all section data.
             pdf.cell(45, 18, subject)
             pdf.cell(12, 18, section)
             pdf.cell(7, 18, day)
-            pdf.cell(17, 18, str(starttime))
+            pdf.cell(16, 18, str(starttime))
             pdf.cell(12, 18, room)
             pdf.cell(19, 18, phone_num)
             pdf.cell(43, 18, email)

@@ -44,7 +44,17 @@
                                 {% for prof in profList %}
                                 <tr>
                                     <td data-title="รหัสอาจารย์">{{ prof.profID }}</td>
-                                    <td data-title="ชื่อ-สกุล">{{ prof.firstName }}  {{ prof.lastName }}</td>
+                                    <td data-title="ชื่อ-สกุล">
+                                        {% ifequal prof.academic_position "0"%}
+                                            {% ifequal prof.prefix_name "0" %}อ.{% endifequal %}
+                                            {% ifequal prof.prefix_name "1" %}อ.{% endifequal %}
+                                            {% ifequal prof.prefix_name "2" %}อ.{% endifequal %}    
+                                        {% endifequal %}
+                                        {% ifequal prof.academic_position "1"%}ผู้ช่วยศาสตราจารย์{% ifequal prof.prefix_name "3" %} ดร.{% endifequal %}{% endifequal %}
+                                        {% ifequal prof.academic_position "2"%}รองศาสตราจารย์{% ifequal prof.prefix_name "3" %} ดร.{% endifequal %}{% endifequal %}
+                                        {% ifequal prof.academic_position "3"%}ศาสตราจารย์{% ifequal prof.prefix_name "3" %} ดร.{% endifequal %}{% endifequal %}            
+                                    
+                                        {{ prof.firstName }}  {{ prof.lastName }}</td>
                                     <td data-title="ตัวย่อชื่อ">{{ prof.shortName }}</td>
                                     <td data-title="เบอร์โทรศัพท์">{{ prof.tell }}</td>
                                     <td data-title=">E-mail">{{ prof.email }}</td>
