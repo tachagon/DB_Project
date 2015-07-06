@@ -44,3 +44,7 @@ def get_prefix_name_th_teacher(index_academic,index):
         return prefix_name_list_th[int(index)]
     else:
         return academic_position[int(index_academic)]
+
+@register.filter(name='get_list_size')
+def get_list_size(lists):
+    return len(lists)

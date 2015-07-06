@@ -17,8 +17,11 @@ class ProjectG6(models.Model):
 
 class CategoriesProject(models.Model):
     project = models.ForeignKey(ProjectG6) #Link to Project entity one to one
-    project_catagories = models.CharField(max_length=5, null=True)
-    teacher =models.ManyToManyField(Teacher) #link to Student many to many
+    project_catagories = models.CharField(max_length=5)
+    number = models.CharField(max_length=2)
+    year = models.CharField(max_length=2)
+    semester = models.IntegerField(default=1)
+    teacher = models.ManyToManyField(Teacher) #link to Teacher many to many
 
     def __unicode__(self):
         return self.project.name_eng

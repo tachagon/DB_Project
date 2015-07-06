@@ -1,0 +1,272 @@
+﻿{% extends "base.html" %}
+{% load custom_function %}
+
+{% block title %}ระบบ จัดการโครงงาน สำหรับนักศึกษา ปริญญาตรี - กำหนดกรรมการสอบ และ Categories{% endblock %}
+
+{% block pageHeader %}
+<h2>ระบบ <small>จัดการโครงงาน สำหรับนักศึกษา ปริญญาตรี</small></h2>
+<ol class="breadcrumb">
+    <li><a href="{% url 'login:menu' %}">เมนู</a></li>
+    <li><a href="{% url 'group6:project_docs_index' %}">ระบบ จัดการโครงงาน สำหรับนักศึกษา ปริญญาตรี</a></li>
+    <li class="active">กำหนดกรรมการสอบ และ Categories</li>
+</ol>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <style>
+    table,tr,td{
+        border-collapse: collapse;
+    }
+    body{
+       background-color:white;
+   }
+   .page{
+       width:210mm;
+       margin:auto;
+       position:relative;
+       padding: 2cm;
+       border: 1px #D3D3D3 solid;
+       border-radius: 5px;
+       background: white;
+   }
+   .form > H{
+       margin-left:10;
+   }
+   .namestd{
+       margin-left:10;
+   }
+   textarea {
+       margin-left:10;
+       resize:none;
+       outline:none;
+   }
+   H{
+       font:16pt "Angsana New";
+   }
+   input{
+       outline:none;
+       resize:none;
+   }
+   #o1{
+       text-align:center;
+   }
+/*#years{
+	margin-left:0;
+	}
+#nameth{
+	margin-left:0;
+	}
+#nameen{
+	margin-left:18;
+	}
+#numbers{
+	margin-left:56;
+	}
+	*/
+    @page{
+       size:A4;
+       margin:0;
+   }
+   /*@media print {
+      .page {
+          margin:0;
+          font-size:20px;
+          position:absolute;
+          border: initial;
+          width: initial;
+          height:initial;
+          box-shadow: initial;
+          background: initial;
+          page-break-after: always;
+      }
+  }*/
+  </style>
+  <script>
+function yearselect(){
+	var year = new Date();
+	var list = document.getElementById("yearselect");
+	var i;
+	for (i=0;i<list.length;i++){
+		list.options[i].text = year.getFullYear()-i+43-2000;
+		list.options[i].value = year.getFullYear()-i+43-2000;
+        }
+        var sel = document.getElementById("testerNum");
+        var sel2 = document.getElementById("projectOfMain");
+        var sel3 = document.getElementById("semesterNum");
+        var sel4 = document.getElementById("projectNum");
+        sel.value = {{ numOT }};
+        list.value = {{ yearOE }};
+        sel2.value = "{{ main }}";
+        sel3.value = {{ semester }};
+        sel4.value = "{{ projNum }}";
+        var e_list = [{% for teachs in teacher_list %}
+{% ifequal forloop.counter 1 %}
+{{ teachs.id }}
+{% else %}
+, {{ teachs.id }} 
+{% endifequal %}{% endfor %}]
+        for(j=1; j<{{ teacher_list|get_list_size }};j++){
+                var e2 = document.getElementById("testerNAME"+j);
+                e2.value = e_list[j];
+        }
+}
+function addMoreTester(){
+	var e1 = document.getElementById("testerNum");
+	var stdnum = e1.value;
+	var txts = "";
+	for (i = 1; i < 5; i++) { 
+		var e2 = document.getElementById("TesterElement"+i);
+		if(i < stdnum){
+			if(e2 == null){
+				txts += "<div id='TesterElement" + i + "'><H>"+e1.options[i].text+". "+"</H><select id='testerNAME" + (i) +"' name='testerNAME" + (i) +"'>" +
+              {% for teacher in teachers %}
+                "<option value='{{ teacher.id }}'>{{ teacher.academic_position|get_prefix_name_th_teacher:teacher.userprofile.prefix_name }} {{ teacher.userprofile.firstname_th }} {{ teacher.userprofile.lastname_th }} ({{ teacher.shortname }})</option>" +
+              {% endfor %}
+              
+          "</select></div>";
+			}
+		}else{
+			if(e2 != null){
+				e2.remove();
+			}
+		}
+	}
+	document.getElementById("namestd").innerHTML += txts;
+}
+
+</script>
+<body onLoad='yearselect();'>
+    {% ifequal edit '1' %}
+    <form action = "{% url 'group6:project_docs_add_categories_tester_add' project_id %}" method = "post">
+    {% else %}
+    <form action = "{% url 'group6:project_docs_edit_categories_tester_update' categories_id %}" method = "post">
+    {% endifequal %}
+        {% csrf_token %}
+        <div class="page">
+            <center>
+            </center>
+            <label class="form">
+
+                <H>จำนวนกรรมการสอบ: <select onChange="return addMoreTester();" id="testerNum" name="numberOfTester">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+            </select> คน </H><font color = "FF0000" name="message">{{ error_numOT }}</font></br>
+            <H>รายชื่อกรรมการสอบ : </H><br>
+            {% if teacher_list %}
+                {% for teacher in teacher_list %}
+                    {% if forloop.counter == 1 %}
+                        <H>{{ forloop.counter }}. {{ teacher_project.academic_position|get_prefix_name_th_teacher:teacher_project.userprofile.prefix_name }} {{ teacher_project.userprofile.firstname_th }} {{ teacher_project.userprofile.lastname_th }} ({{ teacher_project.shortname }})</H><br> <div class="namestd" id="namestd">
+                    {% else %}
+                        {% ifequal edit '1' %}
+                            {% ifequal error_teacher|get_at_index:forloop.counter0 '' %}
+                            <div id='TesterElement{{ forloop.counter0 }}'><H>{{ forloop.counter }}. </H><select name='testerNAME{{ forloop.counter0 }}' id="testerNAME{{ forloop.counter0 }}">
+{% for teach in teachers %}
+                <option value='{{ teach.id }}'>{{ teach.academic_position|get_prefix_name_th_teacher:teach.userprofile.prefix_name }} {{ teach.userprofile.firstname_th }} {{ teach.userprofile.lastname_th }} ({{ teach.shortname }})</option>
+              {% endfor %}
+              
+          </select></div>
+          
+                            {% else %}
+                            <div id='TesterElement{{ forloop.counter0 }}'><H>{{ forloop.counter }}. </H><select name='testerNAME{{ forloop.counter0 }}' id="testerNAME{{ forloop.counter0 }}">
+{% for teach in teachers %}
+                <option value='{{ teach.id }}'>{{ teach.academic_position|get_prefix_name_th_teacher:teach.userprofile.prefix_name }} {{ teach.userprofile.firstname_th }} {{ teach.userprofile.lastname_th }} ({{ teach.shortname }})</option>
+              {% endfor %}
+              
+          </select> <font color = "FF0000" name="message">{{ error_teacher|get_at_index:forloop.counter0 }}</font></div>
+                            {% endifequal %}
+                        {% else %}
+                            <div id='TesterElement{{ forloop.counter0 }}'><H>{{ forloop.counter }}. </H><select name='testerNAME{{ forloop.counter0 }}' id="testerNAME{{ forloop.counter0 }}">
+{% for teach in teachers %}
+                <option value='{{ teach.id }}'>{{ teach.academic_position|get_prefix_name_th_teacher:teach.userprofile.prefix_name }} {{ teach.userprofile.firstname_th }} {{ teach.userprofile.lastname_th }} ({{ teach.shortname }})</option>
+              {% endfor %}
+              
+          </select></div>
+                        {% endifequal %}
+                    {% endif %}
+                {% endfor %}
+            {% else %}
+            <H>1. {{ teacher_project.academic_position|get_prefix_name_th_teacher:teacher_project.userprofile.prefix_name }} {{ teacher_project.userprofile.firstname_th }} {{ teacher_project.userprofile.lastname_th }} ({{ teacher_project.shortname }})</H>
+            <br> <div class="namestd" id="namestd">
+            {% endif %}
+
+            
+                
+            </div>
+            <div><H>ปริญญานิพนธ์ของสาขาวิชา : </H>
+            <select id="projectOfMain" name="projectOfMain">
+                <option value="Cpr.E">Cpr.E</option>
+                <option value="G">G</option>
+                <option value="U">U</option>
+                <option value="C">C</option>
+                <option value="EP">EP</option>
+              </select> <font color = "FF0000" name="message">{{ error_main }}</font>
+            </div>
+            <H>ปีการศึกษา <select id="yearselect" name="yearOfEducation">
+                    <option>test1</option>
+                    <option>test2</option>
+                    <option>test3</option>
+                    <option>test4</option>
+                    <option>test5</option>
+                    <option>test6</option>
+                    <option>test7</option>
+                    <option>test8</option>
+                    <option>test9</option>
+                </select></H><font color = "FF0000" name="message">{{ error_yearOE }}</font>
+            <H><div>ภาคเรียนที่ : </H> <select id="semesterNum" name="semesterNum">
+                <option value="1">1</option>
+                <option value="2">2</option>
+            </select> <font color = "FF0000" name="message">{{ error_semester }}</font>
+            </div>
+            <H>
+            <div>หมายเลขปริญญานิพนธ์ : </H> <select id="projectNum" name="projectNum">
+                <option value="01">01</option>
+                <option value="02">02</option>
+                <option value="03">03</option>
+                <option value="04">04</option>
+                <option value="05">05</option>
+                <option value="06">06</option>
+                <option value="07">07</option>
+                <option value="08">08</option>
+                <option value="09">09</option>
+                <option value="10">10</option>
+                <option value="11">11</option>
+                <option value="12">12</option>
+                <option value="13">13</option>
+                <option value="14">14</option>
+                <option value="15">15</option>
+                <option value="16">16</option>
+                <option value="17">17</option>
+                <option value="18">18</option>
+                <option value="19">19</option>
+                <option value="20">20</option>
+                <option value="21">21</option>
+                <option value="22">22</option>
+                <option value="23">23</option>
+                <option value="24">24</option>
+                <option value="25">25</option>
+                <option value="26">26</option>
+                <option value="27">27</option>
+                <option value="28">28</option>
+                <option value="29">29</option>
+                <option value="30">30</option>
+                <option value="31">31</option>
+                <option value="32">32</option>
+                <option value="33">33</option>
+                <option value="34">34</option>
+                <option value="35">35</option>
+            </select> <font color = "FF0000" name="message">{{ error_projNum }}</font>
+            </div>
+   </div>
+   <center><br>
+    <input class="btn btn-primary" type="submit" value="บันทึก" name='save' />
+    <a href="{% url 'group6:project_docs_index' %}"><input class="btn btn-danger" type="button" value="ยกเลิก" name = 'cancel' /></a>
+</center>
+</form>
+<br>
+</div>
+{% endblock %}
