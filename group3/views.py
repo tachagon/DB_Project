@@ -318,7 +318,7 @@ def genpdf(request, profID): # use to generate pdf file for lend another teacher
     time = ''
     day = ''
     try: # check all data for beware blank data.
-        proID = teachObj.prof.profID
+        proID = teachObj.prof.shortName
     except:
         proID = 'None'
 
@@ -405,10 +405,6 @@ def genpdf(request, profID): # use to generate pdf file for lend another teacher
     pdf.set_font('THSarabun Bold', '', 29)
     pdf.cell(72, 10, u'')
     pdf.cell(0, 10, u' บันทึกข้อความ')
-    pdf.line(105, 0, 105, 290)
-    pdf.line(126, 0,126, 80)
-    pdf.line(30, 0, 30, 290)
-    pdf.line(190, 0, 190, 290)
     pdf.ln(10)
     pdf.add_font('THSarabun Bold', '', 'THSarabun Bold.ttf', uni=True)  # thai font
     pdf.set_font('THSarabun Bold', '', 20)
