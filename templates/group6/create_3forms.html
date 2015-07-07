@@ -84,37 +84,50 @@
   }*/
   </style>
   <script>
+var dict = {
+{% for s in student_all %}
+        "{{ s.std_id }}": "{{ s.userprofile.prefix_name|get_prefix_name_th }} {{ s.userprofile.firstname_th }} {{ s.userprofile.lastname_th }}",
+{% endfor %}
+};
+
+window.setInterval(function updateStudent(){
+    var e1 = document.getElementById("stdnumber");
+    var stdnum = e1.value;
+    for(i=1; i<stdnum; i++){
+        document.getElementById("studentNAME"+i).value = dict[document.getElementById("studentID"+i).value];
+    }
+}, 1000);
+
 function yearselect(){
-	var year = new Date();
-	var list = document.getElementById("yearselect");
-	var i;
-	for (i=0;i<list.length;i++){
-		list.options[i].text = year.getFullYear()-i+543;
-		list.options[i].value = year.getFullYear()-i+543;
-  }
-        var sel = document.getElementById("stdnumber");
-        sel.value = {{ numOP }};
-        list.value = {{ yearOE }};
+    var year = new Date();
+    var list = document.getElementById("yearselect");
+    var i;
+    for (i=0;i<list.length;i++){
+        list.options[i].text = year.getFullYear()-i+543;
+        list.options[i].value = year.getFullYear()-i+543;
+    }
+    var sel = document.getElementById("stdnumber");
+    sel.value = {{ numOP }};
+    list.value = {{ yearOE }};
 }
 
 function addMoreStd(){
-	var e1 = document.getElementById("stdnumber");
-	var stdnum = e1.value;
-	var txts = "";
-	for (i = 1; i < 5; i++) { 
-		var e2 = document.getElementById("studentElement"+i);
-		if(i < stdnum){
-			if(e2 == null){
-				txts += "<div id='studentElement" + i + "'><H>"+e1.options[i].text+". "+"</H><input id='studentNAME" + (i) +"' type='text' name='studentNAME" + (i) +"'><H>เลขประจำตัว :</H><input type='text' name='studentID" + (i) + "' maxlength='13' id='studentID" + (i) + "'></div>";
-			}
-		}else{
-			if(e2 != null){
-				e2.remove();
-			}
-		}
-	}
-document.getElementById("namestd").innerHTML += txts;
-	
+    var e1 = document.getElementById("stdnumber");
+    var stdnum = e1.value;
+    var txts = "";
+    for (i = 1; i < 5; i++) { 
+        var e2 = document.getElementById("studentElement"+i);
+        if(i < stdnum){
+            if(e2 == null){
+                txts += "<div id='studentElement" + i + "'><H>"+e1.options[i].text+". "+"</H><input id='studentNAME" + (i) +"' type='text' name='studentNAME" + (i) +"'><H>เลขประจำตัว :</H><input type='text' name='studentID" + (i) + "' maxlength='13' id='studentID" + (i) + "'></div>";
+            }
+        }else{
+            if(e2 != null){
+                e2.remove();
+            }
+        }
+    }
+    document.getElementById("namestd").innerHTML += txts;
 }
 
 </script>
@@ -183,7 +196,9 @@ p_adviser
                             <div id='studentElement{{ forloop.counter0 }}'><H>{{ forloop.counter }}. </H><input type='text' name='studentNAME{{ forloop.counter0 }}' id="studentNAME{{ forloop.counter0 }}"><H>เลขประจำตัว :</H><input type='text' name='studentID{{ forloop.counter0 }}' maxlength='13' id="studentID{{ forloop.counter0 }}"> <font color = "FF0000" name="message">{{ error_student|get_at_index:forloop.counter0 }}</font></div>
                             {% endifequal %}
                         {% else %}
-                            <div id='studentElement{{ forloop.counter0 }}'><H>{{ forloop.counter }}. </H><input type='text' name='studentNAME{{ forloop.counter0 }}' id="studentNAME{{ forloop.counter0 }}" value="{{ student.userprofile.prefix_name|get_prefix_name_th }} {{ student.userprofile.firstname_th }} {{ student.userprofile.lastname_th }}"><H>เลขประจำตัว :</H><input type='text' name='studentID{{ forloop.counter0 }}' maxlength='13' id="studentID{{ forloop.counter0 }}" value="{{ student.std_id }}"></div>
+                            <div id='studentElement{{ forloop.counter0 }}'><H>{{ forloop.counter }}. </H><input type='text' name='studentNAME{{ forloop.counter0 }}' id="studentNAME{{ forloop.counter0 }}" value="{% if student %}
+{{ student.userprofile.prefix_name|get_prefix_name_th }} {{ student.userprofile.firstname_th }} {{ student.userprofile.lastname_th }}
+{% endif %}"><H>เลขประจำตัว :</H><input type='text' name='studentID{{ forloop.counter0 }}' maxlength='13' id="studentID{{ forloop.counter0 }}" value="{{ student.std_id }}"> {% if error_student %}<font color = "FF0000" name="message">{{ error_student|get_at_index:forloop.counter0 }}</font>{% endif %}</div>
                         {% endifequal %}
                     {% endif %}
                 {% endfor %}

@@ -103,7 +103,7 @@ function yearselect(){
         sel4.value = "{{ projNum }}";
         var e_list = [{% for teachs in teacher_list %}
 {% ifequal forloop.counter 1 %}
-{{ teachs.id }}
+''
 {% else %}
 , {{ teachs.id }} 
 {% endifequal %}{% endfor %}]
@@ -166,7 +166,7 @@ function addMoreTester(){
                             {% ifequal error_teacher|get_at_index:forloop.counter0 '' %}
                             <div id='TesterElement{{ forloop.counter0 }}'><H>{{ forloop.counter }}. </H><select name='testerNAME{{ forloop.counter0 }}' id="testerNAME{{ forloop.counter0 }}">
 {% for teach in teachers %}
-                <option value='{{ teach.id }}'>{{ teach.academic_position|get_prefix_name_th_teacher:teach.userprofile.prefix_name }} {{ teach.userprofile.firstname_th }} {{ teach.userprofile.lastname_th }} ({{ teach.shortname }})</option>
+                <option value='{{ teach.id }}'>{{ teach.academic_position|get_prefix_name_th_teacher:teach.userprofile.prefix_name }} {{ teach.userprofile.firstname_th }} {{ teach.userprofile.lastname_th }} ({{ teach.shortname }}) </option>
               {% endfor %}
               
           </select></div>
@@ -185,7 +185,7 @@ function addMoreTester(){
                 <option value='{{ teach.id }}'>{{ teach.academic_position|get_prefix_name_th_teacher:teach.userprofile.prefix_name }} {{ teach.userprofile.firstname_th }} {{ teach.userprofile.lastname_th }} ({{ teach.shortname }})</option>
               {% endfor %}
               
-          </select></div>
+          </select> {% if error_teacher %}  <font color = "FF0000" name="message">{{ error_teacher|get_at_index:forloop.counter0 }}</font> {% endif %}</div>
                         {% endifequal %}
                     {% endif %}
                 {% endfor %}
