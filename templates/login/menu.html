@@ -10,10 +10,13 @@
         <div class="col-md-4">
             <div class="panel panel-info">
                 <div class="panel-heading">
-                    <h4>App <small>group1</small></h4>
+                    <h4>ระบบ <small>งานสารบัญ</small></h4>
                 </div>
                 <div class="panel-body">
-                    ...
+                    <a href="{% url 'group1:upload_file' %}">อัพโหลดเอกสาร</a><br>
+                    <a href="{% url 'group1:search_file' %}">ค้นหาเอกสาร</a><br>
+                    <a href="{% url 'group1:add_category' %}">เพิ่มหมวดของเอกสาร</a><br>
+                    <a href="{% url 'group1:add_people' %}">เพิ่มผู้ได้รับมอบหมาย</a><br>
                 </div>
             </div>
         </div>
