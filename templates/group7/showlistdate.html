@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}Group7{% endblock %}
+
+{% block pageHeader %}
+<h2>กระบวน <small>การเบิกจ่ายค่าวัสดุในการทำโครงงาน</small></h2>
+<ol class="breadcrumb">
+     <li><a href="{% url 'login:menu' %}">เมนู</a></li>
+     <li><a href="/group7summary">สรุปรายละเอียดการเบิกจ่ายแต่ละโครงงาน</a></li>
+     <li class="active">แสดงรายการใบสั่งซื้อในขั้นตอนตกลงวันที่ในการซื้อวัสดุ</a></li>
+</ol>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+<center><h1>แสดงรายการใบสั่งซื่อในขั้นตอนตกลงวันที่ในการซื้อวัสดุ{{count}}</h1></center>
+
+<center>
+<table border ="1"  width="100%"><font color="BLACK">
+	<tr>
+		<th><center>ชื่อโครงงาน</center></th>
+		<th><center>วัน/เดือน/ปี</center></th> <!-- Pull from Order -->		
+	</tr>
+	<tr>
+{% for item in data %}
+	
+		<td><center>{{item}}</center></td>
+		{% if forloop.counter|divisibleby:"2" %}
+		     </tr>
+	        {%endif%}
+	
+	
+{% endfor %}
+</tr>
+</table>
+&nbsp
+
+<table border ="0"  width="100%"><font color="BLACK">
+	<tr>
+		<td align="center">
+			<a href="/group7summary" style="text-decoration:none"><input type="button" value="ย้อนกลับ" ></a>	
+		</form></td>
+</center>
+{% endblock %}
+

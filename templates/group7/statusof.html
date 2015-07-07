@@ -45,7 +45,7 @@
 <tr><td><a href="/group7/{{order.id}}/statusof/addstatusof/" style="text-decoration:none"><input type="button" value="อัพเดทสถานะ" ></a>
 {% for pay in order.status_of_set.all %}
 	{%if pay.Status == "สมบูรณ์" %}
-		<a href="/group7/{{order.Projectg7_id}}/statusof/requisition/" style="text-decoration:none" target = _blank><input type="button" value="ดูตัวอย่างใบเบิกวัสดุ" ></a></td></tr>
+		<a href="/group7/{{order.id}}/statusof/requisition/" style="text-decoration:none" target = _blank><input type="button" value="ดูตัวอย่างใบเบิกวัสดุ" ></a></td></tr>
 	{%endif%}
 {% endfor %}
 
