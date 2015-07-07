@@ -1,4 +1,5 @@
 ﻿{% extends "base.html" %}
+{% load custom_function %}
 
 {% block title %}ระบบ จัดการโครงงาน สำหรับนักศึกษา ปริญญาตรี - แบบฟอร์มสำรวจหัวข้อโครงงานปริญญานิพนธ์ - {{ research.project.name_thai }}{% endblock %}
 
@@ -97,7 +98,7 @@ body{
 <H>ชื่อโครงการ</H><H id="nameth">(ภาษาไทย) {{ research.project.name_thai }}</H><br>
 <H id="nameeng">(ภาษาอังกฤษ) {{ research.project.name_eng }}</H><br>
 <H>จำนวนนักศึกษา {{ research.numberOfPeople }} คน </H><br>
-<H>ชื่ออาจารย์ที่ปรึกษา {{ research.project.teacher.userprofile.firstname_th }} {{ research.project.teacher.userprofile.lastname_th }} ({{ research.project.teacher.shortname }})</H>
+<H>ชื่ออาจารย์ที่ปรึกษา {{ research.project.teacher.academic_position|get_prefix_name_th_teacher:research.project.teacher.userprofile.prefix_name }} {{ research.project.teacher.userprofile.firstname_th }} {{ research.project.teacher.userprofile.lastname_th }} ({{ research.project.teacher.shortname }})</H>
 	<div class="text">วัตถุประสงค์ {{ research.project.objective }}</div>
 	<div class="text">แนวเหตุผล ทฤฏีสำคัญหรือสมมุติฐาน {{ research.project.reason }}</div>
 	<div class="text">ขอบเขตของการทำโครงงาน {{ research.project.scope }}</div>
