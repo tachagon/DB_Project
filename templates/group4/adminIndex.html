@@ -73,9 +73,8 @@
                                 <td data-title="ชื่อ-สกุล">{{officer.user }}</td>
                                 <td data-title="วันที่">{{ officer.dateCommit }}</td>
                                  <td data-title="เมนู">
-                                     <a class="btn btn-info btn-xs" href="{% url 'group4:addpdf' officer.id%}">ดูข้อมูล</a>
+                                     <a class="btn btn-info btn-xs" href="{% url 'group4:addpdf' officer.id%}" target="_blank">ดูข้อมูล</a>
                                  </td>
-
                                 </td>
                             </tr>
                             {% endfor %}

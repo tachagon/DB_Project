@@ -1,44 +1,112 @@
 {% extends "base.html" %}
+{% block head %}
+    <style>
 
-{% block title %}
-{% if teachObj %}
-{{ teachObj.prof }} {{ teachObj.subject }}
-{% else %}
-ไม่พบข้อมูล
-{% endif %}
+    </style>
 {% endblock %}
 
+{% block title %}ระบบการเบิกจ่ายค่ารักษาพยาบาล{% endblock %}
+
 {% block pageHeader %}
-{% if teachObj %}
+<h2>ระบบ<small>การเบิกจ่ายค่ารักษาพยาบาล</small></h2>
 <ol class="breadcrumb">
     <li><a href="{% url 'login:menu' %}">เมนู</a></li>
-    <li><a href="{% url 'group3:prof2lang_index' %}">ระบบอาจารย์สองภาษา</a></li>
-    <li class="active">แก้ไขข้อมูลอาจารย์สองภาษา</li>
+    <li class="active">หน้าหลักของผู้ใช้งาน</li>
 </ol>
-{% endif %}
 {% endblock %}
 
 {% block content %}
-<style>
-    .not-active {
-    pointer-events: none;
-    cursor: default;
-    }
-</style>
 
 <div class="container-fluid">
     <ul class="nav nav-tabs" role="tablist">
-        <li role="presentation" class="active"><a href="#editFamily" aria-controls="editFamily" role="tab" data-toggle="tab">แก้ไขข้อมูลครอบครัว</a></li>
+        <li role="presentation"  class="active"><a href="#showStat" aria-controls="showStat" role="tab" data-toggle="tab">สถิติการเบิกจ่าย</a></li>
         <li role="presentation"><a href="#newCure" aria-controls="newCure" role="tab" data-toggle="tab">สร้างใบเบิกจ่ายค่ารักษาพยาบาล</a></li>
         <li role="presentation"><a href="#newStudy" aria-controls="newstudy" role="tab" data-toggle="tab">สร้างใบเบิกจ่ายเงินสวัสดิการ</a></li>
+        <li role="presentation"><a href="#editFamily" aria-controls="editFamily" role="tab" data-toggle="tab">แก้ไขข้อมูลครอบครัว</a></li>
     </ul><br>
     <div class="col-md-2"></div>
     <div class="col-md-8">
         <div class="tab-content">
-            <div role="tabpanel" class="tab-pane active" id="editFamily">
+            <div role="tabpanel" class="tab-pane active" id="showStat">
 
+                {% if eachUserDataList %}
+                <h3>สถิติการเบิกจ่ายค่ารักษาพยาบาลของผู้ใช้งาน</h3>
+                <div class="row">
+                    <div class="container-fluid">
+                        <div class="col-md-2"></div>
+                        <div class="col-md-8">
+                            <div class="table-responsive">
+                                <table class="table table-hover table bordered">
+                                    <thead>
+                                    <tr>
+                                        <th>ลำดับ</th>
+                                        <th>วันที่</th>
+                                        <th>จำนวนเงิน</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for data in eachUserDataList %}
+                                    <tr>
+                                        <td data-title="ลำดับ">{{ forloop.counter }}</td>
+                                        <td data-title="วันที่">{{ data.date }}</td>
+                                        <td data-title="จำนวนเงิน">{{ data.price }}</td>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="col-md-2"></div>
+                    </div>
+                </div>
+                {% endif %}
+
+
+
+    {% if withdrawCureList %}
+        <div class="row">
+            <div class="container-fluid">
+                <div class="col-md-1"></div>
+                <div class="col-md-10">
+                    <h3>ใบการเบิกจ่ายค่ารักษาพยาบาลทั้งหมดของผู้ใช้งาน</h3>
+                    <div class="table-responsive">
+                        <table class="table table-hover table-bordered">
+                            <thead>
+                            <tr>
+                                <th>ลำดับ</th>
+                                <th>วันที่</th>
+                                <th>เมนู</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for officer in withdrawCureList%}
+                            <tr>
+                                <td data-title="ลำดับ">{{ forloop.counter }}</td>
+                                <td data-title="วันที่">{{ officer.dateCommit }}</td>
+                                 <td data-title="เมนู">
+                                     <a class="btn btn-info btn-xs" href="{% url 'group4:addpdf' officer.id%}" target="_blank">พิมพ์</a>
+                                 </td>
+
+                                </td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table><br><br><br><br><br>
+                    </div>
+                </div>
+                <div class="col-md-1"></div>
+            </div>
+        </div>
+    {% else %}
+        <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-md-6">
+            </div>
+            <div class="col-md-3"></div>
+        </div>
+    {% endif %}
 
             </div>
+
 
             <div role="tabpanel" class="tab-pane" id="newCure">
                 <div class="row">
@@ -51,13 +119,6 @@
                                     <b>ข้าพเจ้า </b><input type="text" class="form-control" name='name' value="{{objUsers.firstname_th}} {{objUsers.lastname_th}}"><br>
                                 </fieldset>
                                 <b>เลขที่บัญชีออมทรัพย์</b><input type="text" class="form-control" name='account_id' required><br>
-                                <b>สถานะ</b>
-                                <fieldset disabled>
-                                    <select class="form-control" name="status" >
-                                        <option selected="selected">{{typeUser.position}}</option>
-                                    </select><br>
-                                </fieldset>
-
                                 <b>ขอเบิกค่ารักษาพยาบาลของ</b><br>
                                 <div class="btn-group" data-toggle="buttons">
                                     <label class="btn btn-primary">
@@ -100,19 +161,13 @@
 
                                 <!--<b>เป็นเงิน(บาท)</b><input type='text' class="form-control" name='credit'><br>
                                 <b>(จำนวนเงินภาษาไทย)</b><input type='text' class="form-control" name='creditChar'><br>-->
-                                <button type="submit" class="btn btn-primary">Submit</button><br><br><br>
+                                <center><button type="submit" class="btn btn-primary">บันทึกข้อมูลใบเบิกจ่าย</button></center><br><br><br>
                             </form>
-
                         </div>
                         <div class="col-md-3"></div>
                     </div>
                 </div>
-
-
             </div>
-
-
-
             <div role="tabpanel" class="tab-pane" id="newStudy">
                 <div class="row">
                     <div class="container-fluid">
@@ -130,13 +185,16 @@
                                         <option selected="selected">{{typeUser.position}}</option>
                                     </select><br>
                                 </fieldset>
-                                <button type="submit" class="btn btn-primary">Submit</button><br><br><br>
+                                <center><button type="submit" class="btn btn-primary">บันทึกข้อมูลใบเบิกจ่าย</button></center><br><br><br>
                             </form>
 
                         </div>
                         <div class="col-md-3"></div>
                     </div>
                 </div>
+            </div>
+
+            <div role="tabpanel" class="tab-pane active" id="editFamily">
 
 
             </div>

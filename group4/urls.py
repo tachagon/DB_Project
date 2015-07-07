@@ -5,10 +5,12 @@ from django.contrib import admin
 
 urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
-    url(r'/adminIndex/$', views.adminIndex, name="adminIndex"),
-    url(r'/adminShow/$', views.adminShow, name="adminShow"),
-    url(r'/userShow/$', views.userShow, name="userShow"),
-    url(r'/userShow/add/$', views.addNewPage, name="addNewPage"),
-    url(r'/userShow/add/commit/$', views.commit, name="commit"),
-    url(r'/adminIndex/view/(\w+)$', views.addpdf, name="addpdf"),
+    url(r'/userPage/$', views.userPage, name="userPage"),
+    url(r'/userPage/commit/$', views.commitWithdrawCure, name="commitWithdrawCure"),
+    url(r'/adminIndexPage/$', views.adminIndexPage, name="adminIndexPage"),
+    url(r'/adminPage/commit_data/(\d+)$', views.commit_data, name="commit_data"),
+    url(r'/userPage/addpdf/(\w+)$', views.addpdf, name="addpdf"),
+
+
+    #url(r'/adminShow/$', views.adminShow, name="adminShow"),
 )
