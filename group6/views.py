@@ -9,6 +9,11 @@ from login.models import *
 from datetime import datetime
 
 month = ['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม']
+department = ['','วิศวกรรมไฟฟ้าและคอมพิวเตอร์']
+faculty = ['','วิศวกรรมศาสตร์']
+scheme = ['หลักสูตรปรับปรุง Cpr.E 54','หลักสูตรปรับปรุง EE 51','หลักสูตรปรับปรุง ECE 55']
+main = ['Cpr.E','G','U','C','EP']
+main_cat = ['Cp','G','U','C','EP']
 
 def index(request):
     if request.user.is_authenticated():
@@ -20,37 +25,147 @@ def index(request):
             offer = []
             approve = []
             timeLine = []
+            project_id = []
             for p in project:
                 research.append(ResearchProjectForm.objects.get(project=p))
                 offer.append(OfferProjectForm.objects.get(project=p))
                 approve.append(ApproveProjectForm.objects.get(project=p))
                 timeLine.append(TimeLineForm.objects.get(project=p))
-            return render(request, 'group6/index.html', {'project_list': project, 'research': research, 'offer': offer, 'approve': approve, 'timeLine': timeLine},)
+                categories_temp = CategoriesProject.objects.filter(project=p)
+                if len(categories_temp)==0:
+                    project_id.append('-')
+                else:
+                    project_id.append(categories_temp[0].project_catagories+categories_temp[0].year+'-'+str(categories_temp[0].semester)+'-'+categories_temp[0].number)
+            return render(request, 'group6/index.html', {'project_list': project, 'research': research, 'offer': offer, 'approve': approve, 'timeLine': timeLine, 'project_id': project_id},)
         elif u.type == '1':
             t = Teacher.objects.get(userprofile=u)
-            project = ProjectG6.objects.filter(teacher=t)
+            project_list, research_list, offer_list, approve_list, timeLine_list, categories_id_list, project_id_list = [], [], [], [], [], [], []
+            for cat in main_cat:
+                cp = CategoriesProject.objects.filter(project_catagories=cat)
+                project = []
+                research = []
+                offer = []
+                approve = []
+                timeLine = []
+                categories_id = []
+                project_id = []
+                for pro in cp:
+                    if pro.project.teacher == t:
+                        project.append(pro.project)
+                        continue
+                    for teach in pro.teacher.all():
+                        if teach == t:
+                            project.append(pro.project)
+                for p in project:
+                    research.append(ResearchProjectForm.objects.get(project=p))
+                    offer.append(OfferProjectForm.objects.get(project=p))
+                    approve.append(ApproveProjectForm.objects.get(project=p))
+                    timeLine.append(TimeLineForm.objects.get(project=p))
+                    categories_temp = CategoriesProject.objects.filter(project=p)
+                    if len(categories_temp)==0:
+                        categories_id.append('')
+                        project_id.append('-')
+                    else:
+                        categories_id.append(categories_temp[0].id)
+                        project_id.append(categories_temp[0].project_catagories+categories_temp[0].year+'-'+str(categories_temp[0].semester)+'-'+categories_temp[0].number)
+                project_list.append(project)
+                research_list.append(research)
+                offer_list.append(offer)
+                approve_list.append(approve)
+                timeLine_list.append(timeLine)
+                categories_id_list.append(categories_id)
+                project_id_list.append(project_id)
+            project = []
             research = []
             offer = []
             approve = []
             timeLine = []
-            for p in project:
-                research.append(ResearchProjectForm.objects.get(project=p))
-                offer.append(OfferProjectForm.objects.get(project=p))
-                approve.append(ApproveProjectForm.objects.get(project=p))
-                timeLine.append(TimeLineForm.objects.get(project=p))
-            return render(request, 'group6/index_teacher_officer.html', {'project_list': project, 'research': research, 'offer': offer, 'approve': approve, 'timeLine': timeLine},)
+            categories_id = []
+            project_id = []
+            for proj in ProjectG6.objects.all():
+                if proj.teacher == t:
+                    if len(proj.categoriesproject_set.all()) == 0:
+                        project.append(proj)
+                        research.append(ResearchProjectForm.objects.get(project=proj))
+                        offer.append(OfferProjectForm.objects.get(project=proj))
+                        approve.append(ApproveProjectForm.objects.get(project=proj))
+                        timeLine.append(TimeLineForm.objects.get(project=proj))
+                        categories_temp = CategoriesProject.objects.filter(project=proj)
+                        if len(categories_temp)==0:
+                            categories_id.append('')
+                            project_id.append('-')
+                        else:
+                            categories_id.append(categories_temp[0].id)
+                            project_id.append(categories_temp[0].project_catagories+categories_temp[0].year+'-'+str(categories_temp[0].semester)+'-'+categories_temp[0].number)
+            project_list.append(project)
+            research_list.append(research)
+            offer_list.append(offer)
+            approve_list.append(approve)
+            timeLine_list.append(timeLine)
+            categories_id_list.append(categories_id)
+            project_id_list.append(project_id)
+            return render(request, 'group6/index_teacher.html', {'main0': main[0], 'project_list0': project_list[0], 'research0': research_list[0], 'offer0': offer_list[0], 'approve0': approve_list[0], 'timeLine0': timeLine_list[0], 'categories_id0':categories_id_list[0], 'project_id0': project_id_list[0], 'main1': main[1], 'project_list1': project_list[1], 'research1': research_list[1], 'offer1': offer_list[1], 'approve1': approve_list[1], 'timeLine1': timeLine_list[1], 'categories_id1':categories_id_list[1], 'project_id1': project_id_list[1], 'main2': main[2], 'project_list2': project_list[2], 'research2': research_list[2], 'offer2': offer_list[2], 'approve2': approve_list[2], 'timeLine2': timeLine_list[2], 'categories_id2':categories_id_list[2], 'project_id2': project_id_list[2], 'main3': main[3], 'project_list3': project_list[3], 'research3': research_list[3], 'offer3': offer_list[3], 'approve3': approve_list[3], 'timeLine3': timeLine_list[3], 'categories_id3':categories_id_list[3], 'project_id3': project_id_list[3], 'main4': main[4], 'project_list4': project_list[4], 'research4': research_list[4], 'offer4': offer_list[4], 'approve4': approve_list[4], 'timeLine4': timeLine_list[4], 'categories_id4':categories_id_list[4], 'project_id4': project_id_list[4], 'main5': 'Uncategories', 'project_list5': project_list[5], 'research5': research_list[5], 'offer5': offer_list[5], 'approve5': approve_list[5], 'timeLine5': timeLine_list[5], 'categories_id5':categories_id_list[5], 'project_id5': project_id_list[5]})
         elif u.type == '2':
-            project = ProjectG6.objects.all()
+            project_list, research_list, offer_list, approve_list, timeLine_list, categories_id_list, project_id_list = [], [], [], [], [], [], []
+            for cat in main_cat:
+                cp = CategoriesProject.objects.filter(project_catagories=cat)
+                project = []
+                research = []
+                offer = []
+                approve = []
+                timeLine = []
+                categories_id = []
+                project_id = []
+                for pro in cp:
+                    project.append(pro.project)
+                for p in project:
+                    research.append(ResearchProjectForm.objects.get(project=p))
+                    offer.append(OfferProjectForm.objects.get(project=p))
+                    approve.append(ApproveProjectForm.objects.get(project=p))
+                    timeLine.append(TimeLineForm.objects.get(project=p))
+                    categories_temp = CategoriesProject.objects.filter(project=p)
+                    if len(categories_temp)==0:
+                        categories_id.append('')
+                        project_id.append('-')
+                    else:
+                        categories_id.append(categories_temp[0].id)
+                        project_id.append(categories_temp[0].project_catagories+categories_temp[0].year+'-'+str(categories_temp[0].semester)+'-'+categories_temp[0].number)
+                project_list.append(project)
+                research_list.append(research)
+                offer_list.append(offer)
+                approve_list.append(approve)
+                timeLine_list.append(timeLine)
+                categories_id_list.append(categories_id)
+                project_id_list.append(project_id)
+            project = []
             research = []
             offer = []
             approve = []
             timeLine = []
-            for p in project:
-                research.append(ResearchProjectForm.objects.get(project=p))
-                offer.append(OfferProjectForm.objects.get(project=p))
-                approve.append(ApproveProjectForm.objects.get(project=p))
-                timeLine.append(TimeLineForm.objects.get(project=p))
-            return render(request, 'group6/index_teacher_officer.html', {'project_list': project, 'research': research, 'offer': offer, 'approve': approve, 'timeLine': timeLine},)
+            categories_id = []
+            project_id = []
+            for proj in ProjectG6.objects.all():
+                if len(proj.categoriesproject_set.all()) == 0:
+                    project.append(proj)
+                    research.append(ResearchProjectForm.objects.get(project=proj))
+                    offer.append(OfferProjectForm.objects.get(project=proj))
+                    approve.append(ApproveProjectForm.objects.get(project=proj))
+                    timeLine.append(TimeLineForm.objects.get(project=proj))
+                    categories_temp = CategoriesProject.objects.filter(project=proj)
+                    if len(categories_temp)==0:
+                        categories_id.append('')
+                        project_id.append('-')
+                    else:
+                        categories_id.append(categories_temp[0].id)
+                        project_id.append(categories_temp[0].project_catagories+categories_temp[0].year+'-'+str(categories_temp[0].semester)+'-'+categories_temp[0].number)
+            project_list.append(project)
+            research_list.append(research)
+            offer_list.append(offer)
+            approve_list.append(approve)
+            timeLine_list.append(timeLine)
+            categories_id_list.append(categories_id)
+            project_id_list.append(project_id)
+            return render(request, 'group6/index_officer.html', {'main0': main[0], 'project_list0': project_list[0], 'research0': research_list[0], 'offer0': offer_list[0], 'approve0': approve_list[0], 'timeLine0': timeLine_list[0], 'categories_id0':categories_id_list[0], 'project_id0': project_id_list[0], 'main1': main[1], 'project_list1': project_list[1], 'research1': research_list[1], 'offer1': offer_list[1], 'approve1': approve_list[1], 'timeLine1': timeLine_list[1], 'categories_id1':categories_id_list[1], 'project_id1': project_id_list[1], 'main2': main[2], 'project_list2': project_list[2], 'research2': research_list[2], 'offer2': offer_list[2], 'approve2': approve_list[2], 'timeLine2': timeLine_list[2], 'categories_id2':categories_id_list[2], 'project_id2': project_id_list[2], 'main3': main[3], 'project_list3': project_list[3], 'research3': research_list[3], 'offer3': offer_list[3], 'approve3': approve_list[3], 'timeLine3': timeLine_list[3], 'categories_id3':categories_id_list[3], 'project_id3': project_id_list[3], 'main4': main[4], 'project_list4': project_list[4], 'research4': research_list[4], 'offer4': offer_list[4], 'approve4': approve_list[4], 'timeLine4': timeLine_list[4], 'categories_id4':categories_id_list[4], 'project_id4': project_id_list[4], 'main5': 'Uncategories', 'project_list5': project_list[5], 'research5': research_list[5], 'offer5': offer_list[5], 'approve5': approve_list[5], 'timeLine5': timeLine_list[5], 'categories_id5':categories_id_list[5], 'project_id5': project_id_list[5]})
     else:
         return render(request, 'base.html')
 
@@ -58,19 +173,21 @@ def create_3forms(request):
     if request.user.is_authenticated():
         u = UserProfile.objects.get(user=request.user)
         if u.type != '0':
-            messages.add_message(request, messages.INFO, "Only Student can create form")
+            messages.add_message(request, messages.INFO, "นักเรียนเท่านั้นที่สามารถสร้างฟอร์มได้")
             return HttpResponseRedirect(reverse('group6:project_docs_index')) #redirect to index
         else:
             s = Student.objects.get(userprofile=u)
             teachers = Teacher.objects.all()
-            return render(request, 'group6/create_3forms.html', {'teachers': teachers, 'student': s, 'numOP': 1, 'yearOE': int(datetime.now().year + 543), 'edit': '1'},)
+            return render(request, 'group6/create_3forms.html', {'teachers': teachers, 'student': s, 'numOP': 1, 'yearOE': int(datetime.now().year + 543), 'edit': '1', 'student_all': Student.objects.all()},)
     else:
         return render(request, 'base.html')
-
 
 def create_3forms_add(request):
     if request.user.is_authenticated():
         u = UserProfile.objects.get(user=request.user)
+        if u.type != '0':
+            messages.add_message(request, messages.INFO, "นักเรียนเท่านั้นที่สามารถสร้างฟอร์มได้")
+            return HttpResponseRedirect(reverse('group6:project_docs_index')) #redirect to index
         s = Student.objects.get(userprofile=u)
         s_list, myCheck, process, myCheck1, myCheck2, myCheck3, myCheck4, myCheck5, myCheck6, myCheck7, myCheck8 = [], [], [], [], [], [], [], [], [], [], []
         s_list.append(s)
@@ -241,7 +358,6 @@ def create_3forms_add(request):
                         error = True
                 if int(numOP) != len(s_list):
                     error = True
-                    error_dateST = str(len(s_list)) + "   " + str(numOP)
                 if dateST == "":
                     error = True
                     error_dateST = "*กรุณาตรวจสอบวันที่ใหม่"
@@ -249,7 +365,7 @@ def create_3forms_add(request):
                     date = dateST.split("-")
                     if len(date) != 3:
                         error = True
-                        error_dateST = "*กรุณาตรวจสอบวันที่ใหม่2"
+                        error_dateST = "*กรุณาตรวจสอบวันที่ใหม่"
                 if process1 == "":
                     error_process = "*กรุณาระบุขั้นตอนการดำเนินงาน อย่างน้อย 1 ขั้นตอน" #If empty set error message and error to true
                     error = True
@@ -323,7 +439,7 @@ def create_3forms_add(request):
                 raise KeyError 
         except (KeyError, ValueError): #When exception render form with error message
             teachers = Teacher.objects.all()
-            return render(request, 'group6/create_3forms.html', {'teachers': teachers, 'student': s, 'error_yearOE': error_yearOE, 'error_nameTH': error_nameTH, 'error_nameEN': error_nameEN, 'error_numOP': error_numOP, 'error_adv': error_adv, 'error_obj': error_obj, 'error_scopes': error_scopes, 'error_benefits': error_benefits, 'error_reasons': error_reasons, 'error_priceOM': error_priceOM, 'error_priceOO': error_priceOO, 'error_credits': error_credits, 'error_courses': error_courses, 'error_semester': error_semester, 'error_yearEN': error_yearEN, 'error_student': error_student, 'nameTH': nameTH, 'nameEN': nameEN, 'obj': obj, 'scopes': scopes, 'benefits': benefits, 'reasons': reasons, 'priceOM': priceOM, 'priceOO': priceOO, 'credits': credits, 'courses': courses, 'semester': semester, 'yearEN': yearEN, 'student_list': s_list, 'numOP': numOP, 'yearOE': yearOE, 'edit': '1', 'error_dateST': error_dateST, 'startDate': dateST, 'error_process': error_process, 'note': note, 'process1': process1, 'checkList1': myCheck1, 'process2': process2, 'checkList2': myCheck2, 'process3': process3, 'checkList3': myCheck3, 'process4': process4, 'checkList4': myCheck4, 'process5': process5, 'checkList5': myCheck5, 'process6': process6, 'checkList6': myCheck6, 'process7': process7, 'checkList7': myCheck7, 'process8': process8, 'checkList8': myCheck8},)
+            return render(request, 'group6/create_3forms.html', {'teachers': teachers, 'student': s, 'error_yearOE': error_yearOE, 'error_nameTH': error_nameTH, 'error_nameEN': error_nameEN, 'error_numOP': error_numOP, 'error_adv': error_adv, 'error_obj': error_obj, 'error_scopes': error_scopes, 'error_benefits': error_benefits, 'error_reasons': error_reasons, 'error_priceOM': error_priceOM, 'error_priceOO': error_priceOO, 'error_credits': error_credits, 'error_courses': error_courses, 'error_semester': error_semester, 'error_yearEN': error_yearEN, 'error_student': error_student, 'nameTH': nameTH, 'nameEN': nameEN, 'obj': obj, 'scopes': scopes, 'benefits': benefits, 'reasons': reasons, 'priceOM': priceOM, 'priceOO': priceOO, 'credits': credits, 'courses': courses, 'semester': semester, 'yearEN': yearEN, 'student_list': s_list, 'numOP': numOP, 'yearOE': yearOE, 'edit': '1', 'error_dateST': error_dateST, 'startDate': dateST, 'error_process': error_process, 'note': note, 'process1': process1, 'checkList1': myCheck1, 'process2': process2, 'checkList2': myCheck2, 'process3': process3, 'checkList3': myCheck3, 'process4': process4, 'checkList4': myCheck4, 'process5': process5, 'checkList5': myCheck5, 'process6': process6, 'checkList6': myCheck6, 'process7': process7, 'checkList7': myCheck7, 'process8': process8, 'checkList8': myCheck8, 'student_all': Student.objects.all()},)
         project = ProjectG6(teacher = Teacher.objects.get(id=int(adv)), name_thai = nameTH, name_eng = nameEN, yearOfEducation = yearOE, objective = obj, reason = reasons, scope = scopes, benefit = benefits)
         project.save()
         project.student = s_list
@@ -346,15 +462,16 @@ def create_3forms_add(request):
 
 def checkNotInList(storeList, item):
     for i in storeList:
-        if i.std_id == item:
-            return False
+        if i != "":
+            if i.std_id == item:
+                return False
     return True
 
 def edit_3forms(request, pjID):
     if request.user.is_authenticated():
         u = UserProfile.objects.get(user=request.user)
         if u.type != '0':
-            messages.add_message(request, messages.INFO, "*นักเรียนเท่านั้นที่สามารถสร้างฟอร์มได้")
+            messages.add_message(request, messages.INFO, "นักเรียนเท่านั้นที่สามารถแก้ไขฟอร์มได้")
             return HttpResponseRedirect(reverse('group6:project_docs_index')) #redirect to index
         else:
             s = Student.objects.get(userprofile=u)
@@ -388,15 +505,23 @@ def edit_3forms(request, pjID):
                 startDate += '0'+str(timeLine.day)
             else:
                 startDate += str(timeLine.day)
-            return render(request, 'group6/create_3forms.html', {'teachers': teachers, 'student': s, 'nameTH': p.name_thai, 'nameEN': p.name_eng, 'obj': p.objective, 'scopes': p.scope, 'benefits': p.benefit, 'reasons': p.reason, 'priceOM': offer.priceOfMaterial, 'priceOO': offer.priceOfOther, 'credits': approve.credit, 'courses': approve.course, 'semester': approve.semesterEnd, 'yearEN': approve.yearEnd, 'student_list': p.student.all(), 'numOP': research.numberOfPeople, 'yearOE': p.yearOfEducation, 'edit': '0', 'project_id': p.id, 'startDate': startDate, 'note': timeLine.note, 'process1': process[0], 'checkList1': myCheck[0], 'process2': process[1], 'checkList2': myCheck[1], 'process3': process[2], 'checkList3': myCheck[2], 'process4': process[3], 'checkList4': myCheck[3], 'process5': process[4], 'checkList5': myCheck[4], 'process6': process[5], 'checkList6': myCheck[5], 'process7': process[6], 'checkList7': myCheck[6], 'process8': process[7], 'checkList8': myCheck[7]},)
+            s_list = []
+            s_list.append(approve.student)
+            for i in p.student.all():
+                if i != approve.student:
+                    s_list.append(i)
+            return render(request, 'group6/create_3forms.html', {'teachers': teachers, 'student': s, 'nameTH': p.name_thai, 'nameEN': p.name_eng, 'obj': p.objective, 'scopes': p.scope, 'benefits': p.benefit, 'reasons': p.reason, 'priceOM': offer.priceOfMaterial, 'priceOO': offer.priceOfOther, 'credits': approve.credit, 'courses': approve.course, 'semester': approve.semesterEnd, 'yearEN': approve.yearEnd, 'student_list': s_list, 'numOP': research.numberOfPeople, 'yearOE': p.yearOfEducation, 'edit': '0', 'project_id': p.id, 'startDate': startDate, 'note': timeLine.note, 'process1': process[0], 'checkList1': myCheck[0], 'process2': process[1], 'checkList2': myCheck[1], 'process3': process[2], 'checkList3': myCheck[2], 'process4': process[3], 'checkList4': myCheck[3], 'process5': process[4], 'checkList5': myCheck[4], 'process6': process[5], 'checkList6': myCheck[5], 'process7': process[6], 'checkList7': myCheck[6], 'process8': process[7], 'checkList8': myCheck[7], 'student_all': Student.objects.all()},)
     else:
         return render(request, 'base.html')
 
 def edit_3forms_update(request, pjID):
     if request.user.is_authenticated():
         u = UserProfile.objects.get(user=request.user)
-        s = Student.objects.get(userprofile=u)
+        if u.type != '0':
+            messages.add_message(request, messages.INFO, "นักเรียนเท่านั้นที่สามารถแก้ไขฟอร์มได้")
+            return HttpResponseRedirect(reverse('group6:project_docs_index')) #redirect to index
         p = ProjectG6.objects.get(id=pjID)
+        s = ApproveProjectForm.objects.get(project=p).student
         s_list, myCheck, process, myCheck1, myCheck2, myCheck3, myCheck4, myCheck5, myCheck6, myCheck7, myCheck8 = [], [], [], [], [], [], [], [], [], [], []
         s_list.append(s)
         yearOE, nameTH, nameEN, numOP, adv, obj, scopes, benefits, reasons, priceOM, priceOO, credits, courses, semester, yearEN, dateST, process1, process2, process3, process4, process5, process6, process7, process8, note = "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""
@@ -564,7 +689,7 @@ def edit_3forms_update(request, pjID):
                         else:
                             error_student.append(("*เลขประจำตัว "+str(studentID)+" มีอยู่แล้ว"))
                         error = True
-                if numOP != len(s_list):
+                if int(numOP) != len(s_list):
                     error == True
                 if dateST == "":
                     error = True
@@ -573,7 +698,7 @@ def edit_3forms_update(request, pjID):
                     date = dateST.split("-")
                     if len(date) != 3:
                         error = True
-                        error_dateST = "*กรุณาตรวจสอบวันที่ใหม่2"
+                        error_dateST = "*กรุณาตรวจสอบวันที่ใหม่"
                 if process1 == "":
                     error_process = "*กรุณาระบุขั้นตอนการดำเนินงาน อย่างน้อย 1 ขั้นตอน" #If empty set error message and error to true
                     error = True
@@ -647,7 +772,7 @@ def edit_3forms_update(request, pjID):
                 raise KeyError 
         except (KeyError, ValueError): #When exception render form with error message
             teachers = Teacher.objects.all()
-            return render(request, 'group6/create_3forms.html', {'teachers': teachers, 'student': s, 'error_yearOE': error_yearOE, 'error_nameTH': error_nameTH, 'error_nameEN': error_nameEN, 'error_numOP': error_numOP, 'error_adv': error_adv, 'error_obj': error_obj, 'error_scopes': error_scopes, 'error_benefits': error_benefits, 'error_reasons': error_reasons, 'error_priceOM': error_priceOM, 'error_priceOO': error_priceOO, 'error_credits': error_credits, 'error_courses': error_courses, 'error_semester': error_semester, 'error_yearEN': error_yearEN, 'error_student': error_student, 'nameTH': nameTH, 'nameEN': nameEN, 'obj': obj, 'scopes': scopes, 'benefits': benefits, 'reasons': reasons, 'priceOM': priceOM, 'priceOO': priceOO, 'credits': credits, 'courses': courses, 'semester': semester, 'yearEN': yearEN, 'student_list': s_list, 'numOP': numOP, 'yearOE': yearOE, 'edit': '0', 'project_id': p.id, 'error_yearST': error_yearST, 'error_dateST': error_dateST, 'error_monthST': error_monthST, 'dateST': dateST, 'monthST': monthST, 'yearST': yearST, 'error_process': error_process, 'note': note, 'process1': process1, 'checkList1': myCheck1, 'process2': process2, 'checkList2': myCheck2, 'process3': process3, 'checkList3': myCheck3, 'process4': process4, 'checkList4': myCheck4, 'process5': process5, 'checkList5': myCheck5, 'process6': process6, 'checkList6': myCheck6, 'process7': process7, 'checkList7': myCheck7, 'process8': process8, 'checkList8': myCheck8},)
+            return render(request, 'group6/create_3forms.html', {'teachers': teachers, 'student': s, 'error_yearOE': error_yearOE, 'error_nameTH': error_nameTH, 'error_nameEN': error_nameEN, 'error_numOP': error_numOP, 'error_adv': error_adv, 'error_obj': error_obj, 'error_scopes': error_scopes, 'error_benefits': error_benefits, 'error_reasons': error_reasons, 'error_priceOM': error_priceOM, 'error_priceOO': error_priceOO, 'error_credits': error_credits, 'error_courses': error_courses, 'error_semester': error_semester, 'error_yearEN': error_yearEN, 'error_student': error_student, 'nameTH': nameTH, 'nameEN': nameEN, 'obj': obj, 'scopes': scopes, 'benefits': benefits, 'reasons': reasons, 'priceOM': priceOM, 'priceOO': priceOO, 'credits': credits, 'courses': courses, 'semester': semester, 'yearEN': yearEN, 'student_list': s_list, 'numOP': numOP, 'yearOE': yearOE, 'edit': '0', 'project_id': p.id, 'error_dateST': error_dateST, 'startDate': dateST, 'error_process': error_process, 'note': note, 'process1': process1, 'checkList1': myCheck1, 'process2': process2, 'checkList2': myCheck2, 'process3': process3, 'checkList3': myCheck3, 'process4': process4, 'checkList4': myCheck4, 'process5': process5, 'checkList5': myCheck5, 'process6': process6, 'checkList6': myCheck6, 'process7': process7, 'checkList7': myCheck7, 'process8': process8, 'checkList8': myCheck8, 'student_all': Student.objects.all()},)
         p.teacher = Teacher.objects.get(id=int(adv))
         p.name_thai = nameTH
         p.name_eng = nameEN
@@ -709,25 +834,31 @@ def edit_3forms_update(request, pjID):
 
 def approveProject(request, apID):
     if request.user.is_authenticated():
-        department = ['','วิศวกรรมไฟฟ้าและคอมพิวเตอร์']
-        faculty = ['','วิศวกรรมศาสตร์']
-        scheme = ['หลักสูตรปรับปรุง Cpr.E 54','หลักสูตรปรับปรุง EE 51','หลักสูตรปรับปรุง ECE 55']
-        main = ['Cpr.E','G','U','C']
+        u = UserProfile.objects.get(user=request.user)
         approve = ApproveProjectForm.objects.get(id=apID)
-        year = int(datetime.now().year - 2000 + 43) - int(approve.student.std_id[:2])
-        return render(request, 'group6/approveProject_view.html', {'approve': approve, 'scheme': scheme[int(approve.student.scheme)], 'department': department[int(approve.student.userprofile.department)], 'main': main[int(approve.student.main)], 'currentYear': year},)
+        if u.type == '0':
+            s = Student.objects.get(userprofile=u)
+            year = int(datetime.now().year - 2000 + 43) - int(s.std_id[:2])
+            return render(request, 'group6/approveProject_view.html', {'approve': approve, 'scheme': scheme[int(s.scheme)], 'department': department[int(s.userprofile.department)], 'main': main[int(s.main)], 'currentYear': year, 'student': s},)
+        else:
+            year = int(datetime.now().year - 2000 + 43) - int(approve.student.std_id[:2])
+            return render(request, 'group6/approveProject_view.html', {'approve': approve, 'scheme': scheme[int(approve.student.scheme)], 'department': department[int(approve.student.userprofile.department)], 'main': main[int(approve.student.main)], 'currentYear': year},)
     else:
         return render(request, 'base.html')
-
 
 def offerProject(request, opID):
     if request.user.is_authenticated():
         offer = OfferProjectForm.objects.get(id=opID)
         sumofprice = offer.priceOfMaterial + offer.priceOfOther
-        return render(request, 'group6/offerProject_view.html', {'offer': offer, 'priceOfTotal': sumofprice},)
+        student_head = ApproveProjectForm.objects.get(project=offer.project).student
+        s_list = []
+        s_list.append(student_head)
+        for i in offer.project.student.all():
+                if i != student_head:
+                    s_list.append(i)
+        return render(request, 'group6/offerProject_view.html', {'offer': offer, 'priceOfTotal': sumofprice, 'student_list': s_list},)
     else:
         return render(request, 'base.html')
-
 
 def researchProject(request, rpID):
     if request.user.is_authenticated():
@@ -740,9 +871,6 @@ def timeLineProject(request, tlID):
     if request.user.is_authenticated():
         timeLine = TimeLineForm.objects.get(id=tlID)
         processList = []
-        #processList = list(timeLine.stepintimeline_set.all().order_by('numberOfProcess'))
-        #while(len(processList)<8):
-        #    processList.append([])
         for i in range(8):
             pro = StepInTimeLine.objects.filter(timeline=timeLine, numberOfProcess=i+1)
             if len(pro) == 0:
@@ -752,7 +880,6 @@ def timeLineProject(request, tlID):
         return render(request, 'group6/timeLineProject_view.html', {'timeLine': timeLine, 'processList': processList},)
     else:
         return render(request, 'base.html')
-
 
 def deleteForm(request, pjID):
     if request.user.is_authenticated():
@@ -764,17 +891,12 @@ def deleteForm(request, pjID):
             if student.std_id == s.std_id:
                 error = False
                 break
+        if u.type == '2':
+            error = False
         if error == True:
+            messages.add_message(request, messages.INFO, "นักศึกษาในกลุ่มเท่านั้นที่สามารถลบฟอร์มได้")
             return HttpResponseRedirect(reverse('group6:project_docs_index')) #redirect to index
-        research = ResearchProjectForm.objects.get(project=p)
-        offer = OfferProjectForm.objects.get(project=p)
-        approve = ApproveProjectForm.objects.get(project=p)
-        timeLine = TimeLineForm.objects.get(project=p)
         p.delete()
-        research.delete()
-        offer.delete()
-        approve.delete()
-        timeLine.delete()
         messages.add_message(request, messages.INFO, "การลบฟอร์มของโปรเจคสำเร็จ")
         return HttpResponseRedirect(reverse('group6:project_docs_index')) #redirect to index
     else:
@@ -782,25 +904,31 @@ def deleteForm(request, pjID):
 
 def approveProjectPrint(request, apID):
     if request.user.is_authenticated():
-        department = ['','วิศวกรรมไฟฟ้าและคอมพิวเตอร์']
-        faculty = ['','วิศวกรรมศาสตร์']
-        scheme = ['หลักสูตรปรับปรุง Cpr.E 54','หลักสูตรปรับปรุง EE 51','หลักสูตรปรับปรุง ECE 55']
-        main = ['Cpr.E','G','U','C']
+        u = UserProfile.objects.get(user=request.user)
         approve = ApproveProjectForm.objects.get(id=apID)
-        year = int(datetime.now().year - 2000 + 43) - int(approve.student.std_id[:2])
-        return render(request, 'group6/approveProject_view_print.html', {'approve': approve, 'scheme': scheme[int(approve.student.scheme)], 'department': department[int(approve.student.userprofile.department)], 'main': main[int(approve.student.main)], 'currentYear': year},)
+        if u.type == '0':
+            s = Student.objects.get(userprofile=u)
+            year = int(datetime.now().year - 2000 + 43) - int(s.std_id[:2])
+            return render(request, 'group6/approveProject_view_print.html', {'approve': approve, 'scheme': scheme[int(s.scheme)], 'department': department[int(s.userprofile.department)], 'main': main[int(s.main)], 'currentYear': year, 'student': s},)
+        else:
+            year = int(datetime.now().year - 2000 + 43) - int(approve.student.std_id[:2])
+            return render(request, 'group6/approveProject_view_print.html', {'approve': approve, 'scheme': scheme[int(approve.student.scheme)], 'department': department[int(approve.student.userprofile.department)], 'main': main[int(approve.student.main)], 'currentYear': year},)
     else:
         return render(request, 'base.html')
-
 
 def offerProjectPrint(request, opID):
     if request.user.is_authenticated():
         offer = OfferProjectForm.objects.get(id=opID)
         sumofprice = offer.priceOfMaterial + offer.priceOfOther
-        return render(request, 'group6/offerProject_view_print.html', {'offer': offer, 'priceOfTotal': sumofprice},)
+        student_head = ApproveProjectForm.objects.get(project=offer.project).student
+        s_list = []
+        s_list.append(student_head)
+        for i in offer.project.student.all():
+                if i != student_head:
+                    s_list.append(i)
+        return render(request, 'group6/offerProject_view_print.html', {'offer': offer, 'priceOfTotal': sumofprice, 'student_list': s_list},)
     else:
         return render(request, 'base.html')
-
 
 def researchProjectPrint(request, rpID):
     if request.user.is_authenticated():
@@ -834,5 +962,269 @@ def timeLineProjectPrintCheck(request, tlID):
             else:
                 processList.append(pro[0])
         return render(request, 'group6/timeLineProject_view_print_check.html', {'timeLine': timeLine, 'processList': processList},)
+    else:
+        return render(request, 'base.html')
+
+def add_categories_tester(request, pjID):
+    if request.user.is_authenticated():
+        u = UserProfile.objects.get(user=request.user)
+        if u.type != '2':
+            messages.add_message(request, messages.INFO, "เจ้าหน้าที่ภาควิชาเท่านั้นที่สามารถกำหนด Categories กับอาจารย์สอบโปรเจคได้")
+            return HttpResponseRedirect(reverse('group6:project_docs_index')) #redirect to index
+        else:
+            p = ProjectG6.objects.get(id=pjID)
+            if len(CategoriesProject.objects.filter(project=p)) != 0:
+                messages.add_message(request, messages.INFO, "โครงงานนี้ได้กำหนด Categories กับอาจารย์สอบโปรเจคแล้ว")
+                return HttpResponseRedirect(reverse('group6:project_docs_index')) #redirect to index
+            teachers = Teacher.objects.all()
+            return render(request, 'group6/add_categories_exam_teacher.html', {'edit': '1', 'teacher_project': p.teacher, 'project_id': p.id, 'teachers': teachers, 'numOT': '1', 'yearOE': int(datetime.now().year + 43 - 2000), 'projNum':"01", 'main':'Cp', 'semester':'1',})
+    else:
+        return render(request, 'base.html')
+
+def checkNotInListTeacher(storeList, item):
+    for t in storeList:
+        if t != "":
+            if t.id == int(item):
+                return False
+    return True
+
+def add_categories_tester_add(request, pjID):
+    if request.user.is_authenticated():
+        u = UserProfile.objects.get(user=request.user)
+        if u.type != '2':
+            messages.add_message(request, messages.INFO, "เจ้าหน้าที่ภาควิชาเท่านั้นที่สามารถกำหนด Categories กับอาจารย์สอบโปรเจคได้")
+            return HttpResponseRedirect(reverse('group6:project_docs_index')) #redirect to index
+        p = ProjectG6.objects.get(id=pjID)
+        if len(CategoriesProject.objects.filter(project=p)) != 0:
+            messages.add_message(request, messages.INFO, "โครงงานนี้ได้กำหนด Categories กับอาจารย์สอบโปรเจคแล้ว")
+            return HttpResponseRedirect(reverse('group6:project_docs_index')) #redirect to index
+        t_list = []
+        t_list.append(p.teacher)
+        yearOE, numOT, projNum, main, semester = "", "", "", "", ""
+        error_yearOE, error_numOT, error_projNum, error_main, error_semester = "", "", "", "", ""
+        error_teacher = []
+        error_teacher.append("")
+        error = False
+        try:
+            if 'numberOfTester' and 'projectOfMain' and 'yearOfEducation' and 'semesterNum' and 'projectNum' in request.POST: #Check key in POST
+                yearOE = request.POST['yearOfEducation'] #Get Value from key
+                numOT = request.POST['numberOfTester']
+                projNum = request.POST['projectNum']
+                main = request.POST['projectOfMain']
+                semester = request.POST['semesterNum']
+                if main == "" : #Check user_name is empty???
+                    error_main = "*กรุณาเลือกกลุ่มสาขาใหม่" #If empty set error message and error to true
+                    error = True
+                if int(yearOE) > int(datetime.now().year + 43 - 2000) or int(yearOE) < int(datetime.now().year + 35 - 2000) or yearOE == "":
+                    error_yearOE = "*กรุณาเลือกปีการศึกษาใหม่" #If user_name is in use set error message and error to true
+                    error = True
+                if int(projNum) > 35 or int(projNum) < 1 or projNum == "" : #Check name is empty???
+                    error_projNum = "*กรุณาเลือกเลขโครงงานใหม่" #If empty set error message and error to true
+                    error = True
+                if int(semester) > 2 or int(semester)<1:
+                    error_semester = "*กรุณาเลือกภาคเรียนใหม่"
+                    error = True
+                if len(CategoriesProject.objects.filter(number=projNum, project_catagories=main, year=yearOE, semester=semester)) != 0 and error == False:
+                    error_projNum = "*เลขโครงงานนี้ถูกใช้ไปแล้ว" #If empty set error message and error to true
+                    error = True
+                if int(numOT) > 5 or int(numOT) < 1 or numOT == "":
+                    error_numOT = "*กรุณาเลือกจำนวนคนใหม่" #If user_name is in use set error message and error to true
+                    error = True
+                if 'testerNAME1' in request.POST:
+                    testerNAMEID = request.POST['testerNAME1']
+                    no_add = checkNotInListTeacher(t_list, testerNAMEID)
+                    if len(Teacher.objects.filter(id=testerNAMEID)) == 1 and no_add:
+                        t_list.append(Teacher.objects.get(id=testerNAMEID))
+                        error_teacher.append("")
+                    else:
+                        t_list.append("")
+                        if no_add:
+                            error_teacher.append("*ไม่พบอาจารย์")
+                        else:
+                            error_teacher.append(("*อาจารย์ ("+str(Teacher.objects.get(id=testerNAMEID).shortname)+") มีอยู่แล้ว"))
+                        error = True
+                if 'testerNAME2' in request.POST:
+                    testerNAMEID = request.POST['testerNAME2']
+                    no_add = checkNotInListTeacher(t_list, testerNAMEID)
+                    if len(Teacher.objects.filter(id=testerNAMEID)) == 1 and no_add:
+                        t_list.append(Teacher.objects.get(id=testerNAMEID))
+                        error_teacher.append("")
+                    else:
+                        t_list.append("")
+                        if no_add:
+                            error_teacher.append("*ไม่พบอาจารย์")
+                        else:
+                            error_teacher.append(("*อาจารย์ ("+str(Teacher.objects.get(id=testerNAMEID).shortname)+") มีอยู่แล้ว"))
+                        error = True
+                if 'testerNAME3' in request.POST:
+                    testerNAMEID = request.POST['testerNAME3']
+                    no_add = checkNotInListTeacher(t_list, testerNAMEID)
+                    if len(Teacher.objects.filter(id=testerNAMEID)) == 1 and no_add:
+                        t_list.append(Teacher.objects.get(id=testerNAMEID))
+                        error_teacher.append("")
+                    else:
+                        t_list.append("")
+                        if no_add:
+                            error_teacher.append("*ไม่พบอาจารย์")
+                        else:
+                            error_teacher.append(("*อาจารย์ ("+str(Teacher.objects.get(id=testerNAMEID).shortname)+") มีอยู่แล้ว"))
+                        error = True
+                if 'testerNAME4' in request.POST:
+                    testerNAMEID = request.POST['testerNAME4']
+                    no_add = checkNotInListTeacher(t_list, testerNAMEID)
+                    if len(Teacher.objects.filter(id=testerNAMEID)) == 1 and no_add:
+                        t_list.append(Teacher.objects.get(id=testerNAMEID))
+                        error_teacher.append("")
+                    else:
+                        t_list.append("")
+                        if no_add:
+                            error_teacher.append("*ไม่พบอาจารย์")
+                        else:
+                            error_teacher.append(("*อาจารย์ ("+str(Teacher.objects.get(id=testerNAMEID).shortname)+") มีอยู่แล้ว"))
+                        error = True
+                if int(numOT) != len(t_list):
+                    error = True
+                if error == True: #Check if error is true raise exception
+                    raise ValueError
+            else: #If key invalid raise to exception
+                raise KeyError 
+        except (KeyError, ValueError): #When exception render form with error message
+            teachers = Teacher.objects.all()
+            return render(request, 'group6/add_categories_exam_teacher.html', {'edit': '1', 'teacher_project': p.teacher, 'project_id': p.id, 'error_yearOE': error_yearOE, 'error_teacher': error_teacher, 'error_numOT': error_numOT, 'error_projNum': error_projNum, 'error_main': error_main, 'error_semester': error_semester, 'teacher_list': t_list, 'numOT': numOT, 'yearOE': yearOE, 'projNum':projNum, 'main':main, 'semester':semester, 'teachers':teachers},)
+        cp = CategoriesProject(project=p, project_catagories=main, number=projNum, year=yearOE, semester=semester)
+        cp.save()
+        cp.teacher = t_list
+        messages.add_message(request, messages.INFO, "การกำหนด Categories กับอาจารย์สอบโปรเจคสำเร็จ")
+        return HttpResponseRedirect(reverse('group6:project_docs_index')) #redirect to index
+    else:
+        return render(request, 'base.html')
+
+def edit_categories_tester(request, cpID):
+    if request.user.is_authenticated():
+        u = UserProfile.objects.get(user=request.user)
+        if u.type != '2':
+            messages.add_message(request, messages.INFO, "เจ้าหน้าที่ภาควิชาเท่านั้นที่สามารถแก้ไข Categories กับอาจารย์สอบโปรเจคได้")
+            return HttpResponseRedirect(reverse('group6:project_docs_index')) #redirect to index
+        else:
+            cp = CategoriesProject.objects.get(id=cpID)
+            teachers = Teacher.objects.all()
+            t_list = []
+            t_list.append('')
+            for t in cp.teacher.all():
+                if t != cp.project.teacher:
+                    t_list.append(t)
+            return render(request, 'group6/add_categories_exam_teacher.html', {'edit': '0', 'teacher_project': cp.project.teacher, 'project_id': cp.project.id, 'teachers': teachers, 'numOT': len(cp.teacher.all()), 'yearOE': cp.year, 'projNum': cp.number, 'main': cp.project_catagories, 'semester': cp.semester, 'teacher_list': t_list, 'categories_id': cp.id})
+    else:
+        return render(request, 'base.html')
+
+def edit_categories_tester_update(request, cpID):
+    if request.user.is_authenticated():
+        u = UserProfile.objects.get(user=request.user)
+        if u.type != '2':
+            messages.add_message(request, messages.INFO, "เจ้าหน้าที่ภาควิชาเท่านั้นที่สามารถแก้ไข Categories กับอาจารย์สอบโปรเจคได้")
+            return HttpResponseRedirect(reverse('group6:project_docs_index')) #redirect to index
+        cp = CategoriesProject.objects.get(id=cpID)
+        t_list = []
+        t_list.append(cp.project.teacher)
+        yearOE, numOT, projNum, main, semester = "", "", "", "", ""
+        error_yearOE, error_numOT, error_projNum, error_main, error_semester = "", "", "", "", ""
+        error_teacher = []
+        error_teacher.append("")
+        error = False
+        try:
+            if 'numberOfTester' and 'projectOfMain' and 'yearOfEducation' and 'semesterNum' and 'projectNum' in request.POST: #Check key in POST
+                yearOE = request.POST['yearOfEducation'] #Get Value from key
+                numOT = request.POST['numberOfTester']
+                projNum = request.POST['projectNum']
+                main = request.POST['projectOfMain']
+                semester = request.POST['semesterNum']
+                if main == "" : #Check user_name is empty???
+                    error_main = "*กรุณาเลือกกลุ่มสาขาใหม่" #If empty set error message and error to true
+                    error = True
+                if int(yearOE) > int(datetime.now().year + 43 - 2000) or int(yearOE) < int(datetime.now().year + 35 - 2000) or yearOE == "":
+                    error_yearOE = "*กรุณาเลือกปีการศึกษาใหม่" #If user_name is in use set error message and error to true
+                    error = True
+                if int(projNum) > 35 or int(projNum) < 1 or projNum == "" : #Check name is empty???
+                    error_projNum = "*กรุณาเลือกเลขโครงงานใหม่" #If empty set error message and error to true
+                    error = True
+                if int(semester) > 2 or int(semester)<1:
+                    error_semester = "*กรุณาเลือกภาคเรียนใหม่"
+                    error = True
+                if cp.number != projNum or cp.project_catagories != main or cp.year != yearOE or cp.semester != int(semester):
+                    if len(CategoriesProject.objects.filter(number=projNum, project_catagories=main, year=yearOE, semester=semester)) != 0 and error == False:
+                        error_projNum = "*เลขโครงงานนี้ถูกใช้ไปแล้ว" #If empty set error message and error to true
+                        error = True
+                if int(numOT) > 5 or int(numOT) < 1 or numOT == "":
+                    error_numOT = "*กรุณาเลือกจำนวนคนใหม่" #If user_name is in use set error message and error to true
+                    error = True
+                if 'testerNAME1' in request.POST:
+                    testerNAMEID = request.POST['testerNAME1']
+                    no_add = checkNotInListTeacher(t_list, testerNAMEID)
+                    if len(Teacher.objects.filter(id=testerNAMEID)) == 1 and no_add:
+                        t_list.append(Teacher.objects.get(id=testerNAMEID))
+                        error_teacher.append("")
+                    else:
+                        t_list.append("")
+                        if no_add:
+                            error_teacher.append("*ไม่พบอาจารย์")
+                        else:
+                            error_teacher.append(("*อาจารย์ ("+str(Teacher.objects.get(id=testerNAMEID).shortname)+") มีอยู่แล้ว"))
+                        error = True
+                if 'testerNAME2' in request.POST:
+                    testerNAMEID = request.POST['testerNAME2']
+                    no_add = checkNotInListTeacher(t_list, testerNAMEID)
+                    if len(Teacher.objects.filter(id=testerNAMEID)) == 1 and no_add:
+                        t_list.append(Teacher.objects.get(id=testerNAMEID))
+                        error_teacher.append("")
+                    else:
+                        t_list.append("")
+                        if no_add:
+                            error_teacher.append("*ไม่พบอาจารย์")
+                        else:
+                            error_teacher.append(("*อาจารย์ ("+str(Teacher.objects.get(id=testerNAMEID).shortname)+") มีอยู่แล้ว"))
+                        error = True
+                if 'testerNAME3' in request.POST:
+                    testerNAMEID = request.POST['testerNAME3']
+                    no_add = checkNotInListTeacher(t_list, testerNAMEID)
+                    if len(Teacher.objects.filter(id=testerNAMEID)) == 1 and no_add:
+                        t_list.append(Teacher.objects.get(id=testerNAMEID))
+                        error_teacher.append("")
+                    else:
+                        t_list.append("")
+                        if no_add:
+                            error_teacher.append("*ไม่พบอาจารย์")
+                        else:
+                            error_teacher.append(("*อาจารย์ ("+str(Teacher.objects.get(id=testerNAMEID).shortname)+") มีอยู่แล้ว"))
+                        error = True
+                if 'testerNAME4' in request.POST:
+                    testerNAMEID = request.POST['testerNAME4']
+                    no_add = checkNotInListTeacher(t_list, testerNAMEID)
+                    if len(Teacher.objects.filter(id=testerNAMEID)) == 1 and no_add:
+                        t_list.append(Teacher.objects.get(id=testerNAMEID))
+                        error_teacher.append("")
+                    else:
+                        t_list.append("")
+                        if no_add:
+                            error_teacher.append("*ไม่พบอาจารย์")
+                        else:
+                            error_teacher.append(("*อาจารย์ ("+str(Teacher.objects.get(id=testerNAMEID).shortname)+") มีอยู่แล้ว"))
+                        error = True
+                if int(numOT) != len(t_list):
+                    error = True
+                if error == True: #Check if error is true raise exception
+                    raise ValueError
+            else: #If key invalid raise to exception
+                raise KeyError 
+        except (KeyError, ValueError): #When exception render form with error message
+            teachers = Teacher.objects.all()
+            return render(request, 'group6/add_categories_exam_teacher.html', {'edit': '0', 'teacher_project': cp.project.teacher, 'project_id': cp.project.id, 'error_yearOE': error_yearOE, 'error_teacher': error_teacher, 'error_numOT': error_numOT, 'error_projNum': error_projNum, 'error_main': error_main, 'error_semester': error_semester, 'teacher_list': t_list, 'numOT': numOT, 'yearOE': yearOE, 'projNum':projNum, 'main':main, 'semester':semester, 'teachers':teachers, 'categories_id': cp.id},)
+        cp.teacher = t_list
+        cp.semester = int(semester)
+        cp.project_catagories = main
+        cp.number = projNum
+        cp.year = yearOE
+        cp.save()
+        messages.add_message(request, messages.INFO, "การแก้ไข Categories กับอาจารย์สอบโปรเจคสำเร็จ")
+        return HttpResponseRedirect(reverse('group6:project_docs_index')) #redirect to index
     else:
         return render(request, 'base.html')

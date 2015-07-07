@@ -29,6 +29,7 @@ window.open('popup.html','width=400,height=400');
                     <thead>
                         <tr>
                             <th>ลำดับ</th>
+                            <th>รหัสโครงงาน</th>
                             <th>ชื่อโครงงาน (ภาษาไทย)</th>
                             <th>ชื่อโครงงาน (ภาษาอังกฤษ)</th>
                             <th>แบบฟอร์มสำรวจหัวข้อโครงงานปริญญานิพนธ์</th>
@@ -42,6 +43,7 @@ window.open('popup.html','width=400,height=400');
                     {% for project in project_list %}
                         <tr>
                             <td data-title="ลำดับ">{{ forloop.counter }}</td>
+                            <td data-title="รหัสโครงงาน">{{ project_id|get_at_index:forloop.counter0 }}</td>
                             <td data-title="ชื่อโครงงาน (ภาษาไทย)">{{ project.name_thai }}</td>
                             <td data-title="ชื่อโครงงาน (ภาษาอังกฤษ)">{{ project.name_eng }}</td>
                             <td data-title="แบบฟอร์มสำรวจหัวข้อโครงงานปริญญานิพนธ์"><a class="btn btn-info" href="{% url 'group6:project_docs_researchProject' research|get_id_at_index:forloop.counter0 %}">ดูฟอร์ม</a></td>
@@ -72,5 +74,5 @@ window.location='{% url 'group6:project_docs_delete' project.id %}';" target="_b
     {% endif %}
     <a class="btn btn-primary" href="{% url 'group6:project_docs_create_3forms' %}">สร้างฟอร์มเสนอโครงงานใหม่</a> 
     <a class="btn btn-info" href="{% static "group6/template_ECE_.docx" %}">ตัวอย่างรูปเล่มโปรเจค</a><br>
-</div>
+</div><br>
 {% endblock %}
