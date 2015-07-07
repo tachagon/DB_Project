@@ -15,81 +15,96 @@
 <div class="container-fluid">
 <meta http-equiv="content-type" content="text/html;charset=utf-8">
 <style>
+body{
+	}
 .page{
+	font:14pt "Angsana New";
 	width:210mm;
-	height:297mm;
+	height:auto;
 	margin:auto;
 	position:relative;
     padding: 2cm;
     border: 1px #D3D3D3 solid;
     border-radius: 5px;
     background: white;
+	word-break:break-all;
 	}
 .form > H{
-	margin-left:50;
+	margin-left:0;
 }
-H{
-        font:16pt "Angsana New";
-}
-textarea {
-	margin-left:50;
-	resize:none;
-	outline:none;
-	}
-input{
-	outline:none;
-	resize:none;
-	}
-#o1{
-	text-align:center;
-	}
-@page{
-	size:A4;
-	margin:0;
-	}
 .text{
-	border: 1px solid #000; /* Use for change border width*/
-	width:120mm;
-	height:26mm;
+	border:none; /*Use for change border width*/
 	resize:none;
-	margin-left:50;
+	margin-left:0;
+	float:none;
 	
 	}
-/*@media print {
-  .page {
-		margin:0;
-		font-size:20px;
-		position:absolute;
-		border: initial;
-		width: initial;
+#nameeng{
+	padding-left:20mm;
+	word-break:break-all;
+	}
+#yearspace{
+	display:block;
+	margin-bottom:10mm;
+	 }
+#nameth{
+	padding-left:2mm;
+	word-break:break-all;
+	}
+@media print {
+	.page {
+		font:14pt "Angsana New";
+		margin-top:21mm;
+		margin-left:26mm;
+		margin-right:14mm;
+		padding:0;
+		width:initial;
 		height:initial;
+		size:portrait;
+		position:absolute;
+		border:0;
+		border-radius:0;
 		box-shadow: initial;
 		background: initial;
 		page-break-after: always;
+		display:block;
 		}
-}*/
+	#nameeng{
+		padding-left:18mm;
+		}
+	.text{
+		margin-left:0;
+	}
+	#yearspace{
+		display:block;
+		margin-bottom:10mm;
+		 }
+	#nameth{
+		padding-left:2mm;
+		}
+}
 </style>
 <div class="page">
 <center>
-<H>แบบฟอร์มสำรวจหัวข้อโครงงานปริญญานิพนธ์</H><br>
+<H><b>แบบฟอร์มสำรวจหัวข้อโครงงานปริญญานิพนธ์</b></H><br>
 <H>ภาควิชาวิศวกรรมไฟฟ้าและคอมพิวเตอร์ คณะวิศวกรรมศาสตร์</H><br>
 <H>มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าพระนครเหนือ</H><br>
+<br id="yearspace">
 <H>ปีการศึกษา {{ research.project.yearOfEducation }}</H><br>
+<br id="yearspace">
 </center>
 <label class="form">
-<H>ชื่อโครงงาน (ภาษาไทย) : {{ research.project.name_thai }}</H><br>
-<H>ชื่อโครงงาน (อังกฤษ) : {{ research.project.name_eng }}</H><br>
-<H>จำนวนนักศึกษา : {{ research.numberOfPeople }} คน </H><br>
-
-<H>ชื่ออาจารย์ที่ปรึกษา  : {{ research.project.teacher.userprofile.firstname_th }} {{ research.project.teacher.userprofile.lastname_th }} ({{ research.project.teacher.shortname }})</H><br>
-    
-    
-	<H>วัตถุประสงค์ :</H><br><div class="text">{{ research.project.objective }}</div>
-	<H>แนวเหตุผล ทฤฏีสำคัญหรือสมมุติฐาน :</H><div class="text">{{ research.project.reason }}</div>
-	<H>ขอบเขตของการทำโครงงาน :</H><br><div class="text">{{ research.project.scope }}</div>
-	<H>ผลประโยชน์ที่คาดว่าจะได้รับ :</H><br><div class="text">{{ research.project.benefit }}</div>	
+<H>ชื่อโครงการ</H><H id="nameth">(ภาษาไทย) {{ research.project.name_thai }}</H><br>
+<H id="nameeng">(ภาษาอังกฤษ) {{ research.project.name_eng }}</H><br>
+<H>จำนวนนักศึกษา {{ research.numberOfPeople }} คน </H><br>
+<H>ชื่ออาจารย์ที่ปรึกษา {{ research.project.teacher.userprofile.firstname_th }} {{ research.project.teacher.userprofile.lastname_th }} ({{ research.project.teacher.shortname }})</H>
+	<div class="text">วัตถุประสงค์ {{ research.project.objective }}</div>
+	<div class="text">แนวเหตุผล ทฤฏีสำคัญหรือสมมุติฐาน {{ research.project.reason }}</div>
+	<div class="text">ขอบเขตของการทำโครงงาน {{ research.project.scope }}</div>
+	<div class="text">ผลประโยชน์ที่คาดว่าจะได้รับ {{ research.project.benefit }}</div>
 	</label>
-</div>
-<a href="{% url 'group6:project_docs_index' %}"><input class="btn btn-danger" type="button" value="ย้อนกลับ" name = 'cancel' /></a>
-</div>
+</div><br>
+<a href="{% url 'group6:project_docs_index' %}"><input class="btn btn-danger" type="button" value="ย้อนกลับ" name = 'cancel' /></a> 
+<a class="btn btn-default" href="{% url 'group6:project_docs_researchProject_print' research.id %}" target = _blank><span class="glyphicon glyphicon-print"></span></a>
+</div><br>
 {% endblock %}

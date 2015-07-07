@@ -24,7 +24,7 @@
                 else if(s1.value == "{{ subject.subjectID }}"){
                     var optionArray = [];
                     {% for sec in subject.section_set.all %}
-                        var strTemp = "{{ sec.id }}|{{ sec.section }} {{ sec.subject.subjectName }}";
+                        var strTemp = "{{ sec.id }}|{{ sec.section }}";
                         optionArray.push(strTemp);
                     {% empty %}
                         optionArray.push("|กรุณาเพิ่ม Section");
@@ -149,12 +149,12 @@
             {% csrf_token %}
             <!-- เลือกอาจารย์สองภาษา -->
             <div class="form-group">
-                <label class="col-sm-3 control-label">อาจารย์ผู้สอน: </label>
+                <label class="col-sm-3 control-label">เลือกอาจารย์ผู้สอน: </label>
                 <div class="col-sm-6">
-                    <select multiple class="form-control" name="selectProf" required>
+                    <select class="form-control" name="selectProf" required>
                         <option value="null">ยังไม่เลือกอาจารย์ผู้สอน</option>
                         {% for prof in prof2langObj %}
-                        <option value="{{ prof.profID }}">{{ prof.shortName }}: {{ prof.firstName }} {{ prof.lastName }}</option>
+                        <option value="{{ prof.profID }}">{{ prof.shortName }}&ensp;{{ prof.firstName }}&ensp;{{ prof.lastName }}</option>
                         {% empty %}
                         <option>กรุณาเพิ่มอาจารย์</option>
                         {% endfor %}
@@ -170,9 +170,9 @@
 
             <!-- เลือกวิชา -->
             <div class="form-group">
-                <label class="col-sm-3 control-label"><font color="red">*</font> วิชา: </label>
+                <label class="col-sm-3 control-label"><font color="red">*</font> เลือกวิชาที่สอน: </label>
                 <div class="col-sm-6">
-                    <select multiple class="form-control" id="selectSubject" name="selectSubject" onclick=populate("selectSubject","selectSection") required>
+                    <select class="form-control" id="selectSubject" name="selectSubject" onclick=populate("selectSubject","selectSection") required>
                         <option value=""> </option>
                         {% for subject in subjectObj %}
                         <option value="{{ subject.subjectID }}">{{ subject.subjectID }} {{ subject.subjectName }}</option>
@@ -191,9 +191,9 @@
 
             <!-- เลือก section -->
             <div class="form-group">
-                <label class="col-sm-3 control-label"><font color="red">*</font> Section: </label>
+                <label class="col-sm-3 control-label"><font color="red">*</font> เลือก Section: </label>
                 <div class="col-sm-6">
-                    <select multiple class="form-control" id="selectSection" name="selectSection" required>
+                    <select class="form-control" id="selectSection" name="selectSection" required>
 
                     </select>
                 </div>

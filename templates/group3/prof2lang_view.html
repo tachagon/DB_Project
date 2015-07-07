@@ -28,33 +28,7 @@
     {% if teachObj %}
         <div class="row">
             <div class="container">
-                <div class="table-responsive">
-                    <table class="table table-hover table-bordered">
-                        <tr>
-                            <th>อาจารย์ผู้สอน</th>
-                            <td>{{teachObj.prof.firstName}} {{teachObj.prof.lastName}}</td>
-                            <td><a href="#" class="btn btn-default btn-sm" data-toggle="modal" data-target="#shift-prof-modal" id="shift-prof-btn">เปลี่ยนอาจารย์ผู้สอน</a></td>
-                            {% if teachObj.prof %}
-                            <td><a href="#" class="btn btn-default btn-sm" data-toggle="modal" data-target="#change-prof-modal">แก้ไขข้อมูลอาจารย์ผู้สอน</a></td>
-                            {% else %}
-                            <td><a href="#" class="btn btn-default btn-sm" disabled="disabled">แก้ไขข้อมูลอาจารย์ผู้สอน</a></td>
-                            {% endif %}
-                        </tr>
-                        <tr>
-                            <th>วิชา</th>
-                            <td>{{teachObj.subject.subjectID}} {{teachObj.section.subject.subjectName}}</td>
-                            <td><a href="#" class="btn btn-default btn-sm" data-toggle="modal" data-target="#shift-subject-modal" id="shift-subject-btn">เปลี่ยนวิชา</a></td>
-                            <td><a href="#" class="btn btn-default btn-sm" data-toggle="modal" data-target="#change-subject-modal">แก้ไขข้อมูลวิชา</a></td>
-                        </tr>
-                        <tr>
-                            <th>Section</th>
-                            <td>{{teachObj.section.section}} {{teachObj.section.subject.subjectName}}</td>
-                            <td><a href="#" class="btn btn-default btn-sm">เปลี่ยน Section</a></td>
-                            <td><a href="#" class="btn btn-default btn-sm" data-toggle="modal" data-target="#change-section-modal" id="change-section-btn">แก้ไขข้อมูล Section</a></td>
-                        </tr>
-                    </table>
-                </div>
-
+<!---------------------------------------------- ข้อมูลอาจารย์ผู้สอน ------------------------------------------------------>
                 <div class="col-md-6">
                     <div class="panel panel-default">
                         <div class="panel-heading">
@@ -95,9 +69,16 @@
                                     <td>{{teachObj.prof.email}}</td>
                                 </tr>
                             </table>
+                            <a href="#" class="btn btn-success" data-toggle="modal" data-target="#shift-prof-modal" id="shift-prof-btn">เปลี่ยนอาจารย์ผู้สอน</a>
+                            {% if teachObj.prof %}
+                                <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#change-prof-modal">แก้ไขข้อมูลอาจารย์ผู้สอน</a>
+                            {% else %}
+                                <a href="#" class="btn btn-default" disabled="disabled">แก้ไขข้อมูลอาจารย์ผู้สอน</a>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
+<!----------------------------------------------- ข้อมูลวิชาที่สอน -------------------------------------------------------->
                 <div class="col-md-6">
                     <div class="panel panel-default">
                         <div class="panel-heading">
@@ -114,8 +95,11 @@
                                     <td>{{teachObj.section.subject.subjectName}}</td>
                                 </tr>
                             </table>
+                            <a href="#" class="btn btn-success" data-toggle="modal" data-target="#shift-subject-modal" id="shift-subject-btn">เปลี่ยนวิชา</a>
+                            <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#change-subject-modal">แก้ไขข้อมูลวิชา</a>
                         </div>
                     </div>
+<!-------------------------------------------------- ข้อมูล Section ---------------------------------------------------->
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <h4>ข้อมูล Section</h4>
@@ -160,6 +144,8 @@
                                     </td>
                                 </tr>
                             </table>
+                            <a href="#" class="btn btn-success" data-toggle="modal" data-target="#shift-section-modal" id="shift-section-btn">เปลี่ยน Section</a>
+                            <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#change-section-modal" id="change-section-btn">แก้ไขข้อมูล Section</a>
                         </div><!-- /panel-body -->
                     </div><!-- /panel -->
                 </div><!-- /col-md-6 -->
@@ -498,7 +484,7 @@
                                     <div class="form-group">
                                         <label class="col-sm-3 control-label">Section : </label>
                                         <div class="col-sm-9">
-                                            <p class="form-control-static">{{ teachObj.section.section }} ของวิชา {{ teachObj.section.subject.subjectName }}</p>
+                                            <p class="form-control-static">{{ teachObj.section.section }}</p>
                                         </div>
                                     </div>
 
@@ -523,7 +509,7 @@
                                                 else if(s1.value == "{{ subject.subjectID }}"){
                                                 var optionArray = [];
                                                 {% for sec in subject.section_set.all %}
-                                                    var strTemp = "{{ sec.id }}|{{ sec.section }} ของวิชา {{ sec.subject.subjectName }}";
+                                                    var strTemp = "{{ sec.id }}|{{ sec.section }}";
                                                     optionArray.push(strTemp);
                                                 {% empty %}
                                                     optionArray.push("|กรุณาเพิ่ม Section");
@@ -579,6 +565,51 @@
                         </form>
                     </div><!-- /modal-dialog -->
                 </div><!-- /shift-subject-modal -->
+
+<!------------------------------------------------ shift-section-modal ------------------------------------------------>
+                <div class="modal fade" id="shift-section-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                    <div class="modal-dialog" role="document">
+                        <form class="form-horizontal" method="post" action="{% url 'group3:shiftSection' teachObj.id %}">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    <h4 class="modal-title">เปลี่ยน Section</h4>
+                                </div><!-- /modal-header -->
+                                <div class="modal-body">
+
+                                    {% csrf_token %}
+
+                                    <!-- 1. ชื่อ Section ปัจจุบัน -->
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">Section: </label>
+                                        <div class="col-sm-9">
+                                            <p class="form-control-static">{{ teachObj.section.section }}</p>
+                                        </div>
+                                    </div>
+
+                                    <!-- 2. เลือก Section -->
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">เปลี่ยนเป็น: </label>
+                                        <div class="col-sm-9">
+                                            <select class="form-control" name="shift-section" required>
+                                                {% for section in sectionList %}
+                                                    <option value="{{ section.id }}">{{ section.section }}</option>
+                                                {% empty %}
+                                                    <option value="">วิชานี้ไม่มี Section กรุณาเพิ่มข้อมูลก่อน</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                </div><!-- /modal-body -->
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">ปิด</button>
+                                    <button type="submit" class="btn btn-primary">บันทึกการเปลี่ยนแปลง</button>
+                                </div><!-- /modal-footer -->
+                            </div><!-- /modal-content -->
+                        </form>
+                    </div><!-- /modal-dialog -->
+                </div><!-- /shift-section-modal -->
 
                 <a class="btn btn-default" href="{% url 'group3:prof2lang_index' %}"><span class="glyphicon glyphicon-arrow-left"></span> ย้อนกลับ</a>
 

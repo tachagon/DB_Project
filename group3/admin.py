@@ -4,7 +4,7 @@ from group3.models import *
 
 # Register your models here.
 class Prof2LangAdmin(admin.ModelAdmin):
-    list_display = ('profID', 'firstName', 'lastName', 'shortName', 'sahakornAccount', 'department', 'faculty', 'tell', 'email')
+    list_display = ('profID', 'academic_position', 'prefix_name', 'firstName', 'lastName', 'shortName', 'department', 'faculty', 'type')
 
 class SectionInline(admin.StackedInline):
     model = Section
@@ -27,18 +27,18 @@ class TeachAdmin(admin.ModelAdmin):
 class WorkInline(admin.StackedInline):
     model = Work
     extra = 1
-"""
+
 class HourlyEmployeeAdmin(admin.ModelAdmin):
     list_display = ('user', 'numberTaxpayment', 'status', 'employmentRate')
     inlines = [WorkInline]
 
 class WorkAdmin(admin.ModelAdmin):
     list_display = ('employee', 'releaseDate', 'startTime', 'endTime', 'note')
-"""
+
 admin.site.register(Prof2Lang, Prof2LangAdmin)
 admin.site.register(Subject, SubjectAdmin)
 admin.site.register(Section, SectionAdmin)
 admin.site.register(Teach, TeachAdmin)
 
-#admin.site.register(HourlyEmployee, HourlyEmployeeAdmin)
-#admin.site.register(Work, WorkAdmin)
+admin.site.register(HourlyEmployee, HourlyEmployeeAdmin)
+admin.site.register(Work, WorkAdmin)

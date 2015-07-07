@@ -16,109 +16,252 @@
 <div class="container-fluid">
 <meta http-equiv="content-type" content="text/html;charset=utf-8">
 <style>
+body{
+	}
 .page{
+	font:14pt "Angsana New";
 	width:210mm;
 	height:auto;
 	margin:auto;
 	position:relative;
     padding: 2cm;
-    border: 1px #D3D3D3 solid;
-    border-radius: 5px;
+    border:solid;
+	border-width:thin;
+	border-top-left-radius:5px;
+	border-top-right-radius:5px;
+	border-bottom-left-radius:0px;
+	border-bottom-right-radius:0px;
+	border-bottom:hidden;
+	border-color:#D3D3D3;
     background: white;
+	word-break:break-all;
 	}
 .form > H{
-	margin-left:50;
+	margin-left:0;
 }
-H{
-        font:16pt "Angsana New";
+.text{
+	border:none; /*Use for change border width*/
+	resize:none;
+	margin-left:0;
+	float:none;
+	
+	}
+#nameeng{
+	padding-left:12mm;
+	}
+#yearspace{
+	display:block;
+	margin-bottom:10mm;
+	 }
+#nameth{
+	padding-left:2mm;
+	}
+#namestdeng{
+	padding-left:38mm;
 }
-textarea {
-	margin-left:50;
-	resize:none;
-	outline:none;
-	}
-input{
-	outline:none;
-	resize:none;
-	}
-#o1{
-	text-align:center;
-	}
-@page{
-	size:A4;
+#department{
+	padding-left:15mm;
+}
+#topright{
+	float:right;
+	padding:0;
 	margin:0;
 	}
-.text{
-	border: 1px solid #000; /* Use for change border width*/
-	width:120mm;
-	height:16mm;
-	resize:none;
-	margin-left:50;
-	}
-.namestd{
-	margin-left:50;
-	}
-.comment{
-	border: 1px solid #000; /* Use for change border width*/
-	width:80mm;
-	height:60mm;
-	resize:none;
 	
-}
-table,tr,td{
-	border-collapse: collapse;
-	font:16pt "Angsana New";
+/* Table for list Student*/
+#corpname{
+	display: table;
+	margin-bottom:10px;
 	}
+.Title{
+	display: table-caption;
+	text-align: center;
+	font-weight: bold;
+	font-size: larger;
+}
+.Heading{
+	display: table-row;
+	font-weight: bold;
+	text-align: center;
+}
+.row{
+	display:table-row;
+	}
+
+#namestd,#numstd,#headerproject,#present{
+	display: table-cell;
+	border:none;
+	border-width: thin;
+	padding-left: 5px;
+}
+.Cell{
+	display: table-cell;
+	border: solid;
+	border-width: thin;
+	padding-left: 5px;
+	padding-right: 5px;
+}
+
+
+/* Class for hide somethings*/
+.hide{
+	display:none;
+}
+
+/* Table for footer*/
+#footer{
+	font:16pt "Angsana New";
+	width:210mm;
+	margin:auto;
+	margin-bottom:0;
+	padding-left:2cm;
+	padding-right:2cm;
+	position:relative;
+    background: white;
+	border:solid;
+	border-width:thin;
+	border-bottom-left-radius:5px;
+	border-bottom-right-radius:5px;
+	border-top-left-radius:0px;
+	border-top-right-radius:0px;
+	border-top:hidden;
+	border-color:#D3D3D3;
+}
+#corpdown{
+	display: table;
+	margin-bottom:0px;
+	table-layout:fixed;
+}
+
+#commentbox{
+	display: table-cell;
+	border:solid;
+	border-width: thin;
+	width:80mm;
+	height:35mm;
+	padding-left: 2px;
+}
+
+
+
+/* For set print*/
 @media print {
-  .page {
-		margin:0;
-		font:16pt "Angsana New";
-		position:absolute;
-		border: initial;
-		width: initial;
+	.page {
+		font:14pt "Angsana New";
+		margin-top:21mm;
+		margin-left:26mm;
+		margin-right:14mm;
+		margin-bottom:0;
+		padding:0mm;
+		width:initial;
 		height:initial;
+		size:portrait auto;
+		position:absolute;
+		border:1;
+		border-radius:0;
 		box-shadow: initial;
 		background: initial;
 		page-break-after: always;
+		display:block;
 		}
+	#footer{
+		font:14pt "Angsana New";
+		margin-top:171mm;
+		margin-left:26mm;
+		margin-right:14mm;
+		margin-bottom:30mm;
+		padding:0;
+		width:initial;
+		height:initial;
+		size:portrait auto;
+		position:absolute;
+		border:1;
+		border-radius:0;
+		box-shadow: initial;
+		background: initial;
+		page-break-after: always;
+		display:block;
+		}
+	#nameeng{
+		padding-left:11mm;
+		}
+	#namestdeng{
+		padding-left:33mm;
+		}
+	#department{
+		padding-left:13mm;
+	}
+	
+	.text{
+		border:none; /* Use for change border width*/
+		resize:none;
+		margin-left:0;
+	}
+	#yearspace{
+		display:block;
+		margin-bottom:10mm;
+		 }
+	#nameth{
+		padding-left:2mm;
+		}
+	div *{
+		font:14pt "Angsana New";
+	}
 }
 </style>
 <div class="page">
-<CENTER><H>คณะวิศวกรรมศาสตร์</H><br>
-<H>มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าพระนครเหนือ</H><br>
-<H>แบบเสนอขออนุมัติโครงงานปริญญานิพนธ์</H><br>
-<H>ปีการศึกษา {{ approve.project.yearOfEducation }}</H></CENTER>
-<label class="form">
-<H>ด้วยข้าพเจ้า ชื่อและสกุล(ภาษาไทย) : {{ approve.student.userprofile.firstname_th }} {{ approve.student.userprofile.lastname_th }}</H><br>
-<H>ด้วยข้าพเจ้า ชื่อและสกุล(อังกฤษ) : {{ approve.student.userprofile.firstname_en }} {{ approve.student.userprofile.lastname_en }}</H><br>
-<H>ขณะนี้เป็นนักศึกษาปีที่ : {{ currentYear }}</H><H style="margin-left:0;"> ของหลักสูตร : {{ scheme }}</H><H style="margin-left:0;"> วิศวกรรมศาสตร์บัณฑิต</H><br>
-<H>ในภาควิชา : {{ department }}</H><H style="margin-left:0;"> สาขาวิชา : {{ main }}</H><br>
-<H>ตำบลที่อยู่ปัจจุบันของนักศึกษา : </H><br><div class="text">{{ approve.student.userprofile.address }}</div>
-<H>โทร : {{ approve.student.userprofile.tel }}</H><br>
-<H>สภานที่ทำงานปัจจุบันของนักศึกษา : </H><br><div class="text">{{ approve.student.userprofile.office }}</div>
-<H>มีความประสงค์ขออนุมัติทำปริญญานิพนธ์เพื่อเป็นส่วนหนึ่งของการศึกษาตามหลักสูตร</H><br>
-<H>วิศวกรรมศาสตร์บัณฑิต ภาควิชาวิศวกรรมไฟฟ้าและคอมพิวเตอร์ จำนวน : {{ approve.credit }}</H><H style="margin-left:0;"> หน่วย</H> <br>
-<H>ในวิชา : {{ approve.course }}</H><br>
-<H>ชื่อเรื่อง(ภาษาไทย) : {{ approve.project.name_thai }}</H><br>
-<H>ชื่อเรื่อง(ภาษาอังกฤษ) : {{ approve.project.name_eng }}</H><br>
-<H>ชื่ออาจารย์ที่ปรึกษา : {{ approve.project.teacher.userprofile.firstname_th }} {{ approve.project.teacher.userprofile.lastname_th }} ({{ approve.project.teacher.shortname }})</H><br>
-<H>หมายเลขโทรศัพท์ที่ทำงานของอาจารย์ที่ปรึกษา โทร: {{ approve.project.teacher.userprofile.tel }}</H><br><H>ต่อ : -</H><br>
-<H>คาดว่าจะเขียนปริญญานิพนธ์เสร็จภายในภาคที่ : {{ approve.semesterEnd }}</H><br><H> ปีการศึกษา : {{ approve.yearEnd }}</H><br>
-<H>จิงขอได้โปรดพิจารณาอนุมัติ โดยได้แนบโครงการเสนอปริญญานิพนธ์มาพร้อมนี้</H><br>
-<H>วัตถุประสงค์ :</H><br><div class="text">{{ approve.project.objective }}</div>
-<H>แนวเหตุผล ทฤฏีสำคัญหรือสมมุติฐาน :</H><div class="text">{{ approve.project.reason }}</div>
-<H>ขอบเขตของการทำโครงงาน :</H><br><div class="text">{{ approve.project.scope }}</div>
-<H>ผลประโยชน์ที่คาดว่าจะได้รับ :</H><br><div class="text">{{ approve.project.benefit }}</div>
+    <H id="topright">แบบ วศ. 4-03</H><br>
+    <CENTER><H>คณะวิศวกรรมศาสตร์</H><br>
+    <H>มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าพระนครเหนือ</H><br>
+    <H>แบบเสนอขออนุมัติโครงงานปริญญานิพนธ์</H></CENTER>
+    <br id="yearspace">
+    <label class="form">
+        <H>ด้วยข้าพเจ้า ชื่อและสกุล</H><H id="nameth">(ภาษาไทย) {{ approve.student.userprofile.firstname_th }} {{ approve.student.userprofile.lastname_th }}</H><br>
+        <H id="namestdeng">(ภาษาอังกฤษ) {{ approve.student.userprofile.firstname_en }} {{ approve.student.userprofile.lastname_en }}</H><br>
+        <H id="namestdeng">ขณะนี้เป็นนักศึกษาปีที่ {{ currentYear }}</H><H>ของหลักสูตร {{ scheme }}</H><H> วิศวกรรมศาสตร์บัณฑิต</H><br>
+        <H id="department">ในภาควิชา {{ department }}</H><H> สาขาวิชา {{ main }}</H><br>
+        <H>ตำบลที่อยู่ปัจจุบันของนักศึกษา </H><H class="text">{{ approve.student.userprofile.address }}</H>
+        <H>&nbsp; โทร {{ approve.student.userprofile.tel }}</H><br>
+        <H>สภานที่ทำงานปัจจุบันของนักศึกษา </H><H class="text">{{ approve.student.userprofile.office }}</H><br>
+        <H>มีความประสงค์ขออนุมัติทำปริญญานิพนธ์เพื่อเป็นส่วนหนึ่งของการศึกษาตามหลักสูตร</H><br>
+        <H>วิศวกรรมศาสตร์บัณฑิต ภาควิชาวิศวกรรมไฟฟ้าและคอมพิวเตอร์ จำนวน {{ approve.credit }}</H><H> หน่วย</H> <br>
+        <H>ในวิชา {{ approve.course }}</H><br>
+        <H>ชื่อเรื่อง (ภาษาไทย) {{ approve.project.name_thai }}</H><br>
+        <H id="nameeng">(ภาษาอังกฤษ) {{ approve.project.name_eng }}</H><br>
+        <H>ชื่ออาจารย์ที่ปรึกษาปริญญานิพนธ์ {{ approve.project.teacher.userprofile.firstname_th }} {{ approve.project.teacher.userprofile.lastname_th }} ({{ approve.project.teacher.shortname }})</H><br>
+        <H id="teacheng">(ภาษาอังกฤษ) {{ approve.project.teacher.userprofile.firstname_en }} {{ approve.project.teacher.userprofile.lastname_en }} ({{ approve.project.teacher.shortname }})</H><br>
+        <H>หมายเลขโทรศัพท์ที่ทำงานของอาจารย์ที่ปรึกษา โทร {{ approve.project.teacher.userprofile.tel }}</H><H> ต่อ {{ approve.project.teacher.userprofile.ext }}</H><br>
+    </label>
+</div>
+<!-- Cut form -->
+    <div id="footer">
+        <H>คาดว่าจะเขียนปริญญานิพนธ์เสร็จภายในภาคที่ {{ approve.semesterEnd }}</H><H> ปีการศึกษา {{ approve.yearEnd }}</H><br>
+        <H>จิงขอได้โปรดพิจารณาอนุมัติ โดยได้แนบโครงการเสนอปริญญานิพนธ์มาพร้อมนี้</H><br><br>
+        <div align="right"><H>ลงชื่อ:</H>..................................................<H>(ผู้ยื่นคำร้อง)</H></div>
+        <div align="right" style="margin-right:15mm">................/................/................</div>
+        <br>
+        <CENTER>
+            <div id="corpdown">
+                <div class="row">
+                    <div id="commentbox"><H>ความเห็นของอาจารย์ที่ปรึกษา</H><br>
+                    <H>......................................................................................</H><br>
+                    <H>......................................................................................</H><br>
+                    <H style="float:left; padding-left:5px">(ลงนาม)......................................................................</H><br>
+                    <H style="float:right; padding-right:20px">................/................/................</H>
+                    </div>
+                    
+                    <div id="commentbox"><H>ความเห็นของหัวหน้าภาค</H><br>
+                    <H>......................................................................................</H><br>
+                    <H>......................................................................................</H><br>
+                    <H style="float:left; padding-left:5px">(ลงนาม)......................................................................</H><br>
+                    <H style="float:right; padding-right:20px">................/................/................</H>
+                    </div>
+                </div>
+            </div>
+        </CENTER>
+    </div>
 <br>
-<div align="right"><H>ลงชื่อ:</H>................................<H>(ผู้ยื่นคำร้อง)</H></div>
-<div align="right" style="margin-right:36mm">{dd/mm/yyyy}</div>
-<br>
-
-	 <CENTER><table border="1">
-	 <tr><td><CENTER><H>ความเห็นของอาจารย์ที่ปรึกษา</H><div class="comment"></div><H>(ลงนาม)</H>...............<br>{dd/mm/yyyy}</td>
-	 <td><CENTER><H>ความเห็นของหัวหน้าภาค</H><div class="comment"></div><H>(ลงนาม)</H>...............<br>{dd/mm/yyyy}</td></tr></table>
-     	</label>
-</div><br>
-<a href="{% url 'group6:project_docs_index' %}"><input class="btn btn-danger" type="button" value="ย้อนกลับ" name = 'cancel' /></a>
+<a href="{% url 'group6:project_docs_index' %}"><input class="btn btn-danger" type="button" value="ย้อนกลับ" name = 'cancel' /></a> 
+<a class="btn btn-default" href="{% url 'group6:project_docs_approveProject_print' approve.id %}" target = _blank><span class="glyphicon glyphicon-print"></span></a>
 </div><br>
 {% endblock %}

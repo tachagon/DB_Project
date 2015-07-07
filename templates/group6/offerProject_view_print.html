@@ -1,0 +1,222 @@
+﻿<!DOCTYPE>
+<html>
+<head>
+<title>แบบ วศ. 4-01</title>
+<meta http-equiv="content-type" content="text/html;charset=utf-8">
+<style>
+body{
+	}
+.page{
+	font:14pt "Angsana New";
+	width:210mm;
+	height:auto;
+	margin:auto;
+	position:relative;
+    padding: 2cm;
+    border: 1px #D3D3D3 solid;
+    border-radius: 5px;
+    background: white;
+	}
+.form > H{
+	margin-left:0;
+}
+.text{
+	border:none; /*Use for change border width*/
+	resize:none;
+	margin-left:0;
+	float:none;
+	}
+#nameeng{
+	padding-left:20mm;
+	}
+#yearspace{
+	display:block;
+	margin-bottom:10mm;
+	 }
+#nameth{
+	padding-left:2mm;
+	}
+#topright{
+	float:right;
+	padding:0;
+	margin:0;
+	}
+	
+/* Table for list Student*/
+#corpname{
+	display: table;
+	margin-bottom:10px;
+	}
+.Title{
+	display: table-caption;
+	text-align: center;
+	font-weight: bold;
+	font-size: larger;
+}
+.Heading{
+	display: table-row;
+	font-weight: bold;
+	text-align: center;
+}
+.row{
+	display:table-row;
+	}
+
+#namestd,#numstd,#headerproject,#present{
+	display: table-cell;
+	border:none;
+	border-width: thin;
+	padding-left: 5px;
+}
+.Cell{
+	display: table-cell;
+	border: solid;
+	border-width: thin;
+	padding-left: 5px;
+	padding-right: 5px;
+}
+
+
+/* Class for hide somethings*/
+.hide{
+	display:none;
+}
+
+/* Table for money*/
+#corpmoney{
+	display: table;
+	margin-bottom:10px;
+}
+
+#moneywant{
+	display: table-cell;
+	border: none;
+	border-width: thin;
+	padding-left: 5px;
+}
+
+#moneyitems{
+	display: table-cell;
+	border:none;
+	border-width: thin;
+	padding-left: 5px;
+}
+
+#moneyothers{
+	display: table-cell;
+	border:none;
+	border-width: thin;
+	padding-left: 5px;
+}
+
+#moneytotal{
+	display: table-cell;
+	border:none;
+	border-width: thin;
+	padding-left: 5px;
+}
+
+#moneytails{
+	display: table-cell;
+	border:none;
+	border-width: thin;
+	padding-left: 5px;
+}
+
+
+/* For set print*/
+@media print {
+	.page {
+		font:14pt "Angsana New";
+		margin-top:21mm;
+		margin-left:26mm;
+		margin-right:14mm;
+		padding:0;
+		width:initial;
+		height:initial;
+		size:portrait auto;
+		position:absolute;
+		border:0;
+		border-radius:0;
+		box-shadow: initial;
+		background: initial;
+		word-break:break-all;
+		page-break-after: always;
+		display:block;
+		}
+	#nameeng{
+		padding-left:18mm;
+		}
+	.text{
+		border:none; /* Use for change border width*/
+		resize:none;
+		margin-left:0;
+	}
+	#yearspace{
+		display:block;
+		margin-bottom:10mm;
+		 }
+	#nameth{
+		padding-left:2mm;
+		}
+	div *{
+		font:14pt "Angsana New";
+	}
+}
+</style>
+<script>
+</script>
+</head>
+<body onLoad="return window.print()">
+<div class="page">
+<H id="topright">แบบ วศ. 4-01</H><br>
+<CENTER><H>คณะวิศวกรรมศาสตร์</H><br>
+<H>มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าพระนครเหนือ</H><br>
+<H>แบบเสนอโครงงานปริญญานิพนธ์</H><br>
+<H>ภาควิชาวิศวกรรมไฟฟ้าและคอมพิวเตอร์ </H><br>
+<H>ปีการศึกษา {{ offer.project.yearOfEducation }}</H></CENTER>
+<br id="yearspace">
+<label class="form">
+<H>ชื่อโครงการ</H><H id="nameth">(ภาษาไทย) {{ offer.project.name_thai }}</H><br>
+<H id="nameeng">(อังกฤษ) {{ offer.project.name_eng }}</H><br>
+<div id="corpname">
+    <div class="row">
+        <div id="present">เสนอโดย</div>
+        <div class="hide">
+        {% for student in offer.project.student.all %}
+        </div>
+        <div class="row">
+            <div id="namestd">
+            {{ forloop.counter }}. {{ student.userprofile.firstname_th }} {{ student.userprofile.lastname_th }}
+            </div>
+            <div id="numstd">เลขประจำตัว {{ student.std_id }}</div>
+        </div>
+        <div class="hide">
+        {% endfor %}
+        </div>
+        <div id="headerproject">หัวหน้าโครงการ</div>
+    </div>
+</div>
+<H>ชื่ออาจารย์ที่ปรึกษา {{ offer.project.teacher.userprofile.firstname_th }} {{ offer.project.teacher.userprofile.lastname_th }} ({{ offer.project.teacher.shortname }})</H><br>
+	<H>วัตถุประสงค์ </H><H class="text">{{ offer.project.objective }}</H><br>
+	<H>แนวเหตุผล ทฤฏีสำคัญหรือสมมุติฐาน </H><H class="text">{{ offer.project.reason }}</H><br>
+	<H>ขอบเขตของการทำโครงงาน </H><H class="text">{{ offer.project.scope }}</H><br>
+    <div id="corpmoney">
+    	<div class="row">
+            <div id="moneywant">ประมาณการค่าใช้จ่ายในโครงการ </H></div>
+            <div class="row">
+            	<div id="moneyitems">ค่าวัสดุ {{ offer.priceOfMaterial }}</div><div id="moneytails"> บาท</div>
+            </div>
+            <div class="row">
+            	<div id="moneyothers">ค่าใช้จ่ายเบ็ดเตล็ด {{ offer.priceOfOther }}</div><div id="moneytails"> บาท</div>
+            </div>
+            <div class="row">
+            	<div id="moneytotal">รวมค่าใช้จ่ายในโครงการ {{ priceOfTotal }}</div><div id="moneytails"> บาท (ดังรายระเอียดที่แนบมา)</div>
+            </div>
+        </div>
+    </div>
+	<H>ผลประโยชน์ที่คาดว่าจะได้รับ </H><H class="text">{{ offer.project.benefit }}</H>	
+	</label>
+</div>
+</body>
+</html>
