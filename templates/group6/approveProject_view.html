@@ -111,7 +111,7 @@ body{
 
 /* Table for footer*/
 #footer{
-	font:16pt "Angsana New";
+	font:14pt "Angsana New";
 	width:210mm;
 	margin:auto;
 	margin-bottom:0;
@@ -273,6 +273,16 @@ body{
     </div>
 <br>
 <a href="{% url 'group6:project_docs_index' %}"><input class="btn btn-danger" type="button" value="ย้อนกลับ" name = 'cancel' /></a> 
-<a class="btn btn-default" href="{% url 'group6:project_docs_approveProject_print' approve.id %}" target = _blank><span class="glyphicon glyphicon-print"></span></a>
+<a class="btn btn-default" href="javascript:if(confirm('! คำเตือน !\n
+ใช้ Browser : Chrome\n
+ขนาดกระดาษ : A4\n
+ระยะขอบ : ไม่มี\n
+รูปแบบ : แนวตั้ง\n\n
+! Warning !\n
+Use browser : Chrome\n
+Size : A4\n
+Margin : None\n
+Style : Portrait'))
+window.open('{% url 'group6:project_docs_approveProject_print' approve.id %}', '_blank');"><span class="glyphicon glyphicon-print"></span></a>
 </div><br>
 {% endblock %}
