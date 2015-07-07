@@ -30,11 +30,10 @@
                             <table class="table table-hover table-bordered" id="no-more-tables">
                                 <thead>
                                 <tr class="success">
-                                    <th>ลำดับ</th>
-                                    <th>ชื่อ-สกุล</th>
-                                    <th>ตัวย่อ</th>
-                                    <th>รหัสวิชา</th>
-                                    <th>ชื่อวิชา</th>
+                                    <th><a href="{% url 'group3:prof2lang_sort' 'fullname' %}">ชื่อ-สกุล</a></th>
+                                    <th><a href="{% url 'group3:prof2lang_sort' 'prof__shortName' %}">ตัวย่อชื่อ</a></th>
+                                    <th><a href="{% url 'group3:prof2lang_sort' 'subject__subjectID' %}">รหัสวิชา</a></th>
+                                    <th><a href="{% url 'group3:prof2lang_sort' 'subject__subjectName' %}">ชื่อวิชา</a></th>
                                     <th>ตอนเรียน</th>
                                     <th>เมนู</th>
                                 </tr>
@@ -42,18 +41,17 @@
                                 <tbody>
                                 {% for teach in teachList %}
                                 <tr>
-                                    <td data-title="ลำดับ">{{ forloop.counter }}</td>
                                     <td data-title="ชื่อ-สกุล">
                                         {% ifequal teach.prof.academic_position "0"%}
-                                            {% ifequal teach.prof.prefix_name "0" %}อ.{% endifequal %}
-                                            {% ifequal teach.prof.prefix_name "1" %}อ.{% endifequal %}
-                                            {% ifequal teach.prof.prefix_name "2" %}อ.{% endifequal %}    
+                                            {% if teach.prof.prefix_name == "3" %}ดร.
+                                            {% else %}อ.
+                                            {% endif%}
                                         {% endifequal %}
                                         {% ifequal teach.prof.academic_position "1"%}ผู้ช่วยศาสตราจารย์{% ifequal teach.prof.prefix_name "3" %} ดร.{% endifequal %}{% endifequal %}
                                         {% ifequal teach.prof.academic_position "2"%}รองศาสตราจารย์{% ifequal teach.prof.prefix_name "3" %} ดร.{% endifequal %}{% endifequal %}
                                         {% ifequal teach.prof.academic_position "3"%}ศาสตราจารย์{% ifequal teach.prof.prefix_name "3" %} ดร.{% endifequal %}{% endifequal %}
                                         
-                                        {{ teach.prof }}</td>
+                                        {{ teach.prof.firstName }}&ensp;{{ teach.prof.lastName }}</td>
                                     <td data-title="ตัวย่อ">{{ teach.prof.shortName }}</td>
                                     <td data-title="รหัสวิชา">{{ teach.subject.subjectID }}</td>
                                     <td data-title="ชื่อวิชา">{{ teach.subject.subjectName }}</td>

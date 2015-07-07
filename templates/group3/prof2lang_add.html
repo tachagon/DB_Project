@@ -147,8 +147,97 @@
 
         <form class="form-horizontal" method="post" action="{% url 'group3:prof2lang_add' 7 %}">
             {% csrf_token %}
+
+            <script>
+                function prof(in1, in2){
+                    var s1 = document.getElementById(in1);
+                    var s2 = document.getElementById(in2);
+                    s2.innerHTML = "";
+                    var optionArray = ["null|ยังไม่เลือกอาจารย์ผู้สอน"];
+                    if(s1.value == ""){
+                        var optionArray = ["|กรุณาเลือกประเภทอาจารย์ผู้สอน"];
+                    }
+                    else if(s1.value == "0"){
+                        {% for prof in prof2langObj %}
+                            var strTemp = "{{ prof.profID }}|{{ prof.shortName }} {{ prof.firstName }} {{ prof.lastName }}";
+                            optionArray.push(strTemp);
+                        {% empty %}
+                            var strTemp = "|กรุณาเพิ่มอาจารย์";
+                            optionArray.push(strTemp);
+                        {% endfor %}
+                    }
+                    else if(s1.value == "1"){
+                        {% for prof in prof2langObj %}
+                            {% if prof.type == '0' %}
+                                var strTemp = "{{ prof.profID }}|{{ prof.shortName }} {{ prof.firstName }} {{ prof.lastName }}";
+                                optionArray.push(strTemp);
+                            {% endif %}
+                        {% endfor %}
+                    }
+                    else if(s1.value == "2"){
+                        {% for prof in prof2langObj %}
+                            {% if prof.type == '1' %}
+                                var strTemp = "{{ prof.profID }}|{{ prof.shortName }} {{ prof.firstName }} {{ prof.lastName }}";
+                                optionArray.push(strTemp);
+                            {% endif %}
+                        {% endfor %}
+                    }
+                    else if(s1.value == "3"){
+                        {% for prof in prof2langObj %}
+                            {% if prof.type == '2' %}
+                                var strTemp = "{{ prof.profID }}|{{ prof.shortName }} {{ prof.firstName }} {{ prof.lastName }}";
+                                optionArray.push(strTemp);
+                            {% endif %}
+                        {% endfor %}
+                    }
+
+                    for(var option in optionArray){
+                        var pair = optionArray[option].split("|");
+                        var newOption = document.createElement("option");
+                        newOption.value = pair[0];
+                        newOption.text = pair[1];
+                        s2.options.add(newOption);
+                    }
+                }
+            </script>
+
+            <!-- เลือกประเภทอาจารย์ -->
+            <div class="form-group">
+                <label class="col-sm-3 control-label">ประเภทอาจารย์ผู้สอน: </label>
+                <div class="col-sm-6">
+                    <select class="form-control" name="selectType" id="selectType" onclick=prof("selectType","selectProf")>
+                        <option value="">กรุณาเลือก</option>
+                        <option value="0">ทั้งหมด</option>
+                        <option value="1">อาจารย์ในภาควิชา</option>
+                        <option value="2">อาจารย์นอกภาควิชา</option>
+                        <option value="3">อาจารย์พิเศษ</option>
+                    </select>
+                </div>
+                <div class="col-sm-3"></div>
+            </div>
+
             <!-- เลือกอาจารย์สองภาษา -->
             <div class="form-group">
+                <label class="col-sm-3 control-label">เลือกอาจารย์ผู้สอน: </label>
+                <div class="col-sm-6">
+                    <select class="form-control" name="selectProf" id="selectProf" required>
+
+                    </select>
+                </div>
+                <div class="col-sm-3">
+                    <!--button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal_addProf" style="color:green;">
+                        <span class="glyphicon glyphicon-plus"></span>
+                        เพิ่มอาจารย์
+                    </button-->
+                    <a class="btn btn-default" href="{% url 'group3:prof2langAdd' %}" style="color:green;">
+                        <span class="glyphicon glyphicon-plus"></span>
+                        เพิ่มอาจารย์
+                    </a>
+                </div>
+            </div>
+
+            <!-- เลือกอาจารย์สองภาษา -->
+            <!--div class="form-group">
                 <label class="col-sm-3 control-label">เลือกอาจารย์ผู้สอน: </label>
                 <div class="col-sm-6">
                     <select class="form-control" name="selectProf" required>
@@ -166,7 +255,7 @@
                         เพิ่มอาจารย์
                     </button>
                 </div>
-            </div>
+            </div-->
 
             <!-- เลือกวิชา -->
             <div class="form-group">
@@ -182,10 +271,10 @@
                     </select>
                 </div>
                 <div class="col-sm-3">
-                    <button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal_addSubject" style="color:green;">
+                    <!--button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal_addSubject" style="color:green;">
                         <span class="glyphicon glyphicon-plus"></span>
                         เพิ่มวิชา
-                    </button>
+                    </button-->
                 </div>
             </div>
 

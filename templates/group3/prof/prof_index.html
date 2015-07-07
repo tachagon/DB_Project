@@ -29,41 +29,39 @@
                             <table class="table table-hover table-bordered">
                                 <thead>
                                 <tr class="success">
-                                    <th>รหัสอาจารย์</th><!-- 1. -->
-                                    <th>ชื่อ-สกุล</th><!-- 2. -->
-                                    <th>ตัวย่อชื่อ</th><!-- 3. -->
-                                    <th>เบอร์โทรศัพท์</th><!-- 4. -->
-                                    <th>E-mail</th><!-- 5. -->
-                                    <th>บ/ช สหกรณ์</th><!-- 6. -->
-                                    <th>ภาควิชา</th><!-- 7. -->
-                                    <th>คณะ</th><!-- 8. -->
-                                    <th>เมนู</th><!-- 9. -->
+                                    <th><a href="{% url 'group3:prof_sort' 'shortName' %}">ตัวย่อชื่อ</a></th><!-- 1. -->
+                                    <th><a href="{% url 'group3:prof_sort' 'fullname' %}">ชื่อ-สกุล</a></th><!-- 2. -->
+                                    <th><a href="{% url 'group3:prof_sort' 'type' %}">ประเภท</a></th><!-- 3. -->
+                                    <th><a href="{% url 'group3:prof_sort' 'department' %}">ภาควิชา</a></th><!-- 4. -->
+                                    <th><a href="{% url 'group3:prof_sort' 'faculty' %}">คณะ</a></th><!-- 5. -->
+                                    <th>เมนู</th><!-- 6. -->
                                 </tr>
                                 </thead>
                                 <tbody>
                                 {% for prof in profList %}
                                 <tr>
-                                    <td data-title="รหัสอาจารย์">{{ prof.profID }}</td>
-                                    <td data-title="ชื่อ-สกุล">
+                                    <td data-title="ตัวย่อชื่อ">{{ prof.shortName }}</td><!-- 1. -->
+                                    <td data-title="ชื่อ-สกุล"><!-- 2. -->
                                         {% ifequal prof.academic_position "0"%}
-                                            {% ifequal prof.prefix_name "0" %}อ.{% endifequal %}
-                                            {% ifequal prof.prefix_name "1" %}อ.{% endifequal %}
-                                            {% ifequal prof.prefix_name "2" %}อ.{% endifequal %}    
+                                            {% if prof.prefix_name == "3" %}ดร.
+                                            {% else %}อ.
+                                            {% endif %}
                                         {% endifequal %}
                                         {% ifequal prof.academic_position "1"%}ผู้ช่วยศาสตราจารย์{% ifequal prof.prefix_name "3" %} ดร.{% endifequal %}{% endifequal %}
                                         {% ifequal prof.academic_position "2"%}รองศาสตราจารย์{% ifequal prof.prefix_name "3" %} ดร.{% endifequal %}{% endifequal %}
-                                        {% ifequal prof.academic_position "3"%}ศาสตราจารย์{% ifequal prof.prefix_name "3" %} ดร.{% endifequal %}{% endifequal %}            
-                                    
-                                        {{ prof.firstName }}  {{ prof.lastName }}</td>
-                                    <td data-title="ตัวย่อชื่อ">{{ prof.shortName }}</td>
-                                    <td data-title="เบอร์โทรศัพท์">{{ prof.tell }}</td>
-                                    <td data-title=">E-mail">{{ prof.email }}</td>
-                                    <td data-title="บ/ช สหกรณ์">{{ prof.sahakornAccount }}</td>
+                                        {% ifequal prof.academic_position "3"%}ศาสตราจารย์{% ifequal prof.prefix_name "3" %} ดร.{% endifequal %}{% endifequal %}
+                                        {{ prof.firstName }}  {{ prof.lastName }}
+                                    </td><!-- 2. -->
+                                    <td><!-- 3. -->
+                                        {% if prof.type == '0' %}อาจารย์ในภาควิชา{% endif %}
+                                        {% if prof.type == '1' %}อาจารย์นอกภาควิชา{% endif %}
+                                        {% if prof.type == '2' %}อาจารย์พิเศษ{% endif %}
+                                    </td><!-- 3. -->
                                     <td data-title="ภาควิชา">{{ prof.department }}</td>
                                     <td data-title=คณะ">{{ prof.faculty }}</td>
                                     <td data-title="เมนู">
                                         <a class="btn btn-info btn-xs" href="{% url 'group3:prof_view' prof.profID %}">ดูข้อมูล</a>
-                                        <a class="btn btn-danger btn-xs" data-toggle="modal" data-target="#delModal{{prof.profID}}" >ลบ</a>
+                                        <!--a class="btn btn-danger btn-xs" data-toggle="modal" data-target="#delModal{{prof.profID}}" >ลบ</a-->
                                     </td>
                                 </tr>
                                 <!-- Modal -->

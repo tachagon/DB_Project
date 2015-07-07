@@ -23,22 +23,28 @@
             <div class="container-fluid">
                 {% if prof %}
                     <div class="col-md-3">
-                        <a class="btn btn-default btn-block" href="{% url 'group3:prof_update' prof.profID %}"><span class="glyphicon glyphicon-cog"></span> แก้ไข</a>
+                        <a class="btn btn-default btn-block" href="{% url 'group3:prof_update' prof.profID %}" {% if prof.type == '0' %}disabled="disabled"{% endif %}>
+                            <span class="glyphicon glyphicon-cog"></span> แก้ไข
+                        </a>
                     </div>
                     <div class="col-md-6">
                         <div class="table-responsive">
                             <table class="table table-hover table-bordered">
 
-                                <!-- 1. profID -->
-                                <tr>
-                                    <th>รหัสอาจารย์</th>
-                                    <td>{{ prof.profID }}</td>
-                                </tr>
-
                                 <!-- 2. firstName, 3. lastName -->
                                 <tr>
                                     <th>ชื่อ - นามสกุล</th>
-                                    <td>{{ prof.firstName }}  {{ prof.lastName }}</td>
+                                    <td>
+                                        {% ifequal prof.academic_position "0"%}
+                                            {% if prof.prefix_name == "3" %}ดร.
+                                            {% else %}อ.
+                                            {% endif %}
+                                        {% endifequal %}
+                                        {% ifequal prof.academic_position "1"%}ผู้ช่วยศาสตราจารย์{% ifequal prof.prefix_name "3" %} ดร.{% endifequal %}{% endifequal %}
+                                        {% ifequal prof.academic_position "2"%}รองศาสตราจารย์{% ifequal prof.prefix_name "3" %} ดร.{% endifequal %}{% endifequal %}
+                                        {% ifequal prof.academic_position "3"%}ศาสตราจารย์{% ifequal prof.prefix_name "3" %} ดร.{% endifequal %}{% endifequal %}
+                                        {{ prof.firstName }}  {{ prof.lastName }}
+                                    </td>
                                 </tr>
 
                                 <!-- 4. shortName -->
@@ -47,7 +53,29 @@
                                     <td>{{ prof.shortName }}</td>
                                 </tr>
 
-                                <!-- 5. shortName -->
+                                <!-- 10. -->
+                                <tr>
+                                    <th>ประเภท</th>
+                                    <td>
+                                        {% if prof.type == '0' %}อาจารย์ในภาควิชา{% endif %}
+                                        {% if prof.type == '1' %}อาจารย์นอกภาควิชา{% endif %}
+                                        {% if prof.type == '2' %}อาจารย์พิเศษ{% endif %}
+                                    </td>
+                                </tr>
+
+                                <!-- 8. department -->
+                                <tr>
+                                    <th>ภาควิชา</th>
+                                    <td>{{ prof.department }}</td>
+                                </tr>
+
+                                <!-- 9. faculty -->
+                                <tr>
+                                    <th>คณะ</th>
+                                    <td>{{ prof.faculty }}</td>
+                                </tr>
+
+                                <!-- 5. tell -->
                                 <tr>
                                     <th>เบอร์โทรศัพท์</th>
                                     <td>{{ prof.tell }}</td>
@@ -63,18 +91,6 @@
                                 <tr>
                                     <th>เลขที่บัญชีสหกรณ์</th>
                                     <td>{{ prof.sahakornAccount }}</td>
-                                </tr>
-
-                                <!-- 8. department -->
-                                <tr>
-                                    <th>ภาควิชา</th>
-                                    <td>{{ prof.department }}</td>
-                                </tr>
-
-                                <!-- 9. faculty -->
-                                <tr>
-                                    <th>คณะ</th>
-                                    <td>{{ prof.faculty }}</td>
                                 </tr>
 
                             </table>

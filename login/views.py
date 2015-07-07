@@ -268,6 +268,12 @@ def user_register(request):
             )
             newUserProfile.save() # save new UserProfile object into database
 
+            birthDate = datetime.strptime(birthDate, '%d-%m-%Y').date()
+            # ปรับเป็นปี ค.ศ.
+            year = birthDate.year - 543
+            date = str(birthDate.day) + "-" + str(birthDate.month) + "-" + str(year)
+            birthDate = datetime.strptime(date, '%d-%m-%Y').date()
+
             # create new Student object
             newStudent = Student(
                 userprofile     = newUserProfile,   # set 1. user profile
@@ -332,6 +338,12 @@ def testDateField(request):
 
         # ทำการแปลงให้เป็น ปี-เดือน-วัน แล้วเป็นเป็นตัวแปรประเภท datetime.date ให้พร้อมสำหรับบันทึกลง database
         valid_date = datetime.strptime(date, '%d-%m-%Y').date()
+
+        # ปรับเป็นปี ค.ศ.
+        year = valid_date.year - 543
+        date = str(valid_date.day) + "-" + str(valid_date.month) + "-" + str(year)
+        valid_date = datetime.strptime(date, '%d-%m-%Y').date()
+
         print ">>> ", valid_date, " ", type(valid_date), " <<<"
 
     return render(
