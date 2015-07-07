@@ -13,22 +13,92 @@
 {% endblock %}
 
 {% block content %}
-<script type="type/javascript">
-function confirmLeave() {
-if(!confirm("Do you wish to continue without finishing the payment process? Your account will not be setup...")) return;
-window.open('popup.html','width=400,height=400');
+<script>
+function selectView() {
+    var e1 = document.getElementById("categories");
+    var m0 = document.getElementById("main0");
+    var m1 = document.getElementById("main1");
+    var m2 = document.getElementById("main2");
+    var m3 = document.getElementById("main3");
+    var m4 = document.getElementById("main4");
+    var m5 = document.getElementById("main5");
+    var mode = e1.value;
+    if(mode == "All"){
+        m0.style.display = 'block';
+        m1.style.display = 'block';
+        m2.style.display = 'block';
+        m3.style.display = 'block';
+        m4.style.display = 'block';
+        m5.style.display = 'block';
+    }else if(mode == "main0"){
+        m0.style.display = 'block';
+        m1.style.display = 'none';
+        m2.style.display = 'none';
+        m3.style.display = 'none';
+        m4.style.display = 'none';
+        m5.style.display = 'none';
+    }else if(mode == "main1"){
+        m0.style.display = 'none';
+        m1.style.display = 'block';
+        m2.style.display = 'none';
+        m3.style.display = 'none';
+        m4.style.display = 'none';
+        m5.style.display = 'none';
+    }else if(mode == "main2"){
+        m0.style.display = 'none';
+        m1.style.display = 'none';
+        m2.style.display = 'block';
+        m3.style.display = 'none';
+        m4.style.display = 'none';
+        m5.style.display = 'none';
+    }else if(mode == "main3"){
+        m0.style.display = 'none';
+        m1.style.display = 'none';
+        m2.style.display = 'none';
+        m3.style.display = 'block';
+        m4.style.display = 'none';
+        m5.style.display = 'none';
+    }else if(mode == "main4"){
+        m0.style.display = 'none';
+        m1.style.display = 'none';
+        m2.style.display = 'none';
+        m3.style.display = 'none';
+        m4.style.display = 'block';
+        m5.style.display = 'none';
+    }else if(mode == "main5"){
+        m0.style.display = 'none';
+        m1.style.display = 'none';
+        m2.style.display = 'none';
+        m3.style.display = 'none';
+        m4.style.display = 'none';
+        m5.style.display = 'block';
+    }
 }
 </script>
 <div class="container-fluid">
     {% for message in messages %}
         <br><font color = "FF0000" name="message">*{{ message }}</font>
     {% endfor %}
-    {% if project_list %}  
+    <div><B>เลือก Categories : 
+            <select  onChange="return selectView();" id="categories" name="categories">
+                <option value="All">All Categories</option>
+                <option value="main0">Cpr.E</option>
+                <option value="main1">G</option>
+                <option value="main2">U</option>
+                <option value="main3">C</option>
+                <option value="main4">EP</option>
+                <option value="main5">Uncategories</option>
+              </select></B>
+    </div><br>
+    <div id="main0">
+    {% if project_list0 %}  
             <div class="table-responsive">
+                <B>Categories: {{ main0 }}</B>
                 <table class="table table-hover table-bordered" id="no-more-tables">
                     <thead>
                         <tr>
                             <th>ลำดับ</th>
+                            <th>รหัสโครงงาน</th>
                             <th>ชื่อโครงงาน (ภาษาไทย)</th>
                             <th>ชื่อโครงงาน (ภาษาอังกฤษ)</th>
                             <th>แบบฟอร์มสำรวจหัวข้อโครงงานปริญญานิพนธ์</th>
@@ -38,34 +108,264 @@ window.open('popup.html','width=400,height=400');
                         </tr>
                     </thead>
                     <tbody>
-                    {% for project in project_list %}
+                    {% for project in project_list0 %}
                         <tr>
                             <td data-title="ลำดับ">{{ forloop.counter }}</td>
+                            <td data-title="รหัสโครงงาน">{{ project_id0|get_at_index:forloop.counter0 }}</td>
                             <td data-title="ชื่อโครงงาน (ภาษาไทย)">{{ project.name_thai }}</td>
                             <td data-title="ชื่อโครงงาน (ภาษาอังกฤษ)">{{ project.name_eng }}</td>
-                            <td data-title="แบบฟอร์มสำรวจหัวข้อโครงงานปริญญานิพนธ์"><a class="btn btn-info" href="{% url 'group6:project_docs_researchProject' research|get_id_at_index:forloop.counter0 %}">ดูฟอร์ม</a></td>
-                            <td data-title="แบบเสนอโครงงานปริญญานิพนธ์"><a class="btn btn-warning" href="{% url 'group6:project_docs_offerProject' offer|get_id_at_index:forloop.counter0 %}">ดูฟอร์ม</a></td>
-                            <td data-title="แบบเสนอขออนุมัติโครงงานปริญญานิพนธ์"><a class="btn btn-success" href="{% url 'group6:project_docs_approveProject' approve|get_id_at_index:forloop.counter0 %}">ดูฟอร์ม</a></td>
-                            <td data-title="ขั้นตอนการดำเนินงานแนวคิดกับแผนที่วางไว้"><a class="btn btn-default" href="{% url 'group6:project_docs_timeLineProject' timeLine|get_id_at_index:forloop.counter0 %}">ดูฟอร์ม</a></td>
-                            </td>
+                            <td data-title="แบบฟอร์มสำรวจหัวข้อโครงงานปริญญานิพนธ์"><a class="btn btn-info" href="{% url 'group6:project_docs_researchProject' research0|get_id_at_index:forloop.counter0 %}">ดูฟอร์ม</a></td>
+                            <td data-title="แบบเสนอโครงงานปริญญานิพนธ์"><a class="btn btn-warning" href="{% url 'group6:project_docs_offerProject' offer0|get_id_at_index:forloop.counter0 %}">ดูฟอร์ม</a></td>
+                            <td data-title="แบบเสนอขออนุมัติโครงงานปริญญานิพนธ์"><a class="btn btn-success" href="{% url 'group6:project_docs_approveProject' approve0|get_id_at_index:forloop.counter0 %}">ดูฟอร์ม</a></td>
+                            <td data-title="ขั้นตอนการดำเนินงานแนวคิดกับแผนที่วางไว้"><a class="btn btn-default" href="{% url 'group6:project_docs_timeLineProject' timeLine0|get_id_at_index:forloop.counter0 %}">ดูฟอร์ม</a></td>
                         </tr>
                     {% endfor %}
                     </tbody>
                 </table>
             </div>
     {% else %}
+        <B>Categories: {{ main0 }}</B>
         <div class="row">
             <div class="col-md-3"></div>
             <div class="col-md-6">
                 <div class="alert alert-warning" role="alert">
-                    <strong>ยังไม่มีข้อมูล!</strong> กรุณา
-                    <a class="alert-link" href="#">เพิ่มข้อมูล</a>
+                    <strong>ยังไม่มีข้อมูล!</strong>
                 </div>
             </div>
             <div class="col-md-3"></div>
         </div>
     {% endif %}
-    <a class="btn btn-primary" href="{% url 'group6:project_docs_create_3forms' %}">สร้างฟอร์มเสนอโครงงานใหม่</a> 
+    </div>
+    <div id="main1">
+    {% if project_list1 %}  
+            <div class="table-responsive">
+                <B>Categories: {{ main1 }}</B>
+                <table class="table table-hover table-bordered" id="no-more-tables">
+                    <thead>
+                        <tr>
+                            <th>ลำดับ</th>
+                            <th>รหัสโครงงาน</th>
+                            <th>ชื่อโครงงาน (ภาษาไทย)</th>
+                            <th>ชื่อโครงงาน (ภาษาอังกฤษ)</th>
+                            <th>แบบฟอร์มสำรวจหัวข้อโครงงานปริญญานิพนธ์</th>
+                            <th>แบบเสนอโครงงานปริญญานิพนธ์</th>
+                            <th>แบบเสนอขออนุมัติโครงงานปริญญานิพนธ์</th>
+                            <th>ขั้นตอนการดำเนินงานแนวคิดกับแผนที่วางไว้</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for project in project_list1 %}
+                        <tr>
+                            <td data-title="ลำดับ">{{ forloop.counter }}</td>
+                            <td data-title="รหัสโครงงาน">{{ project_id1|get_at_index:forloop.counter0 }}</td>
+                            <td data-title="ชื่อโครงงาน (ภาษาไทย)">{{ project.name_thai }}</td>
+                            <td data-title="ชื่อโครงงาน (ภาษาอังกฤษ)">{{ project.name_eng }}</td>
+                            <td data-title="แบบฟอร์มสำรวจหัวข้อโครงงานปริญญานิพนธ์"><a class="btn btn-info" href="{% url 'group6:project_docs_researchProject' research1|get_id_at_index:forloop.counter0 %}">ดูฟอร์ม</a></td>
+                            <td data-title="แบบเสนอโครงงานปริญญานิพนธ์"><a class="btn btn-warning" href="{% url 'group6:project_docs_offerProject' offer1|get_id_at_index:forloop.counter0 %}">ดูฟอร์ม</a></td>
+                            <td data-title="แบบเสนอขออนุมัติโครงงานปริญญานิพนธ์"><a class="btn btn-success" href="{% url 'group6:project_docs_approveProject' approve1|get_id_at_index:forloop.counter0 %}">ดูฟอร์ม</a></td>
+                            <td data-title="ขั้นตอนการดำเนินงานแนวคิดกับแผนที่วางไว้"><a class="btn btn-default" href="{% url 'group6:project_docs_timeLineProject' timeLine1|get_id_at_index:forloop.counter0 %}">ดูฟอร์ม</a></td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+    {% else %}
+        <B>Categories: {{ main1 }}</B>
+        <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-md-6">
+                <div class="alert alert-warning" role="alert">
+                    <strong>ยังไม่มีข้อมูล!</strong>
+                </div>
+            </div>
+            <div class="col-md-3"></div>
+        </div>
+    {% endif %}
+    </div>
+    <div id="main2">
+    {% if project_list2 %}  
+            <div class="table-responsive">
+                <B>Categories: {{ main2 }}</B>
+                <table class="table table-hover table-bordered" id="no-more-tables">
+                    <thead>
+                        <tr>
+                            <th>ลำดับ</th>
+                            <th>รหัสโครงงาน</th>
+                            <th>ชื่อโครงงาน (ภาษาไทย)</th>
+                            <th>ชื่อโครงงาน (ภาษาอังกฤษ)</th>
+                            <th>แบบฟอร์มสำรวจหัวข้อโครงงานปริญญานิพนธ์</th>
+                            <th>แบบเสนอโครงงานปริญญานิพนธ์</th>
+                            <th>แบบเสนอขออนุมัติโครงงานปริญญานิพนธ์</th>
+                            <th>ขั้นตอนการดำเนินงานแนวคิดกับแผนที่วางไว้</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for project in project_list2 %}
+                        <tr>
+                            <td data-title="ลำดับ">{{ forloop.counter }}</td>
+                            <td data-title="รหัสโครงงาน">{{ project_id2|get_at_index:forloop.counter0 }}</td>
+                            <td data-title="ชื่อโครงงาน (ภาษาไทย)">{{ project.name_thai }}</td>
+                            <td data-title="ชื่อโครงงาน (ภาษาอังกฤษ)">{{ project.name_eng }}</td>
+                            <td data-title="แบบฟอร์มสำรวจหัวข้อโครงงานปริญญานิพนธ์"><a class="btn btn-info" href="{% url 'group6:project_docs_researchProject' research2|get_id_at_index:forloop.counter0 %}">ดูฟอร์ม</a></td>
+                            <td data-title="แบบเสนอโครงงานปริญญานิพนธ์"><a class="btn btn-warning" href="{% url 'group6:project_docs_offerProject' offer2|get_id_at_index:forloop.counter0 %}">ดูฟอร์ม</a></td>
+                            <td data-title="แบบเสนอขออนุมัติโครงงานปริญญานิพนธ์"><a class="btn btn-success" href="{% url 'group6:project_docs_approveProject' approve2|get_id_at_index:forloop.counter0 %}">ดูฟอร์ม</a></td>
+                            <td data-title="ขั้นตอนการดำเนินงานแนวคิดกับแผนที่วางไว้"><a class="btn btn-default" href="{% url 'group6:project_docs_timeLineProject' timeLine2|get_id_at_index:forloop.counter0 %}">ดูฟอร์ม</a></td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+    {% else %}
+        <B>Categories: {{ main2 }}</B>
+        <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-md-6">
+                <div class="alert alert-warning" role="alert">
+                    <strong>ยังไม่มีข้อมูล!</strong>
+                </div>
+            </div>
+            <div class="col-md-3"></div>
+        </div>
+    {% endif %}
+    </div>
+    <div id="main3">
+    {% if project_list3 %}  
+            <div class="table-responsive">
+                <B>Categories: {{ main3 }}</B>
+                <table class="table table-hover table-bordered" id="no-more-tables">
+                    <thead>
+                        <tr>
+                            <th>ลำดับ</th>
+                            <th>รหัสโครงงาน</th>
+                            <th>ชื่อโครงงาน (ภาษาไทย)</th>
+                            <th>ชื่อโครงงาน (ภาษาอังกฤษ)</th>
+                            <th>แบบฟอร์มสำรวจหัวข้อโครงงานปริญญานิพนธ์</th>
+                            <th>แบบเสนอโครงงานปริญญานิพนธ์</th>
+                            <th>แบบเสนอขออนุมัติโครงงานปริญญานิพนธ์</th>
+                            <th>ขั้นตอนการดำเนินงานแนวคิดกับแผนที่วางไว้</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for project in project_list3 %}
+                        <tr>
+                            <td data-title="ลำดับ">{{ forloop.counter }}</td>
+                            <td data-title="รหัสโครงงาน">{{ project_id3|get_at_index:forloop.counter0 }}</td>
+                            <td data-title="ชื่อโครงงาน (ภาษาไทย)">{{ project.name_thai }}</td>
+                            <td data-title="ชื่อโครงงาน (ภาษาอังกฤษ)">{{ project.name_eng }}</td>
+                            <td data-title="แบบฟอร์มสำรวจหัวข้อโครงงานปริญญานิพนธ์"><a class="btn btn-info" href="{% url 'group6:project_docs_researchProject' research3|get_id_at_index:forloop.counter0 %}">ดูฟอร์ม</a></td>
+                            <td data-title="แบบเสนอโครงงานปริญญานิพนธ์"><a class="btn btn-warning" href="{% url 'group6:project_docs_offerProject' offer3|get_id_at_index:forloop.counter0 %}">ดูฟอร์ม</a></td>
+                            <td data-title="แบบเสนอขออนุมัติโครงงานปริญญานิพนธ์"><a class="btn btn-success" href="{% url 'group6:project_docs_approveProject' approve3|get_id_at_index:forloop.counter0 %}">ดูฟอร์ม</a></td>
+                            <td data-title="ขั้นตอนการดำเนินงานแนวคิดกับแผนที่วางไว้"><a class="btn btn-default" href="{% url 'group6:project_docs_timeLineProject' timeLine3|get_id_at_index:forloop.counter0 %}">ดูฟอร์ม</a></td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+    {% else %}
+        <B>Categories: {{ main3 }}</B>
+        <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-md-6">
+                <div class="alert alert-warning" role="alert">
+                    <strong>ยังไม่มีข้อมูล!</strong>
+                </div>
+            </div>
+            <div class="col-md-3"></div>
+        </div>
+    {% endif %}
+    </div>
+    <div id="main4">
+    {% if project_list4 %}  
+            <div class="table-responsive">
+                <B>Categories: {{ main4 }}</B>
+                <table class="table table-hover table-bordered" id="no-more-tables">
+                    <thead>
+                        <tr>
+                            <th>ลำดับ</th>
+                            <th>รหัสโครงงาน</th>
+                            <th>ชื่อโครงงาน (ภาษาไทย)</th>
+                            <th>ชื่อโครงงาน (ภาษาอังกฤษ)</th>
+                            <th>แบบฟอร์มสำรวจหัวข้อโครงงานปริญญานิพนธ์</th>
+                            <th>แบบเสนอโครงงานปริญญานิพนธ์</th>
+                            <th>แบบเสนอขออนุมัติโครงงานปริญญานิพนธ์</th>
+                            <th>ขั้นตอนการดำเนินงานแนวคิดกับแผนที่วางไว้</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for project in project_list4 %}
+                        <tr>
+                            <td data-title="ลำดับ">{{ forloop.counter }}</td>
+                            <td data-title="รหัสโครงงาน">{{ project_id4|get_at_index:forloop.counter0 }}</td>
+                            <td data-title="ชื่อโครงงาน (ภาษาไทย)">{{ project.name_thai }}</td>
+                            <td data-title="ชื่อโครงงาน (ภาษาอังกฤษ)">{{ project.name_eng }}</td>
+                            <td data-title="แบบฟอร์มสำรวจหัวข้อโครงงานปริญญานิพนธ์"><a class="btn btn-info" href="{% url 'group6:project_docs_researchProject' research4|get_id_at_index:forloop.counter0 %}">ดูฟอร์ม</a></td>
+                            <td data-title="แบบเสนอโครงงานปริญญานิพนธ์"><a class="btn btn-warning" href="{% url 'group6:project_docs_offerProject' offer4|get_id_at_index:forloop.counter0 %}">ดูฟอร์ม</a></td>
+                            <td data-title="แบบเสนอขออนุมัติโครงงานปริญญานิพนธ์"><a class="btn btn-success" href="{% url 'group6:project_docs_approveProject' approve4|get_id_at_index:forloop.counter0 %}">ดูฟอร์ม</a></td>
+                            <td data-title="ขั้นตอนการดำเนินงานแนวคิดกับแผนที่วางไว้"><a class="btn btn-default" href="{% url 'group6:project_docs_timeLineProject' timeLine4|get_id_at_index:forloop.counter0 %}">ดูฟอร์ม</a></td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+    {% else %}
+        <B>Categories: {{ main4 }}</B>
+        <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-md-6">
+                <div class="alert alert-warning" role="alert">
+                    <strong>ยังไม่มีข้อมูล!</strong>
+                </div>
+            </div>
+            <div class="col-md-3"></div>
+        </div>
+    {% endif %}
+    </div>
+    <div id="main5">
+    {% if project_list5 %}  
+            <div class="table-responsive">
+                <B>Categories: {{ main5 }}</B>
+                <table class="table table-hover table-bordered" id="no-more-tables">
+                    <thead>
+                        <tr>
+                            <th>ลำดับ</th>
+                            <th>รหัสโครงงาน</th>
+                            <th>ชื่อโครงงาน (ภาษาไทย)</th>
+                            <th>ชื่อโครงงาน (ภาษาอังกฤษ)</th>
+                            <th>แบบฟอร์มสำรวจหัวข้อโครงงานปริญญานิพนธ์</th>
+                            <th>แบบเสนอโครงงานปริญญานิพนธ์</th>
+                            <th>แบบเสนอขออนุมัติโครงงานปริญญานิพนธ์</th>
+                            <th>ขั้นตอนการดำเนินงานแนวคิดกับแผนที่วางไว้</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for project in project_list5 %}
+                        <tr>
+                            <td data-title="ลำดับ">{{ forloop.counter }}</td>
+                            <td data-title="รหัสโครงงาน">{{ project_id5|get_at_index:forloop.counter0 }}</td>
+                            <td data-title="ชื่อโครงงาน (ภาษาไทย)">{{ project.name_thai }}</td>
+                            <td data-title="ชื่อโครงงาน (ภาษาอังกฤษ)">{{ project.name_eng }}</td>
+                            <td data-title="แบบฟอร์มสำรวจหัวข้อโครงงานปริญญานิพนธ์"><a class="btn btn-info" href="{% url 'group6:project_docs_researchProject' research5|get_id_at_index:forloop.counter0 %}">ดูฟอร์ม</a></td>
+                            <td data-title="แบบเสนอโครงงานปริญญานิพนธ์"><a class="btn btn-warning" href="{% url 'group6:project_docs_offerProject' offer5|get_id_at_index:forloop.counter0 %}">ดูฟอร์ม</a></td>
+                            <td data-title="แบบเสนอขออนุมัติโครงงานปริญญานิพนธ์"><a class="btn btn-success" href="{% url 'group6:project_docs_approveProject' approve5|get_id_at_index:forloop.counter0 %}">ดูฟอร์ม</a></td>
+                            <td data-title="ขั้นตอนการดำเนินงานแนวคิดกับแผนที่วางไว้"><a class="btn btn-default" href="{% url 'group6:project_docs_timeLineProject' timeLine5|get_id_at_index:forloop.counter0 %}">ดูฟอร์ม</a></td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+    {% else %}
+        <B>Categories: {{ main5 }}</B>
+        <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-md-6">
+                <div class="alert alert-warning" role="alert">
+                    <strong>ยังไม่มีข้อมูล!</strong>
+                </div>
+            </div>
+            <div class="col-md-3"></div>
+        </div>
+    {% endif %}
+    </div>
     <a class="btn btn-info" href="{% static "group6/template_ECE_.docx" %}">ตัวอย่างรูปเล่มโปรเจค</a><br>
-</div>
+</div><br>
 {% endblock %}
