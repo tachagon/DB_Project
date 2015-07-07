@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+{% extends "base.html" %}
+
+{% block pageHeader %}
+
+<h2>ระบบ<small>งานสารบัญ</small></h2>
+
+<ol class="breadcrumb">
+    <li><a href="{% url 'login:menu' %}">เมนู</a></li>
+    <li><a href="{% url 'group1:search_file' %}">ค้นหาเอกสาร</a></li>
+    <li class="active">ส่งอีเมล์</li>
+</ol>
+
+
+
+{% endblock %}
+
+{% block content %}
+
+
+
+{% load static %}
+
+{% if user.username == "admin" or user.username == "admin_doc"%}
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<br>
+<div style="width: auto; margin: 0 auto; padding: 10px 10px 10px;">
+<form action="/group1/sender/" method="post" enctype="multipart/form-data"enctype="multipart/form-data" class="form-horizontal">
+{% csrf_token %}
+<div class="send" id="send">
+    <div class="form-group">
+	<label for="Title" class="col-sm-2 control-label">ชื่อเรื่อง(อีเมล์):</label>
+	<div class="col-sm-5">
+		<input type="text" name="name_email" class="form-control" id="Title" placeholder="ชื่อเรื่อง(อีเมล์)">
+	</div>
+
+	<br></br>
+
+	<label for="Title" class="col-sm-2 control-label">ถึง:</label>
+	<div class="col-sm-5">
+		{% for person in document.personal.all %}
+			{{person.email}};
+		{% endfor %}
+	</div>
+
+	<br></br>
+
+	<label for="Title" class="col-sm-2 control-label">ชื่อไฟล์:</label>
+	<div class="col-sm-5">
+		{{document.docfile.name|slice:"22:"}}
+	</div>
+	<br></br>
+	<label for="Title" class="col-sm-2 control-label">ข้อความ:</label>
+	<div class="col-sm-5">
+	<textarea rows="10" cols="60" name="comment" form="usrform"></textarea>
+	</div>
+
+	<br></br>
+
+	<div class="col-sm-5"></div>
+	
+	<div class="col-sm-10">	
+	<label for="Title" class="col-sm-2 control-label"><button type="submit" class="btn btn-success" >ส่งอีเมล์</button></label>
+	</div>
+	<input type="hidden" name="doc_id" value="{{document.id}}">
+    </div> 
+</div> 
+</form>
+
+<br>
+
+
+</div>
+{% endif %}
+{% endblock %}

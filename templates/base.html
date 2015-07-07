@@ -56,11 +56,13 @@
 
                     <li class="dropdown" role="presentation">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                            App Group1<span class="caret"></span>
+                            งานสารบัญ<span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a href="{% url 'group1:index' %}">group1 index</a> </li>
-                            <li><a href="#">App2</a> </li>
+                            <li><a href="{% url 'group1:upload_file' %}">อัพโหลดเอกสาร</a> </li>
+                            <li><a href="{% url 'group1:search_file' %}">ค้นหาเอกสาร</a> </li>
+                            <li><a href="{% url 'group1:add_category' %}">เพิ่มหมวดของเอกสาร</a></li>
+                            <li><a href="{% url 'group1:add_people' %}">เพิ่มผู้ได้รับมอบหมาย</a></li>
                         </ul>
                     </li>
 

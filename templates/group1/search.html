@@ -1,0 +1,196 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+{% extends "base.html" %}
+
+{% block pageHeader %}
+
+<h2>ระบบ<small>งานสารบัญ</small></h2>
+
+<ol class="breadcrumb">
+    <li><a href="{% url 'login:menu' %}">เมนู</a></li>
+    <li class="active">ค้นหาเอกสาร</li>
+</ol>
+
+
+
+{% endblock %}
+
+{% block content %}
+
+
+
+{% load static %}
+
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<br>
+<div style="width: auto; margin: 0 auto; padding: 10px 20px 15px 20px;">
+<form action="/group1/search_file/" method="post" enctype="multipart/form-data"enctype="multipart/form-data" class="form-horizontal">
+{% csrf_token %}
+<div class="search" id="search">
+    <div class="form-group">
+		<label for="Title" class="col-sm-2 control-label">ชื่อเรื่อง</label>
+		<div class="col-sm-5">
+			<input type="text" name="name_file"  value="{{name_file}}" class="form-control" id="Title" placeholder="ชื่อเรื่อง">
+		</div>
+	</div>
+	
+	<!------------------------------------------------------------------------------------------------------------------------------------------------>
+	
+    <div class="form-group">
+			<label for="dept" class="col-sm-2 control-label">หน่วยงาน</label>
+			<div class="col-sm-5">
+				<input type="hidden" name="detail5_file" value=''>
+				<input type="checkbox" name="detail5_file" value="ภายใน" ><label>&nbsp;ภายใน&nbsp;</label></input>
+				<input  type="checkbox" name="detail5_file" value="ภายนอก" ><label>&nbsp;ภายนอก&nbsp;</label></input></td>
+				                
+                <script>
+					// the selector will match all input controls of type :checkbox
+					// and attach a click event handler 
+					$("input:checkbox").on('click', function() {
+					 // in the handler, 'this' refers to the box clicked on
+					 var $box = $(this);
+					 if ($box.is(":checked")) {
+					// the name of the box is retrieved using the .attr() method
+					// as it is assumed and expected to be immutable
+					var group = "input:checkbox[name='" + $box.attr("name") + "']";
+					// the checked state of the group/box on the other hand will change
+					// and the current value is retrieved using .prop() method
+					$(group).prop("checked", false);
+					$(group).prop("not checked", false);
+					$box.prop("checked", true);
+					 } 
+					 else {
+					$box.prop("checked", false);
+			
+						
+					 }
+					});
+								
+				</script> 
+			</div>
+		</div>
+		
+	<!------------------------------------------------------------------------------------------------------------------------------------------------>
+	
+	<div class="form-group">
+		<label for="Title2" class="col-sm-2 control-label">ชื่อหมวด</label>
+		<div class="col-sm-5">
+			<select name="category_file" size="1" lang="th" id="Title2">
+			  <option value ="{{category_code}}">{{category_name}}</option>
+			  {% for item in category %}
+			  <option value = "{{item.code_name}}">{{item.name}}</option>
+			  {% endfor %}
+			</select>
+		</div>
+	</div>
+	
+	<!------------------------------------------------------------------------------------------------------------------------------------------------>
+	
+	<div class="form-group">
+		<label for="year" class="col-sm-2 control-label">ปี พ.ศ.</label>
+		<div class="col-sm-5">
+			<select name="year_file">
+				<option value="{{year_file}}">{{year_file}}</option>
+				<script>
+					 var myDate = new Date();
+					 for(var i = (myDate.getFullYear() +543); i >= (myDate.getFullYear() +543)-20; i--){
+						document.write('<option value="'+i+'">'+i+'</option>');
+					}
+				</script>
+			</select>
+			
+		</div>
+	</div>
+	
+	<!------------------------------------------------------------------------------------------------------------------------------------------------>
+	
+	<div class="form-group">
+		<label for="title" class="col-sm-2 control-label">เลขที่รับ</label>
+		<div class="col-sm-5">
+			<input name="number_file" type="text" size="14" maxlength="20" value="{{number_file}}" />&nbsp;&nbsp;<label>เลขจากภายนอก</label>&nbsp;
+			<input name="number_file2" type="text" size="14" maxlength="10" value="{{number_file2}}" />
+		</div>
+	</div>
+	
+	<!------------------------------------------------------------------------------------------------------------------------------------------------>
+
+<div class="form-group">
+		<label for="Number" class="col-sm-2 control-label"></label>
+		<div class="col-sm-5">
+			<button type="submit" class="btn btn-success" >ค้นหา</button>
+			
+		</div>
+	</div>
+	
+	<!------------------------------------------------------------------------------------------------------------------------------------------------>
+	
+  <br><table id="data-table" border="1px"  align="center" style="cellpadding:100px">
+       <tr bgcolor="#E6E6E6" style="text-align:center;padding-left: 5px;padding-right: 5px">
+			<th border="1px" style="width:200px;text-align:center;padding-left: 5px;padding-right: 5px" align="center">ชื่อเรื่อง</th>
+            <th border="1px" style="width:200px;text-align:center;padding-left: 5px;padding-right: 5px" align="center">หมวดเอกสาร</th>
+			
+            <th style="width:80px;text-align:center;padding-left: 5px;padding-right: 5px">เลขที่รับ</th>
+		    <th style="width:80px;text-align:center;padding-left: 5px;padding-right: 5px">เลขจากภายนอก</th>
+		    <th style="width:60px;text-align:center;padding-left: 5px;padding-right: 5px">เอกสารเพื่อ</th>
+		    <th style="width:85px;text-align:center;padding-left: 5px;padding-right: 5px">ประชา<br>สัมพันธ์</th>
+		    <th style="text-align:center;padding-left: 5px;padding-right: 5px">มอบหมาย</th>
+		    <th style="width:100px;text-align:center;padding-left: 5px;padding-right: 5px">อีเมล์</th>
+		    <th style="text-align:center;padding-left: 5px;padding-right: 5px">ดาวน์โหลด</th>
+		{% if user.username == "admin" or user.username == "admin_doc"%}
+			<th  style="text-align:center;padding-left: 5px;padding-right: 5px">แก้ไข</th>
+			<th style="text-align:center;padding-left: 5px;padding-right: 5px">ลบเอกสาร</th>
+		{% endif %}
+		
+                </tr>
+				
+	<!------------------------------------------------------------------------------------------------------------------------------------------------>
+		{% for item in documents %}
+                <tr align = "middle" style="padding-left: 5px;padding-right: 5px">
+                    <td valign="top" align = "middle" style="word-break: break-all;width:200px;padding-top: 5px;padding-left: 5px;padding-right: 5px"><p>{{item.name}}</p></td>
+                    <td valign="top" align = "middle" style="word-break: break-all;width:200px;padding-top: 5px;padding-left: 5px;padding-right: 5px"><p>{{item.category.name}}</p></td>	
+					<!--td><p>&nbsp;{{item.depart}}&nbsp;</p></td-->
+
+            <td valign="top" align = "middle" style="padding-top: 5px;padding-left: 5px;padding-right: 5px"><p>{{item.number}}/{{item.year}}</p></td>
+		    <td valign="top" align = "middle" style="padding-top: 5px;padding-left: 5px;padding-right: 5px"><p>{{item.number2}}</p></td>  <!-- เพิ่มใน python-->
+		    <td valign="top" align = "middle" style="padding-top: 5px;padding-left: 5px;padding-right: 5px"><p>{{item.detail1}}</p></td>
+		    <td valign="top" style="word-break: break-all;padding-left: 5px;padding-right: 5px;padding-top: 5px"><p>&nbsp;{{item.detail2}}&nbsp;{{item.detail3}}&nbsp;{{item.detail4}}</p></td>
+		    <td valign="top" align = "middle" style="padding-top: 5px;padding-left: 5px;padding-right: 5px">
+		    {% for p_item in item.personal.all %}
+				{{p_item.name}}&nbsp;
+		    {% endfor %}
+
+		    </td>
+		    <td valign="top" align = "middle" style="padding-top: 5px;padding-left: 5px;padding-right: 5px">
+		    {% for p_item in item.personal.all %}
+				&nbsp;{{p_item.email}}&nbsp;
+		    {% endfor %}
+		    {% if user.username == "admin" or user.username == "admin_doc"%}<a href="/group1/send_email/{{item.id}}/" class="postlink" target="_blank" rel="nofollow">
+				<br><img src="{% static 'images/email_go.png' %}" alt="" border="0" /></a>&nbsp;{% endif %}
+		    </td>
+		    
+		    <td align="middle">
+				<a href="/{{item.docfile.name}}" class="postlink" target="_blank" rel="nofollow">
+				<img src="{% static 'images/download.png' %}" alt="" border="0" /></a>			
+                    </td>
+		{% if user.username == "admin" or user.username == "admin_doc"%}
+			<td>
+				&nbsp;&nbsp;<button type="button" class="btn btn-success" id="edit" onClick="location.href='/group1/edit'" align="middle" style="padding-left:5px;padding-right:5px">แก้ไข</button>&nbsp;&nbsp;
+			</td>
+			<td>
+				&nbsp;<!--button type="button" class="btn btn-danger" id="delete" onClick="location.href='/group1/delete/'" align="middle">ลบ</button-->
+				<button type="button" class="btn btn-danger" id="delete" onClick="location.href='/admin/group1/document/{{item.id}}/delete/'" align="middle">ลบ</button>
+				&nbsp;
+			</td>
+		{% endif %}
+                </tr>
+                {% endfor %}
+				
+	<!------------------------------------------------------------------------------------------------------------------------------------------------>
+                
+            </table>
+</form>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+</div> 
+</div>
+{% endblock %}

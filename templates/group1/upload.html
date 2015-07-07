@@ -1,0 +1,272 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+{% extends "base.html" %}
+
+{% block pageHeader %}
+
+<h2>ระบบ<small>งานสารบัญ</small></h2>
+
+<ol class="breadcrumb">
+    <li><a href="{% url 'login:menu' %}">เมนู</a></li>
+    <li class="active">อัพโหลดเอกสาร</li>
+</ol>
+
+
+
+{% endblock %}
+
+{% block content %}
+
+{% if user.username == "admin" or user.username == "admin_doc"%}
+
+{% load static %}
+
+<SCRIPT language="javascript">
+function addRow(tableID) {
+
+            var table = document.getElementById(tableID);
+            var rowCount = table.rows.length;
+            var colCount = table.rows[0].cells.length;
+
+            var row = table.insertRow(rowCount);
+
+            row = table.insertRow(table.rows.length);
+            for(var i = 0; i < colCount; i++) {
+
+                var newcell = row.insertCell(i);
+				
+                if(i ==(colCount-1)){
+                    newcell.innerHTML = "<INPUT type=\"button\" class=\"btn btn-danger\" value=\"ลบผู้ได้รับมอบหมาย\" onclick=\"removeRow(this)\"/>";
+                } else {
+                    newcell.innerHTML = table.rows[0].cells[i].innerHTML;
+                }
+            }
+        }
+cells.insertRow
+        /**
+         * This method deletes the specified section of the table
+         * OR deletes the specified rows from the table.
+         */
+        function removeRow(src) {
+			
+            var oRow = src.parentElement.parentElement;
+            var rowsCount = 0;
+            for(var index = oRow.rowIndex; index >= 0; index--) {
+
+                document.getElementById("dataTable").deleteRow(index);
+                if(rowsCount == (2 - 1)) {
+                    return;
+                }
+                rowsCount++;
+            }
+            //once the row reference is obtained, delete it passing in its rowIndex
+            /* document.getElementById("dataTable").deleteRow(oRow.rowIndex); */
+        }
+    </SCRIPT>
+
+<form action="/group1/upload_file/" method="post" enctype="multipart/form-data" class="form-horizontal">
+{% csrf_token %}
+<div style="width: auto; margin: 0 auto; padding: 10px 10px 10px;">
+	
+		<fieldset>
+          <legend>รายละเอียดเอกสาร</legend>
+		  
+	<!------------------------------------------------------------------------------------------------------------------------------------------------>
+        
+        <div class="form-group">
+			<label for="title" class="col-sm-2 control-label">ชื่อเรื่อง<font color = "red">*</font></label> 
+			<div class="col-sm-5">
+				<input type="text" name="name_file"  value="{{name_file}}" class="form-control" id="title" placeholder="ชื่อเรื่อง" required>
+				
+			</div>
+		</div>
+		
+	<!------------------------------------------------------------------------------------------------------------------------------------------------>
+		
+		<div class="form-group">
+			<label for="dept" class="col-sm-2 control-label">หน่วยงาน<font color = "red">*</font></label>
+			<div class="col-sm-5">
+				<input type="checkbox" name="detail5_file" value="ภายใน" checked="checked"><label>&nbsp;ภายใน&nbsp;</label></input>
+				<input  type="checkbox" name="detail5_file" value="ภายนอก" ><label>&nbsp;ภายนอก&nbsp;</label></input></td>
+				
+                              
+                <script>
+					// the selector will match all input controls of type :checkbox
+					// and attach a click event handler 
+					$("input:checkbox").on('click', function() {
+					 // in the handler, 'this' refers to the box clicked on
+					 var $box = $(this);
+					 if ($box.is(":checked")) {
+					// the name of the box is retrieved using the .attr() method
+					// as it is assumed and expected to be immutable
+					var group = "input:checkbox[name='" + $box.attr("name") + "']";
+					// the checked state of the group/box on the other hand will change
+					// and the current value is retrieved using .prop() method
+					$(group).prop("checked", false);
+					$(group).prop("not checked", false);
+					$box.prop("checked", true);
+					 } 
+					 else {
+					$box.prop("checked", false);
+						
+					 }
+					});
+								
+				</script> 
+			</div>
+		</div>
+		
+	<!------------------------------------------------------------------------------------------------------------------------------------------------>
+		
+				<div class="form-group">
+			<label for="catalogue" class="col-sm-2 control-label">หมวดเอกสาร<font color = "red">*</font></label>
+			<div class="col-sm-5">
+				<select name="category_file" size="1" lang="th" class="form-control">
+					<option value ="{{category_code}}">{{category_name}}</option>
+					{% for item in category %}
+					<option value = "{{item.code_name}}">{{item.name}}</option>
+					{% endfor %}
+				</select>
+			</div>
+		</div>
+	
+	<!------------------------------------------------------------------------------------------------------------------------------------------------>
+		
+		<div class="form-group">
+			<label for="year" class="col-sm-2 control-label">ปี พ.ศ.<font color = "red">*</font></label>
+			<div class="col-sm-6">
+				<select name="year_file" required>
+				     <option value="{{year_file}}">{{year_file}}</option>
+				     <script>
+				     var myDate = new Date();
+				     for(var i = (myDate.getFullYear() +543); i >= (myDate.getFullYear() +543)-20; i--){
+					  document.write('<option value="'+i+'">'+i+'</option>');
+				     }
+				     </script>
+				</select>
+				
+				&nbsp;&nbsp;<label for="d">เลขที่รับ<font color = "red">*</font> </label>
+                        <input name="number_file" type="text" maxlength="10" size="14" value="{{number_file}}" required></input>
+             
+				&nbsp;<label for="d">เลขจากภายนอก<font color = "red">*</font></label>
+                        <input name="number_file2" type="text" maxlength="20" size="14" value="{{number_file2}}" required></input>
+				
+			</div>
+		</div>
+		
+	<!------------------------------------------------------------------------------------------------------------------------------------------------>
+		
+		<div class="form-group">
+			<label for="file" class="col-sm-2 control-label">เลือกไฟล์<font color = "red">*</font></label>
+			<div class="col-sm-5">
+				<p>{{ form.non_field_errors }}</p>
+				<p>{{ form.docfile.help_text }}</p>
+				<p>
+					{{ form.docfile }}
+				</p>
+			</div>
+		</div>
+		
+	<!------------------------------------------------------------------------------------------------------------------------------------------------>
+		
+		<div class="form-group">
+			<label for="docs" class="col-sm-2 control-label">เอกสารเพื่อ<font color = "red">*</font></label>
+			<div class="col-sm-5">
+				<input type="checkbox"  name="detail1_file" value="ทราบ" checked="checked"><label>&nbsp;ทราบ&nbsp;</label></input>
+                <input  type="checkbox"  name="detail1_file" value="พิจารณา" ><label>&nbsp;พิจารณา&nbsp;</label></input>
+               
+                              
+                <script>
+					// the selector will match all input controls of type :checkbox
+					// and attach a click event handler 
+					$("input:checkbox").on('click', function() {
+					 // in the handler, 'this' refers to the box clicked on
+					 var $box = $(this);
+					 if ($box.is(":checked")) {
+					// the name of the box is retrieved using the .attr() method
+					// as it is assumed and expected to be immutable
+					var group = "input:checkbox[name='" + $box.attr("name") + "']";
+					// the checked state of the group/box on the other hand will change
+					// and the current value is retrieved using .prop() method
+					$(group).prop("checked", false);
+					$(group).prop("not checked", false);
+					$box.prop("checked", true);
+					 } 
+					 else {
+					$box.prop("checked", false);					
+					 }
+					});								
+				</script> 
+			</div>
+		</div>
+		
+	<!------------------------------------------------------------------------------------------------------------------------------------------------>
+		
+		<div class="form-group">
+			<label for="doc2" class="col-sm-2 control-label">ประชาสัมพันธ์</label>
+			<div class="col-sm-5">
+				<input type="hidden" name="detail2_file" value=''>
+				<input type="hidden" name="detail3_file" value=''>
+				<input type="hidden" name="detail4_file" value=''>
+                <input type="checkbox" name="detail2_file" value="ติดประกาศ" ><label>&nbsp;ติดประกาศ&nbsp;</label>  
+                <input type="checkbox" name="detail3_file" value="Facebook"><label>&nbsp;Facebook&nbsp;</label> 
+			    <input type="checkbox" name="detail4_file" value="เว็บไซต์" ><label>&nbsp;เว็บไซต์&nbsp;</label>
+			</div>
+		</div>
+		
+	<!------------------------------------------------------------------------------------------------------------------------------------------------>
+                       
+                          <fieldset>
+                            <legend>มอบหมาย</legend>
+           					  
+                          <TABLE id="dataTable">
+            				<TR>
+								<TD>
+
+                                  <SELECT name="pers_email[]" onchange="showHide() ">
+                                      <option value="" selected><label>กรุณาเลือกบุคลากร</label></option>
+					{% for per in persons %}
+                                      <option value="{{per.name}}"><label>{{per.code_name}}  {{per.name}}</label></option>
+					{% endfor %}                                      
+										<!--option value="other"><label>อื่นๆ</label></option-->
+                                  </SELECT>
+                                  
+                              </TD>
+                              
+                             
+                               <TD>
+								   
+								  &nbsp;&nbsp;<button type="button" class="btn btn-success"  onClick="addRow('dataTable')">เพิ่มผู้ได้รับมอบหมาย&nbsp;&nbsp;</button>&nbsp;</td>
+								  
+								<script>
+									function deleteRow(r) {
+										var i = r.parentNode.parentNode.rowIndex;
+										document.getElementById("dataTable").deleteRow(i);
+									}
+								</script>
+                              </TD>
+                              <td>
+								&nbsp;&nbsp;&nbsp;
+                              
+                              </td>
+
+                          </TR>
+                          </fieldset>
+                      </TABLE>
+					  <br>
+           
+	
+	</div>
+	</from>	
+
+        <tr><td>&nbsp;&nbsp;<button type="submit" class="btn btn-success" >อัพโหลด</button></td></tr>
+        
+       
+        
+
+
+ {% else %}
+        <div class="alert alert-danger" role="alert"><strong>Warning!</strong> สำหรับเจ้าหน้าที่งานสารบัญ</div>
+{% endif %}
+
+{% endblock %}
+

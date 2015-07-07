@@ -92,3 +92,9 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"), "")
 LOGIN_URL = '/login/login/'
+
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'documentece01@gmail.com'
+EMAIL_HOST_PASSWORD = 'adminece'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True

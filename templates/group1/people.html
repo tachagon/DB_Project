@@ -1,0 +1,156 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+{% extends "base.html" %}
+
+{% block pageHeader %}
+
+<h2>ระบบ<small>งานสารบัญ</small></h2>
+
+<ol class="breadcrumb">
+    <li><a href="{% url 'login:menu' %}">เมนู</a></li>
+    <li class="active">เพิ่มผู้ที่ได้รับมอบหมาย</li>
+</ol>
+
+
+
+{% endblock %}
+
+{% block content %}
+
+{% if user.username == "admin" or user.username == "admin_doc"%}
+
+{% load static %}
+
+
+<form action="/group1/add_people/" method="post" enctype="multipart/form-data" class="form-horizontal">
+{% csrf_token %}
+<div style="width: auto; margin: 0 auto; padding: 10px 10px 10px;">
+	
+		<fieldset>
+          <legend>เพิ่มผู้ได้รับมอบหมาย</legend>
+		
+	<!------------------------------------------------------------------------------------------------------------------------------------------------>
+	
+		
+	<!------------------------------------------------------------------------------------------------------------------------------------------------->
+        
+        <div class="form-group">
+			<label for="name" class="col-sm-2 control-label">ชื่อ - นามสกุล<font color = "red">*</font></label> 
+			<div class="col-sm-5">
+				<input type="text" name="t_name_file"  value="{{t_name_file}}" class="form-control" id="name" placeholder="ชื่อ - นามสกุล" required>
+				
+			</div>
+		</div>
+		
+	<!------------------------------------------------------------------------------------------------------------------------------------------------>
+
+		<div class="form-group">
+			<label for="abbName" class="col-sm-2 control-label">ชื่อย่อ<font color = "red">*</font></label> 
+			<div class="col-sm-5">
+				<input type="text" name="t_code_name"  value="{{t_code_name}}" class="form-control" id="title" placeholder="ชื่อย่อ" required>
+				
+			</div>
+		</div>
+		
+ 	<!------------------------------------------------------------------------------------------------------------------------------------------------>
+         
+         <div class="form-group">
+			<label for="email" class="col-sm-2 control-label">email<font color = "red">*</font></label> 
+			<div class="col-sm-5">
+				<input type="email" name="email_file"  value="{{email_file}}" class="form-control" id="email" placeholder="Email" required>
+				
+			</div>
+		</div>
+		 
+	<!------------------------------------------------------------------------------------------------------------------------------------------------>
+	
+	<div class="form-group">
+			<label for="title" class="col-sm-2 control-label"></label> 
+			<div class="col-sm-5">
+				<button type="submit" class="btn btn-success" >ยืนยัน</button>
+				
+			</div>
+		</div>
+		 
+	<!------------------------------------------------------------------------------------------------------------------------------------------------>
+	
+	</div>
+	
+
+				
+	<!------------------------------------------------------------------------------------------------------------------------------------------------>
+          		<table id="personal-table" border="1px"  align="center" style="cellpadding:100px">
+       <tr bgcolor="#E6E6E6" style="text-align:center;padding-left: 5px;padding-right: 5px">
+			
+		   
+		    <th style="text-align:center;padding-left: 5px;padding-right: 5px">ชื่อย่อ</th>
+		    <th style="width:250px;text-align:center;padding-left: 5px;padding-right: 5px">ชื่อ - นามสกุล</th>
+		    <th style="width:200px;text-align:center;padding-left: 5px;padding-right: 5px">อีเมล</th>
+		{% if user.username == "admin" or user.username == "admin_doc"%}
+			<th style="text-align:center;padding-left: 5px;padding-right: 5px">ลบบุคคล</th>
+		{% endif %}
+		
+                </tr>
+				
+	<!------------------------------------------------------------------------------------------------------------------------------------------------>
+		{% for item in persons %}
+                <tr valign="middle" align = "middle" style="padding-left: 5px;padding-right: 5px">
+             
+
+		    <td >
+		    
+				{{item.code_name}}&nbsp;
+		  
+
+		    </td>
+		    
+		    <td >
+		    
+				{{item.name}}&nbsp;
+		  
+
+		    </td>
+		    
+		    
+		    
+		    <td >
+		   
+				&nbsp;{{item.email}}&nbsp;
+		   
+		    <br>
+		    
+		{% if user.username == "admin" or user.username == "admin_doc"%}
+			
+			<td valign="middle" align = "middle" style="padding-left: 5px;padding-right: 5px;padding-top: 5px;padding-bottom: 5px">
+				&nbsp;<!--button type="button" class="btn btn-danger" id="delete" onClick="location.href='/group1/delete/'" align="middle">ลบ</button-->
+				<button type="button" class="btn btn-danger" id="delete" onClick="location.href='/admin/group1/personal/{{item.code_name}}/delete/'" align="middle">ลบ</button>
+				&nbsp;
+			</td>
+		{% endif %}
+                </tr>
+                {% endfor %}
+                
+             </table>  
+				
+	<!------------------------------------------------------------------------------------------------------------------------------------------------>
+                
+               
+            
+	<!--------------------------------------------------------------------------------------------------------------------------------------->
+
+	</from>	
+	
+
+	
+	
+    <br><br><br><br><br><br><br><br><br><br>
+
+ {% else %}
+        <div class="alert alert-danger" role="alert"><strong>Warning!</strong> สำหรับเจ้าหน้าที่งานสารบัญ</div>
+{% endif %}
+
+
+
+{% endblock %}
+

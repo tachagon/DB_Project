@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+{% extends "base.html" %}
+
+{% block pageHeader %}
+
+<h2>ระบบ<small>งานสารบัญ</small></h2>
+
+<ol class="breadcrumb">
+    <li><a href="{% url 'login:menu' %}">เมนู</a></li>
+    <li class="active">ลบเอกสาร</li>
+</ol>
+
+
+
+{% endblock %}
+
+{% block content %}
+
+{% if user.username == "admin" or user.username == "admin_doc"%}
+
+{% load static %}
+
+
+<form action="/group1/delete/" method="post" enctype="multipart/form-data" class="form-horizontal">
+{% csrf_token %}
+<div style="width: auto; margin: 0 auto; padding: 10px 10px 10px;">
+	
+		<fieldset>
+          <legend>ลบเอกสาร</legend>
+		
+	<!------------------------------------------------------------------------------------------------------------------------------------------------>
+		
+		
+	<!------------------------------------------------------------------------------------------------------------------------------------------------>
+        
+        <div class="form-group">	
+			<label for="title" class="col-sm-1 control-label"></label>  	 
+			<div class="col-sm-5">
+				<label for="title" >คุณต้องการลบไฟล์นี้หรือไม่ <br>{{item.name}} </label>
+			</div>
+		</div>
+		
+	<!------------------------------------------------------------------------------------------------------------------------------------------------>
+
+          <div class="form-group">
+			 <label for="title" class="col-sm-1 control-label"></label>  
+			<div class="col-sm-5">
+				<button type="submit" class="btn btn-success" >ยืนยัน</button>
+				<button type="button" class="btn btn-danger" onClick="history.go(-1)">ยกเลิก</button>	
+			</div>
+		</div> 
+		</fieldset>
+	</div>
+</from>	
+
+        
+        
+        
+       
+        
+
+
+ {% else %}
+        <div class="alert alert-danger" role="alert"><strong>Warning!</strong> สำหรับเจ้าหน้าที่งานสารบัญ</div>
+{% endif %}
+
+{% endblock %}
+
