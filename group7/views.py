@@ -20,9 +20,10 @@ def home(request):
             
         return render(request, 'group7/home.html', {'object': stu,'teacher':teacher})
                 
-class order(generic.DetailView):
-	model=ProjectG6
-   	template_name='group7/order.html'
+def order(request,pk):
+	project = ProjectG6.objects.get(id=pk)
+        teacher=Teacher.objects.get(id=project.teacher_id)
+        return render(request, 'group7/order.html', {'object': project,'teacher':teacher})
 class addorder(generic.DetailView):
 	model=ProjectG6
         template_name='group7/addorder.html'
@@ -131,9 +132,9 @@ class vieworderinfo(generic.DetailView):
 #----------------------------- View requisition -------------------------------------------#
 def viewrequi(request,pk):
         now = datetime.datetime.now()
-        project=ProjectG6.objects.get(id=pk)
-	order = Order.objects.get(Projectg7_id=pk)
- 
+        
+	order = Order.objects.get(id=pk)
+	project=ProjectG6.objects.get(id=order.Projectg7_id)
         return render(request, 'group7/requisitionview.html', {'order': order,'project':project,'date':now})
 
 def vieworderprint(request,pk):
@@ -167,3 +168,117 @@ def editstatusof(request,info_id): #Page Orderinfo for delete Orderinfo
     	p.save()
     	url="/group7/"+str(q.Order_id)+"/statusof/"
     	return HttpResponseRedirect(url)
+	
+def sumdate(request):
+	status=""
+	date=""
+	dataset=[]
+	ordd=Order.objects.all()
+	for s in ordd:
+		stat=s.status_of_set.all()
+		for r in stat:
+			status=r.State.encode('utf-8')
+			date=r.Date
+		if status == "วันที่ในการซื้อวัสดุ":
+			data=(ProjectG6.objects.get(id=s.Projectg7_id))
+			dataset.append(data.name_thai)
+			dataset.append(date)
+	return render(request, 'group7/showlistdate.html', {'data': dataset})
+
+def sumcheck(request):
+	status2=""
+	date2=""
+	dataset2=[]
+	ordd2=Order.objects.all()
+	for s in ordd2:
+
+		stat2=s.status_of_set.all()
+		for r in stat2:
+			status2=r.State.encode('utf-8')
+			date2=r.Date
+			
+		if status2 == "ตรวจสอบวัสดุและใบเสร็จ":
+			data2=(ProjectG6.objects.get(id=s.Projectg7_id))
+			dataset2.append(data2.name_thai)
+			dataset2.append(date2)
+	return render(request, 'group7/showlistcheck.html', {'data': dataset2})
+
+def sumreq(request):
+	status3=""
+	date3=""
+	dataset3=[]
+	ordd3=Order.objects.all()
+	for s in ordd3:
+		stat3=s.status_of_set.all()
+		for r in stat3:
+			status3=r.State.encode('utf-8')
+			date3=r.Date
+		if status3 == "ใบเบิกวัสดุ":
+			data3=(ProjectG6.objects.get(id=s.Projectg7_id))
+			dataset3.append(data.name_thai)
+			dataset3.append(date3)
+	return render(request, 'group7/showlistrequi.html', {'data': dataset3})
+	
+def summarypro(request):
+	va_name = ProjectG6.objects.all()
+	student_list2=[]
+	project=[]
+	member=[]
+	count=0
+	cost=[]
+	summary=[]
+	count2=0
+	count3=0
+	round=0
+	buy=0
+	check=0
+	complete=0
+	costtotal=[]
+	for s in va_name:
+		project.append(s)
+		student_list2.append(s.student.all())
+	
+	for t in student_list2:
+		for r in t:
+			count+=1
+		member.append(count)
+		count=0
+	for u in member:
+		cost.append(u*5000)
+		
+	for s in project:
+		order=Order.objects.all()
+		for ord in order:
+			if ord.Projectg7_id==s.id:
+				status=ord.status_of_set.all()
+				for i in status:
+					if (i.Status).encode('utf-8') == "สมบูรณ์":
+						costt=Orderinfo.objects.all()
+						for cst in costt:
+							if cst.Order_id==i.Order_id:
+								round+=cst.Cost_total
+		costtotal.append(round)
+		round=0
+		
+	for s in project:
+		summary.append(s.name_thai)
+		summary.append(cost[count2])
+		summary.append(costtotal[count2])
+		summary.append(cost[count2]-costtotal[count2])
+		count2+=1
+	ordd=Order.objects.all()
+	for s in ordd:
+		stat=s.status_of_set.all()
+		for r in stat:
+			if (r.State).encode('utf-8') == "วันที่ในการซื้อวัสดุ":
+				buy+=1
+			elif (r.State).encode('utf-8') == "ตรวจสอบวัสดุและใบเสร็จ":
+				check+=1
+				buy-=1
+				if buy<0: buy=0
+			else:
+				complete+=1
+				check-=1
+				if check<0:check=0
+		
+        return render(request, 'group7/sumallproject.html', {'cost':summary,'buy':buy,'check':check,'complete':complete})

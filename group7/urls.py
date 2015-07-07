@@ -5,7 +5,7 @@ urlpatterns = patterns('',
 #ex: /group7Project_Docs/
         url(r'^admin/', include(admin.site.urls)),
 	url(r'^Project_Docs/$', views.home, name='index'),
-        url(r'^/(?P<pk>\d+)/$', views.order.as_view(), name='order'),#order ok
+        url(r'^/(?P<pk>\d+)/$', views.order, name='order'),#order ok
         url(r'^Addorder/$', views.home, name='project_docs_add'),
 #-----------------------------------------------------------------------------------------# file menu from Kon --not complete
 
@@ -34,5 +34,9 @@ urlpatterns = patterns('',
         url(r'^/(?P<pk>\d+)/statusof/requisition/$', views.viewrequi, name='requisition'),
         url(r'^/(?P<pk>\d+)/statusof/edit/$', views.statusofedit, name='eStatusof'),
         url(r'^/(?P<info_id>\d+)/editstf/$', views.editstatusof, name='editStatusof'),
+        url(r'^/summary/$', views.summarypro, name='summary'),
+        url(r'^/summarydate/$', views.sumdate, name='summarydate'),
+        url(r'^/summarycheck/$', views.sumcheck, name='summarycheck'),
+        url(r'^/summaryreq/$', views.sumreq, name='summaryreq'),
 
 )
