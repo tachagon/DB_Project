@@ -28,7 +28,7 @@ body{
     border: 1px #D3D3D3 solid;
     border-radius: 5px;
     background: white;
-	word-break:break-all;
+	word-break:break-strict;
 	}
 .form > H{
 	margin-left:0;
@@ -62,12 +62,12 @@ body{
 		width:initial;
 		height:initial;
 		size:portrait;
-		position:absolute;
+		position:static;
 		border:0;
 		border-radius:0;
 		box-shadow: initial;
 		background: initial;
-		page-break-after: always;
+		page-break-after: auto;
 		display:block;
 		}
 	#nameeng{
@@ -106,6 +106,16 @@ body{
 	</label>
 </div><br>
 <a href="{% url 'group6:project_docs_index' %}"><input class="btn btn-danger" type="button" value="ย้อนกลับ" name = 'cancel' /></a> 
-<a class="btn btn-default" href="{% url 'group6:project_docs_researchProject_print' research.id %}" target = _blank><span class="glyphicon glyphicon-print"></span></a>
+<a class="btn btn-default" href="javascript:if(confirm('! คำเตือน !\n
+ใช้ Browser : Chrome\n
+ขนาดกระดาษ : A4\n
+ระยะขอบ : ไม่มี\n
+รูปแบบ : แนวตั้ง\n\n
+! Warning !\n
+Use browser : Chrome\n
+Size : A4\n
+Margin : None\n
+Style : Portrait'))
+window.open('{% url 'group6:project_docs_researchProject_print' research.id %}', '_blank');"><span class="glyphicon glyphicon-print"></span></a>
 </div><br>
 {% endblock %}

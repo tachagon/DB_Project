@@ -14,8 +14,9 @@ body{
 	margin:auto;
 	position:relative;
     padding: 2cm;
-    border: 1px #D3D3D3 solid;
-    border-radius: 5px;
+    border:solid;
+	border-width:thin;
+	border-bottom:none;
     background: white;
 	word-break:break-all;
 	}
@@ -100,9 +101,11 @@ body{
 	padding-left:2cm;
 	padding-right:2cm;
 	position:relative;
-    border-radius: 5px;
     background: white;
-	border: 1px #D3D3D3 solid;
+	border:solid;
+	border-width:thin;
+	border-top:none;
+	display:block;
 }
 #corpdown{
 	display: table;
@@ -125,6 +128,7 @@ body{
 @media print {
 	.page {
 		font:14pt "Angsana New";
+		top:0px;
 		margin-top:21mm;
 		margin-left:26mm;
 		margin-right:14mm;
@@ -133,7 +137,7 @@ body{
 		width:initial;
 		height:initial;
 		size:portrait;
-		position:static;
+		position:absolute;
 		border:0;
 		border-radius:0;
 		box-shadow: initial;
@@ -144,15 +148,15 @@ body{
 		}
 	#footer{
 		font:14pt "Angsana New";
-		margin-top:171mm;
+		bottom:0px;
+		margin-bottom:26mm;
 		margin-left:26mm;
 		margin-right:14mm;
-		margin-bottom:30mm;
 		padding:0;
 		width:initial;
 		height:initial;
 		size:portrait auto;
-		position:static;
+		position:absolute;
 		border:0;
 		border-radius:0;
 		box-shadow: initial;
@@ -226,32 +230,32 @@ body{
     </label>
 </div>
 <!-- Cut form -->
-    <div id="footer">
-        <H>คาดว่าจะเขียนปริญญานิพนธ์เสร็จภายในภาคที่ {{ approve.semesterEnd }}</H><H> ปีการศึกษา {{ approve.yearEnd }}</H><br>
-        <H>จิงขอได้โปรดพิจารณาอนุมัติ โดยได้แนบโครงการเสนอปริญญานิพนธ์มาพร้อมนี้</H><br><br>
-        <div align="right"><H>ลงชื่อ:</H>..................................................<H>(ผู้ยื่นคำร้อง)</H></div>
-        <div align="right" style="margin-right:15mm">................/................/................</div>
-        <br>
-        <CENTER>
-            <div id="corpdown">
-                <div class="row">
-                    <div id="commentbox"><H>ความเห็นของอาจารย์ที่ปรึกษา</H><br>
-                    <H>......................................................................................</H><br>
-                    <H>......................................................................................</H><br>
-                    <H style="float:left; padding-left:5px">(ลงนาม)......................................................................</H><br>
-                    <H style="float:right; padding-right:20px">................/................/................</H>
-                    </div>
-                    
-                    <div id="commentbox"><H>ความเห็นของหัวหน้าภาค</H><br>
-                    <H>......................................................................................</H><br>
-                    <H>......................................................................................</H><br>
-                    <H style="float:left; padding-left:5px">(ลงนาม)......................................................................</H><br>
-                    <H style="float:right; padding-right:20px">................/................/................</H>
-                    </div>
+<div id="footer">
+    <H>คาดว่าจะเขียนปริญญานิพนธ์เสร็จภายในภาคที่ {{ approve.semesterEnd }}</H><H> ปีการศึกษา {{ approve.yearEnd }}</H><br>
+    <H>จิงขอได้โปรดพิจารณาอนุมัติ โดยได้แนบโครงการเสนอปริญญานิพนธ์มาพร้อมนี้</H><br><br>
+    <div align="right"><H>ลงชื่อ:</H>..................................................<H>(ผู้ยื่นคำร้อง)</H></div>
+    <div align="right" style="margin-right:15mm">................/................/................</div>
+    <br>
+    <CENTER>
+        <div id="corpdown">
+            <div class="row">
+                <div id="commentbox"><H>ความเห็นของอาจารย์ที่ปรึกษา</H><br>
+                <H>......................................................................................</H><br>
+                <H>......................................................................................</H><br>
+                <H style="float:left; padding-left:5px">(ลงนาม)......................................................................</H><br>
+                <H style="float:right; padding-right:20px">................/................/................</H>
+                </div>
+                
+                <div id="commentbox"><H>ความเห็นของหัวหน้าภาค</H><br>
+                <H>......................................................................................</H><br>
+                <H>......................................................................................</H><br>
+                <H style="float:left; padding-left:5px">(ลงนาม)......................................................................</H><br>
+                <H style="float:right; padding-right:20px">................/................/................</H>
                 </div>
             </div>
-        </CENTER>
-    </div>
+        </div>
+    </CENTER>
+</div>
     
 </body>
 </html>
