@@ -9,15 +9,24 @@
 
 {% block pageHeader %}
 <h2>ระบบ <small>อาจารย์สองภาษา</small></h2>
-<ol class="breadcrumb">
-    <li><a href="{% url 'login:menu' %}">เมนู</a></li>
-    <li><a href="{% url 'group3:prof2lang_index' %}">ระบบอาจารย์สองภาษา</a></li>
-    <li><a href="{% url 'group3:prof_index' %}">อาจารย์ผู้สอนทั้งหมด</a></li>
-    {% if prof %}
-    <li><a href="{% url 'group3:prof_view' prof.profID %}">{{ prof.firstName }} {{ prof.lastName }}</a></li>
-    {% endif %}
-    <li class="active">{{ menuName }}</li>
-</ol>
+{% if prof2lang %}
+    <ol class="breadcrumb">
+        <li><a href="{% url 'login:menu' %}">เมนู</a></li>
+        <li><a href="{% url 'group3:prof2lang_index' %}">ระบบอาจารย์สองภาษา</a></li>
+        <li><a href="{% url 'group3:prof2lang_add' 0 %}">เพิ่มข้อมูลอาจารย์สองภาษา</a></li>
+        <li class="active">เพิ่มอาจารย์</li>
+    </ol>
+{% else %}
+    <ol class="breadcrumb">
+        <li><a href="{% url 'login:menu' %}">เมนู</a></li>
+        <li><a href="{% url 'group3:prof2lang_index' %}">ระบบอาจารย์สองภาษา</a></li>
+        <li><a href="{% url 'group3:prof_index' %}">อาจารย์ผู้สอนทั้งหมด</a></li>
+        {% if prof %}
+        <li><a href="{% url 'group3:prof_view' prof.profID %}">{{ prof.firstName }} {{ prof.lastName }}</a></li>
+        {% endif %}
+        <li class="active">{{ menuName }}</li>
+    </ol>
+{% endif %}
 {% endblock %}
 
 {% block content %}
@@ -62,12 +71,15 @@
                         {% endfor %}
 
                         <form class="form-horizontal" method="post"
-                              {% if prof_out_formAction == '0' %}
-                        action="{% url 'group3:prof_add_out' %}"
-                        {% endif %}
-                        {% if prof_out_formAction == '1' %}
-                        action="{% url 'group3:prof_update' prof.profID %}"
-                        {% endif %}
+                            {% if prof_out_formAction == '0' %}
+                                action="{% url 'group3:prof_add_out' %}"
+                            {% endif %}
+                            {% if prof_out_formAction == '1' %}
+                                action="{% url 'group3:prof_update' prof.profID %}"
+                            {% endif %}
+                            {% if prof_out_formAction == '2' %}
+                                action="{% url 'group3:prof2langAdd_out' %}"
+                            {% endif %}
                         ><!-- form -->
 
                         {% csrf_token %}
@@ -180,7 +192,7 @@
                 </div><!-- /container-fluid -->
             </div><!-- /row -->
         </div>
-        <!----------------------------------------------- อาจารย์ในภาค ------------------------------------------------->
+        <!------------------------------------------------ อาจารย์พิเศษ ------------------------------------------------->
         <div role="tabpanel" class="tab-pane {{ prof_special }}" id="special">
             <br>
             <div class="row">
@@ -205,6 +217,9 @@
                         <form class="form-horizontal" method="post"
                             {% if prof_special_formAction == '0' %}
                                 action="{% url 'group3:prof_add_special' %}"
+                            {% endif %}
+                            {% if prof_special_formAction == '1' %}
+                                action="{% url 'group3:prof2langAdd_special' %}"
                             {% endif %}
                         ><!-- form -->
 

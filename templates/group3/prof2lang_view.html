@@ -36,17 +36,35 @@
                         </div>
                         <div class="panel-body">
                             <table class="table table-responsive table-hover table-bordered">
-                                <tr>
+                                <!--tr>
                                     <th>รหัสอาจารย์</th>
                                     <td>{{teachObj.prof.profID}}</td>
-                                </tr>
+                                </tr-->
                                 <tr>
                                     <th>ชื่อ - นามสกุล</th>
-                                    <td>{{teachObj.prof.firstName}} {{teachObj.prof.lastName}}</td>
+                                    <td>
+                                        {% ifequal teachObj.prof.academic_position "0"%}
+                                            {% if teachObj.prof.prefix_name == "3" %}ดร.
+                                            {% else %}อ.
+                                            {% endif%}
+                                        {% endifequal %}
+                                        {% ifequal teachObj.prof.academic_position "1"%}ผู้ช่วยศาสตราจารย์{% ifequal teachObj.prof.prefix_name "3" %} ดร.{% endifequal %}{% endifequal %}
+                                        {% ifequal teachObj.prof.academic_position "2"%}รองศาสตราจารย์{% ifequal teachObj.prof.prefix_name "3" %} ดร.{% endifequal %}{% endifequal %}
+                                        {% ifequal teachObj.prof.academic_position "3"%}ศาสตราจารย์{% ifequal teachObj.prof.prefix_name "3" %} ดร.{% endifequal %}{% endifequal %}
+                                        {{teachObj.prof.firstName}} {{teachObj.prof.lastName}}
+                                    </td>
                                 </tr>
                                 <tr>
                                     <th>ตัวย่อ</th>
                                     <td>{{teachObj.prof.shortName}}</td>
+                                </tr>
+                                <tr>
+                                    <th>ประเภท</th>
+                                    <td><!-- 3. -->
+                                        {% if teachObj.prof.type == '0' %}อาจารย์ในภาควิชา{% endif %}
+                                        {% if teachObj.prof.type == '1' %}อาจารย์นอกภาควิชา{% endif %}
+                                        {% if teachObj.prof.type == '2' %}อาจารย์พิเศษ{% endif %}
+                                    </td><!-- 3. -->
                                 </tr>
                                 <tr>
                                     <th>ภาควิชา</th>
@@ -71,7 +89,11 @@
                             </table>
                             <a href="#" class="btn btn-success" data-toggle="modal" data-target="#shift-prof-modal" id="shift-prof-btn">เปลี่ยนอาจารย์ผู้สอน</a>
                             {% if teachObj.prof %}
-                                <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#change-prof-modal">แก้ไขข้อมูลอาจารย์ผู้สอน</a>
+                                {% if teachObj.prof.type == '0' %}
+                                    <a href="#" class="btn btn-default" disabled="disabled">แก้ไขข้อมูลอาจารย์ผู้สอน</a>
+                                {% else %}
+                                    <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#change-prof-modal">แก้ไขข้อมูลอาจารย์ผู้สอน</a>
+                                {% endif %}
                             {% else %}
                                 <a href="#" class="btn btn-default" disabled="disabled">แก้ไขข้อมูลอาจารย์ผู้สอน</a>
                             {% endif %}
@@ -165,10 +187,38 @@
                                     {% csrf_token %}
 
                                     <!-- 1. รหัสอาจารย์ -->
-                                    <div class="form-group form-group-sm">
+                                    <!--div class="form-group form-group-sm">
                                         <label class="col-sm-3 control-label"><font color="red">* </font>รหัสอาจารย์: </label>
                                         <div class="col-sm-9">
                                             <p class="form-control-static">{{ teachObj.prof.profID }}</p>
+                                        </div>
+                                    </div-->
+
+                                    <!-- 12. ตำแหน่งวิชาการ -->
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label"><font color="red">*</font> ตำแหน่งวิชาการ: </label>
+                                        <div class="col-sm-9">
+                                            <select class="form-control" name="academic_position" title="ตำแหน่งวิชาการ" required>
+                                                <option value="">กรุณาเลือก</option>
+                                                <option value="0" {% if teachObj.prof.academic_position == '0' %}selected="selected"{% endif %}>ไม่มี</option>
+                                                <option value="1" {% if teachObj.prof.academic_position == '1' %}selected="selected"{% endif %}>ผู้ช่วยศาสตราจารย์</option>
+                                                <option value="2" {% if teachObj.prof.academic_position == '2' %}selected="selected"{% endif %}>รองศาสตราจารย์</option>
+                                                <option value="3" {% if teachObj.prof.academic_position == '3' %}selected="selected"{% endif %}>ศาสตราจารย์</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <!-- 11. คำนำหน้าชื่อ -->
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label"><font color="red">*</font> คำนำหน้าชื่อ: </label>
+                                        <div class="col-sm-9">
+                                            <select class="form-control" name="prefix_name" title="คำนำหน้าชื่อ" required>
+                                                <option value="">กรุณาเลือก</option>
+                                                <option value="0" {% if teachObj.prof.prefix_name == '0' %}selected="selected"{% endif %}>นาย</option>
+                                                <option value="1" {% if teachObj.prof.prefix_name == '1' %}selected="selected"{% endif %}>นาง</option>
+                                                <option value="2" {% if teachObj.prof.prefix_name == '2' %}selected="selected"{% endif %}>นางสาว</option>
+                                                <option value="3" {% if teachObj.prof.prefix_name == '3' %}selected="selected"{% endif %}>ดร.</option>
+                                            </select>
                                         </div>
                                     </div>
 
@@ -220,6 +270,8 @@
                                         </div>
                                     </div>
 
+                                    {% ifnotequal teachObj.prof.type '2' %}
+
                                     <!-- 8. ภาควิชา -->
                                     <div class="form-group form-group-sm">
                                         <label class="col-sm-3 control-label"><font color="red">* </font>ภาควิชา: </label>
@@ -235,6 +287,8 @@
                                             <input type="text" name="faculty" class="form-control" value="{{ teachObj.prof.faculty }}" placeholder="คณะ " maxlength="200" required>
                                         </div>
                                     </div>
+
+                                    {% endifnotequal %}
 
                                 </div><!-- /modal-body -->
                                 <div class="modal-footer">

@@ -15,11 +15,12 @@ from fpdf import FPDF
 from django.contrib.auth.models import User
 # Create your views here.
 def genProfID():
-    profList = Prof2Lang.objects.all().order_by('profID')
+    profList = Prof2Lang.objects.all()
+    intList = []
     if len(profList) > 0:
-        lastProf = profList[len(profList)-1]
-        id = int(lastProf.profID) + 1
-        return str(id)
+        for i in profList:
+            intList.append(int(i.profID))
+        return str(max(intList) + 1)
     else:
         return '1'
 
@@ -82,11 +83,17 @@ def getUserType(request):
     except:
         return 'admin'
 
-def prof2lang_index(request):
+def prof2lang_index_sort(request, sort):
+    return prof2lang_index(request, sort)
+
+def prof2lang_index(request, sort='id'):
     prof_add_in()   # add Teacher to Prof2Lang
     template = 'group3/prof2lang_index.html'    # get template
     context = {}
-    teachList = Teach.objects.all()     # get all Prof2Lang objects
+    if sort == 'fullname':
+        teachList = Teach.objects.all().order_by('prof__prefix_name', 'prof__academic_position', 'prof__firstName', 'prof__lastName')
+    else:
+        teachList = Teach.objects.all().order_by(sort)     # get all Prof2Lang objects
 
     # get current user type
     # user type is Student that can not access this system
@@ -392,12 +399,13 @@ def genpdf(request, profID): # use to generate pdf file for lend another teacher
         academicPosition = teachObj.prof.academic_position
         if (academicPosition == '0'):
             academicPosition = u''
+            short_academicPosition = u''
             try:
                 pre_name = teachObj.prof.prefix_name
-                if (pre_name == '0') or (pre_name == '1') or (pre_name == '2'):
-                    pre_name = u'อ. '
+                if (pre_name == '3'):
+                    pre_name = u'ดร.'
                 else:
-                    pre_name = u'ดร. '
+                    pre_name = u'อ.'
             except:
                 pre_name = u'อ. '
         elif academicPosition == '1':
@@ -937,6 +945,9 @@ def updateProf(request, teachID):
         # get current Teach object that user want to modifies
         currentTeach = Teach.objects.get(id = teachID)
 
+        # get current Prof2Lang object
+        currentProf = Prof2Lang.objects.get(profID = currentTeach.prof.profID)
+
         # get new data from 'group3/prof2lang_update.html' template
         firstName       = request.POST['firstName']         # 2. get firstName
         lastName        = request.POST['lastName']          # 3. get lastName
@@ -944,11 +955,13 @@ def updateProf(request, teachID):
         tell            = request.POST['tell']              # 5. get tell
         email           = request.POST['email']             # 6. get email
         sahakornAccount = request.POST['sahakornAccount']   # 7. get sahakornAccount
-        department      = request.POST['department']        # 8. get department
-        faculty         = request.POST['faculty']           # 9. get faculty
-
-        # get current Prof2Lang object
-        currentProf = Prof2Lang.objects.get(profID = currentTeach.prof.profID)
+        department      = ''
+        faculty         = ''
+        if currentProf.type != '2':
+            department      = request.POST['department']        # 8. get department
+            faculty         = request.POST['faculty']           # 9. get faculty
+        prefix_naem     = request.POST['prefix_name']       # 11. prefix_name
+        academic_position = request.POST['academic_position']# 12. academic_position
 
         # modifiles data
         currentProf.firstName       = firstName
@@ -959,6 +972,8 @@ def updateProf(request, teachID):
         currentProf.sahakornAccount = sahakornAccount
         currentProf.department      = department
         currentProf.faculty         = faculty
+        currentProf.prefix_name     = prefix_naem
+        currentProf.academic_position = academic_position
 
         currentProf.save()  # save Prof2Lang modifiles into database
 
@@ -1121,7 +1136,6 @@ def returnsearch(request, id):
     context = {}
     worker = HourlyEmployee.objects.get(id=int(id))
     ListWork = worker.work_set.all().order_by('id')
-    print ListWork[0].releaseDate
     try:
         profile = worker.user
 
