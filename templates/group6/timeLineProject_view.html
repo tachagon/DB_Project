@@ -120,8 +120,9 @@
                   <tr border="0">
                         <td id='lefttable' align=CENTER valign=MIDDLE>ขั้นตอนที่</td> 
                         <td id='middletable' align=CENTER valign=MIDDLE>
-                              <form>รายละเอียดขั้นตอนการดำเนินงาน</br>เริ่มทำปริญญานิพนธ์เมื่อ {{ timeLine.day }} เดือน {{ timeLine.month }} พ.ศ. {{ timeLine.year }}</td>
+                              <form>รายละเอียดขั้นตอนการดำเนินงาน</br>เริ่มทำปริญญานิพนธ์เมื่อ {{ timeLine.day }} เดือน {{ timeLine.month }} พ.ศ. {{ timeLine.year }}
                               </form>
+                              </td>
                               <td id='righttable' align=CENTER valign=MIDDLE>
                                     <table id='righttabletop' border="1" cellpadding="0" cellspacing="0" align="center" >    
                                           <tr border="0">
@@ -150,7 +151,7 @@
                         {% if process %}
                         <tr border="0">
                               <td id='lefttable' align=CENTER valign=MIDDLE>{{ forloop.counter }}</td> 
-                              <td id='middletable' align=CENTER valign=MIDDLE>{{ process.processDescription }}</td>
+                              <td id='middletable' valign="top">{{ process.processDescription }}</td>
                               <td id='middletable'  align=CENTER valign=MIDDLE>
                                     <table border="1" cellpadding="0" cellspacing="0" width="100%" height="50%" align="center" >    
 
@@ -222,7 +223,7 @@
                         {% else %}
                         <tr border="0">
                               <td id='lefttable' align=CENTER valign=MIDDLE>{{ forloop.counter }}</td> 
-                              <td id='middletable' align=CENTER valign=MIDDLE><!--get process1--></td>
+                              <td id='middletable' valign="top"><!--get process1--></td>
                               <td id='middletable'  align=CENTER valign=MIDDLE>
                                     <table border="1" cellpadding="0" cellspacing="0" width="100%" height="50%" align="center" >    
 
@@ -252,6 +253,10 @@
 <table id='bottomleft' align='left'><tr><td>ลงชื่อ</td><td id='bottomleftmid'>...............................................................................</td><td>(ผู้เสนอโครงงาน)</td></tr><tr><td></td><td id='bottomleftmid'>(.............................................................................)</td><td></td></tr><tr><td></td><td id='bottomleftmid'>........................./........................../..........................</td><td></td></tr></table>
 <table id='bottomright' align='right'><tr><td>ลงชื่อ</td><td id='bottomrightmid'>.......................................................................</td><td>(อาจารย์ที่ปรึกษา)</td></tr><tr><td></td><td id='bottomrightmid'>(.....................................................................)</td><td></td></tr><tr><td></td><td id='bottomrightmid'> ....................../......................./.......................</td><td></td></tr></table>
 </div><br>
+{% ifequal officer '2' %}
+<a class="btn btn-default" href="{% url 'group6:project_docs_timeLineProject_print' timeLine.id %}" target = _blank><span class="glyphicon glyphicon-print"></span></a>  (แถบสี)<br>
+<a class="btn btn-default" href="{% url 'group6:project_docs_timeLineProject_print_check' timeLine.id %}" target = _blank><span class="glyphicon glyphicon-print"></span></a>  (ติ๊กถูก)<br>
+{% else %}
 <a class="btn btn-default" href="javascript:if(confirm('! คำเตือน !\n
 ใช้ Browser : Chrome\n
 ขนาดกระดาษ : A4\n
@@ -274,6 +279,7 @@ Size : A4\n
 Margin : None\n
 Style : Landscape'))
 window.open('{% url 'group6:project_docs_timeLineProject_print_check' timeLine.id %}', '_blank');"><span class="glyphicon glyphicon-print"></span></a>  (ติ๊กถูก)<br>
+{% endifequal %}
 <a href="{% url 'group6:project_docs_index' %}"><input class="btn btn-danger" type="button" value="ย้อนกลับ" name = 'cancel' /></a> 
 </div><br>
 {% endblock %}

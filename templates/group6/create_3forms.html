@@ -94,7 +94,7 @@ window.setInterval(function updateStudent(){
     var e1 = document.getElementById("stdnumber");
     var stdnum = e1.value;
     for(i=1; i<stdnum; i++){
-        document.getElementById("studentNAME"+i).value = dict[document.getElementById("studentID"+i).value];
+        document.getElementById("studentNAME"+i).innerHTML = dict[document.getElementById("studentID"+i).value];
     }
 }, 1000);
 
@@ -119,7 +119,7 @@ function addMoreStd(){
         var e2 = document.getElementById("studentElement"+i);
         if(i < stdnum){
             if(e2 == null){
-                txts += "<div id='studentElement" + i + "'><H>"+e1.options[i].text+". "+"</H><input id='studentNAME" + (i) +"' type='text' name='studentNAME" + (i) +"'><H>เลขประจำตัว :</H><input type='text' name='studentID" + (i) + "' maxlength='13' id='studentID" + (i) + "'></div>";
+                txts += "<div id='studentElement" + i + "'><H>"+e1.options[i].text+". "+"</H><H>เลขประจำตัว : </H><input type='text' name='studentID" + (i) + "' maxlength='13' id='studentID" + (i) + "'> <B id='studentNAME" + (i) +"' name='studentNAME" + (i) +"'></B></div>";
             }
         }else{
             if(e2 != null){
@@ -187,23 +187,23 @@ p_adviser
             {% if student_list %}
                 {% for student in student_list %}
                     {% if forloop.counter == 1 %}
-                        <H>{{ forloop.counter }}. {{ student.userprofile.prefix_name|get_prefix_name_th }} {{ student.userprofile.firstname_th }} {{ student.userprofile.lastname_th }} เลขประจำตัว : {{ student.std_id }}</H><br> <div class="namestd" id="namestd">
+                        <H>{{ forloop.counter }}. เลขประจำตัว : {{ student.std_id }} {{ student.userprofile.prefix_name|get_prefix_name_th }} {{ student.userprofile.firstname_th }} {{ student.userprofile.lastname_th }}</H><br> <div class="namestd" id="namestd">
                     {% else %}
                         {% ifequal edit '1' %}
                             {% ifequal error_student|get_at_index:forloop.counter0 '' %}
-                            <div id='studentElement{{ forloop.counter0 }}'><H>{{ forloop.counter }}. </H><input type='text' name='studentNAME{{ forloop.counter0 }}' id="studentNAME{{ forloop.counter0 }}" value="{{ student.userprofile.prefix_name|get_prefix_name_th }} {{ student.userprofile.firstname_th }} {{ student.userprofile.lastname_th }}"><H>เลขประจำตัว :</H><input type='text' name='studentID{{ forloop.counter0 }}' maxlength='13' id="studentID{{ forloop.counter0 }}" value="{{ student.std_id }}"></div>
+                            <div id='studentElement{{ forloop.counter0 }}'><H>{{ forloop.counter }}. </H><H>เลขประจำตัว :</H><input type='text' name='studentID{{ forloop.counter0 }}' maxlength='13' id="studentID{{ forloop.counter0 }}" value="{{ student.std_id }}"> <B name='studentNAME{{ forloop.counter0 }}' id="studentNAME{{ forloop.counter0 }}">{{ student.userprofile.prefix_name|get_prefix_name_th }} {{ student.userprofile.firstname_th }} {{ student.userprofile.lastname_th }}</B></div>
                             {% else %}
-                            <div id='studentElement{{ forloop.counter0 }}'><H>{{ forloop.counter }}. </H><input type='text' name='studentNAME{{ forloop.counter0 }}' id="studentNAME{{ forloop.counter0 }}"><H>เลขประจำตัว :</H><input type='text' name='studentID{{ forloop.counter0 }}' maxlength='13' id="studentID{{ forloop.counter0 }}"> <font color = "FF0000" name="message">{{ error_student|get_at_index:forloop.counter0 }}</font></div>
+                            <div id='studentElement{{ forloop.counter0 }}'><H>{{ forloop.counter }}. </H><H>เลขประจำตัว :</H><input type='text' name='studentID{{ forloop.counter0 }}' maxlength='13' id="studentID{{ forloop.counter0 }}"> <B name='studentNAME{{ forloop.counter0 }}' id="studentNAME{{ forloop.counter0 }}"></B> <font color = "FF0000" name="message">{{ error_student|get_at_index:forloop.counter0 }}</font></div>
                             {% endifequal %}
                         {% else %}
-                            <div id='studentElement{{ forloop.counter0 }}'><H>{{ forloop.counter }}. </H><input type='text' name='studentNAME{{ forloop.counter0 }}' id="studentNAME{{ forloop.counter0 }}" value="{% if student %}
+                            <div id='studentElement{{ forloop.counter0 }}'><H>{{ forloop.counter }}. </H><H>เลขประจำตัว :</H><input type='text' name='studentID{{ forloop.counter0 }}' maxlength='13' id="studentID{{ forloop.counter0 }}" value="{{ student.std_id }}"> <B name='studentNAME{{ forloop.counter0 }}' id="studentNAME{{ forloop.counter0 }}">{% if student %}
 {{ student.userprofile.prefix_name|get_prefix_name_th }} {{ student.userprofile.firstname_th }} {{ student.userprofile.lastname_th }}
-{% endif %}"><H>เลขประจำตัว :</H><input type='text' name='studentID{{ forloop.counter0 }}' maxlength='13' id="studentID{{ forloop.counter0 }}" value="{{ student.std_id }}"> {% if error_student %}<font color = "FF0000" name="message">{{ error_student|get_at_index:forloop.counter0 }}</font>{% endif %}</div>
+{% endif %}</B> {% if error_student %}<font color = "FF0000" name="message">{{ error_student|get_at_index:forloop.counter0 }}</font>{% endif %}</div>
                         {% endifequal %}
                     {% endif %}
                 {% endfor %}
             {% else %}
-            <H>1. {{ student.userprofile.prefix_name|get_prefix_name_th }} {{ student.userprofile.firstname_th }} {{ student.userprofile.lastname_th }} เลขประจำตัว : {{ student.std_id }}</H>
+            <H>1. เลขประจำตัว : {{ student.std_id }} {{ student.userprofile.prefix_name|get_prefix_name_th }} {{ student.userprofile.firstname_th }} {{ student.userprofile.lastname_th }}</H>
             <br> <div class="namestd" id="namestd">
             {% endif %}
 
@@ -231,14 +231,14 @@ p_adviser
     
     <!-- Must FIX -->
     <H>ในวิชา:</H><select id="course" name="course">
-                <option value="114901 โครงงาน 1:Project I (EE 51)">114901 โครงงาน 1:Project I (EE 51)</option>
-                <option value="114902 โครงงาน 2:Project II (EE 51)">114902 โครงงาน 2:Project II (EE 51)</option>
-                <option value="010113941 โครงงาน 1:Project I (EE 55)">010113941 โครงงาน 1:Project I (EE 55)</option>
-                <option value="010113942 โครงงาน 2:Project II (EE 55)">010113942 โครงงาน 2:Project II (EE 55)</option>
-                <option value="114321 โครงงานวิศวกรรคอมพิวเตอร์ 1:Computer Engineering Project I (Cpr.E 49)">114321 โครงงานวิศวกรรคอมพิวเตอร์ 1:Computer Engineering Project I (Cpr.E 49)</option>
-                <option value="114322 โครงงานวิศวกรรคอมพิวเตอร์ 2:Computer Engineering Project II (Cpr.E 49)">114322 โครงงานวิศวกรรคอมพิวเตอร์ 2:Computer Engineering Project II (Cpr.E 49)</option>
-                <option value="010123122 โครงงาน 1:Project I (Cpr.E 54)">010123122 โครงงาน 1:Project I (Cpr.E 54)</option>
-                <option value="010123123 โครงงาน 2:Project II (Cpr.E 54)">010123123 โครงงาน 2:Project II (Cpr.E 54)</option>
+                <option value="114901 โครงงาน 1 : Project I (EE 51)">114901 โครงงาน 1 : Project I (EE 51)</option>
+                <option value="114902 โครงงาน 2 : Project II (EE 51)">114902 โครงงาน 2 : Project II (EE 51)</option>
+                <option value="010113941 โครงงาน 1 : Project I (EE 55)">010113941 โครงงาน 1 : Project I (EE 55)</option>
+                <option value="010113942 โครงงาน 2 : Project II (EE 55)">010113942 โครงงาน 2 : Project II (EE 55)</option>
+                <option value="114321 โครงงานวิศวกรรคอมพิวเตอร์ 1 : Computer Engineering Project I (Cpr.E 49)">114321 โครงงานวิศวกรรคอมพิวเตอร์ 1 : Computer Engineering Project I (Cpr.E 49)</option>
+                <option value="114322 โครงงานวิศวกรรคอมพิวเตอร์ 2 : Computer Engineering Project II (Cpr.E 49)">114322 โครงงานวิศวกรรคอมพิวเตอร์ 2 : Computer Engineering Project II (Cpr.E 49)</option>
+                <option value="010123122 โครงงาน 1 : Project I (Cpr.E 54)">010123122 โครงงาน 1 : Project I (Cpr.E 54)</option>
+                <option value="010123123 โครงงาน 2 : Project II (Cpr.E 54)">010123123 โครงงาน 2 : Project II (Cpr.E 54)</option>
             </select> <font color = "FF0000" name="message">{{ error_courses }}</font><br>
     <!-- Must FIX -->
     <H>คาดว่าจะเขียนปริญญานิพนธ์เสร็จภายในภาคที่:</H> <input id='termEND' type="text" name="semesterEnd" value="{{ semester }}"> <font color = "FF0000" name="message">{{ error_semester }}</font></br><H>ปีการศึกษา:</H> <input id='yearEND' type="text" name="yearEnd" value="{{ yearEN }}"> <font color = "FF0000" name="message">{{ error_yearEN }}</font></br>
@@ -252,7 +252,7 @@ p_adviser
              				<td width="40%" height="40"align=CENTER valign=MIDDLE>
              					รายละเอียดขั้นตอนการดำเนินงาน</br>เริ่มทำปริญญานิพนธ์เมื่อ 
                                 <div class="col-sm-9">
-                    <input type="date" name="startDate" value="{{ startDate }}" class="form-control" placeholder="วันเริ่ม" title="วันเริ่ม">
+                    <input style="font-size:16pt;" type="date" name="startDate" value="{{ startDate }}" class="form-control" placeholder="วันเริ่ม" title="วันเริ่ม">
                 </div></td>
 
              				<td width="40%" height="40" align=CENTER valign=MIDDLE>

@@ -1,5 +1,4 @@
 {% load custom_function %}
-
 ﻿<!DOCTYPE>
 <html>
 <head>
@@ -31,7 +30,7 @@ body{
 	
 	}
 #nameeng{
-	padding-left:20mm;
+	padding-left:18mm;
 	word-break:break-all;
 	}
 #yearspace{
@@ -78,7 +77,7 @@ body{
 <script>
 </script>
 </head>
-<body onLoad="return window.print()">
+<body onLoad="return window.print();">
 <div class="page">
 <center>
 <H><b>แบบฟอร์มสำรวจหัวข้อโครงงานปริญญานิพนธ์</b></H><br>
@@ -89,14 +88,14 @@ body{
 <br id="yearspace">
 </center>
 <label class="form">
-<H>ชื่อโครงการ</H><H id="nameth">(ภาษาไทย) {{ research.project.name_thai }}</H><br>
-<H id="nameeng">(ภาษาอังกฤษ) {{ research.project.name_eng }}</H><br>
+<H>ชื่อโครงการ</H><H id="nameth">(ภาษาไทย)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ research.project.name_thai }}</H><br>
+<H id="nameeng">(ภาษาอังกฤษ)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ research.project.name_eng }}</H><br>
 <H>จำนวนนักศึกษา {{ research.numberOfPeople }} คน </H><br>
-<H>ชื่ออาจารย์ที่ปรึกษา {{ research.project.teacher.academic_position|get_prefix_name_th_teacher:research.project.teacher.userprofile.prefix_name }} {{ research.project.teacher.userprofile.firstname_th }} {{ research.project.teacher.userprofile.lastname_th }} ({{ research.project.teacher.shortname }})</H>
-	<div class="text">วัตถุประสงค์ {{ research.project.objective }}</div>
-	<div class="text">แนวเหตุผล ทฤฏีสำคัญหรือสมมุติฐาน {{ research.project.reason }}</div>
-	<div class="text">ขอบเขตของการทำโครงงาน {{ research.project.scope }}</div>
-	<div class="text">ผลประโยชน์ที่คาดว่าจะได้รับ {{ research.project.benefit }}</div>
+<H>ชื่ออาจารย์ที่ปรึกษา&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ research.project.teacher.academic_position|get_prefix_name_th_teacher:research.project.teacher.userprofile.prefix_name }} {{ research.project.teacher.userprofile.firstname_th }} {{ research.project.teacher.userprofile.lastname_th }} ({{ research.project.teacher.shortname }})</H>
+	<div class="text">วัตถุประสงค์&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ research.project.objective }}</div>
+	<div class="text">แนวเหตุผล ทฤษฎีสำคัญหรือสมมติฐาน&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ research.project.reason }}</div>
+	<div class="text">ขอบเขตของการทำโครงการ&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ research.project.scope }}</div>
+	<div class="text">ผลประโยชน์ที่คาดว่าจะได้รับ&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ research.project.benefit }}</div>
 	</label>
 </div>
 </body>

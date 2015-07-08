@@ -13,19 +13,13 @@
 {% endblock %}
 
 {% block content %}
-<script type="type/javascript">
-function confirmLeave() {
-if(!confirm("Do you wish to continue without finishing the payment process? Your account will not be setup...")) return;
-window.open('popup.html','width=400,height=400');
-}
-</script>
 <div class="container-fluid">
     {% for message in messages %}
         <br><font color = "FF0000" name="message">*{{ message }}</font>
     {% endfor %}
     {% if project_list %}  
             <div class="table-responsive">
-                <table class="table table-hover table-bordered" id="no-more-tables">
+                <table class="table table-hover table-bordered table-striped" id="no-more-tables">
                     <thead>
                         <tr>
                             <th>ลำดับ</th>

@@ -877,7 +877,7 @@ def timeLineProject(request, tlID):
                 processList.append([])
             else:
                 processList.append(pro[0])
-        return render(request, 'group6/timeLineProject_view.html', {'timeLine': timeLine, 'processList': processList},)
+        return render(request, 'group6/timeLineProject_view.html', {'timeLine': timeLine, 'processList': processList, 'officer': UserProfile.objects.get(user=request.user).type},)
     else:
         return render(request, 'base.html')
 
