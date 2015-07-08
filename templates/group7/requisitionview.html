@@ -51,7 +51,9 @@
 	<tr>
 		<td><center>{{date}}</center></td> <!-- reference from "Date" of  requisition-->
 		<td><center>{{project.name_thai}}/{{project.name_eng}}</center></td> <!-- reference from "Project_name" of  Order-->
-		<td><center>{{req.Requisition_Id}}<center></td> <!-- reference from "Requisition_id" of  requisition-->
+		{%for r in req%}
+		<td><center>{{r.Requisition_Id}}<center></td> <!-- reference from "Requisition_id" of  requisition-->
+		{%endfor%}
 		<td><center>{{more}}</center></td> <!-- reference from "Moreabout" of  requisition-->
 	</tr>
 	<tr>
