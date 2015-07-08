@@ -10,7 +10,7 @@ urlpatterns = patterns('',
 #-----------------------------------------------------------------------------------------# file menu from Kon --not complete
 
 #ex: /group7/Project_id/addorder/ --> EX: localhost:8000/group7/1/addorder/
-	url(r'^/(?P<pk>\d+)/addorder/$', views.addorder.as_view(), name='addorder'),
+	url(r'^/(?P<pk>\d+)/addorder/$', views.addorder, name='addorder'),
 	url(r'^/(?P<pk>\d+)/addorderview/$', views.addorderview, name='addorderview'),
 #-----------------------------------------------------------------------------------------# Add Order
 #ex: /group7/Project_id/orderinfo/ --> EX: localhost:8000/group7/1/orderinfo/

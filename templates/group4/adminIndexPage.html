@@ -72,7 +72,7 @@
                         <div class="col-md-10">
                             <h3>รายชื่อผู้ขอเบิกค่ารักษาพยาบาลล่าสุด</h3>
                             <div class="table-responsive">
-                                <table class="table table-hover table-bordered" id="no-more-tables">
+                                <table class="table table-hover table-bordered">
                                     <thead>
                                     <tr>
                                         <th>ลำดับ</th>
@@ -84,36 +84,39 @@
                                     </thead>
                                     <tbody>
                                     <script>
-                                var newint = []
-                                var count1  = 0
-                                {% for y in newint %}
-                                   newint[count] =  {{ y }}
+                                var newint = [];
+                                var count1  = 0;
+                                var string = "Hello";
+                                {% for y in newvalue %}
+                                   console.log("{{y}}");
+                                   newint[count1] = "{{ y }}";
+                                   console.log(newint[count1].toString());
                                    count1++;
-                                {% endfor %}
 
-                            </script>
-                                    <script>
-                                var remains = []
-                                var count  = 0
+                                {% endfor %}
+                                console.log(newint);
+
+                                var remains = [];
+                                var count  = 0;
                                 {% for x in remain %}
-                                   remains[count] =  {{ x }}
+                                   remains[count] =  {{ x }};
                                    count++;
                                 {% endfor %}
-                                count = 0
-                                count1  = 0
-                            </script>
-                                    <script>
+                                count = 0;
+                                count1  = 0;
+
+
                             {% for officer in dataFromWebList_Index %}
                                 if (remains[count] < 0) {
-                                    var fontcolor = "red"
+                                    var fontcolor = "red";
                                 }else{
-                                    var fontcolor = "black"
+                                    var fontcolor = "black";
                                 }
-                                document.write('<tr><td data-title="ลำดับ">{{ forloop.counter }}</td>')
-                                document.write('<td data-title="ชื่อ-สกุล">{{ officer.user.firstname_th }}&nbsp&nbsp&nbsp&nbsp{{ officer.user.lastname_th }}</td>')
-                                document.write('<td data-title="วันที่">{{ officer.dateCommit|date:"P  d-m-Y" }}</td>')
-                                document.write('<td data-title="จำนวนเงินที่ขอเบิก">'+remains[count]+'</td>')
-                                document.write('<td data-title="คงเหลือ" ><font color = "'+fontcolor+'">'+remains[count]+'</font></td></tr>')
+                                document.write('<tr><td data-title="ลำดับ">{{ forloop.counter }}</td>');
+                                document.write('<td data-title="ชื่อ-สกุล">{{ officer.user.firstname_th }}&nbsp&nbsp&nbsp&nbsp{{ officer.user.lastname_th }}</td>');
+                                document.write('<td data-title="วันที่">{{ officer.dateCommit|date:"P  d-m-Y" }}</td>');
+                                document.write('<td data-title="จำนวนเงินที่ขอเบิก">'+newint[count]+'</td>');
+                                document.write('<td data-title="คงเหลือ" ><font color = "'+fontcolor+'">'+remains[count]+'</font></td></tr>');
                                 count++;
                                 count1++;
                             {% endfor %}
@@ -140,7 +143,6 @@
                                         <th>ลำดับ</th>
                                         <th>ชื่อ-สกุล</th>
                                         <th>วันที่</th>
-                                        <th>เมนู</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -149,9 +151,6 @@
                                         <td data-title="ลำดับ">{{ forloop.counter }}</td>
                                         <td data-title="ชื่อ-สกุล">{{officer.user }}</td>
                                         <td data-title="วันที่">{{ officer.dateCommit|date:"P  d-m-Y" }}</td>
-                                        <td data-title="เมนู">
-                                            <a class="btn btn-info btn-xs" href="{% url 'group4:addpdf' officer.id%}" target="_blank">ดูข้อมูล</a>
-                                        </td>
                                         </td>
                                     </tr>
                                     {% endfor %}

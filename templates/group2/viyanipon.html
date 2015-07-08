@@ -89,8 +89,9 @@
 <br>
 <br>
 <body>
+	{%if studentObj.degree != '0'%}
 	<table align="center" style="width:60%"><!--border="1">-->
-		<form action="">
+		<form action="{% url 'group2:viyanipon' %}">
 		<tr>
 			<td>เลขประจำตัว   </td>
 			<td> {{ studentObj.std_id }}  </td>
@@ -105,99 +106,172 @@
 			<script>
 				x = {{ studentObj.degree }}
 				if (x == '1') {
-					document.write('มหาบัณฑิต   :  โท')
+					document.write('มหาบัณฑิต   :  ปริญญาโท')
 				}
 				else if (x == '2'){
-					document.write('ดุษฎีบัณฑิต  :  เอก')
+					document.write('ดุษฎีบัณฑิต  :  ปริญญาเอก')
 				}
 			</script></td>
 		</tr>
 		<tr><td>&nbsp;&nbsp;</td></tr>
 		<tr>
+			{%for i in table_show %}
+			{%if i.teach_name == 'true' and i.std_id == studentObj.std_id %}
 			<td>
-				{{ viyanipon_adviser.std_id }}
 				อาจารย์ที่ปรึกษาวิทยานิพนธ์
 			</td>
 			<td>
-				{{viyanipon_adviser.teach_name}}
+				{%if i.adviser == '1'%}
+					ศาสตราจารย์  ประยุทธ อัครเอกฒาลิน
+				{%elif i.adviser == '2'%}
+					รองศาสตราจารย์  วิบูลย์  ชื่นแขก
+				{%elif i.adviser == '3'%}
+					ผู้ช่วยศาสตราจารย์  อภิบาล  พฤกษานุบาล
+				{%elif i.adviser == '4'%}
+					ผู้ช่วยศาสตราจารย์  บัลลังก์  เนียมมณี
+				{%elif i.adviser == '5'%}
+					อาจารย์  ศราวุธ  ชัยมูล
+				{%elif i.adviser == '6'%}
+					ผู้ช่วยศาสตราจารย์  วิไลพร  แซ่ลี้
+				{%elif i.adviser == '7'%}
+					ผู้ช่วยศาสตราจารย์  ธีรธรรม  บุณยะกุล
+				{%elif i.adviser == '8'%}
+					ผู้ช่วยศาสตราจารย์  พิสิษฐ์  ลิ่วธนกุล
+				{%elif i.adviser == '9'%}
+					ผู้ช่วยศาสตราจารย์  สมพร  สิริสำราญนุกูล
+				{%elif i.adviser == '10'%}
+					ผู้ช่วยศาสตราจารย์  ชาตรี  มหัทธนจาตุภัทร
+				{%elif i.adviser == '11'%}
+					อาจารย์  เอกรัฐ  บุญภูงา
+				{%elif i.adviser == '12'%}
+					อาจารย์  นพดล  ฉาบแก้ว
+				{%elif i.adviser == '13'%}
+					อาจารย์  เพ็ญนภา ไพโรจน์อมรชัย
+				{%elif i.adviser == '14'%}
+					อาจารย์  พิสิฐ  วนิชชานันท์
+				{%elif i.adviser == '15'%}
+					รองศาสตราจารย์  สุขสันติ์  นุ่นงาม
+				{%elif i.adviser == '16'%}
+					รองศาสตราจารย์  วรา  วราวิทย์
+				{%elif i.adviser == '17'%}
+					รองศาสตราจารย์  ณชล  ไชยรัตนะ
+				{%elif i.adviser == '18'%}
+					รองศาสตราจารย์  พงษ์ศักดิ์  กีรติวินทกร
+				{%elif i.adviser == '19'%}
+					รองศาสตราจารย์  ธีรพล เดโชเกียรติถวัลย์
+				{%elif i.adviser == '20'%}
+					รองศาสตราจารย์  ไชยันต์  สุวรรณชีวะศิริ
+				{%elif i.adviser == '21'%}
+					adviser1 = "รองศาสตราจารย์  เวช  วิเวก
+				{%elif i.adviser == '22'%}
+					รองศาสตราจารย์  มนูญ  พ่วงพูล"
+				{%elif i.adviser == '23'%}
+					ผู้ช่วยศาสตราจารย์  ศิริชัย  รุจิพัฒนพงศ์
+				{%elif i.adviser == '24'%}
+					ผู้ช่วยศาสตราจารย์  ศราวุฒิ  คลี่สุวรรณ์
+				{%elif i.adviser == '25'%}
+					ผู้ช่วยศาสตราจารย์  สิทธิพร  เกิดสำอางค์
+				{%elif i.adviser == '26'%}
+					อาจารย์  เรวัต  ศิริโภคาภิรมย์
+				{%else%}
+				{%endif%}
 			</td>
+			{%endif%}
+			{%endfor%}
 		</tr>
 		<tr><td>&nbsp;&nbsp;</td></tr>
 		<tr>
+			{%for j in table_name%}
+			{%if j.name_thai != '' and j.std_id == studentObj.std_id %}
 			<td  width="20%" valign="top">เสนอวิทยานิพนธ์ เรื่อง</td>
 			<td></td>
 		</tr>
 		<tr>
 			<td></td>
-			<td>ชื่อภาษาไทย   {{viyanipon_name.name_thai}}</td>
+			<td>ชื่อภาษาไทย   {{j.name_thai}}</td>
 		</tr>
 		<tr>
 			<td></td>
-			<td>ชื่อภาษาอังกฤษ   {{viyanipon_name.name_eng}}</td>
+			<td>ชื่อภาษาอังกฤษ   {{j.name_eng}}</td>
 		</tr>
 		<tr>
 			<td valign="top">&nbsp;</td>
 			<td><font color="#FF0000">***หมายเหตุ  ต้องลงทะเบียนวิทยานิพนธ์ไม่น้อยกว่า  3  หน่วยกิตในภาคการศึกษานั้น ***</font></td>
+			{%endif%}
+			{%endfor%}
 		</tr>
 		<tr><td>&nbsp;&nbsp;</td></tr>
 		<tr>
+			{%for k in table_project%}
+			{%if k.project_name == 'true' and k.std_id == studentObj.std_id %}
 			<td>สอบหัวข้อวิทยานิพนธ์</td>
 			<td>วันที่
-		  		{{vaiyanipon_project.name_day}}
+		  		{{k.name_day}}
 				เดือน
-		  		{{viyanipon_project.name_month}}
+		  		{{k.name_month}}
 				ปี
-				{{viyanipon_project.name_year}}
-			</td
+				{{k.name_year}}
+			</td>
 		</tr>
 		<tr>
 			<td></td>
 			<td><font color="#FF0000">***หมายเหตุ  ต้องดำเนินการให้แล้วเสร็จภายใน  30  วันหลังจากแต่งตั้งอาจารย์ที่ปรึกษาวิทยานิพนธ์และอนุมัติโครการวิทยานิพนธ์ที่เสนอ ***</font></td>
+			{%endif%}
+			{%endfor%}
+		</tr>
+		<tr><td>&nbsp;&nbsp;</td></tr>
+		</table>
+		<table align="center" style="width:60%"><!--border="1">-->
+		<tr>
+			{%for l in table_test%}
+			{%if l.test == 'true' and l.std_id == studentObj.std_id %}
+			<td width="26%">สอบความก้าวหน้าวิทยานิพนธ์&nbsp;</td>
+			<td>
+				วันที่
+				{{l.test_day}}
+				เดือน
+				{{l.test_month}}
+				ปี
+				{{l.test_year}}
+			</td>
+		</tr>
+		<tr>
+			<td></td>
+			<td><font color="#FF0000">***หมายเหตุ ***</font></td>
+			{%endif%}
+			{%endfor%}
 		</tr>
 		<tr><td>&nbsp;&nbsp;</td></tr>
 		</table>
 		<table align="center" style="width:60%">
 		<tr>
-			<td width="26%">สอบความก้าวหน้าวิทยานิพนธ์&nbsp;</td>
+			{%for m in table_testend%}
+			{%if m.testend == 'true' and m.std_id == studentObj.std_id%}
+			<td width="21%">สอบป้องกันวิทยานิพนธ์</td>
 			<td>
-				วันที่
-				{{vaiyanipon_test.tast_day}}
-				เดือน
-				{{viyanipon_test.tast_month}}
-				ปี
-				{{viyanipon_test.tast_year}}
+			วันที่
+			{{m.testend_day}}
+			เดือน
+			{{m.testend_month}}
+			ปี
+			{{m.testend_year}}
 			</td>
 		</tr>
-			<tr>
-				<td></td>
-				<td></td>
-				<td><font color="#FF0000">***หมายเหตุ ***</font></td
-			</tr>
+		<tr>
+			<td></td>
+			<td><font color="#FF0000">***หมายเหตุ ***</font></td>
+			{%endif%}
+			{%endfor%}
+		</tr>
 		<tr><td>&nbsp;&nbsp;</td></tr>
 		</table>
-		<table align="center" style="width:60%"><!--border="1">-->
-			<tr>
-				<td width="21%">สอบป้องกันวิทยานิพนธ์</td>
-				<td>
-				วันที่
-				{{vaiyanipon_tastend.tastend_day}}
-				เดือน
-				{{viyanipon_tastend.tastend_month}}
-				ปี
-				{{viyanipon_tastend.tastend_year}}
-				</td>
-			</tr>
-			<tr>
-				<td></td>
-				<td></td>
-				<td><font color="#FF0000">***หมายเหตุ ***</font></td>
-			</tr>
-			<tr><td>&nbsp;&nbsp;</td></tr>
-		</form>
-	</table>
-	&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp;
-	<a href="{% url 'group2:viyaniponshow' %}"><input class="btn btn-danger" type="button" value="แก้ไข" name = 'chang' /></a> 
-	<br><br><br><br>
+		&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp;
+		<input type="submit" class="btn btn-success" value="แก้ไข">
+		<br><br><br><br>
+	</form>
+	{%else%}
+		<center><h3>สำหรับนักศึกษาปริญญาโทและปริญญาเอก</h3></center>
+	{%endif%}
 </body>
 
 

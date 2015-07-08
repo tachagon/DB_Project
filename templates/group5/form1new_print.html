@@ -1,0 +1,191 @@
+<!DOCTYPE>
+<html>
+<head>
+<title>แบบคำร้องขอหนังสือขอความอนุเคราะห์ฝึกงาน</title>
+<meta http-equiv="content-type" content="text/html;charset=utf-8">
+
+{% block content %}
+<style>
+body{
+	}
+.page{
+	font:"Angsana New";
+	font-size:16px;
+	width:210mm;
+	height:auto;
+	margin:auto;
+	position:relative;
+    padding: 9mm;
+	padding-left:9mm;
+	padding-right:9mm;
+    border: 1px #D3D3D3 solid;
+    border-radius: 5px;
+    background: white;
+	word-break:break-all;
+	}
+.form > H{
+	margin-left:0;
+}
+.text{
+	border:none; /*Use for change border width*/
+	resize:none;
+	margin-left:0;
+	float:none;
+	}
+#text1{
+	padding-right:10mm;
+	word-break:break-all;
+	}
+#text2{
+	padding-left:10mm;
+	word-break:break-all;
+	}
+#yearspace{
+	display:block;
+	margin-bottom:10mm;
+	 }
+#nameth{
+	padding-left:2mm;
+	word-break:break-all;
+	}
+#img {
+    text-align: center;
+	width:85;
+}
+@media print {
+	.page {
+		font:"Angsana New";
+		font-size:16px
+		margin-top:9mm;
+		margin-left:9mm;
+		margin-right:9mm;
+		padding:0;
+		width:initial;
+		height:initial;
+		size:portrait;
+		position:absolute;
+		border:0;
+		border-radius:0;
+		box-shadow: initial;
+		background: initial;
+		page-break-after: always;
+		display:block;
+		word-break:break-all;
+		}
+	#nameeng{
+		padding-left:18mm;
+		}
+	.text{
+		margin-left:0;
+	}
+	#text1{
+	padding-right:10mm;
+	word-break:break-all;
+	}
+	#text2{
+	padding-left:10mm;
+	word-break:break-all;
+	}
+	#yearspace{
+		display:block;
+		margin-bottom:10mm;
+		 }
+	#nameth{
+		padding-left:2mm;
+		}
+	#img {
+    	text-align: center;
+		width:85;
+		}
+}
+</style>
+<script>
+</script>
+</head>
+<body onLoad="return window.print()">
+<div class="page">
+{% if currentUser and stu and stat%}
+<center>
+	<table style="width:18cm; height:24.1cm">
+		<tr height="10%">
+			<td colspan="2" valign="top">
+			<center></br></br>
+			<img src="http://www.vcharkarn.com/uploads/257/257323.jpg" style="height:2.5cm"></br>
+			<u>แบบคำร้องขอหนังสือขอความอนุเคราะห์ฝึกงาน</u>
+			</center>
+			</td>
+		</tr>
+			<tr height="2%">
+			<td width="50%" valign="top">&nbsp;</td>
+			<td width="50%" valign="top"></br>วันที่ {{date_print}}</td>
+		</tr>
+
+		<tr>
+			<td colspan="2" valign="top" height="10%">
+			</br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			ข้าพเจ้า {{prefix_name1}} {{currentUser.firstname_th}} {{currentUser.lastname_th}}</font>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			รหัสประจำ {{stu.std_id}}</font></br>
+			นักศึกษาชั้นปีที่ {{stuG5.studentYear}}</font>
+			&nbsp;&nbsp;มีความประสงค์ขอให้ภาควิชาวิศวกรรมไฟฟ้าและคอมพิวเตอร์ ออกหนังสือ
+				<br>ขอความอนุเคราะห์ฝึกงาน  ตามรายละเอียดดังต่อไปนี้
+			</br>
+			<table width="100%">
+			{% for item in pet %}
+				{% for j in Intern %}
+					{% if item.Internship_id == j.name_Internship %}
+				<tr>
+					<td width="25%">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;เรียน</td>
+					<td>{{item.to}}</font></td>
+				</tr>
+				<tr>
+					<td width="25%">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;สถานที่ฝึกงาน</td>
+					<td>{{item.Internship_id}}</td>
+				</tr>
+				<tr>
+					<td width="25%">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ที่อยู่</td>
+					<td>ใส่ข้อมูล{{j.add_Internship}}</td>
+				</tr>
+				<tr>
+					<td width="25%">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;โทรศัพท</td>
+					<td>{{j.Tel}}
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;โทรสาร (FAX)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					{{j.Fax}}</td>
+				</tr>
+				{% endif %}
+		{% endfor %}
+				<tr>
+					<td colspan="2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ระยะเวลาการฝึกงาน  ตั้งแต่&nbsp;
+					{{item.Date}}</font>
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ถึงวันที่&nbsp;
+					{{item.Date2}}</font>
+					</td>
+				</tr>
+			</table>
+			</td>
+		</tr>
+		{% if stu.std_id =  item.studentG5_id%}
+		<tr>
+			<td colspan="2" valign="top" height="10%"></br><u>ทั้งนี้ข้าพเจ้ามีความประสงค์</u></br>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				{{send}}</font>
+			</br>จึงเรียนมาเพื่อโปรดพิจารณา
+			</td>
+		</tr>
+		{% endif %}
+		{% endfor %}
+		<tr>
+			<td colspan="2" valign="top" align="right"><br>ลงชื่อ  {{currentUser.firstname_th}} {{currentUser.lastname_th}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+			<br>({{prefix_name1}} {{currentUser.firstname_th}} {{currentUser.lastname_th}})&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		    <br><br>ผู้ยื่นคำร้อง&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			</td>
+		</tr>
+
+	</table>
+</center>
+</br>
+{% endif %}
+</div>
+</body>
+{% endblock %}
+</html>

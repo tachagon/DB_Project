@@ -92,7 +92,7 @@
 <h3>เพิ่มเติมรายการใบสั่งซื้อวัสดุภาควิชาวิศวกรรมไฟฟ้าและคอมพิวเตอร์ {{projectg7.id}}</h3>
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 <!-- <form action="/group7addorderview/" method="post"> -->
-<form name="dateForm" action="/group7/{{projectg6.id}}/addorderview/"  onsubmit="return validateForm(this)" method="post">
+<form name="dateForm" action="/group7/{{projectg6.id}}/addorderview/"  onsubmit="return validateForm(this)" >
 {% csrf_token %}
 	<table border=0>
     	<tr><td>
@@ -109,7 +109,7 @@
 
             <div class="form-group">
                 <div class="col-sm-9">
-                    <tr><td>เลือกวันที่:<td><input type="text" name="date" id="date"></tr></td>
+                    <tr><td>เลือกวันที่:<td><input type="text" name="date" id="date" value="{{object}}"></tr></td>
                 </div>
             </div>
 

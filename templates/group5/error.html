@@ -1,0 +1,13 @@
+﻿{% extends "base.html" %}
+
+{% block pageHeader %}
+
+<ol class="breadcrumb">
+    <li><a href="{% url 'login:menu' %}">เมนู</a></li>
+
+</ol>
+{% endblock %}
+{% block content %}
+<center>
+<h2><font color='red'>คุณไม่มีสิทธิ์เข้าใช้งานในส่วนนี้</font></h2></center>
+{% endblock %}

@@ -1,31 +1,45 @@
-<!DOCTYPE html>
+{% extends "base.html" %}
 
-<html>
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>รายชื่อนักศึกษาที่ฝึกงาน</title>
-</head>
+{% block pageHeader %}
 
-<body>
-    <center>
-    <u>รายชื่อนักศึกษาที่ฝึกงาน</u></br></br>
-    <table style='width:100%' border=1>
+<ol class="breadcrumb">
+    <li><a href="{% url 'login:menu' %}">เมนู</a></li>
+    <li><a href="{% url 'group5:status' %}">ตรวจสอบสถานะการฝึกงาน</a></li>
+    <li class="active">รายชื่อนักศึกษาที่ฝึกงาน</li>
+</ol>
+
+{% endblock %}
+{% block content %}
+
+{% if Pro %}
+    <center><u>รายชื่อนักศึกษาที่ฝึกงาน</u></br></br>
+    <center><table style='width:85%' border=1 >
         <tr>
             <td><b><center>รหัสนักศึกษา</td>
             <td><b><center>ชื่อ-สกุล</td>
             <td><b><center>สถานที่ประกอบการ</td>
             <td><b><center>สถานะ</td>
-            <td><b><center>เมนู</td>
         </tr>
+        {% for item in state %}
+        {% if item.StatusPetition == 'accept'%}
         <tr>
-            <td>test&nbsp</td>
-            <td>test&nbsp</td>
-            <td>test&nbsp</td>
-            <td>test&nbsp</td>
-            <td><center><button>ดูข้อมูล</button><center></td>
+            <td>{{item.studentG5_id}}</td>
+            <td>
+                {% for item2 in Pro %}
+                    {% for item3 in stu %}
+                        {% if item2.id = item3.userprofile_id and item.studentG5_id = item3.std_id%}
+                            {{item2.firstname_th}} {{item2.lastname_th}}
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
+            </td>
+            <td>{{item.Internship_id}}</td>
+            <td><center>{{item.StatusPetition}}</center></td>
         </tr>
+        {% endif %}
+        {% endfor %}
     </table>
-
-
-</body>
-</html>
+{% else %}
+หมายเหตุ
+{% endif %}
+{% endblock %}

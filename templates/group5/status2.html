@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block pageHeader %}
+
+<ol class="breadcrumb">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <li><a href="{% url 'login:menu' %}">เมนู</a></li>
+    <li><a href="{% url 'group5:status' %}">ตรวจสอบสถานะการฝึกงาน</a></li>
+    <li class="active">รายชื่อนักศึกษาทำเรื่องขอความอนุเคราะห์ฝึกงาน</li>
+</ol>
+		{% endblock %}
+
+{% block content %}
+<head>
+    <meta charset="UTF-8">
+    <title>status2</title>
+    <center><h3>การอนุมัตินักศึกษาเข้ารับการฝึกงาน</h3></center><br>
+
+
+
+</head>
+<body>
+ <form action="/group5/ChangeStatus2/" >
+
+       {% csrf_token %}
+        {% for item in stuG5 %}
+         {% for state in state %}
+            {%for date in date%}
+          {%if item.studentID = sid and state.studentG5_id = sid%}
+
+
+             <p>รหัสนักศึกษา: <input style="border:none" type="text" name="sid" maxlength="13" value="{{sid}}" /></p>
+             <P>สถานะ:<input style="border:none" type="text" name="status"  value="{{status}}" /></p>
+
+
+             <p>รูปแบบการส่ง : {{state.send}}</p>
+
+
+     {% if date.studentID = sid %}
+              วันที่ {{date.DateEnd}}
+     {%endif%}
+
+
+          <center><button type = "submit" class="btn btn-success" name="input2" value="ได้รับการอนุมัติเข้าฝึกงาน" >ได้รับการอนุมัติเข้าฝึกงาน</button></center><br>
+        <center><button type = "submit" class="btn btn-danger" name="input2" value="ไม่ได้รับการอนุมัติเข้าฝึกงาน" >ไม่ได้รับการอนุมัติเข้าฝึกงาน</button></center>
+
+
+         {% endif %}
+        {%endfor%}
+        {% endfor %}{%endfor%}
+
+</form>
+</body>
+{% endblock %}

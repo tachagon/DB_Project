@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block pageHeader %}
+<ol class="breadcrumb">
+    <meta charset="UTF-8">
+    <li><a href="{% url 'login:menu' %}">เมนู</a></li>
+    <li><a href="{% url 'group5:status' %}">ตรวจสอบสถานะการฝึกงาน</a></li>
+    <li class="active">รายชื่อนักศึกษาทำเรื่องขอความอนุเคราะห์ฝึกงาน</li>
+</ol>
+{% endblock %}
+{% block content %}
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>status1</title>
+    <center><h3>ตรวจสอบคำร้องขอความอนุเคราะห์ฝึกงาน</h3></center><br>
+
+
+
+</head>
+<body>
+
+        {% csrf_token %}
+        {% for item in stuG5 %}
+          {%if item.studentID = sid %}
+              <center><table>
+
+             <tr>
+                <th><B>รหัสนักศึกษา : </B></th>
+                <td><input style="border:none" type="text" name="sid" maxlength="13" value="{{sid}}" /></td>
+            </tr>
+            <tr>
+                
+                <th><br><B>สถานะ    :</B></th>
+                <td><br><input style="border:none" type="text" name="status"  value="{{status}}" /></td>
+            </tr>
+            </table></center>
+            <center><table width = 50%>
+            <form action="/group5/form1/" >
+              <td><br><br><center><button type = "submit" class="btn btn-info">print ขอความอนุเคราะห์นักศึกษาฝึกงาน</button></center></td>
+              </form>
+            <form action="/group5/accept_trainee_print/" >
+              <td><br><br><center><button type = "submit" class="btn btn-info">print แบบตอบรับนักศึกษาฝึกงาน</button></center></td>
+              </form>
+              <form action="/group5/ChangeStatus/" method="get" >
+                  {%for state in state%}
+
+              {%if state.studentG5_id = sid %}
+
+             {%if state.send = sendbyStudent %}
+             <p>นักศึกษาได้เลือกรูปแบบ : การส่งข้อมูลด้วยตัวเอง </p>
+             <p>กรุณาใส่วันที่ที่นักศึกษาต้องมารับเอกสาร :  </p>
+          <input type="date" name="date" value="{{date}}" class="form-control" placeholder="วันที่ต้องมารับเอกสาร" title="วันที่ต้องมารับเอกสาร" required>
+
+     <p>&nbsp</p>
+     <p>&nbsp</p>
+       {%else%}<p>นักศึกษาได้เลือกรูปแบบ : ให้ภาคส่งให้</p>
+        {%endif%}
+        {%endif%}
+        {%endfor%}
+                <td><br><br><center><button type = "submit" class="btn btn-info" name="input" value="กำลังดำเนินการ" >อัพเดทสถานะ</button></center></td>
+
+              </form>
+            </tr>
+            </table></center>
+
+         {% endif %}
+
+        {% endfor %}
+</body>
+{% endblock %}

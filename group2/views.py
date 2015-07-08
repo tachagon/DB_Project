@@ -382,26 +382,33 @@ def school_record(request):
 def viyanipon(request):
     template = 'group2/viyanipon.html'    # get template
     context = {}
+    #this = request.user
+    #current = UserProfile.objects.get(user = this)
+    #adviser = viyanipon_adviser.objects.get(std_id = current)
+    #print adviser.std_id, adviser.teach_name,adviser.adviser
 
-    if getUserType(request) != '0':
-        template = 'group2/search_student.html'
-        return render(request, template, {})
-	
     try:
         thisuser = request.user
         currentUser = UserProfile.objects.get(user = thisuser)
         studentObj = Student.objects.get(userprofile = currentUser)
         context['studentObj'] = studentObj
-        context['currentUser'] = currentUser
 
     except: # can't get a Student object
         context = {}
+    template = 'group2/viyanipon_show.html'
+    table_show=viyanipon_adviser.objects.filter(std_id=studentObj.std_id)
+    table_name=viyanipon_name.objects.filter(std_id=studentObj.std_id )
+    table_project=viyanipon_project.objects.filter(std_id=studentObj.std_id )
+    table_test=viyanipon_test.objects.filter(std_id=studentObj.std_id )
+    table_testend=viyanipon_testend.objects.filter(std_id=studentObj.std_id )
+    context = {'table_show':table_show,'table_name':table_name,'studentObj':studentObj,'table_project':table_project,'table_test':table_test,'table_testend':table_testend}
+    return render( request, template, context)
 
     return render(
         request,
         template,
         context
-    )  
+    )
 
 def viyaniponshow(request):
     template = 'group2/viyanipon_show.html'    # get template
@@ -409,29 +416,69 @@ def viyaniponshow(request):
     if getUserType(request) != '0':
         template = 'group2/error.html'
         return render(request, template, {})
-    
+
     try:
         thisuser = request.user
         currentUser = UserProfile.objects.get(user = thisuser)
         studentObj = Student.objects.get(userprofile = currentUser)
         context['studentObj'] = studentObj
-    
+
     except: # can't get a Student object
         context = {}
-        
-    #if 'std_id' in request.GET and request.GET['std_id'] :
-    #    stdid = request.GET['std_id']
-    #if 'teach_name' in request.GET and request.GET['teach_name'] :
-    #    teach = request.GET['teach_name']
-    #if 'adviser' in request.GET and request.GET['adviser'] :
-    #    adviser = request.GET['adviser']
-    stdid = request.GET.get('std_id','')
-    teach = request.GET.get('teach_name','')
-    adviser = request.GET.get('adviser','')
-    if teach == "true" :
-        q = viyanipon_adviser(std_id=stdid,teach_name=teach,adviser=adviser)
-        q.save()
-    
+
+    thisuser = request.user
+    currentUser = UserProfile.objects.get(user = thisuser)
+    studentObj = Student.objects.get(userprofile = currentUser)
+    #p = viyanipon_name.objects.get(std_id=studentObj.std_id)
+
+    if request.method == 'POST':
+        adviser = request.POST['adviser']
+        teach = 'true'
+        if adviser != '0' :
+            print studentObj.std_id,  adviser
+            q = viyanipon_adviser(std_id=studentObj.std_id,teach_name=teach,adviser=adviser)
+            q.save()
+        name_th = request.POST['name_thai']
+        name_eng = request.POST['name_eng']
+        name = 'true'
+        print studentObj.std_id,  name_eng, name
+        p = viyanipon_name(std_id=studentObj.std_id,name=name,name_thai=name_th,name_eng=name_eng)
+        p.save()
+        name_day = request.POST['name_day']
+        name_month = request.POST['name_month']
+        name_year = request.POST['name_year']
+        project = 'true'
+        if name_day != "0" and name_month != "0" and name_year != "0" :
+            q = viyanipon_project(std_id=studentObj.std_id,project_name=project,name_day=name_day,name_month=name_month,name_year=name_year)
+            q.save()
+            print name_day, name_month, name_year
+        test = 'true'
+        test_day = request.POST['test_day']
+        test_month = request.POST['test_month']
+        test_year = request.POST['test_year']
+        if test_day != "0" and test_month != "0" and test_year != "0" :
+            q = viyanipon_test(std_id=studentObj.std_id,test=test,test_day=test_day,test_month=test_month,test_year=test_year)
+            q.save()
+            print test_day, test_month, test_year
+        testend = 'true'
+        day = request.POST['testend_day']
+        month = request.POST['testend_month']
+        year = request.POST['testend_year']
+        if day != "0" and month != "0" and year != "0" :
+            q = viyanipon_testend(std_id=studentObj.std_id,testend=testend,testend_day=day,testend_month=month,testend_year=year)
+            q.save()
+            print day, month, year
+
+        table_show=viyanipon_adviser.objects.filter(std_id=studentObj.std_id )
+        table_name=viyanipon_name.objects.filter(std_id=studentObj.std_id )
+        table_project=viyanipon_project.objects.filter(std_id=studentObj.std_id )
+        table_test=viyanipon_test.objects.filter(std_id=studentObj.std_id )
+        table_testend=viyanipon_testend.objects.filter(std_id=studentObj.std_id )
+        template = 'group2/viyanipon.html'
+        print table_name
+        print table_show
+        context = {'table_show': table_show,'table_name':table_name,'studentObj':studentObj,'table_project':table_project,'table_test':table_test,'table_testend':table_testend}
+        return render( request, template, context)
     return render(
         request,
         template,

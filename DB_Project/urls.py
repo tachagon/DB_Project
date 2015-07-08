@@ -3,6 +3,8 @@ from django.contrib import admin
 from login import views
 from group1 import views
 admin.autodiscover()
+import os
+BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 urlpatterns = patterns('',
     # Examples:
@@ -18,4 +20,7 @@ urlpatterns = patterns('',
     url(r'^group5', include('group5.urls', namespace="group5")),
     url(r'^group6', include('group6.urls', namespace="group6")),
     url(r'^group7', include('group7.urls', namespace="group7")),
+    url(r'^site_media/(?P<path>.*)$',
+       'django.views.static.serve',
+      {'document_root' : BASE_DIR + '/media'})
 )

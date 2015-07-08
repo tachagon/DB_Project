@@ -52,7 +52,9 @@
 		<td><center>{{date}}</center></td> <!-- reference from "Date" of  requisition-->
 		<td><center>{{project.name_thai}}/{{project.name_eng}}</center></td> <!-- reference from "Project_name" of  Order-->
 		{%for r in req%}
+		{%if forloop.counter == 3 %}
 		<td><center>{{r.Requisition_Id}}<center></td> <!-- reference from "Requisition_id" of  requisition-->
+		{%endif%}
 		{%endfor%}
 		<td><center>{{more}}</center></td> <!-- reference from "Moreabout" of  requisition-->
 	</tr>

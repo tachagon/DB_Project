@@ -1,4 +1,8 @@
 {% extends "base.html" %}
+{% load custom_function %}
+{% load staticfiles %}
+
+{% block title %}แบบคำร้องขอหนังสือขอความอนุเคราะห์ฝึกงาน{% endblock %}
 
 {% block pageHeader %}
 
@@ -10,14 +14,86 @@
 		
 {% endblock %}
 {% block content %}
+<div class="container-fluid">
+<meta http-equiv="content-type" content="text/html;charset=utf-8">
+<style>
+.page{
+	width:210mm;
+	height:auto;
+	margin:auto;
+	position:relative;
+    padding: 2cm;
+    border: 1px #D3D3D3 solid;
+    border-radius: 5px;
+    background: white;
+	}
+.form > H{
+	margin-left:50;
+}
+H{
+        font:16pt "Angsana New";
+}
+textarea {
+	margin-left:50;
+	resize:none;
+	outline:none;
+	}
+input{
+	outline:none;
+	resize:none;
+	}
+#o1{
+	text-align:center;
+	}
+@page{
+	size:A4;
+	margin:0;
+	}
+.text{
+	border: 1px solid #000; /* Use for change border width*/
+	width:120mm;
+	height:16mm;
+	resize:none;
+	margin-left:50;
+	}
+.namestd{
+	margin-left:50;
+	}
+.comment{
+	border: 1px solid #000; /* Use for change border width*/
+	width:80mm;
+	height:60mm;
+	resize:none;
+
+}
+table,tr,td{
+	border-collapse: collapse;
+	font:16pt "Angsana New";
+	}
+@media print {
+  .page {
+		margin:0;
+		font:16pt "Angsana New";
+		position:absolute;
+		border: initial;
+		width: initial;
+		height:initial;
+		box-shadow: initial;
+		background: initial;
+		page-break-after: always;
+		}
+}
+
+</style>
+</div>
+    <form action="">
+    <div class="page">
     {% if currentUser and stu and stat%}
     <center>
-    <u>แบบคำร้องขอหนังสือขอความอนุเคราะห์ฝึกงาน</u></br></br>
+    <h><u>แบบคำร้องขอหนังสือขอความอนุเคราะห์ฝึกงาน</u></h>
     </center>
-    <form action="">
         <br>ข้าพเจ้า
-        <input type="radio" name="sex" value="male">นาย
-        <input type="radio" name="sex" value="female">นางสาว
+        <input type='text' name='name' style='width:50px;' value='{{prefix_name1}}'/>
         <input type='text' name='name' style='width:400px;' value='{{currentUser.firstname_th}} {{currentUser.lastname_th}}'/>
         </br></br>รหัสนักศึกษา   <input type='text' name='id_student' style='width:200px;'value = '{{stu.std_id}}'/>
         </br></br>นักศึกษาชั้นปีที่ <input type='text' name='stu_year' style='width:30px;'/>&nbspมีความประสงค์ขอให้ภาควิชาวิศวกรรมไฟฟ้าและคอมพิวเตอร์ ออกหนังสือขอความอนุเคราะห์ฝึกงานตามรายละเอียดดังต่อไปนี้
@@ -25,25 +101,25 @@
         <table style='width:100%'>
             <tr>
                 <td>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspเรียน</td>
-                <td>ฝ่ายทรัพยากรบุคคล</td>
+                <td><input type='text' name='to' style='width:400px;'/></td>
             </tr>
             <tr>
                 <td>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspสถานที่ฝึกงาน</td>
-                <td><input type='text' name='office' style='width:800px;'/></td>
+                <td><input type='text' name='office' style='width:400px;'/></td>
             </tr>
             <tr>
                 <td rowspan=2>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspที่อยู่</td>
             </tr>
             <tr>
-                <td><textarea style="width: 800px;"name="address" id="address" cols="45" rows="5"></textarea></td>
+                <td><textarea style="width: 400px;"name="address" id="address" cols="45" rows="5"></textarea></td>
             </tr>
             <tr>
                 <td>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspโทรศัพท์</td>
-                <td><input type='text' name='tel' style='width:800px;'/></td>
+                <td><input type='text' name='tel' style='width:400px;'/></td>
             </tr>
             <tr>
                 <td>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspโทรสาร(FAX)</td>
-                <td><input type='text' name='fax' style='width:800px;'/></td>
+                <td><input type='text' name='fax' style='width:400px;'/></td>
             </tr>
         </table>
         </br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspระยะเวลาการฝึกงาน  ตั้งแต่&nbsp
@@ -173,12 +249,14 @@
             </br>
             &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<input type="radio" name="send" value="send by department">ขอให้ภาควิชาฯ จัดส่งหนังสือขอความอนุเคราะห์ฝึกงานไปตามที่อยู่ข้างบนนี้
             </br>
-            &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<input type="radio" name="send" value="send by srudent">ขอรับหนังสืออนุเคราะห์ฝึกงานไปยื่นด้วยตนเอง
-            <br>
-                <input type ="submit" name="Submit" value="Submit">
-            </br>
-    </form>           
-{% else %}    
+            &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<input type="radio" name="send" value="send by student">ขอรับหนังสืออนุเคราะห์ฝึกงานไปยื่นด้วยตนเอง
+
+    <CENTER><br><input class="btn btn-primary"  type ="submit" name="Submit" value="บันทึก">
+    <a href="{% url 'login:menu' %}"><input class="btn btn-danger"  type ="button" name="Cancel" value="ยกเลิก" /></br></a></CENTER>
+    </form>
+    <br>
+    </div>
+        {% else %}
 หมายเหตุ
 {% endif %}
 {% endblock %}

@@ -24,7 +24,11 @@
 	</tr>
 	    <tr>
 	    {% for a in cost%}
+	    {% if a < 0%}
+	    <td><font color="red"><center>{{a}}</center></font></td>
+	    {%else%}
 	    <td><center>{{a}}</center></td>
+	    {%endif%}
 	    {% if forloop.counter|divisibleby:"4" %}
 		<tr>
 	    {% endif%}
