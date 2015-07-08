@@ -50,6 +50,9 @@ body{
 #nameeng{
 	padding-left:12mm;
 	}
+#teacheng{
+	padding-left:46mm;
+}
 #yearspace{
 	display:block;
 	margin-bottom:10mm;
@@ -142,7 +145,6 @@ body{
 	height:35mm;
 	padding-left: 2px;
 }
-
 
 
 /* For set print*/
@@ -239,7 +241,7 @@ body{
         <H>ในวิชา {{ approve.course }}</H><br>
         <H>ชื่อเรื่อง (ภาษาไทย) {{ approve.project.name_thai }}</H><br>
         <H id="nameeng">(ภาษาอังกฤษ) {{ approve.project.name_eng }}</H><br>
-        <H>ชื่ออาจารย์ที่ปรึกษาปริญญานิพนธ์ {{ approve.project.teacher.academic_position|get_prefix_name_th_teacher:approve.project.teacher.userprofile.prefix_name }} {{ approve.project.teacher.userprofile.firstname_th }} {{ approve.project.teacher.userprofile.lastname_th }} ({{ approve.project.teacher.shortname }})</H><br>
+        <H>ชื่ออาจารย์ที่ปรึกษาปริญญานิพนธ์ (ภาษาไทย) {{ approve.project.teacher.academic_position|get_prefix_name_th_teacher:approve.project.teacher.userprofile.prefix_name }} {{ approve.project.teacher.userprofile.firstname_th }} {{ approve.project.teacher.userprofile.lastname_th }} ({{ approve.project.teacher.shortname }})</H><br>
         <H id="teacheng">(ภาษาอังกฤษ) {{ approve.project.teacher.academic_position|get_prefix_name_en_teacher:approve.project.teacher.userprofile.prefix_name }} {{ approve.project.teacher.userprofile.firstname_en }} {{ approve.project.teacher.userprofile.lastname_en }} ({{ approve.project.teacher.shortname }})</H><br>
         <H>หมายเลขโทรศัพท์ที่ทำงานของอาจารย์ที่ปรึกษา โทร {{ approve.project.teacher.userprofile.tel }}</H><H> ต่อ {{ approve.project.teacher.userprofile.ext }}</H><br>
     </label>
