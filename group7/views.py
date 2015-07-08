@@ -133,6 +133,10 @@ def editOrderinfo(request,info_id): #Page Orderinfo for delete Orderinfo
 	return HttpResponseRedirect(url)
 def removeStatusof(request,info_id): #Page Orderinfo for delete Orderinfo
 	p=Status_Of.objects.get(id=info_id)
+	objects=Order.objects.get(id=p.Order_id)
+	for r in objects.requisition_set.all():
+		s=r
+		s.delete()
         q=p.Order_id
 	p.delete()
 	p.save
@@ -145,8 +149,11 @@ class vieworderinfo(generic.DetailView):
 #----------------------------- View requisition -------------------------------------------#
 def viewrequi(request,pk):
         now=""
-	reqid=Requisition.objects.get(Status_of_id=pk)
-	order = Order.objects.get(id=pk)
+	order = Order.objects.get(id=pk) 
+	reqid=[]
+	r=order.requisition_set.all() 
+	for i in r: 
+		reqid.append(i) 
 	stat4=order.status_of_set.all()
 	moreabout=""
 	for r in stat4:
@@ -178,7 +185,8 @@ def statusofedit(request,pk):
         return render(request, 'group7/editstatusof.html', {'object': stu})
         
 def editstatusof(request,info_id): #Page Orderinfo for delete Orderinfo
-	date=request.GET.get('date_status')
+	date=request.GET.get('date')
+	valid_date = datetime.datetime.strptime(date, '%d-%m-%Y').strftime('%Y-%m-%d')
     	state = request.GET.get('state_status')
     	more=request.GET.get('more')
     	status=""
@@ -188,7 +196,7 @@ def editstatusof(request,info_id): #Page Orderinfo for delete Orderinfo
     	else:
         	status="ไม่สมบูรณ์"
 	q=Status_Of.objects.get(id=info_id)
-    	p=Status_Of(id=info_id,Order_id=q.Order_id,Date=date,State=state, Status=status ,Moreabout=more,Prove="Ok") 
+    	p=Status_Of(id=info_id,Order_id=q.Order_id,Date=valid_date,State=state, Status=status ,Moreabout=more,Prove="Ok") 
     	p.save()
     	url="/group7/"+str(q.Order_id)+"/statusof/"
     	return HttpResponseRedirect(url)

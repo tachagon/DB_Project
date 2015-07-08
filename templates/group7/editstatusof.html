@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-
+{% load staticfiles %}
 {% block title %}Group7{% endblock %}
 
 {% block pageHeader %}
@@ -55,18 +55,37 @@
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 <form action="/group7/{{ object.id }}/editstf/" >
 <table border=0>
+
     	<b><h4>อัพเดทสถานะปัจจุบัน</h4></b>
-    	<tr><td> วัน/เดือน/ปี : </td><td><input type="text" name="date_status" value="{{object.Date|date:"Y-m-d"}}"></td></tr>
-    	<tr><td> ขั้นตอน : </td><td><select name="state_status" value="{{object.State}}">
-		<option  type="text" value="วันที่ในการซื้อวัสดุ">วันที่ในการซื้อวัสดุ</option>
-		<option  type="text" value="ตรวจสอบวัสดุและใบเสร็จ">ตรวจสอบวัสดุและใบเสร็จ</option>
-		<option  type="text" value="complete">ใบเบิกวัสดุ</option>
-	</select></td></tr>
-	<tr><td> หมายเหตุ: </td><td><input type="text" name="more" value="{{object.Moreabout}}"></td></tr>
-	
-    	
-
-
+	<tr><td>
+	<script>
+                $(function(){
+                    $( "#date" ).datepicker({
+                        changeMonth: true,
+                        changeYear: true,
+                        dateFormat: 'dd-mm-yy', // รูปแบบการแสดงผล วัน-เดือน-ปี
+                        yearRange: '-100:+0',   // ย้อนหลังไป 100 ปี
+                    });
+                });
+            </script>
+	<div class="form-group">
+                <div class="col-sm-9">
+		    <tr><td> วัน/เดือน/ปี : </td><td><input type="text" name="date" id="date" value="{{object.Date|date:"Y-m-d"}}"></td></tr>
+		    <tr><td> ขั้นตอน : </td><td><select name="state_status" value="{{object.State}}">
+			{% if object.State == "วันที่ในการซื้อวัสดุ"%}
+			    <option  type="text" value="วันที่ในการซื้อวัสดุ">วันที่ในการซื้อวัสดุ</option>
+			{%endif%}
+			{%if object.State == "ตรวจสอบวัสดุและใบเสร็จ"%}
+				<option  type="text" value="ตรวจสอบวัสดุและใบเสร็จ">ตรวจสอบวัสดุและใบเสร็จ</option>
+			{%endif%}
+		    	{%if object.State == "ใบเบิกวัสดุ"%}
+				<option  type="text" value="complete">ใบเบิกวัสดุ</option>
+			{%endif%}
+		</select></td></tr>
+		<tr><td> หมายเหตุ: </td><td><input type="text" name="more" value="{{object.Moreabout}}"></td></tr>
+	     </div>
+        </div>
+	</td></tr>
 </table>
 
 <input type="submit" value="ยืนยัน" /><a href="/group7/{{object.Order_id}}/statusof/" style="text-decoration:none"><input type="button" value="ยกเลิก" ></a>
