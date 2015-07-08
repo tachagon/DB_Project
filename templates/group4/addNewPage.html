@@ -1,0 +1,153 @@
+{% extends "base.html" %}
+
+{% block title %}
+{% if teachObj %}
+{{ teachObj.prof }} {{ teachObj.subject }}
+{% else %}
+ไม่พบข้อมูล
+{% endif %}
+{% endblock %}
+
+{% block pageHeader %}
+{% if teachObj %}
+<ol class="breadcrumb">
+    <li><a href="{% url 'login:menu' %}">เมนู</a></li>
+    <li><a href="{% url 'group3:prof2lang_index' %}">ระบบอาจารย์สองภาษา</a></li>
+    <li class="active">แก้ไขข้อมูลอาจารย์สองภาษา</li>
+</ol>
+{% endif %}
+{% endblock %}
+
+{% block content %}
+<style>
+    .not-active {
+    pointer-events: none;
+    cursor: default;
+    }
+</style>
+
+<div class="container-fluid">
+    <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active"><a href="#editFamily" aria-controls="editFamily" role="tab" data-toggle="tab">แก้ไขข้อมูลครอบครัว</a></li>
+        <li role="presentation"><a href="#newCure" aria-controls="newCure" role="tab" data-toggle="tab">สร้างใบเบิกจ่ายค่ารักษาพยาบาล</a></li>
+        <li role="presentation"><a href="#newStudy" aria-controls="newstudy" role="tab" data-toggle="tab">สร้างใบเบิกจ่ายเงินสวัสดิการ</a></li>
+    </ul><br>
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+        <div class="tab-content">
+            <div role="tabpanel" class="tab-pane active" id="editFamily">
+
+
+            </div>
+
+            <div role="tabpanel" class="tab-pane" id="newCure">
+                <div class="row">
+                    <div class="container-fluid">
+                        <div class="col-md-1"></div>
+                        <div class="col-md-8">
+                            <form class="form-horizontal" method="post" action="{%url 'group4:commitWithdrawCure'%}">
+                                {% csrf_token %}
+                                <fieldset disabled>
+                                    <b>ข้าพเจ้า </b><input type="text" class="form-control" name='name' value="{{objUsers.firstname_th}} {{objUsers.lastname_th}}"><br>
+                                </fieldset>
+                                <b>เลขที่บัญชีออมทรัพย์</b><input type="text" class="form-control" name='account_id' required><br>
+                                <b>สถานะ</b>
+                                <fieldset disabled>
+                                    <select class="form-control" name="status" >
+                                        <option selected="selected">{{typeUser.position}}</option>
+                                    </select><br>
+                                </fieldset>
+
+                                <b>ขอเบิกค่ารักษาพยาบาลของ</b><br>
+                                <div class="btn-group" data-toggle="buttons">
+                                    <label class="btn btn-primary">
+                                        <input type="checkbox" autocomplete="off" name="check" value="1">ตนเอง
+                                    </label>
+                                    <label class="btn btn-primary">
+                                        <input type="checkbox" autocomplete="off" name="check" value="2">คู่สมรส
+                                    </label>
+                                    <label class="btn btn-primary">
+                                        <input type="checkbox" autocomplete="off" name="check" value="3">บิดา
+                                    </label>
+                                    <label class="btn btn-primary">
+                                        <input type="checkbox" autocomplete="off" name="check" value="4">มารดา
+                                    </label>
+                                    <label class="btn btn-primary" name="childW1" onclick="jQuery('#child1').toggle(500)" >
+                                        <input type="checkbox" autocomplete="off" name="check" value="5">บุตร
+                                    </label>
+                                    <label class="btn btn-primary" onclick="jQuery('#child2').toggle(500)">
+                                        <input type="checkbox" autocomplete="off" name="check" value="6">บุตร
+                                    </label>
+                                </div><br><br>
+
+                                <div id="child1" style="display:none"><b>บุตรคนที่ </b><input type="number" name="orderchildW1" class="form-control"><br></div>
+                                <div id="child2" style="display:none"><b>บุตรคนที่ </b><input type="number" name="orderchildW2" class="form-control"><br></div>
+
+
+                                <b>ป่วยเป็นโรค</b><input type='text' class="form-control" name='disease'><br>
+                                <b>ได้รับการตรวจรักษาพยาบาลจาก</b><input type='text' class="form-control" name='hospital'><br>
+                                <b>เป็นสถานพยบาลของ</b>
+                                <select class="form-control" name='hospitalOf'>
+                                    <option value="2" selected="selected">-- Please Select --</option>
+                                    <option value="0">ของทางราชการ</option>
+                                    <option value="1">เอกชน</option>
+                                </select><br>
+                                <b>ตั้งแต่วันที่</b><input type='date' class="form-control" name='startDate'><br>
+                                <b>ถึงวันที่</b><input type='date' class="form-control" name='stopDate'><br>
+                                <b>เป็นเงินรวมทั้งสิ้น(บาท)</b><input type='text' class="form-control" name='value'><br>
+                                <b>(จำนวนเงินเป็นภาษาไทย)</b><input type='text' class="form-control" name='valueChar'><br>
+                                <b>ตามใบเสร็จรับเงินที่แนบจำนวน</b><input type='text' class="form-control" name='numBill'><br>
+
+                                <!--<b>เป็นเงิน(บาท)</b><input type='text' class="form-control" name='credit'><br>
+                                <b>(จำนวนเงินภาษาไทย)</b><input type='text' class="form-control" name='creditChar'><br>-->
+                                <button type="submit" class="btn btn-primary">Submit</button><br><br><br>
+                            </form>
+
+                        </div>
+                        <div class="col-md-3"></div>
+                    </div>
+                </div>
+
+
+            </div>
+
+
+
+            <div role="tabpanel" class="tab-pane" id="newStudy">
+                <div class="row">
+                    <div class="container-fluid">
+                        <div class="col-md-1"></div>
+                        <div class="col-md-8">
+                            <form class="form-horizontal" method="post" action="{%url 'group4:commitWithdrawCure'%}">
+                                {% csrf_token %}
+                                <fieldset disabled>
+                                    <b>ข้าพเจ้า </b><input type="text" class="form-control" name='name' value="{{objUsers.firstname_th}} {{objUsers.lastname_th}}"><br>
+                                </fieldset>
+                                <b>เลขที่บัญชีออมทรัพย์</b><input type="text" class="form-control" name='account_id' required><br>
+                                <b>สถานะ</b>
+                                <fieldset disabled>
+                                    <select class="form-control" name="status" >
+                                        <option selected="selected">{{typeUser.position}}</option>
+                                    </select><br>
+                                </fieldset>
+                                <button type="submit" class="btn btn-primary">Submit</button><br><br><br>
+                            </form>
+
+                        </div>
+                        <div class="col-md-3"></div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col-md-2"></div>
+</div>
+</div>
+
+<br/>
+{% endblock %}<!-- /block content -->
+
+

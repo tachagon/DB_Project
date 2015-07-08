@@ -1,0 +1,315 @@
+{% extends "base.html" %}
+{% block head %}
+<style>
+
+</style>
+{% endblock %}
+
+{% block title %}ระบบการเบิกจ่ายค่ารักษาพยาบาล{% endblock %}
+
+{% block pageHeader %}
+<h2>ระบบ<small>การเบิกจ่ายค่ารักษาพยาบาล</small></h2>
+<ol class="breadcrumb">
+    <li><a href="{% url 'login:menu' %}">เมนู</a></li>
+    <li class="active">หน้าหลักของผู้ดูแลระบบ</li>
+</ol>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active"><a href="#newupdate" aria-controls="newupdate" role="tab" data-toggle="tab">การอัพเดทและคำร้องขอใหม่</a></li>
+        <li role="presentation"><a href="#update" aria-controls="update" role="tab" data-toggle="tab">สถิติการเบิกจ่ายค่ารักษาพยาบาล</a></li>
+        <li role="presentation"><a href="#edit" aria-controls="edit" role="tab" data-toggle="tab">แก้ไขข้อมูล</a></li>
+    </ul><br>
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+        <div class="tab-content">
+            <!----------------------------------------Tap1-------------------------------------------------->
+            <div role="tabpanel" class="tab-pane active" id="newupdate">
+                {% if olddate %}
+                <div class="row">
+                    <div class="container-fluid">
+                        <div class="col-md-1"></div>
+                        <div class="col-md-10">
+                            <h3>การอัพเดทข้อมูลเงินค่ารักษาพยาบาลล่าสุด</h3>
+                            <div class="table-responsive">
+                                <table class="table table-hover table-bordered">
+                                    <tbody>
+                                    <script>
+                                        count = 0
+                                    {% for date in olddate %}
+                                        count ++;
+                                        if (count%2 == 0) {
+                                            var color =  '#D8D8D8';
+                                        }
+                                        else{
+                                            var color = '#F2F2F2';
+                                        }
+                                        document.write('<tr><td data-title="การอัพเดทข้อมูลเงินค่ารักษาพยาบาลล่าสุด"  bgcolor = "'+color+'">{{ date.date }}</td></tr>')
+                                    {% endfor %}
+                                    </script>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="col-md-1"></div>
+                    </div>
+                </div>
+                {% else %}
+                <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
+
+                    </div>
+                    <div class="col-md-3"></div>
+                </div>
+                {% endif %}
+                {% if dataFromWebList_Index %}
+                <div class="row">
+                    <div class="container-fluid">
+                        <div class="col-md-1"></div>
+                        <div class="col-md-10">
+                            <h3>รายชื่อผู้ขอเบิกค่ารักษาพยาบาลล่าสุด</h3>
+                            <div class="table-responsive">
+                                <table class="table table-hover table-bordered" id="no-more-tables">
+                                    <thead>
+                                    <tr>
+                                        <th>ลำดับ</th>
+                                        <th>ชื่อ-สกุล</th>
+                                        <th>วันที่</th>
+                                        <th>จำนวนเงินที่ขอเบิก</th>
+                                        <th>คงเหลือ</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <script>
+                                var newint = []
+                                var count1  = 0
+                                {% for y in newint %}
+                                   newint[count] =  {{ y }}
+                                   count1++;
+                                {% endfor %}
+
+                            </script>
+                                    <script>
+                                var remains = []
+                                var count  = 0
+                                {% for x in remain %}
+                                   remains[count] =  {{ x }}
+                                   count++;
+                                {% endfor %}
+                                count = 0
+                                count1  = 0
+                            </script>
+                                    <script>
+                            {% for officer in dataFromWebList_Index %}
+                                if (remains[count] < 0) {
+                                    var fontcolor = "red"
+                                }else{
+                                    var fontcolor = "black"
+                                }
+                                document.write('<tr><td data-title="ลำดับ">{{ forloop.counter }}</td>')
+                                document.write('<td data-title="ชื่อ-สกุล">{{ officer.user.firstname_th }}&nbsp&nbsp&nbsp&nbsp{{ officer.user.lastname_th }}</td>')
+                                document.write('<td data-title="วันที่">{{ officer.dateCommit|date:"P  d-m-Y" }}</td>')
+                                document.write('<td data-title="จำนวนเงินที่ขอเบิก">'+remains[count]+'</td>')
+                                document.write('<td data-title="คงเหลือ" ><font color = "'+fontcolor+'">'+remains[count]+'</font></td></tr>')
+                                count++;
+                                count1++;
+                            {% endfor %}
+                            </script>
+                                    </tbody>
+                                </table><br><br><br><br><br>
+                            </div>
+                        </div>
+                        <div class="col-md-1"></div>
+                    </div>
+                </div>
+                {% endif %}
+
+                {% if requeststudy %}
+                <div class="row">
+                    <div class="container-fluid">
+                        <div class="col-md-1"></div>
+                        <div class="col-md-10">
+                            <h3>รายชื่อผู้ขอเบิกค่าการศึกษาของบุตร</h3>
+                            <div class="table-responsive">
+                                <table class="table table-hover table-bordered" >
+                                    <thead>
+                                    <tr>
+                                        <th>ลำดับ</th>
+                                        <th>ชื่อ-สกุล</th>
+                                        <th>วันที่</th>
+                                        <th>เมนู</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for officer in requeststudy %}
+                                    <tr>
+                                        <td data-title="ลำดับ">{{ forloop.counter }}</td>
+                                        <td data-title="ชื่อ-สกุล">{{officer.user }}</td>
+                                        <td data-title="วันที่">{{ officer.dateCommit|date:"P  d-m-Y" }}</td>
+                                        <td data-title="เมนู">
+                                            <a class="btn btn-info btn-xs" href="{% url 'group4:addpdf' officer.id%}" target="_blank">ดูข้อมูล</a>
+                                        </td>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table><br><br><br><br><br>
+                            </div>
+                        </div>
+                        <div class="col-md-1"></div>
+                    </div>
+                </div>
+                {% else %}
+                <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
+                    </div>
+                    <div class="col-md-3"></div>
+                </div>
+                {% endif %}
+            </div>
+            <!----------------------------------------Tap2-------------------------------------------------->
+            <div role="tabpanel" class="tab-pane" id="update">
+
+                <center><h3>ค้นหารายชื่อ</h3>
+
+                    <form class="form-horizontal" method="post" role="search" action="{%url 'group4:adminIndexPage'%}">
+                        {% csrf_token %}
+                        <div id="custom-search-input">
+                            <div class="input-group col-md-5">
+                                <input type="text" class="form-control input-lg" placeholder="ระบุหมายเลขบัญชี เช่น 0123" name = "seach">
+                            <span class="input-group-btn">
+                                <button class="btn btn-info btn-lg" type="submit">
+                                    <i class="glyphicon glyphicon-search"></i>
+                                </button>
+                            </span>
+                            </div>
+                        </div>
+                    </form><br>
+                </center>
+                <!-- check has AdminShow object -->
+                {% if dataFromWebList %}
+                <br>
+                <table class="table table-hover table bordered" id="no-more-tables">
+                    <thead>
+                    <tr>
+                        <th>ลำดับ</th>
+                        <th>ชื่อ-สกุล</th>
+                        <th>เงินเข้าวันที่</th>
+                        <th>เลขที่บัญชี</th>
+                        <th>จำนวนเงิน</th>
+                    </tr>
+                    </thead>
+
+                    <script>
+                        var count = 0
+                        {% for officer in dataFromWebList %}
+                        count ++;
+                        if (count%2 == 0) {
+                            var color =  '#D8D8D8';
+                        }
+                        else{
+                            var color = '#F2F2F2';
+                        }
+                            document.write('<tr><td data-title= "ลำดับ" bgcolor = "'+color+'">{{ forloop.counter }}</td>');
+                            document.write('<td data-title= "ชื่อ-สกุล" bgcolor = "'+color+'">{{ officer.user.firstname_th}} {{ officer.user.lastname_th}}</td>');
+                            document.write('<td data-title="เงินเข้าวันที่" bgcolor = "'+color+'">{{ officer.date }}</td>');
+                            document.write('<td data-title="เลขที่บัญชี" bgcolor = "'+color+'">{{ officer.account_id }}</td>');
+                            document.write('<td data-title="จำนวนเงิน" bgcolor = "'+color+'">{{ officer.priceChar }}</td></tr>');
+                        {% endfor %}
+                </script>
+                </table>
+                {% endif %}
+
+                <!-- check has AdminShow object -->
+
+                {% if result %}
+
+                <table class="table table-hover table bordered">
+                    <thead>
+                    <tr>
+                        <th>ลำดับ</th>
+                        <th>ชื่อ-สกุล</th>
+                        <th>เงินเข้าวันที่</th>
+                        <th>เลขที่บัญชี</th>
+                        <th>จำนวนเงิน</th>
+                    </tr>
+                    </thead>
+                    <script>
+                    var count = 0
+                    var sum   = 0
+                    var remain = 20000
+                    {% for officer in result %}
+                        sum = sum+{{officer.price}}
+                        count ++;
+                        if (count%2 == 0) {
+                            var color =  '#D8D8D8';
+                        }
+                        else{
+                            var color = '#F2F2F2';
+                        }
+                            document.write('<tr><td data-title= "ลำดับ" bgcolor = "'+color+'">{{ forloop.counter }}</td>');
+                            document.write('<td data-title= "ชื่อ-สกุล" bgcolor = "'+color+'">{{ officer.user.firstname_th}} {{ officer.user.lastname_th}}</td>');
+                            document.write('<td data-title="เงินเข้าวันที่" bgcolor = "'+color+'">{{ officer.date }}</td>');
+                            document.write('<td data-title="เลขที่บัญชี" bgcolor = "'+color+'">{{ officer.account_id }}</td>');
+                            document.write('<td data-title="จำนวนเงิน" bgcolor = "'+color+'">{{ officer.priceChar }}</td></tr>');
+                    {% endfor %}
+                        remain = remain - sum
+                </script>
+                </table>
+                <script>
+                    fontcolor = "black"
+                    if (remain <= 0 ) {
+                        fontcolor = "red"
+                    }
+                    document.write('<b>รวม</b>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp'+sum+'&nbsp&nbsp<b>บาท</b><br>');
+                    document.write('<b>คงเหลือ</b>&nbsp&nbsp<font color = "'+fontcolor+'">'+remain+'</font>&nbsp&nbsp<b>บาท</b>');
+            </script>
+                {% endif %}
+                {% if notfound %}
+                <h3>ไม่พบรายชื่อที่ค้นหา</h3>
+                {% endif %}
+
+            </div><br><br><br>
+            <!----------------------------------------Tap3-------------------------------------------------->
+            <div role="tabpanel" class="tab-pane" id="edit">
+
+                <form class="form-horizontal" method="post" action="{% url 'group4:commit_data' dataFromWebList_edit.id %}">
+                    {% csrf_token %}
+
+
+                    <!-- ชื่อ -->
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">ชื่อ: </label>
+                        <div class="col-sm-6">
+                            <input type="text" name="presidentName"  value="{{dataFromWebList_edit.presidentName}}" maxlength="255" class="form-control" placeholder="ชื่อ"  title="เบอร์โทรศัพท์">
+                        </div>
+                    </div>
+
+                    <!-- ตำแหน่ง -->
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">ตำแหน่ง: </label>
+                        <div class="col-sm-6">
+                            <input type="text" name="position"  value="{{ dataFromWebList_edit.position}}" class="form-control" placeholder = "ตำแหน่ง" title="E-mail">
+                        </div>
+                    </div>
+
+                    <!-- บันทึก -->
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label"> </label>
+                        <div class="col-sm-6">
+                            <input type="submit" class="btn btn-success" value="บันทึก">
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+
+            <div class="col-md-2"></div>
+        </div>
+    </div>
+</div>
+{% endblock %}<!-- /block content -->

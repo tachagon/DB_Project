@@ -33,4 +33,4 @@ class Status_Of(models.Model):
     
 class Requisition(models.Model):
 	Status_of = models.ForeignKey(Order)
-	Requisition_Id = models.CharField(max_length=200)
+	Requisition_Id = models.CharField(max_length=200,null=True)
