@@ -24,7 +24,7 @@ urlpatterns = patterns('',
 #-----------------------------------------------------------------------------------------# Add OrderInfo
 #ex: /group7/Project_id/orderinfo/ --> EX: localhost:8000/group7/1/statusof/
 	url(r'^/(?P<pk>\d+)/statusof/$', views.statusof.as_view(), name='statusof'),
-        url(r'^/(?P<pk>\d+)/statusof/addstatusof/$', views.addstatusview.as_view(), name='addstatusof'),
+        url(r'^/(?P<pk>\d+)/statusof/addstatusof/$', views.addstatusview, name='addstatusof'),
         url(r'^/(?P<pk>\d+)/addstatusof/$', views.addstatus, name='addstatus'),
         url(r'^/(?P<info_id>\d+)/remove/$', views.removeOrder, name='removeOrder'),
         url(r'^/(?P<info_id>\d+)/orderinfo/remove/$', views.removeOrderinfo, name='removeOrderinfo'),

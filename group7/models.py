@@ -32,11 +32,5 @@ class Status_Of(models.Model):
 	Prove = models.CharField(max_length=200)
     
 class Requisition(models.Model):
-	Status_of = models.ForeignKey(Status_Of)
-	Date = models.DateField()
-    	##Project_name = models.CharField(max_length=200) link from ProjectG7
+	Status_of = models.ForeignKey(Order)
 	Requisition_Id = models.CharField(max_length=200)
-    	##Amount = models.IntegerField(default=0) link from orderinfo
-    	##Item_name = models.CharField(max_length=200) link from orderinfo
-    	##Cost_total = models.IntegerField(default=0) link from orderinfo
-    	Moreabout = models.CharField(max_length=200)

@@ -3,7 +3,7 @@
 {% block title %}Group7{% endblock %}
 
 {% block pageHeader %}
-<h2>กระบวน <small>การเบิกจ่ายค่าวัสดุในการทำโครงงาน</small></h2>
+<h2>ระบบ <small>เบิกจ่ายค่าวัสดุในการทำโครงงาน</small></h2>
 <ol class="breadcrumb">
     <li><a href="{% url 'login:menu' %}">เมนู</a></li>
     <li><a href="/group7Project_Docs/">รายชื่อโครงงาน</a></li>
@@ -51,7 +51,7 @@
 		}
 	}
 	</script>
-<h3>เพิ่มเติมสถานะรายการใบสั่งวัสดุภาควิชาวิศวกรรมไฟฟ้าและคอมพิวเตอร์</h3>
+<h3>แก้ไขสถานะรายการใบสั่งวัสดุภาควิชาวิศวกรรมไฟฟ้าและคอมพิวเตอร์</h3>
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 <form action="/group7/{{ object.id }}/editstf/" >
 <table border=0>

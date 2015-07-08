@@ -3,24 +3,24 @@
 {% block title %}Group7{% endblock %}
 
 {% block pageHeader %}
-<h2>กระบวน <small>การเบิกจ่ายค่าวัสดุในการทำโครงงาน</small></h2>
+<h2>ระบบ <small>เบิกจ่ายค่าวัสดุในการทำโครงงาน</small></h2>
 <ol class="breadcrumb">
     <li><a href="{% url 'login:menu' %}">เมนู</a></li>
-    <li class="active">สรุปรายละเอียดโครงงาน</a></li>
+    <li class="active">สรุปรายละเอียดการเบิกจ่ายแต่ละโครงงาน</a></li>
 </ol>
 {% endblock %}
 
 {% block content %}
 <div class="container-fluid">
-<center><b><font size = "5">สรุปรายละเอียดแต่ละโครงงาน</font></b></center>
+<center><h3>สรุปรายละเอียดการเบิกจ่ายแต่ละโครงงาน</h3></center>
 
 <center>
 <table border ="1"  width="100%"><font color="BLACK">
 	<tr>
-		<th>ชื่อโครงงาน</th>
-		<th>งบประมาณที่สามารถใช้ได้</th>
-		<th>งบประมาณที่ถูกใช้ไปแล้ว</th>
-		<th>งบประมาณคงเหลือ</th>		
+		<th><center>ชื่อโครงงาน</center></th>
+		<th><center>งบประมาณที่สามารถใช้ได้</center></th>
+		<th><center>งบประมาณที่ถูกใช้ไปแล้ว</center></th>
+		<th><center>งบประมาณคงเหลือ</center></th>		
 	</tr>
 	    <tr>
 	    {% for a in cost%}
@@ -35,26 +35,18 @@
 
 <table border ="1"  width="100%"><font color="BLACK">
 	<tr>
-		<th>ขั้นตอนตกลงวันที่ซื้อวัสดุ</th>
-		<th>ขั้นตอนตรวจสอบวัสดุและใบเสร็จ</th>
-		<th>ขั้นตอนทำใบเบิกวัสดุ</th>		
+		<th><center>จำนวนใบสั่งซื้อในขั้นตอนการตกลงวันที่ซื้อวัสดุ</center></th>
+		<th><center>จำนวนใบสั่งซื้อในขั้นตอนการตรวจสอบวัสดุและใบเสร็จ</center></th>
+		<th><center>จำนวนใบสั่งซื้อในขั้นตอนการทำใบเบิกวัสดุ</center></th>		
 	</tr>
 	<tr>
 		<td><center><a href="/group7/summarydate/">{{buy}}</a></center></td>
 		<td><center><a href="/group7/summarycheck/">{{check}}</a></center></td>
-		<td><center><a href="/group7/summaryreq/">{{complete}}</a></center></td>
+		<td><center><a href="/group7/summaryreq/">{{complete}}</a></center></td>	
 	</tr>
 </table>
 &nbsp
 
-<table border ="0"  width="100%"><font color="BLACK">
-	<tr>
-		<td align="right">
-			<a href="/menu/" style="text-decoration:none"><input type="button" value="ย้อนกลับ" ></a> <!--not complete -->	
-		</form></td>
-		<td align="left">
-			<a href="/group7Project_Docs/" style="text-decoration:none"><input type="button" value="หน้าแรก" ></a> <!--not complete -->
-		</form></td>
-</center>
+
 {% endblock %}
 

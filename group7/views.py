@@ -31,9 +31,9 @@ class addorder(generic.DetailView):
 
         
 def addorderview(request, pk):
-	date=request.POST['date_order']
-        name=request.POST['name']
-        p=Order(Projectg7_id=pk,Date=date,name=name)   	
+	date=request.POST['date']
+	valid_date = datetime.datetime.strptime(date, '%d-%m-%Y').strftime('%Y-%m-%d')
+        p=Order(Projectg7_id=pk,Date=valid_date)   	
 	p.save()
         url="/group7/"+pk
         return HttpResponseRedirect(url)
@@ -67,20 +67,33 @@ class statusof(generic.DetailView):
 	model=Order
    	template_name= 'group7/statusof.html'
 # Create your views here.
-class addstatusview(generic.DetailView):
-        model=Order
-   	template_name= 'group7/addstatusof.html'
+def addstatusview(request,pk):
+        order=Order.objects.get(id=pk)
+	stat=order.status_of_set.all()
+	laststat=""
+	id=pk
+	for s in stat:
+		laststat=s.State
+	return render(request, 'group7/addstatusof.html', {'object': laststat,'id':id})
+	
+	
+	
 def addstatus(request,pk):
-    date=request.GET.get('date_status')
+    date=request.GET.get('date')
+    valid_date = datetime.datetime.strptime(date, '%d-%m-%Y').strftime('%Y-%m-%d')
     state = request.GET.get('state_status')
     more=request.GET.get('more')
     status=""
+    if (request.GET.get('requisition_id')!=""):
+        reqid=request.GET.get('requisition_id')
+	req=Requisition(Status_of_id=pk,Requisition_Id=reqid)
+	req.save()
     if (request.GET.get('state_status')=="complete"):
         status="สมบูรณ์"
         state="ใบเบิกวัสดุ"
     else:
         status="ไม่สมบูรณ์"
-    p=Status_Of(Order_id=pk,Date=date,State=state, Status=status ,Moreabout=more,Prove="Ok") 
+    p=Status_Of(Order_id=pk,Date=valid_date,State=state, Status=status ,Moreabout=more,Prove="Ok") 
     p.save()
     url="/group7/"+pk+"/statusof/"
     return HttpResponseRedirect(url)
@@ -131,11 +144,19 @@ class vieworderinfo(generic.DetailView):
    	template_name= 'group7/orderinfoview.html'
 #----------------------------- View requisition -------------------------------------------#
 def viewrequi(request,pk):
-        now = datetime.datetime.now()
-        
+        now=""
+	reqid=Requisition.objects.get(Status_of_id=pk)
 	order = Order.objects.get(id=pk)
+	stat4=order.status_of_set.all()
+	moreabout=""
+	for r in stat4:
+		status4=r.State.encode('utf-8')
+		date4=r.Date
+		moreabout=r.Moreabout
+	if status4 == "ใบเบิกวัสดุ":
+		now=date4
 	project=ProjectG6.objects.get(id=order.Projectg7_id)
-        return render(request, 'group7/requisitionview.html', {'order': order,'project':project,'date':now})
+        return render(request, 'group7/requisitionview.html', {'order': order,'project':project,'date':now,'req':reqid,'more':moreabout})
 
 def vieworderprint(request,pk):
         now = datetime.datetime.now()
@@ -144,10 +165,13 @@ def vieworderprint(request,pk):
         project=ProjectG6.objects.get(id=order.Projectg7_id)
         stu = ProjectG6.objects.all()
         teacher=[]
+	student=[]
         for name in stu:
                 teacher.append(Teacher.objects.get(id=name.teacher_id))
-       
-        return render(request, 'group7/orderinfoview.html', {'order': order,'teacher':teacher,'project':project,'date':now})
+	namestd=project.student.all()
+	for std in namestd:
+		student.append(std)
+        return render(request, 'group7/orderinfoview.html', {'order': order,'teacher':teacher,'project':project,'date':now,'student':student})
         
 def statusofedit(request,pk):
         stu=Status_Of.objects.get(id=pk)
@@ -183,6 +207,7 @@ def sumdate(request):
 			data=(ProjectG6.objects.get(id=s.Projectg7_id))
 			dataset.append(data.name_thai)
 			dataset.append(date)
+		status=""
 	return render(request, 'group7/showlistdate.html', {'data': dataset})
 
 def sumcheck(request):
@@ -201,6 +226,7 @@ def sumcheck(request):
 			data2=(ProjectG6.objects.get(id=s.Projectg7_id))
 			dataset2.append(data2.name_thai)
 			dataset2.append(date2)
+		status2=""
 	return render(request, 'group7/showlistcheck.html', {'data': dataset2})
 
 def sumreq(request):
@@ -208,16 +234,22 @@ def sumreq(request):
 	date3=""
 	dataset3=[]
 	ordd3=Order.objects.all()
+	count=[];
+	c=0
 	for s in ordd3:
 		stat3=s.status_of_set.all()
 		for r in stat3:
+			c+=1
 			status3=r.State.encode('utf-8')
+			
 			date3=r.Date
 		if status3 == "ใบเบิกวัสดุ":
-			data3=(ProjectG6.objects.get(id=s.Projectg7_id))
+			count.append(c)
+			data=(ProjectG6.objects.get(id=s.Projectg7_id))
 			dataset3.append(data.name_thai)
 			dataset3.append(date3)
-	return render(request, 'group7/showlistrequi.html', {'data': dataset3})
+		status3=""
+	return render(request, 'group7/showlistrequi.html', {'data': dataset3,'c':count})
 	
 def summarypro(request):
 	va_name = ProjectG6.objects.all()

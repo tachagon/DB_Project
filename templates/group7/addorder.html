@@ -1,9 +1,10 @@
 {% extends "base.html" %}
+{% load staticfiles %}
 
 {% block title %}Group7{% endblock %}
 
 {% block pageHeader %}
-<h2>กระบวน <small>การเบิกจ่ายค่าวัสดุในการทำโครงงาน</small></h2>
+<h2>ระบบ <small>เบิกจ่ายค่าวัสดุในการทำโครงงาน</small></h2>
 <ol class="breadcrumb">
     <li><a href="{% url 'login:menu' %}">เมนู</a></li>
     <li><a href="/group7Project_Docs/">รายชื่อโครงงาน</a></li>
@@ -94,8 +95,27 @@
 <form name="dateForm" action="/group7/{{projectg6.id}}/addorderview/"  onsubmit="return validateForm(this)" method="post">
 {% csrf_token %}
 	<table border=0>
-    	<tr><td> วัน/เดือน/ปี : </td><td><input type="text" name="date_order"></td></tr>
-        <tr><td> ชื่อผู้สั่งซื้อ: </td><td><input type="text" name="name"></td></tr>
+    	<tr><td>
+	<script>
+                $(function(){
+                    $( "#date" ).datepicker({
+                        changeMonth: true,
+                        changeYear: true,
+                        dateFormat: 'dd-mm-yy', // รูปแบบการแสดงผล วัน-เดือน-ปี
+                        yearRange: '-100:+0',   // ย้อนหลังไป 100 ปี
+                    });
+                });
+            </script>
+
+            <div class="form-group">
+                <div class="col-sm-9">
+                    <tr><td>เลือกวันที่:<td><input type="text" name="date" id="date"></tr></td>
+                </div>
+            </div>
+
+	     
+	    
+	</td></tr>
 </table>
 <input type="submit" value="ยืนยัน" /><a href="/group7/{{projectg6.id}}/" style="text-decoration:none"><input type="button" value="ยกเลิก" ></a>
 </form>
