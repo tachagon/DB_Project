@@ -1,0 +1,194 @@
+{% extends "base.html" %}
+
+{% block head %}
+    <style>
+
+    </style>
+{% endblock %}
+
+{% block title %}ผลการเรียน{% endblock %}
+
+{% block pageHeader %}
+
+<ol class="breadcrumb">
+    <li><a href="{% url 'login:menu' %}">เมนู</a></li>
+    <li class="active">ผลการเรียน</li>
+</ol>
+{% endblock %}
+
+{% block content %}
+	<style>
+
+	#bod{
+		white-space:nowrap;
+		margin:  0px 0% 0%;
+		padding: 0px 340px 0px;
+		background-color:#FFFFFF;
+		}
+
+		
+	tr,td{
+		
+		border:3px solid #ab82ff;//blue
+		font:14pt "Angsana New";
+	}
+
+
+
+	</style>
+	<center>
+		<p></p><br><b>เลขประจำตัว&nbsp&nbsp&nbsp&nbsp</b>{{ studentObj.std_id }}&nbsp&nbsp&nbsp&nbsp<b>ชื่อ&nbsp&nbsp&nbsp&nbsp</b>{{ studentObj.userprofile }}
+		<br><b>สาขา&nbsp&nbsp&nbsp&nbsp</b>
+		<script>
+		x = {{ studentObj.main }}
+		if (x == 0) {
+			document.write('Cpr.E')
+		}
+		else if (x == 1){
+			document.write('G')
+		}
+		else if (x == 2){
+			document.write('U')
+		}
+		else if (x == 3){
+			document.write('C')
+		}
+		</script>
+		&nbsp&nbspภาควิชา
+		<script>
+		x = {{ studentObj.userprofile.department }}
+		if (x == 0) {
+			document.write('')
+		}
+		else if (x == 1){
+			document.write('วิศวกรรมไฟฟ้าและคอมพิวเตอร์')
+		}
+		</script>
+		&nbsp&nbspคณะ
+		<script>
+		x = {{ studentObj.userprofile.department }}
+		if (x == 0) {
+			document.write('')
+		}
+		else if (x == 1){
+			document.write('วิศวกรรมศาสตร์')
+		}
+		</script>
+		<br><br><FONT COLOR=#FF0000>*** ข้อมูลผลการเรียนอย่างไม่เป็นทางการ ***</FONT>
+		<br><br>
+
+
+			
+			
+			{%for i in number_table %}
+			{%if i.std_id.std_id == studentObj.std_id %}
+				
+				<table width="50%"  bgcolor="#336C6C">
+				<tr><td align="center" ><FONT COLOR=#000000><b>ปีการศึกษา&nbsp&nbsp{{i.year}}&nbsp&nbsp&nbsp&nbspภาคการศึกษา&nbsp&nbsp{{i.term}}</b></FONT></td></tr>
+				</table>		
+
+				
+					<table width="50%"  bgcolor="#FFFFFF">
+					<tr><td align="center" bgcolor="#C0C0C0" width="35%">ชื่อวิชา</td>
+					<td align="center" width="5%" bgcolor="#C0C0C0">หน่วยกิต</td>
+					<td align="center" width="5%" bgcolor="#C0C0C0">ตอนเรียน</td>
+					<td align="center" width="5%" bgcolor="#C0C0C0">เกรด</td><tr>
+					{%for j in course %}
+					{%if j.Course_ID == i.Course_ID.Course_ID %}
+						<tr><td align="left" bgcolor="#C0C0C0" width="35%">{{j.Course_Name}}</td>
+						<td align="center" width="5%" bgcolor="#C0C0C0">{{j.Credit}}</td>
+						<td align="center" width="5%" bgcolor="#C0C0C0">{{i.Section.Section}}</td>
+						<td align="center" width="5%" bgcolor="#C0C0C0">
+								{% if i.Grade == '0' %}
+									&nbsp
+								{% endif %}
+								{% if i.Grade == '1' %}
+									A
+								{% endif %}
+								{% if i.Grade == '2' %}
+									B+
+								{% endif %}
+								{% if i.Grade == '3' %}
+									B
+								{% endif %}
+								{% if i.Grade == '4' %}
+									C+
+								{% endif %}
+								{% if i.Grade == '5' %}
+									C
+								{% endif %}
+								{% if i.Grade == '6' %}
+									D+
+								{% endif %}
+								{% if i.Grade == '7' %}
+									D
+								{% endif %}
+								{% if i.Grade == '8' %}
+									F
+								{% endif %}
+								{% if i.Grade == '9' %}
+									Fa
+								{% endif %}
+								{% if i.Grade == '10' %}
+									Fe
+								{% endif %}
+								{% if i.Grade == '11' %}
+									S
+								{% endif %}
+								{% if i.Grade == '12' %}
+									U
+								{% endif %}
+								{% if i.Grade == '13' %}
+									I
+								{% endif %}
+								{% if i.Grade == '14' %}
+									Ip
+								{% endif %}
+								{% if i.Grade == '15' %}
+									W
+								{% endif %}
+								{% if i.Grade == '16' %}
+									AUD
+								{% endif %}</td></tr>
+					{%endif%}
+					{%endfor%}
+					</table>
+					
+					
+					<table width="50%"  bgcolor="#FFFFFF">
+					<tr><td align="center" bgcolor="#C0C0C0" width="8%"></td>
+					<td align="center" width="8%" bgcolor="#C0C0C0">คะเเนนเฉลี่ย</td>
+					<td align="center" width="8%" bgcolor="#C0C0C0">หน่วยกิตที่ลง</td>
+					<td align="center" width="8%" bgcolor="#C0C0C0">หน่วยกิตที่ได้</td>
+					<td align="center" width="18%" bgcolor="#C0C0C0">เเต้มระดับคะเเนน</td></tr>
+
+					<tr><td align="center" bgcolor="#C0C0C0" width="8%">ประจำภาค</td>
+					<td align="center" width="8%" bgcolor="#C0C0C0"></td>
+					<td align="center" width="8%" bgcolor="#C0C0C0"></td>
+					<td align="center" width="8%" bgcolor="#C0C0C0"></td>
+					<td align="center" width="18%" bgcolor="#C0C0C0"></td></tr>
+					
+					<tr><td align="center" bgcolor="#C0C0C0" width="8%">สะสม</td>
+					<td align="center" width="8%" bgcolor="#C0C0C0"></td>
+					<td align="center" width="8%" bgcolor="#C0C0C0"></td>
+					<td align="center" width="8%" bgcolor="#C0C0C0"></td>
+					<td align="center" width="18%" bgcolor="#C0C0C0"></td></tr>
+					</table>
+			 
+			 
+					<table width="50%"  bgcolor="#FFFFFF">
+					<tr><td align="center" bgcolor="#C0C0C0" width="7%">สถานภาพ</td>
+					<td align="center" width="42%" bgcolor="#C0C0C0">ปกติ</td></tr>
+					</table>
+				
+				<br>
+				<br>
+				<br>
+				
+				
+			{%endif%}
+			{%endfor%}
+			
+		</table>
+	</center>
+{% endblock %}

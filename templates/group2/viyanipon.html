@@ -1,0 +1,204 @@
+<meta charset="UTF-8">
+{% extends "base.html" %}
+
+{% block head %}
+    <style>
+
+    </style>
+{% endblock %}
+
+{% block title %}ประวัตินักศึกษา{% endblock %}
+
+{% block pageHeader %}
+
+<ol class="breadcrumb">
+    <li><a href="{% url 'login:menu' %}">เมนู</a></li>
+    <li class="active">ประวัตินักศึกษา</li>
+</ol>
+{% endblock %}
+
+{% block content %}
+<style>
+
+#bod{
+	white-space:nowrap;
+	margin:  0px 0% 0%;
+	padding: 0px 340px 0px;
+	background-color:#FFFFFF;
+	}
+
+	
+
+
+
+.botton1{
+    position: absolute;
+    left: 346px;
+    padding: 10px 10px;
+    background-color: #A8D9E8;
+    text-decoration: none;
+    color: #117777;
+    border-radius: 10px;
+}
+
+.botton2{
+    position: absolute;
+    left: 442px;
+    padding: 10px 10px;
+    background-color: #A8D9E8;
+    text-decoration: none;
+    color: #117777;
+    border-radius: 10px;
+}
+
+.botton3{
+    position: absolute;
+    left: 546px;
+    padding: 10px 10px;
+    background-color: #A8D9E8;
+    text-decoration: none;
+    color: #117777;
+    border-radius: 10px;
+}
+
+.botton4{
+    position: absolute;
+    left: 665px;
+    padding: 10px 10px;
+    background-color: #00B3EE;
+    text-decoration: none;
+    color: #fff;
+    border-radius: 10px;
+}
+</style>
+
+{% if currentUser.type = "0" %}
+<a href="{% url 'group2:profile' %}" class="botton1">ประวัติส่วนตัว</a>
+<a href="{% url 'group2:data_student' %}" class="botton2">ข้อมูลนักศึกษา</a>
+<a href="{% url 'group2:regis_result' %}" class="botton3">ผลการลงทะเบียน</a>
+<a href="{% url 'group2:viyanipon' %}" class="botton4">การทำวิทยานิพนธ์เเละการสอบวิทยานิพนธ์</a>
+{% endif %}
+{% if currentUser.type != "0" %}
+<a href="{% url 'group2:profile_admin' studentObj.std_id %}" class="botton1">ประวัติส่วนตัว</a>
+<a href="{% url 'group2:data_student_admin' studentObj.std_id %}" class="botton2">ข้อมูลนักศึกษา</a>
+<!--a href="{% url 'group2:regis_result_admin' studentObj.std_id %}" class="botton3">ผลการลงทะเบียน</a-->
+<a href="{% url 'group2:viyanipon_admin' studentObj.std_id %}" class="botton4">การทำวิทยานิพนธ์เเละการสอบวิทยานิพนธ์</a>
+{% endif %}
+
+
+<br>
+<br>
+<body>
+	<table align="center" style="width:60%"><!--border="1">-->
+		<form action="">
+		<tr>
+			<td>เลขประจำตัว   </td>
+			<td> {{ studentObj.std_id }}  </td>
+		</tr>
+		<tr>
+			<td></td>
+			<td>{{ studentObj.userprofile.firstname_th }}&nbsp{{ studentObj.userprofile.lastname_th }}</td>
+		</tr>
+		<tr>
+			<td>เรียน</td>
+			<td>
+			<script>
+				x = {{ studentObj.degree }}
+				if (x == '1') {
+					document.write('มหาบัณฑิต   :  โท')
+				}
+				else if (x == '2'){
+					document.write('ดุษฎีบัณฑิต  :  เอก')
+				}
+			</script></td>
+		</tr>
+		<tr><td>&nbsp;&nbsp;</td></tr>
+		<tr>
+			<td>
+				{{ viyanipon_adviser.std_id }}
+				อาจารย์ที่ปรึกษาวิทยานิพนธ์
+			</td>
+			<td>
+				{{viyanipon_adviser.teach_name}}
+			</td>
+		</tr>
+		<tr><td>&nbsp;&nbsp;</td></tr>
+		<tr>
+			<td  width="20%" valign="top">เสนอวิทยานิพนธ์ เรื่อง</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td></td>
+			<td>ชื่อภาษาไทย   {{viyanipon_name.name_thai}}</td>
+		</tr>
+		<tr>
+			<td></td>
+			<td>ชื่อภาษาอังกฤษ   {{viyanipon_name.name_eng}}</td>
+		</tr>
+		<tr>
+			<td valign="top">&nbsp;</td>
+			<td><font color="#FF0000">***หมายเหตุ  ต้องลงทะเบียนวิทยานิพนธ์ไม่น้อยกว่า  3  หน่วยกิตในภาคการศึกษานั้น ***</font></td>
+		</tr>
+		<tr><td>&nbsp;&nbsp;</td></tr>
+		<tr>
+			<td>สอบหัวข้อวิทยานิพนธ์</td>
+			<td>วันที่
+		  		{{vaiyanipon_project.name_day}}
+				เดือน
+		  		{{viyanipon_project.name_month}}
+				ปี
+				{{viyanipon_project.name_year}}
+			</td
+		</tr>
+		<tr>
+			<td></td>
+			<td><font color="#FF0000">***หมายเหตุ  ต้องดำเนินการให้แล้วเสร็จภายใน  30  วันหลังจากแต่งตั้งอาจารย์ที่ปรึกษาวิทยานิพนธ์และอนุมัติโครการวิทยานิพนธ์ที่เสนอ ***</font></td>
+		</tr>
+		<tr><td>&nbsp;&nbsp;</td></tr>
+		</table>
+		<table align="center" style="width:60%">
+		<tr>
+			<td width="26%">สอบความก้าวหน้าวิทยานิพนธ์&nbsp;</td>
+			<td>
+				วันที่
+				{{vaiyanipon_test.tast_day}}
+				เดือน
+				{{viyanipon_test.tast_month}}
+				ปี
+				{{viyanipon_test.tast_year}}
+			</td>
+		</tr>
+			<tr>
+				<td></td>
+				<td></td>
+				<td><font color="#FF0000">***หมายเหตุ ***</font></td
+			</tr>
+		<tr><td>&nbsp;&nbsp;</td></tr>
+		</table>
+		<table align="center" style="width:60%"><!--border="1">-->
+			<tr>
+				<td width="21%">สอบป้องกันวิทยานิพนธ์</td>
+				<td>
+				วันที่
+				{{vaiyanipon_tastend.tastend_day}}
+				เดือน
+				{{viyanipon_tastend.tastend_month}}
+				ปี
+				{{viyanipon_tastend.tastend_year}}
+				</td>
+			</tr>
+			<tr>
+				<td></td>
+				<td></td>
+				<td><font color="#FF0000">***หมายเหตุ ***</font></td>
+			</tr>
+			<tr><td>&nbsp;&nbsp;</td></tr>
+		</form>
+	</table>
+	&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp;
+	<a href="{% url 'group2:viyaniponshow' %}"><input class="btn btn-danger" type="button" value="แก้ไข" name = 'chang' /></a> 
+	<br><br><br><br>
+</body>
+
+
+{% endblock %}

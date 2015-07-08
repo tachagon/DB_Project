@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+
+{% block head %}
+    <style>
+
+    </style>
+{% endblock %}
+
+{% block title %}ผลการเรียน{% endblock %}
+
+{% block pageHeader %}
+
+<ol class="breadcrumb">
+    <li><a href="{% url 'login:menu' %}">เมนู</a></li>
+    <li class="active">ผลการเรียน</li>
+</ol>
+{% endblock %}
+
+{% block content %}
+	<style>
+
+	#bod{
+		white-space:nowrap;
+		margin:  0px 0% 0%;
+		padding: 0px 340px 0px;
+		background-color:#FFFFFF;
+		}
+
+	.table{
+		width: 50%;
+		border:3px solid  #3366CC;//blue
+		font:14pt "Angsana New";
+	}
+	
+	tr,td{
+		
+		border:3px solid #ab82ff;//blue
+		font:14pt "Angsana New";
+	}
+
+
+
+	</style>
+	<center>
+    <table class="table table-striped table-bordered table-condensed" align="center" >
+	<thead>
+		<tr>
+			<th>ลำดับ</th>
+			<th>นศ.</th>
+			<th>เกรด</th>
+			<th>แก้เกรด</th>
+		</tr>
+	</thead>
+	<tbody>
+	{% for course in gradeObj %}
+	{% if course.Course_ID == courseObj %}
+		<tr>
+			<td data-title="ลำดับ">{{ forloop.counter }}</td>
+			<td data-title="นศ.">{{ course.std_id }}</td>
+			<td data-title="เกรด">{% if course.Grade == '0' %}
+									&nbsp
+								{% endif %}
+								{% if course.Grade == '1' %}
+									A
+								{% endif %}
+								{% if course.Grade == '2' %}
+									B+
+								{% endif %}
+								{% if course.Grade == '3' %}
+									B
+								{% endif %}
+								{% if course.Grade == '4' %}
+									C+
+								{% endif %}
+								{% if course.Grade == '5' %}
+									C
+								{% endif %}
+								{% if course.Grade == '6' %}
+									D+
+								{% endif %}
+								{% if course.Grade == '7' %}
+									D
+								{% endif %}
+								{% if course.Grade == '8' %}
+									F
+								{% endif %}
+								{% if course.Grade == '9' %}
+									Fa
+								{% endif %}
+								{% if course.Grade == '10' %}
+									Fe
+								{% endif %}
+								{% if course.Grade == '11' %}
+									S
+								{% endif %}
+								{% if course.Grade == '12' %}
+									U
+								{% endif %}
+								{% if course.Grade == '13' %}
+									I
+								{% endif %}
+								{% if course.Grade == '14' %}
+									Ip
+								{% endif %}
+								{% if course.Grade == '15' %}
+									W
+								{% endif %}
+								{% if course.Grade == '16' %}
+									AUD
+								{% endif %}
+			</td>
+			<td data-title="แก้เกรด"><form method="post" action="{% url 'group2:school_record_admin_edit' %}">
+									<select id="grade" name="grade">
+										<option value='1'>1</option>
+										<option value='2'>2</option>
+									</select>
+									<input type="submit" value="grade">
+								  </form>
+			</td>
+		</tr>
+	{% endif %}
+	{% endfor %}
+	</tbody>
+    </table>
+	</center>
+{% endblock %}

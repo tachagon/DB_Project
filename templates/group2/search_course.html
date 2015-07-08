@@ -1,0 +1,40 @@
+
+{% extends "base.html" %}
+
+{% block head %}
+    <style>
+
+    </style>
+{% endblock %}
+
+{% block title %}แก้ผลการเรียน{% endblock %}
+
+{% block pageHeader %}
+<h2>แก้ผลการเรียน</h2>
+<ol class="breadcrumb">
+    <li><a href="{% url 'login:menu' %}">เมนู</a></li>
+    <li class="active">แก้ผลการเรียน</li>
+</ol>
+{% endblock %}
+
+{% block content %}
+
+
+<style>
+
+
+</style>
+{%if error%}
+	<div class="alert alert-danger alert-dismissible" role="alert">
+		<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		<strong>Error!</strong> {{error}}
+	</div>
+{%endif%}
+<form method="post" action="{% url 'group2:search_course' %}">
+{% csrf_token %}
+<br>
+<center>course id:&nbsp<input type="text" id="search" name="search" placeholder="course id"></input></center>
+<br><center><input type="submit" value="search"></center>
+</form>
+
+{% endblock %}
