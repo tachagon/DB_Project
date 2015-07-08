@@ -1,0 +1,345 @@
+<meta charset="UTF-8">
+
+{% extends "base.html" %}
+{% block head %}
+    <style>
+		
+    </style>
+{% endblock %}
+
+{% block title %}วิทยานิพนธ์{% endblock %}
+
+{% block pageHeader %}
+
+<ol class="breadcrumb">
+    <li><a href="{% url 'login:menu' %}">เมนู</a></li>
+    <li class="active">ประวัตินักศึกษา</li>
+</ol>
+{% endblock %}
+
+{% block content %}
+
+<style>
+
+#bod{
+	white-space:nowrap;
+	margin:  0px 0% 0%;
+	padding: 0px 340px 0px;
+	background-color:#FFFFFF;
+	}
+
+.botton1{
+    position: absolute;
+    left: 346px;
+    padding: 10px 10px;
+    background-color: #3366CC;
+    text-decoration: none;
+    color: #fff;
+    border-radius: 10px;
+}
+
+.botton2{
+    position: absolute;
+    left: 442px;
+    padding: 10px 10px;
+    background-color: #5964ff;
+    text-decoration: none;
+    color: #fff;
+    border-radius: 10px;
+}
+
+.botton3{
+    position: absolute;
+    left: 546px;
+    padding: 10px 10px;
+    background-color: #6fa3ff;
+    text-decoration: none;
+    color: #fff;
+    border-radius: 10px;
+}
+
+.botton4{
+    position: absolute;
+    left: 665px;
+    padding: 10px 10px;
+    background-color: #66CCFF;
+    text-decoration: none;
+    color: #fff;
+    border-radius: 10px;
+}
+</style>
+
+{% if currentUser.type = "0" %}
+<a href="{% url 'group2:profile' %}" class="botton1">ประวัติส่วนตัว</a>
+<a href="{% url 'group2:data_student' %}" class="botton2">ข้อมูลนักศึกษา</a>
+<a href="{% url 'group2:regis_result' %}" class="botton3">ผลการลงทะเบียน</a>
+<a href="{% url 'group2:viyanipon' %}" class="botton4">การทำวิทยานิพนธ์เเละการสอบวิทยานิพนธ์</a>
+{% endif %}
+{% if currentUser.type != "0" %}
+<a href="{% url 'group2:profile_admin' studentObj.std_id %}" class="botton1">ประวัติส่วนตัว</a>
+<a href="{% url 'group2:data_student_admin' studentObj.std_id %}" class="botton2">ข้อมูลนักศึกษา</a>
+<!--a href="{% url 'group2:regis_result_admin' studentObj.std_id %}" class="botton3">ผลการลงทะเบียน</a-->
+<a href="{% url 'group2:viyanipon_admin' studentObj.std_id %}" class="botton4">การทำวิทยานิพนธ์เเละการสอบวิทยานิพนธ์</a>
+{% endif %}
+
+<br>
+<br>
+
+
+<body>
+	<table align="center" style="width:60%">
+		<form action="{% url 'group2:viyaniponshow' %}">
+		<tr>
+			<td></td>
+			<td>เลขประจำตัว   </td>
+			<td name="std_id" value="{{ studentObj.std_id }}"> {{ studentObj.std_id }}  </td>
+		</tr>
+		<tr>
+			<td></td>
+			<td></td>
+			<td>{{ studentObj.userprofile.firstname_th }}&nbsp{{ studentObj.userprofile.lastname_th }}</td>
+		</tr>
+		<tr>
+			<td></td>
+			<td>เรียน</td>
+			<td>
+			<script>
+				x = {{ studentObj.degree }}
+				if (x == '1') {
+					document.write('มหาบัณฑิต   :  โท')
+				}
+				else if (x == '2'){
+					document.write('ดุษฎีบัณฑิต  :  เอก')
+				}
+			</script></td>
+		</tr>
+		<tr><td>&nbsp;&nbsp;</td></tr>
+		<tr>
+			<td><input type="checkbox" name="teach_name" value="true">  :  </td>
+			<td>
+				ตั้งอาจารย์ที่ปรึกษาวิทยานิพนธ์
+			</td>
+			<td>
+		  		<label for="adviser"> ชื่ออาจารย์ </label>
+		  		<select name="adviser" id="adviser">
+					<option value="">-----</option>
+					<option value="ศาสตราจารย์  ประยุทธ อัครเอกฒาลิน">ศาสตราจารย์  ประยุทธ อัครเอกฒาลิน</option>
+					<option value="รองศาสตราจารย์  วิบูลย์  ชื่นแขก">รองศาสตราจารย์  วิบูลย์  ชื่นแขก</option>
+					<option value="ผู้ช่วยศาสตราจารย์  อภิบาล  พฤกษานุบาล">ผู้ช่วยศาสตราจารย์  อภิบาล  พฤกษานุบาล</option>
+					<option value="ผู้ช่วยศาสตราจารย์  บัลลังก์  เนียมมณี">ผู้ช่วยศาสตราจารย์  บัลลังก์  เนียมมณี</option>
+					<option value="อาจารย์  ศราวุธ  ชัยมูล">อาจารย์  ศราวุธ  ชัยมูล</option>
+					<option value="ผู้ช่วยศาสตราจารย์  วิไลพร  แซ่ลี้">ผู้ช่วยศาสตราจารย์  วิไลพร  แซ่ลี้</option>
+					<option value="ผู้ช่วยศาสตราจารย์  ธีรธรรม  บุณยะกุล">ผู้ช่วยศาสตราจารย์  ธีรธรรม  บุณยะกุล</option>
+					<option value="ผู้ช่วยศาสตราจารย์  พิสิษฐ์  ลิ่วธนกุล">ผู้ช่วยศาสตราจารย์  พิสิษฐ์  ลิ่วธนกุล</option>
+					<option value="ผู้ช่วยศาสตราจารย์  สมพร  สิริสำราญนุกูล">ผู้ช่วยศาสตราจารย์  สมพร  สิริสำราญนุกูล</option>
+					<option value="ผู้ช่วยศาสตราจารย์  ชาตรี  มหัทธนจาตุภัทร">ผู้ช่วยศาสตราจารย์  ชาตรี  มหัทธนจาตุภัทร</option>
+					<option value="อาจารย์  เอกรัฐ  บุญภูงา">อาจารย์  เอกรัฐ  บุญภูงา</option>
+					<option value="อาจารย์  นพดล  ฉาบแก้ว">อาจารย์  นพดล  ฉาบแก้ว</option>
+					<option value="อาจารย์  เพ็ญนภา ไพโรจน์อมรชัย">อาจารย์  เพ็ญนภา ไพโรจน์อมรชัย</option>
+					<option value="อาจารย์  พิสิฐ  วนิชชานันท์">อาจารย์  พิสิฐ  วนิชชานันท์</option>
+					<option value="รองศาสตราจารย์  สุขสันติ์  นุ่นงาม">รองศาสตราจารย์  สุขสันติ์  นุ่นงาม</option>
+					<option value="รองศาสตราจารย์  วรา  วราวิทย์">รองศาสตราจารย์  วรา  วราวิทย์</option>
+					<option value="รองศาสตราจารย์  ณชล  ไชยรัตนะ">รองศาสตราจารย์  ณชล  ไชยรัตนะ</option>
+					<option value="รองศาสตราจารย์  พงษ์ศักดิ์  กีรติวินทกร">รองศาสตราจารย์  พงษ์ศักดิ์  กีรติวินทกร</option>
+					<option value="รองศาสตราจารย์  ธีรพล เดโชเกียรติถวัลย์">รองศาสตราจารย์  ธีรพล เดโชเกียรติถวัลย์</option>
+					<option value="รองศาสตราจารย์  ไชยันต์  สุวรรณชีวะศิริ">รองศาสตราจารย์  ไชยันต์  สุวรรณชีวะศิริ</option>
+					<option value="รองศาสตราจารย์  เวช  วิเวก">รองศาสตราจารย์  เวช  วิเวก</option>
+					<option value="รองศาสตราจารย์  มนูญ  พ่วงพูล">รองศาสตราจารย์  มนูญ  พ่วงพูล</option>
+					<option value="ผู้ช่วยศาสตราจารย์  ศิริชัย  รุจิพัฒนพงศ์">ผู้ช่วยศาสตราจารย์  ศิริชัย  รุจิพัฒนพงศ์</option>
+					{%if studentObj.degree == '1'%}
+					<option value="ผู้ช่วยศาสตราจารย์  ศราวุฒิ  คลี่สุวรรณ์">ผู้ช่วยศาสตราจารย์  ศราวุฒิ  คลี่สุวรรณ์</option>
+					<option value="ผู้ช่วยศาสตราจารย์  สิทธิพร  เกิดสำอางค์">ผู้ช่วยศาสตราจารย์  สิทธิพร  เกิดสำอางค์</option>
+					<option value="อาจารย์  เรวัต  ศิริโภคาภิรมย์">อาจารย์  เรวัต  ศิริโภคาภิรมย์</option>
+					{%endif%}
+		  		</select>
+			</td>
+		</tr>
+		<tr><td>&nbsp;&nbsp;</td></tr>
+		<tr>
+			<td><input type="checkbox" name="viyaniponh_name" value="true">  :  </td>
+			<td  width="20%" valign="top">เสนอวิทยานิพนธ์ เรื่อง</td>
+			<td><textarea name="name_thai" cols="60" rows="2" placeholder="ชื่อภาษาไทย"></textarea></td>
+		</tr>
+		<tr>
+			<td valign="top">&nbsp;</td>
+			<td></td>
+			<td><textarea name="name_eng" cols="60" rows="2" placeholder="ชื่อภาษาอังกฤษ"></textarea></td>
+		</tr>
+		<tr>
+			<td></td>
+			<td valign="top">&nbsp;</td>
+			<td><font color="#FF0000">***หมายเหตุ  ต้องลงทะเบียนวิทยานิพนธ์ไม่น้อยกว่า  3  หน่วยกิตในภาคการศึกษานั้น ***</font></td>
+		</tr>
+		<tr><td>&nbsp;&nbsp;</td></tr>
+		<tr>
+			<td><input type="checkbox" name="project_name" value="true">  :  </td>
+			<td>สอบหัวข้อวิทยานิพนธ์</td>
+			<td>วันที่
+		  		<select name="name_day" id="day">
+					<option value="">--</option>
+					<option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option>
+					<option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option>
+					<option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option>
+					<option value="13">13</option><option value="14">14</option><option value="15">15</option><option value="16">16</option>
+					<option value="17">17</option><option value="18">18</option><option value="19">19</option><option value="20">20</option>
+					<option value="21">21</option><option value="22">22</option><option value="23">23</option><option value="24">24</option>
+					<option value="25">25</option><option value="26">26</option><option value="27">27</option><option value="28">28</option>
+					<option value="29">29</option><option value="30">30</option><option value="31">31</option>
+				</select>
+				เดือน
+		  		<select name="name_month" id="month">
+					<option value="">-----</option>
+					<option value="มกราคม">มกราคม</option>
+					<option value="กุมภาพันธ์">กุมภาพันธ์</option>
+					<option value="มีนาคม">มีนาคม</option>
+					<option value="เมษายน">เมษายน</option>
+					<option value="พฤษภาคม">พฤษภาคม</option>
+					<option value="มิถุนายน">มิถุนายน</option>
+					<option value="กรกฏาคม">กรกฏาคม</option>
+					<option value="สิงหาคม">สิงหาคม</option>
+					<option value="กันยายน">กันยายน</option>
+					<option value="ตุลาคม">ตุลาคม</option>
+					<option value="พฤศจิกายน">พฤศจิกายน</option>
+					<option value="ธันวาคม">ธันวาคม</option>
+			  	</select>
+				ปี
+				<select name="name_year" id="year">
+					<option value="">----</option>
+					<option value="2565">2565</option>
+					<option value="2564">2564</option>
+					<option value="2563">2563</option>
+					<option value="2562">2562</option>
+					<option value="2561">2561</option>
+					<option value="2560">2560</option>
+					<option value="2559">2559</option>
+					<option value="2558">2558</option>
+					<option value="2557">2557</option>
+					<option value="2556">2556</option>
+				</select>
+				
+			</td>
+		</tr>
+		<tr>
+			<td></td>
+			<td></td>
+			<td><font color="#FF0000">***หมายเหตุ  ต้องดำเนินการให้แล้วเสร็จภายใน  30  วันหลังจากแต่งตั้งอาจารย์ที่ปรึกษาวิทยานิพนธ์และอนุมัติโครการวิทยานิพนธ์ที่เสนอ ***</font></td>
+		</tr>
+		<tr><td>&nbsp;&nbsp;</td></tr>
+		</table>
+		<table align="center" style="width:60%">
+		<tr>
+			<td><input type="checkbox" name="test" value="true">  :  </td>
+			<td width="26%">สอบความก้าวหน้าวิทยานิพนธ์&nbsp;</td>
+			<td>
+				วันที่
+				<select name="test_day" id="day">
+					<option value="">--</option>
+					<option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option>
+					<option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option>
+					<option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option>
+					<option value="13">13</option><option value="14">14</option><option value="15">15</option><option value="16">16</option>
+					<option value="17">17</option><option value="18">18</option><option value="19">19</option><option value="20">20</option>
+					<option value="21">21</option><option value="22">22</option><option value="23">23</option><option value="24">24</option>
+					<option value="25">25</option><option value="26">26</option><option value="27">27</option><option value="28">28</option>
+					<option value="29">29</option><option value="30">30</option><option value="31">31</option>
+				</select>
+				เดือน
+				<select name="test_month" id="month">
+					<option value="">-----</option>
+					<option value="มกราคม">มกราคม</option>
+					<option value="กุมภาพันธ์">กุมภาพันธ์</option>
+					<option value="มีนาคม">มีนาคม</option>
+					<option value="เมษายน">เมษายน</option>
+					<option value="พฤษภาคม">พฤษภาคม</option>
+					<option value="มิถุนายน">มิถุนายน</option>
+					<option value="กรกฏาคม">กรกฏาคม</option>
+					<option value="สิงหาคม">สิงหาคม</option>
+					<option value="กันยายน">กันยายน</option>
+					<option value="ตุลาคม">ตุลาคม</option>
+					<option value="พฤศจิกายน">พฤศจิกายน</option>
+					<option value="ธันวาคม">ธันวาคม</option>
+				</select>
+				ปี
+				<select name="test_year" id="year">
+					<option value="">----</option>
+					<option value="2565">2565</option>
+					<option value="2564">2564</option>
+					<option value="2563">2563</option>
+					<option value="2562">2562</option>
+					<option value="2561">2561</option>
+					<option value="2560">2560</option>
+					<option value="2559">2559</option>
+					<option value="2558">2558</option>
+					<option value="2557">2557</option>
+					<option value="2556">2556</option>
+				</select
+			</td>
+		</tr>
+			<tr>
+				<td></td>
+				<td></td>
+				<td><font color="#FF0000">***หมายเหตุ ***</font></td>
+			</tr>
+		<tr><td>&nbsp;&nbsp;</td></tr>
+		</table>
+		<table align="center" style="width:60%">
+			<tr>
+				<td><input type="checkbox" name="testend" value="true">  :  </td>
+				<td width="21%">สอบป้องกันวิทยานิพนธ์</td>
+				<td>วันที่
+				<select name="testend_day" id="day">
+					<option value="">--</option>
+					<option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option>
+					<option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option>
+					<option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option>
+					<option value="13">13</option><option value="14">14</option><option value="15">15</option><option value="16">16</option>
+					<option value="17">17</option><option value="18">18</option><option value="19">19</option><option value="20">20</option>
+					<option value="21">21</option><option value="22">22</option><option value="23">23</option><option value="24">24</option>
+					<option value="25">25</option><option value="26">26</option><option value="27">27</option><option value="28">28</option>
+					<option value="29">29</option><option value="30">30</option><option value="31">31</option>
+				</select>
+				เดือน
+				<select name="testend_month" id="month">
+					<option value="">-----</option>
+					<option value="มกราคม">มกราคม</option>
+					<option value="กุมภาพันธ์">กุมภาพันธ์</option>
+					<option value="มีนาคม">มีนาคม</option>
+					<option value="เมษายน">เมษายน</option>
+					<option value="พฤษภาคม">พฤษภาคม</option>
+					<option value="มิถุนายน">มิถุนายน</option>
+					<option value="กรกฏาคม">กรกฏาคม</option>
+					<option value="สิงหาคม">สิงหาคม</option>
+					<option value="กันยายน">กันยายน</option>
+					<option value="ตุลาคม">ตุลาคม</option>
+					<option value="พฤศจิกายน">พฤศจิกายน</option>
+					<option value="ธันวาคม">ธันวาคม</option>
+				</select>
+				ปี
+				<select name="testend_year" id="year">
+					<option value="">----</option>
+					<option value="2565">2565</option>
+					<option value="2564">2564</option>
+					<option value="2563">2563</option>
+					<option value="2562">2562</option>
+					<option value="2561">2561</option>
+					<option value="2560">2560</option>
+					<option value="2559">2559</option>
+					<option value="2558">2558</option>
+					<option value="2557">2557</option>
+					<option value="2556">2556</option>
+				</select>
+				</td>
+			</tr>
+			<tr>
+				<td></td>
+				<td></td>
+				<td><font color="#FF0000">***หมายเหตุ ***</font></td>
+			</tr>
+			<tr><td>&nbsp;&nbsp;</td></tr>
+		</form>
+	</table>
+	&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp;
+	<a href="{% url 'group2:viyanipon' %}"><input class="btn btn-danger" type="button" value="save" name = 'save' /></a> 
+	<br><br><br><br>
+</body>
+{% endblock %}
