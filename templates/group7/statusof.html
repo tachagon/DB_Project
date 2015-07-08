@@ -3,7 +3,7 @@
 {% block title %}Group7{% endblock %}
 
 {% block pageHeader %}
-<h2>กระบวน <small>การเบิกจ่ายค่าวัสดุในการทำโครงงาน</small></h2>
+<h2>ระบบ <small>เบิกจ่ายค่าวัสดุในการทำโครงงาน</small></h2>
 <ol class="breadcrumb">
     <li><a href="{% url 'login:menu' %}">เมนู</a></li>
     <li><a href="/group7Project_Docs/">รายชื่อโครงงาน</a></li>
@@ -14,7 +14,7 @@
 
 {% block content %}
 <div class="container-fluid">
-<center><h3>สถานะรายการใบสั่งวัสดุภาควิชาวิศวกรรมไฟฟ้าและคอมพิวเตอร์{{order.Projectg7_id}}</h3></center>
+<center><h3>สถานะรายการใบสั่งวัสดุภาควิชาวิศวกรรมไฟฟ้าและคอมพิวเตอร์</h3></center>
 {% if order.status_of_set.all %}
 	<center>
 	<table border ="1"  width="100%"><font color="BLACK">

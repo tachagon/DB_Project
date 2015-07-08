@@ -3,7 +3,7 @@
 {% block title %}Group7{% endblock %}
 
 {% block pageHeader %}
-<h2>กระบวน <small>การเบิกจ่ายค่าวัสดุในการทำโครงงาน</small></h2>
+<h2>ระบบ <small>เบิกจ่ายค่าวัสดุในการทำโครงงาน</small></h2>
 <ol class="breadcrumb">
     <li><a href="{% url 'login:menu' %}">เมนู</a></li>
     <li><a href="/group7Project_Docs/">รายชื่อโครงงาน</a></li>
@@ -19,9 +19,9 @@
 	<center>
 	<table border ="1"  width="100%"><font color="BLACK">
 		<tr>
-			<th><center>เลขที่ใบสั่งซื้อ</center></th>
-			<th><center>บริษัท</center></th>
 			<th><center>ลำดับที่</center></th>
+			<th><center>บริษัท</center></th>
+			<th><center>ที่อยู่บริษัท</center></th>
 			<th><center>รายการวัสดุ</center></th>
 			<th><center>จำนวน</center></th>
 			<th><center>ราคา/หน่วย</center></th>
@@ -31,9 +31,9 @@
 		</tr>
 	{% for pay in object %}
 		<tr>
-			<td><center>{{ pay.OrderID }}</center></td>
-			<td><center>{{ pay.Company }}</center></td>
 			<td><center>{{ forloop.counter }}</center></td>
+			<td><center>{{ pay.Company }}</center></td>
+			<td><center>{{ pay.OrderID }}</center></td>
 			<td><center>{{ pay.Item_name }}</center></td>
 			<td><center>{{ pay.Amount }}</center></td>
 			<td><center>{{ pay.Cost }}</center></td>

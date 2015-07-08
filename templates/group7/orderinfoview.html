@@ -50,10 +50,20 @@
 	<tr>
 		<td><center>{{order.Date}}</center></td> <!-- reference from "Date" of  Order-->
 		<td><center>{{project.name_thai}}</center></td> <!-- reference from "Project_name" of  Order-->
-		<td><center>{{order.name}}</center></td> <!-- reference from "Member" of  Order-->
+		<td>
+		{% for s in student %}
+		<center>{{s}}</center> <!-- reference from "Member" of  Order-->
+		{% if forloop.last %}
+		{% else %}
+			,
+		{% endif %}
+		{% endfor %}
+		</td>
 		{% for name in teacher %}
 			{%if name.id == project.teacher_id%}
+				{% if forloop.counter == 1%}
 				<td><center>{{ name }}</center></td> <!--pull Value from Group6 -->
+				{% endif %}
 			{%endif%}
 		{%endfor%}
 	</tr>
