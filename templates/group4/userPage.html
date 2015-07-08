@@ -1,0 +1,538 @@
+{% extends "base.html" %}
+{% block head %}
+<style>
+
+</style>
+{% endblock %}
+
+{% block title %}ระบบการเบิกจ่ายค่ารักษาพยาบาล{% endblock %}
+
+{% block pageHeader %}
+<h2>ระบบ<small>การเบิกจ่ายค่ารักษาพยาบาล</small></h2>
+<ol class="breadcrumb">
+    <li><a href="{% url 'login:menu' %}">เมนู</a></li>
+    <li class="active">หน้าหลักของผู้ใช้งาน</li>
+</ol>
+{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid">
+    <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation"  class="active"><a href="#showStat" aria-controls="showStat" role="tab" data-toggle="tab">สถิติการเบิกจ่าย</a></li>
+        <li role="presentation"><a href="#newCure" aria-controls="newCure" role="tab" data-toggle="tab">สร้างใบเบิกจ่ายค่ารักษาพยาบาล</a></li>
+        <li role="presentation"><a href="#newStudy" aria-controls="newstudy" role="tab" data-toggle="tab">สร้างใบเบิกจ่ายเงินสวัสดิการ</a></li>
+        <li role="presentation"><a href="#editFamily" aria-controls="editFamily" role="tab" data-toggle="tab">แก้ไขข้อมูลครอบครัว</a></li>
+    </ul><br>
+    <div class="col-md-3"></div>
+    <div class="col-md-7">
+        <div class="tab-content">
+            <div role="tabpanel" class="tab-pane active" id="showStat">
+                {% if eachUserDataList %}
+                <h3>สถิติการเบิกจ่ายค่ารักษาพยาบาลของผู้ใช้งาน</h3>
+                <div class="row">
+                    <div class="table-responsive">
+                        <table class="table table-hover table bordered">
+                            <thead>
+                            <tr>
+                                <th>ลำดับ</th>
+                                <th>วันที่</th>
+                                <th>จำนวนเงิน</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for data in eachUserDataList %}
+                            <tr>
+                                <td data-title="ลำดับ">{{ forloop.counter }}</td>
+                                <td data-title="วันที่">{{ data.date}}</td>
+                                <td data-title="จำนวนเงิน">{{ data.priceChar }}</td>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                {% endif %}
+
+                {% if withdrawCureList %}
+                <div class="row">
+                    <h3>ใบการเบิกจ่ายค่ารักษาพยาบาลทั้งหมดของผู้ใช้งาน</h3>
+                    <div class="table-responsive">
+                        <table class="table table-hover table-bordered">
+                            <thead>
+                            <tr>
+                                <th>ลำดับ</th>
+                                <th>วันที่</th>
+                                <th>เมนู</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for officer in withdrawCureList%}
+                            <tr>
+                                <td data-title="ลำดับ">{{ forloop.counter }}</td>
+                                <td data-title="วันที่">{{ officer.dateCommit|date:"P  d-m-Y" }}</td>
+                                <td data-title="เมนู">
+                                    <a class="btn btn-info btn-xs" href="{% url 'group4:addpdf' officer.id%}" target="_blank">พิมพ์</a>
+                                </td>
+
+                                </td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table><br><br><br><br><br>
+                    </div>
+
+                </div>
+                {% else %}
+                <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
+                    </div>
+                    <div class="col-md-3"></div>
+                </div>
+                {% endif %}
+
+                {% if withdrawStudyList %}
+                <div class="row">
+                    <h3>ใบการเบิกเงินค่าสวัสดิการเกี่ยวกับการศึกษาของบุตรทั้งหมดของผู้ใช้งาน</h3>
+                    <div class="table-responsive">
+                        <table class="table table-hover table-bordered">
+                            <thead>
+                            <tr>
+                                <th>ลำดับ</th>
+                                <th>วันที่</th>
+                                <th>เมนู</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for office in withdrawStudyList %}
+                            <tr>
+                                <td data-title="ลำดับ">{{ forloop.counter }}</td>
+                                <td data-title="วันที่">{{ office.dateCommit|date:"P  d-m-Y" }}</td>
+                                <td data-title="เมนู">
+                                    <a class="btn btn-info btn-xs" href="{% url 'group4:addpdf2' office.id%}" target="_blank">พิมพ์</a>
+                                </td>
+
+                                </td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table><br><br><br><br><br>
+                    </div>
+
+                </div>
+                {% else %}
+                <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
+                    </div>
+                    <div class="col-md-3"></div>
+                </div>
+                {% endif %}
+
+
+            </div>
+
+
+            <div role="tabpanel" class="tab-pane" id="newCure">
+                <div class="row">
+                    <div class="container-fluid">
+                        <div class="col-md-1"></div>
+                        <div class="col-md-8">
+                            <form class="form-horizontal" method="post" action="{%url 'group4:commitWithdrawCure'%}">
+                                {% csrf_token %}
+                                <fieldset disabled>
+                                    <b>ข้าพเจ้า </b><input type="text" class="form-control" name='name' value="{{objUsers.firstname_th}} {{objUsers.lastname_th}}"><br>
+                                </fieldset>
+                                <b>เลขที่บัญชีออมทรัพย์</b><input type="text" class="form-control" name='account_id' required><br>
+                                <b>ขอเบิกค่ารักษาพยาบาลของ</b><br>
+                                <div class="btn-group" data-toggle="buttons">
+                                    <label class="btn btn-primary">
+                                        <input type="checkbox" autocomplete="off" name="check" value="1">ตนเอง
+                                    </label>
+                                    <label class="btn btn-primary">
+                                        <input type="checkbox" autocomplete="off" name="check" value="2">คู่สมรส
+                                    </label>
+                                    <label class="btn btn-primary">
+                                        <input type="checkbox" autocomplete="off" name="check" value="3">บิดา
+                                    </label>
+                                    <label class="btn btn-primary">
+                                        <input type="checkbox" autocomplete="off" name="check" value="4">มารดา
+                                    </label>
+                                    <label class="btn btn-primary" name="childW1" onclick="jQuery('#child1').toggle(500)" >
+                                        <input type="checkbox" autocomplete="off" name="check" value="5">บุตร
+                                    </label>
+                                    <label class="btn btn-primary" name="childW2" onclick="jQuery('#child2').toggle(500)">
+                                        <input type="checkbox" autocomplete="off" name="check" value="6">บุตร
+                                    </label>
+                                </div><br><br>
+
+                                <div id="child1" style="display:none"><b>บุตรคนที่ </b><input type="number" name="orderchildW1" class="form-control"><br></div>
+                                <div id="child2" style="display:none"><b>บุตรคนที่ </b><input type="number" name="orderchildW2" class="form-control"><br></div>
+
+
+                                <b>ป่วยเป็นโรค</b><input type='text' class="form-control" name='disease'><br>
+                                <b>ได้รับการตรวจรักษาพยาบาลจาก</b><input type='text' class="form-control" name='hospital'><br>
+                                <b>เป็นสถานพยบาลของ</b>
+                                <select class="form-control" name='hospitalOf'>
+                                    <option value="2" selected="selected">-- Please Select --</option>
+                                    <option value="0">ของทางราชการ</option>
+                                    <option value="1">เอกชน</option>
+                                </select><br>
+                                <b>ตั้งแต่วันที่</b><input type='date' class="form-control" name='startDate'><br>
+                                <b>ถึงวันที่</b><input type='date' class="form-control" name='stopDate'><br>
+                                <b>เป็นเงินรวมทั้งสิ้น(บาท)</b><input type='text' class="form-control" name='value'><br>
+                                <b>(จำนวนเงินเป็นภาษาไทย)</b><input type='text' class="form-control" name='valueChar'><br>
+                                <b>ตามใบเสร็จรับเงินที่แนบจำนวน</b><input type='text' class="form-control" name='numBill'><br>
+                                <b>ข้าพเจ้ามีสิทธิได้รับเงินสวัสดิการเกี่ยวกับการรักษาพยาบาลเป็นเงิน(บาท)</b><input type='text' class="form-control" name='price'><br>
+                                <b>(จำนวนเงินภาษาไทย)</b><input type='text' class="form-control" name='priceChar'><br>
+                                <center><button type="submit" class="btn btn-primary">บันทึกข้อมูลใบเบิกจ่าย</button></center><br><br><br>
+                            </form>
+                        </div>
+                        <div class="col-md-3"></div>
+                    </div>
+                </div>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="newStudy">
+                <div class="row">
+                    <div class="container-fluid">
+                        <div class="col-md-1"></div>
+                        <div class="col-md-8">
+                            <form class="form-horizontal" method="post" action="{%url 'group4:commitWithdrawStudy'%}">
+                                {% csrf_token %}
+                                <fieldset disabled>
+                                    <b>ข้าพเจ้า </b><input type="text" class="form-control" name='name' value="{{objUsers.firstname_th}} {{objUsers.lastname_th}}"><br>
+                                </fieldset>
+                                <b>เลขที่บัญชีออมทรัพย์</b><input type="text" class="form-control" name='account_id' required><br>
+                                <b>ข้าพเจ้าได้จ่ายเงินค่าการศึกษาของบุตรดังนี้</b><br>
+                                <div class="btn-group" data-toggle="buttons">
+
+                                    <label class="btn btn-primary" name="child1" onclick="jQuery('#child11').toggle(500)" >
+                                        <input type="checkbox" autocomplete="off" name="check1" value="1">บุตรบุคคลที่ 1
+                                    </label>
+                                    <label class="btn btn-primary" name="child2" onclick="jQuery('#child22').toggle(500)">
+                                        <input type="checkbox" autocomplete="off" name="check1" value="2">บุตรบุคคลที่ 2
+                                    </label>
+                                    <label class="btn btn-primary" name="child3" onclick="jQuery('#child33').toggle(500)" >
+                                        <input type="checkbox" autocomplete="off" name="check1" value="3">บุตรบุคคลที่ 3
+                                    </label>
+                                </div><br><br>
+                                <div id="child11" style="display:none">
+                                    <b>บุตรคนที่ </b><input type="number" name="orderchild1" class="form-control"><br>
+                                    <b>เป็นเงิน </b><input type="text" name="pricechild1" class="form-control"><br>
+                                </div>
+
+                                <div id="child22" style="display:none">
+                                    <b>บุตรคนที่ </b><input type="number" name="orderchild2" class="form-control"><br>
+                                    <b>เป็นเงิน </b><input type="text" name="pricechild2" class="form-control"><br>
+                                </div>
+                                <div id="child33" style="display:none">
+                                    <b>บุตรคนที่ </b><input type="number" name="orderchild3" class="form-control"><br>
+                                    <b>เป็นเงิน </b><input type="text" name="pricechild3" class="form-control"><br>
+                                </div>
+                                <center><button type="submit" class="btn btn-primary">บันทึกข้อมูลใบเบิกจ่าย</button></center><br><br><br>
+                            </form>
+                        </div>
+                        <div class="col-md-3"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div role="tabpanel" class="tab-pane" id="editFamily">
+                <div class="row">
+                    <div class="container-fluid">
+                        <div class="table-responsive">
+                            <table class="table table-hover table bordered" id="no-more-tables">
+                                <thead>
+                                <tr>
+                                    <th>สถานะ</th>
+                                    <th>ชื่อ</th>
+                                    <th>นามสกุล</th>
+                                    <th>เลขประจำตัวประชาชน</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% if eachFList %}
+                                <tr>
+                                    <td data-title="สถานะ">บิดา</td>
+                                    <td data-title="ชื่อ">{{ eachFList.firstname }}</td>
+                                    <td data-title="นามสกุล">{{ eachFList.lastname }}</td>
+                                    <td data-title="เลขประจำตัวประชาชน">{{ eachFList.pid }}</td>
+                                    <td data-title="edit"><button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal1">Edit</button></td>
+                                </tr>
+                                {% endif %}
+                                {% if eachMList %}
+                                <tr>
+                                    <td data-title="สถานะ">มารดา</td>
+                                    <td data-title="ชื่อ">{{ eachMList.firstname }}</td>
+                                    <td data-title="นามสกุล">{{ eachMList.lastname }}</td>
+                                    <td data-title="เลขประจำตัวประชาชน">{{ eachMList.pid }}</td>
+                                    <td data-title="edit"><button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal2">Edit</button></td>
+                                </tr>
+                                {% endif %}
+                                {% if eachSList %}
+                                <tr>
+                                    <td data-title="สถานะ">คู่สมรส</td>
+                                    <td data-title="ชื่อ">{{ eachSList.firstname }}</td>
+                                    <td data-title="นามสกุล">{{ eachSList.lastname }}</td>
+                                    <td data-title="เลขประจำตัวประชาชน">{{ eachSList.pid }}</td>
+                                    <td data-title="edit"><button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal3">Edit</button></td>
+                                </tr>
+                                {% endif %}
+                                {% for data in eachCList %}
+                                <tr>
+                                    <td data-title="สถานะ">บุตร</td>
+                                    <td data-title="ชื่อ">{{ data.firstname }}</td>
+                                    <td data-title="นามสกุล">{{ data.lastname }}</td>
+                                    <td data-title="เลขประจำตัวประชาชน">{{ data.pid }}</td>
+                                    <td data-title="edit"><button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myMod{{data.id}}">Edit</button></td>
+                                </tr>
+                                <div class="modal fade" id="myMod{{data.id}}" role="dialog">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h4 class="modal-title" >แก้ไขข้อมูลบุตร</h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                {% if data %}
+                                                <form method="post" action="{%url 'group4:commitc2' data.id%}">
+                                                    {% csrf_token %}
+                                                    <b>คำนำหน้า</b>
+                                                    <input type='text' class='form-control' name='title' value='{{data.title}}'>
+                                                    <b>ชื่อ </b>
+                                                    <input type='text' class='form-control' name='firstname' value='{{data.firstname}}'>
+                                                    <b> นามสกุล  </b>
+                                                    <input type='text' class='form-control' name='lastname' value='{{data.lastname}}'>
+                                                    <b>เลขประจำตัวประชาชน </b>
+                                                    <input type='text' class='form-control' name='pid'  value='{{data.pid}}'>
+                                                    <b>วันเกิด</b>
+                                                    <input type='date' class='form-control'name='birthDate'  value="{{data.birthDate|date:'Y-m-d'}}">
+                                                    <b>บุตรคนที่(บิดา)</b>
+                                                    <input type='text' class='form-control' name='orderF' value='{{data.orderF}}'>
+                                                    <b>บุตรคนที่(มารดา)</b>
+                                                    <input type='text' class='form-control' name='orderM' value='{{data.orderM}}'>
+                                                    <b>ข้อบกพร่อง</b>
+                                                    <select name='disable' class='form-control' value='{{data.disable}}'>
+                                                        <option value='0'>ไม่มี</option>
+                                                        <option value='1'>เป็นบุตรที่ไร้ความสามารถหรือเสมือนไร้ความสามารถ</option>
+                                                    </select><b>ความสัมพันธ์</b>
+                                                    <select name='parentRelate' class='form-control' value='{{data.parentRelate}}'>
+                                                        <option value='0'>เป็นบิดาชอบด้วยกฎหมาย</option><option value='1'>เป็นมารดา</option>
+                                                        <option value='2'>บุตรอยู่ในความปกครองของข้าพเจ้าโดยการสิ้นสุดขงการสมรส</option>
+                                                        <option value='3'>บุตรอยู่ในความอุปการะเลี้ยงดูของข้าพเจ้าเนื่องจากแยกกันอยู่ โดยมิได้หย่าขาดตามกฎหมาย</option>
+                                                    </select><br>
+                                                    <b>สถานศึกษา</b>
+                                                    <input type='text' class='form-control' name='school' value='{{data.school}}'>
+                                                    <b>อำเภอ</b>
+                                                    <input type='text' class='form-control' name='district' value='{{data.district}}'>
+                                                    <b>จังหวัด</b>
+                                                    <input type='text' class='form-control' name='province' value='{{data.province}}'>
+                                                    <b>ชั้นที่ศึกษา</b>
+                                                    <input type='text' class='form-control' name='degree' value='{{data.degree}}'>
+
+                                                    <button type='button' class='btn btn-default' data-dismiss='modal'>Close</button>
+                                                    <button type='submit' class='btn btn-primary'>Save changes</button>
+                                                </form>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="modal fade" id="myModal1" role="dialog">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title" >แก้ไขข้อมูลบิดา</h4>
+                                </div>
+                                <div class="modal-body">
+                                    {% if eachFList %}
+                                    <form method="post" action="{%url 'group4:commitf2' eachFList.id%}">
+                                        {% csrf_token %}
+                                        <b>คำนำหน้า</b><input type='text' class='form-control' name='title' value='{{eachFList.title}}'> <b>ชื่อ </b> <input type='text' class='form-control' name='firstname' value='{{eachFList.firstname}}'> <b> นามสกุล  </b><input type='text' class='form-control' name='lastname' value='{{eachFList.lastname}}'> <b>เลขประจำตัวประชาชน</b> <input type='text' class='form-control' name='pid' value='{{eachFList.pid}}'><br>
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                        <button type="submit" class="btn btn-primary">Save changes</button>
+                                    </form>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal fade" id="myModal2"role="dialog" >
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title" >แก้ไขข้อมูลมารดา</h4>
+                                </div>
+                                <div class="modal-body">
+                                    {% if eachMList %}
+                                    <form method="post" action="{%url 'group4:commitm2' eachMList.id%}">
+                                        {% csrf_token %}
+                                        <b>คำนำหน้า</b><input type='text' class='form-control' name='title' id='tt' value='{{eachMList.title}}'> <b>ชื่อ </b> <input type='text' class='form-control' name='firstname' id='fname' value='{{eachMList.firstname}}'> <b> นามสกุล  </b><input type='text' class='form-control' name='lastname' id='lname' value='{{eachMList.lastname}}'> <b>เลขประจำตัวประชาชน </b> <input type='text' class='form-control' name='pid' id='p' value='{{eachMList.pid}}'> <br>
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                        <button type="submit" class="btn btn-primary">Save changes</button></form>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal fade" id="myModal3" role="dialog">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title" id="myModalLabel">แก้ไขข้อมูลคู่สมรส</h4>
+                                </div>
+                                <div class="modal-body">
+                                    {% if eachSList %}
+                                    <form method="post" action="{%url 'group4:commits2' eachSList.id%}">
+                                        {% csrf_token %}
+                                        <b>คำนำหน้า</b>
+                                        <input type='text' class='form-control' name='title'  value='{{eachSList.title}}'>
+                                        <b>ชื่อ </b>
+                                        <input type='text' class='form-control' name='firstname' value='{{eachSList.firstname}}'>
+                                        <b> นามสกุล  </b>
+                                        <input type='text' class='form-control' name='lastname' value='{{eachSList.lastname}}'>
+                                        <b>เลขประจำตัวประชาชน </b>
+                                        <input type='text' class='form-control' name='pid' value='{{eachSList.pid}}'>
+                                        <b>ที่ทำงาน</b>
+                                        <input type='text' class='form-control' name='office' id='off' value='{{eachSList.office}}'>
+                                        <b>ตำแหน่ง</b>
+                                        <input type='text' class='form-control' name='position' id='pos' value='{{eachSList.position}}'>
+                                        <b>ชนิดของงาน</b>
+                                        <select name='typeOfWork' class='form-control' value='{{eachSList.typeOfWork}}'>
+                                            <option value='0'>ไม่เป็นข้าราชการหรือลูกจ้างประจำ</option>
+                                            <option value='1'>เป็นข้าราชการ</option>
+                                            <option value='2'>ลูกจ้างประจำ</option>
+                                            <option value='3'>พนักงานมหาวิทยาลัย</option>
+                                            <option value='4'>เป็นพนักงานหรือลูกจ้างในรัฐวิสาหกิจ/หน่วยงานของทางราชการ ราชการส่วนท้องถิ่น กรุงเทพมหานคร องค์กรอิสระ อง์กรมหาชน หรือหน่วยงานอื่นใด</option
+                                                    ></select>
+                                        <b>สังกัด</b>
+                                        <input type='text' class='form-control' name='memberWith' id='mem' value='{{eachSList.memberWith}}'><br>
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                        <button type="submit" class="btn btn-primary">Save changes</button></form>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="container">
+                        <div class="dropdown">
+                            <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" >+ เพิ่มบุคคล
+                                <span class="caret"></span></button>
+                            <ul class="dropdown-menu">
+                                <li><a id="1" href="#" onclick="myFunction1();">บิดา</a></li>
+                                <li><a id="2" href="#" onclick="myFunction2();">มารดา</a></li>
+                                <li><a id="3" href="#" onclick="myFunction3();">คู่สมรส</a></li>
+                                <li><a id="3" href="#" onclick="myFunction4();">บุตร</a></li>
+                            </ul>
+                            <br>
+                            <script>
+{% if eachFList %}
+function myFunction1() {
+	document.getElementById("myform1").innerHTML = "";
+	document.getElementById("myform2").innerHTML = "";
+	document.getElementById("myform3").innerHTML = "";
+	document.getElementById("myform4").innerHTML = "";
+	document.getElementById("alert").innerHTML = "<div class='alert alert-danger'><a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a><strong>เกิดข้อผิดพลาด : </strong>สามารถมีบิดาได้คนเดียว</div>";
+}
+{% else %}
+function myFunction1() {
+	document.getElementById("myform2").innerHTML = "";
+	document.getElementById("myform3").innerHTML = "";
+	document.getElementById("myform4").innerHTML = "";
+	document.getElementById("myform1").innerHTML =  "{% csrf_token %} <b>คำนำหน้า</b><input type='text' class='form-control' name='title' id='tt'> <b>ชื่อ </b> <input type='text' class='form-control' name='firstname' id='fname'> <b> นามสกุล  </b><input type='text' class='form-control' name='lastname' id='lname' > <b>เลขประจำตัวประชาชน</b> <input type='text' class='form-control' name='pid' id='p'> <br><button type='submit' class='btn btn-primary'>Submit</button>";
+	document.getElementById("alert").innerHTML = "";
+}
+{% endif %}
+{% if eachMList %}
+function myFunction2(){
+	document.getElementById("myform1").innerHTML = "";
+	document.getElementById("myform2").innerHTML = "";
+	document.getElementById("myform3").innerHTML = "";
+	document.getElementById("myform4").innerHTML = "";
+	document.getElementById("alert").innerHTML = "<div class='alert alert-danger'><a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a><strong>เกิดข้อผิดพลาด : </strong>สามารถมีมารดาได้คนเดียว</div>";
+
+
+}
+{% else %}
+function myFunction2() {
+	document.getElementById("myform1").innerHTML = "";
+	document.getElementById("myform3").innerHTML = "";
+	document.getElementById("myform4").innerHTML = "";
+	document.getElementById("myform2").innerHTML =  "{% csrf_token %}<b>คำนำหน้า</b><input type='text' class='form-control' name='title' id='tt'> <b>ชื่อ </b> <input type='text' class='form-control' name='firstname' id='fname'> <b> นามสกุล  </b><input type='text' class='form-control' name='lastname' id='lname'> <b>เลขประจำตัวประชาชน </b> <input type='text' class='form-control' name='pid' id='p'> <br><button type='submit' class='btn btn-primary'>Submit</button>";
+	document.getElementById("alert").innerHTML = "";
+}
+{% endif %}
+{% if eachSList %}
+function myFunction3() {
+	document.getElementById("myform1").innerHTML = "";
+	document.getElementById("myform2").innerHTML = "";
+	document.getElementById("myform3").innerHTML = "";
+	document.getElementById("myform4").innerHTML = "";
+	document.getElementById("alert").innerHTML = "<div class='alert alert-danger'><a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a><strong>เกิดข้อผิดพลาด : </strong>สามารถมีคู่สมรสได้คนเดียว</div>";
+}
+{% else %}
+function myFunction3() {
+	document.getElementById("myform1").innerHTML = "";
+	document.getElementById("myform2").innerHTML = "";
+	document.getElementById("myform4").innerHTML = "";
+	document.getElementById("myform3").innerHTML =  "{% csrf_token %} <b>คำนำหน้า</b><input type='text' class='form-control' name='title' id='tt'> <b>ชื่อ </b> <input type='text' class='form-control' name='firstname' id='fname'> <b> นามสกุล  </b><input type='text' class='form-control' name='lastname' id='lname'> <b>เลขประจำตัวประชาชน </b><input type='text' class='form-control' name='pid' id='p'> <b>ที่ทำงาน</b><input type='text' class='form-control' name='office' id='off'><b>ตำแหน่ง</b><input type='text' class='form-control' name='position' id='pos'><b>ชนิดของงาน</b><select name='typeOfWork' class='form-control'><option value='0'>ไม่เป็นข้าราชการหรือลูกจ้าประจำ</option><option value='1'>เป็นข้าราชการ</option><option value='2'>ลูกจ้างประจำ</option><option value='3'>พนักงานมหาวิทยาลัย</option><option value='4'>เป็นพนักงานหรือลูกจ้างในรัฐวิสาหกิจ/หน่วยงานของทางราชการ ราชการส่วนท้องถิ่น กรุงเทพมหานคร องค์กรอิสระ อง์กรมหาชน หรือหน่วยงานอื่นใด</option></select><b>สังกัด</b><input type='text' class='form-control' name='memberWith' id='mem'><br><button type='submit' class='btn btn-primary'>Submit</button>";
+	document.getElementById("alert").innerHTML = "";
+}
+{% endif %}
+function myFunction4() {
+	document.getElementById("myform1").innerHTML = "";
+	document.getElementById("myform2").innerHTML = "";
+	document.getElementById("myform3").innerHTML = "";
+	document.getElementById("myform4").innerHTML =  "{% csrf_token %} <b>คำนำหน้า</b><input type='text' class='form-control' name='title' id='tt'> <b>ชื่อ </b> <input type='text' class='form-control' name='firstname' id='fname'> <b> นามสกุล  </b><input type='text' class='form-control' name='lastname' id='lname'> <b>เลขประจำตัวประชาชน </b> <input type='text' class='form-control' name='pid' id='p'> <b>วันเกิด</b><input type='date' class='form-control'name='birthDate' id='Date'><b>บุตรคนที่(บิดา)</b><input type='text' class='form-control' name='orderF' id='of'><b>บุตรคนที่(มารดา)</b><input type='text' class='form-control' name='orderM' id='om'><b>ข้อบกพร่อง</b><select name='disable' class='form-control'><option value='0'>ไม่มี</option><option value='1'>เป็นบุตรที่ไร้ความสามารถหรือเสมือนไร้ความสามารถ</option></select><b>ความสัมพันธ์</b><select name='parentRelate' class='form-control'><option value='0'>เป็นบิดาชอบด้วยกฎหมาย</option><option value='1'>เป็นมารดา</option><option value='2'>บุตรอยู่ในความปกครองของข้าพเจ้าโดยการสิ้นสุดขงการสมรส</option><option value='3'>บุตรอยู่ในความอุปการะเลี้ยงดูของข้าพเจ้าเนื่องจากแยกกันอยู่ โดยมิได้หย่าขาดตามกฎหมาย</option></select> <b>สถานศึกษา</b><input type='text' class='form-control' name='school'> <b>อำเภอ</b><input type='text' class='form-control' name='district'> <b>จังหวัด</b><input type='text' class='form-control' name='province'> <b>ชั้นที่ศึกษา</b><input type='text' class='form-control' name='degree'><br><button type='submit' class='btn btn-primary'>Submit</button>";
+	document.getElementById("alert").innerHTML = "";
+}
+
+$(function(){
+         $( "#date" ).datepicker({
+            changeMonth: true,
+            changeYear: true,
+            dateFormat: 'yyyy-mm-dd',
+            yearRange: '-100:+0',
+         });
+});
+
+
+</script>
+                            <br>
+
+                        </div>
+
+                        <div>
+                            <div class="col-md-8">
+                                <form id="myform1" method="post" action="{%url 'group4:commitf'%}"></form>
+                                <form id="myform2" method="post" action="{%url 'group4:commitm'%}"></form>
+                                <form id="myform3" method="post" action="{%url 'group4:commits'%}"></form>
+                                <form id="myform4" method="post" action="{%url 'group4:commitc'%}"></form>
+
+
+                                <div id="alert">
+
+                                </div><br><br><br><br><br><br><br>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-2"></div>
+</div>
+
+<br/>
+{% endblock %}<!-- /block content -->
+
+
