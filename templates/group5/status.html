@@ -1,63 +1,95 @@
 {% extends "base.html" %}
+{% load custom_function %}
+{% load staticfiles %}
+
+{% block title %}ตรวจสอบสถานะการฝึกงาน{% endblock %}
 
 {% block pageHeader %}
-
 <ol class="breadcrumb">
     <li><a href="{% url 'login:menu' %}">เมนู</a></li>
     <li class="active">ตรวจสอบสถานะการฝึกงาน</li>
-    <li><a href="{% url 'group5:company' %}">รายชื่อบริษัทฝึกงาน</a></li>
 </ol>
-		
 {% endblock %}
+
 {% block content %}
+<script type="type/javascript">
+function confirmLeave() {
+	if(!confirm("Do you wish to continue without finishing the payment process? Your account will not be setup...")) return;
+		window.open('popup.html','width=400,height=400');
+}
+</script>
 
+<div class="container-fluid">
+{% for message in messages %}
+    <br><font color = "FF0000" name="message">*{{ message }}</font>
+{% endfor %}
 {% if currentUser and stu and pet%}
-<table width = 100%>
-    <tr>
-	<td width = 10%></td>
-	<td width = 5%>รหัสนักศึกษา</td>
-	<td width = 10%>{{stu.std_id}}</td>
-	<td></td>
-    </tr>
-    <tr>
-	<td width = 10%></td>
-	<td width = 5%>ชื่อ-สกุล </td>
-	<td width = 10%>{{currentUser.firstname_th}} {{currentUser.lastname_th}}</td>
-	<td></td>
-    </tr>
-</table><br><br>
-<br><center><table border = '1' width= 80%>
-    <tr>
-	<td>
-	    สถานที่ฝึกงาน
-	</td>
-	<td>
-	    วันที่ยื่นใบคำร้องขอ
-	</td>
-	<td>
-	    สถานะ
-	</td>
-    </tr>
-    {% for item in pet %}
-	{% if stu.std_id =  item.studentG5_id%}
-	<tr>
-	    <td>
-		{{item.Internship_id}}
-	    </td>
-	    <td>
-		{{item.Date}}
-	    </td>
-	    <td>
-		{{item.StatusPetition}}
-	    </td>
-	</tr>
-	{% endif %}
-    {% endfor %}
-
-</table></center><br>    
-{% else %}    
-หมายเหตุ
+	<table width = 100%>
+    	<tr>
+			<td width = 20%></td>
+			<td width = 5%><h4>รหัสนักศึกษา</h4></td>
+			<td width = 10%><h4>{{stu.std_id}}</h4></td>
+			<td></td>
+    	</tr>
+		<tr>
+			<td width = 20%></td>
+			<td width = 5%><h4>ชื่อ-สกุล</h4></td>
+			<td width = 10%><h4>{{currentUser.firstname_th}} {{currentUser.lastname_th}}</h4></td>
+			<td></td>
+   	 	</tr>
+	</table>
+	<div class="table-responsive">
+                <table class="table table-hover table-bordered" id="no-more-tables">
+                    <thead>
+					{% for item in pet %}
+							{% if stu.std_id =  item.studentG5_id%}
+    					<tr>
+							<th>สถานที่ฝึกงาน</th>
+							<th>วันที่ยื่นใบคำร้องขอ</th>
+							<th>สถานะ</th>
+							<th>แก้ไขแบบคำร้องขอฝึกงาน</th>
+							<th>ปริ้นแบบคำร้องขอฝึกงาน</th>
+							{% if item.StatusPetition = "ยื่นคำร้อง" or item.StatusPetition = "ไม่ได้รับการอนุมัติเข้าฝึกงาน" %}
+							<th>ลบแบบคำร้องขอฝึกงาน</th>
+							{% endif %}
+						</tr>
+							{% endif %}
+    					{% endfor %}
+					</thead>
+					<tbody>
+    					{% for item in pet %}
+							{% if stu.std_id =  item.studentG5_id%}
+								<tr>
+	    							<td data-title= 'สถานที่ฝึกงาน'>{{item.Internship_id}}</td>
+	    							<td data-title= 'วันที่ยื่นใบคำร้องขอ'>{{item.Date}}</td>
+	   					 			<td data-title= 'สถานะ'>{{item.StatusPetition}}</td>
+									<td data-title= 'แก้ไขแบบคำร้องขอฝึกงาน'><a class="btn btn-warning"  href="{% url 'group5:status_edit' stu.std_id %}">ดูฟอร์ม</a></td>
+									<td data-title= 'ปริ้นแบบคำร้องขอฝึกงาน'><a class="btn btn-info" href="{% url 'group5:status_print' stu.std_id %}">ดูฟอร์ม</a></td>
+									{% if item.StatusPetition = "ยื่นคำร้อง" or item.StatusPetition = "ไม่ได้รับการอนุมัติเข้าฝึกงาน" %}
+									<td data-title= 'ลบแบบคำร้องขอฝึกงาน'>
+										 <a class="btn btn-danger" href = "javascript:if(confirm('คุณต้องการจะลบฟอร์มนี้ใช่หรือไม่ หากใช่ให้กด OK'))
+										 window.location='{% url 'group5:status_delete' stu.std_id %}';" target="_blank">ลบแบบฟอร์ม</a>
+									{% endif %}
+								 </tr>
+							{% endif %}
+    					{% endfor %}
+					</tbody>
+				</table>
+	</div>
+	</center><br>
+{% else %}
+	<div class="row">
+        <div class="col-md-3"></div>
+            <div class="col-md-6">
+                <div class="alert alert-warning" role="alert">
+                    <strong>ยังไม่มีข้อมูล!</strong> กรุณา
+                    <a href = '/group5/addpet/'><strong>เพิ่มข้อมูล</strong></a>
+                </div>
+            </div>
+		<div class="col-md-3"></div>
+	</div>
 {% endif %}
-
+	<center><a href="{% url 'login:menu' %}"><input class="btn btn-danger"  type ="button" name="Cancel_status" value="ย้อนกลับ" /></br></a></center>
+</div>
 {% endblock %}
 

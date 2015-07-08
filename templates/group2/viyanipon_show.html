@@ -87,12 +87,13 @@
 
 
 <body>
-	<table align="center" style="width:60%">
-		<form action="{% url 'group2:viyaniponshow' %}">
+	<table align="center" style="width:60%"><!--border="1">-->
+		<form method = "post" action="{% url 'group2:viyaniponshow' %}">
+			{%csrf_token%}
 		<tr>
 			<td></td>
 			<td>เลขประจำตัว   </td>
-			<td name="std_id" value="{{ studentObj.std_id }}"> {{ studentObj.std_id }}  </td>
+			<td> {{ studentObj.std_id }}  </td>
 		</tr>
 		<tr>
 			<td></td>
@@ -106,57 +107,146 @@
 			<script>
 				x = {{ studentObj.degree }}
 				if (x == '1') {
-					document.write('มหาบัณฑิต   :  โท')
+					document.write('มหาบัณฑิต   :  ปริญญาโท')
 				}
 				else if (x == '2'){
-					document.write('ดุษฎีบัณฑิต  :  เอก')
+					document.write('ดุษฎีบัณฑิต  :  ปริญญาเอก')
 				}
 			</script></td>
 		</tr>
 		<tr><td>&nbsp;&nbsp;</td></tr>
+		{%for i in table_show%}
+		{%if i.teach_name == 'true' and i.std_id == studentObj.std_id %}
 		<tr>
-			<td><input type="checkbox" name="teach_name" value="true">  :  </td>
+			<!-------------------------------------------------------------->
+			<td></td>
+			<td>
+				อาจารย์ที่ปรึกษาวิทยานิพนธ์	<!-------------------------------------------------------------->
+			</td>
+			<td>
+				{%if i.adviser == '1'%}
+					ศาสตราจารย์  ประยุทธ อัครเอกฒาลิน
+				{%elif i.adviser == '2'%}
+					รองศาสตราจารย์  วิบูลย์  ชื่นแขก
+				{%elif i.adviser == '3'%}
+					ผู้ช่วยศาสตราจารย์  อภิบาล  พฤกษานุบาล
+				{%elif i.adviser == '4'%}
+					ผู้ช่วยศาสตราจารย์  บัลลังก์  เนียมมณี
+				{%elif i.adviser == '5'%}
+					อาจารย์  ศราวุธ  ชัยมูล
+				{%elif i.adviser == '6'%}
+					ผู้ช่วยศาสตราจารย์  วิไลพร  แซ่ลี้
+				{%elif i.adviser == '7'%}
+					ผู้ช่วยศาสตราจารย์  ธีรธรรม  บุณยะกุล
+				{%elif i.adviser == '8'%}
+					ผู้ช่วยศาสตราจารย์  พิสิษฐ์  ลิ่วธนกุล
+				{%elif i.adviser == '9'%}
+					ผู้ช่วยศาสตราจารย์  สมพร  สิริสำราญนุกูล
+				{%elif i.adviser == '10'%}
+					ผู้ช่วยศาสตราจารย์  ชาตรี  มหัทธนจาตุภัทร
+				{%elif i.adviser == '11'%}
+					อาจารย์  เอกรัฐ  บุญภูงา
+				{%elif i.adviser == '12'%}
+					อาจารย์  นพดล  ฉาบแก้ว
+				{%elif i.adviser == '13'%}
+					อาจารย์  เพ็ญนภา ไพโรจน์อมรชัย
+				{%elif i.adviser == '14'%}
+					อาจารย์  พิสิฐ  วนิชชานันท์
+				{%elif i.adviser == '15'%}
+					รองศาสตราจารย์  สุขสันติ์  นุ่นงาม
+				{%elif i.adviser == '16'%}
+					รองศาสตราจารย์  วรา  วราวิทย์
+				{%elif i.adviser == '17'%}
+					รองศาสตราจารย์  ณชล  ไชยรัตนะ
+				{%elif i.adviser == '18'%}
+					รองศาสตราจารย์  พงษ์ศักดิ์  กีรติวินทกร
+				{%elif i.adviser == '19'%}
+					รองศาสตราจารย์  ธีรพล เดโชเกียรติถวัลย์
+				{%elif i.adviser == '20'%}
+					รองศาสตราจารย์  ไชยันต์  สุวรรณชีวะศิริ
+				{%elif i.adviser == '21'%}
+					adviser1 = "รองศาสตราจารย์  เวช  วิเวก
+				{%elif i.adviser == '22'%}
+					รองศาสตราจารย์  มนูญ  พ่วงพูล"
+				{%elif i.adviser == '23'%}
+					ผู้ช่วยศาสตราจารย์  ศิริชัย  รุจิพัฒนพงศ์
+				{%elif i.adviser == '24'%}
+					ผู้ช่วยศาสตราจารย์  ศราวุฒิ  คลี่สุวรรณ์
+				{%elif i.adviser == '25'%}
+					ผู้ช่วยศาสตราจารย์  สิทธิพร  เกิดสำอางค์
+				{%elif i.adviser == '26'%}
+					อาจารย์  เรวัต  ศิริโภคาภิรมย์
+				{%else%}
+				{%endif%}
+			</td>
+			{%endif%}	<!-------------------------------------------------------------->
+			{%endfor%}
+		</tr>
+		<tr>
+			<td></td>
 			<td>
 				ตั้งอาจารย์ที่ปรึกษาวิทยานิพนธ์
 			</td>
 			<td>
 		  		<label for="adviser"> ชื่ออาจารย์ </label>
 		  		<select name="adviser" id="adviser">
-					<option value="">-----</option>
-					<option value="ศาสตราจารย์  ประยุทธ อัครเอกฒาลิน">ศาสตราจารย์  ประยุทธ อัครเอกฒาลิน</option>
-					<option value="รองศาสตราจารย์  วิบูลย์  ชื่นแขก">รองศาสตราจารย์  วิบูลย์  ชื่นแขก</option>
-					<option value="ผู้ช่วยศาสตราจารย์  อภิบาล  พฤกษานุบาล">ผู้ช่วยศาสตราจารย์  อภิบาล  พฤกษานุบาล</option>
-					<option value="ผู้ช่วยศาสตราจารย์  บัลลังก์  เนียมมณี">ผู้ช่วยศาสตราจารย์  บัลลังก์  เนียมมณี</option>
-					<option value="อาจารย์  ศราวุธ  ชัยมูล">อาจารย์  ศราวุธ  ชัยมูล</option>
-					<option value="ผู้ช่วยศาสตราจารย์  วิไลพร  แซ่ลี้">ผู้ช่วยศาสตราจารย์  วิไลพร  แซ่ลี้</option>
-					<option value="ผู้ช่วยศาสตราจารย์  ธีรธรรม  บุณยะกุล">ผู้ช่วยศาสตราจารย์  ธีรธรรม  บุณยะกุล</option>
-					<option value="ผู้ช่วยศาสตราจารย์  พิสิษฐ์  ลิ่วธนกุล">ผู้ช่วยศาสตราจารย์  พิสิษฐ์  ลิ่วธนกุล</option>
-					<option value="ผู้ช่วยศาสตราจารย์  สมพร  สิริสำราญนุกูล">ผู้ช่วยศาสตราจารย์  สมพร  สิริสำราญนุกูล</option>
-					<option value="ผู้ช่วยศาสตราจารย์  ชาตรี  มหัทธนจาตุภัทร">ผู้ช่วยศาสตราจารย์  ชาตรี  มหัทธนจาตุภัทร</option>
-					<option value="อาจารย์  เอกรัฐ  บุญภูงา">อาจารย์  เอกรัฐ  บุญภูงา</option>
-					<option value="อาจารย์  นพดล  ฉาบแก้ว">อาจารย์  นพดล  ฉาบแก้ว</option>
-					<option value="อาจารย์  เพ็ญนภา ไพโรจน์อมรชัย">อาจารย์  เพ็ญนภา ไพโรจน์อมรชัย</option>
-					<option value="อาจารย์  พิสิฐ  วนิชชานันท์">อาจารย์  พิสิฐ  วนิชชานันท์</option>
-					<option value="รองศาสตราจารย์  สุขสันติ์  นุ่นงาม">รองศาสตราจารย์  สุขสันติ์  นุ่นงาม</option>
-					<option value="รองศาสตราจารย์  วรา  วราวิทย์">รองศาสตราจารย์  วรา  วราวิทย์</option>
-					<option value="รองศาสตราจารย์  ณชล  ไชยรัตนะ">รองศาสตราจารย์  ณชล  ไชยรัตนะ</option>
-					<option value="รองศาสตราจารย์  พงษ์ศักดิ์  กีรติวินทกร">รองศาสตราจารย์  พงษ์ศักดิ์  กีรติวินทกร</option>
-					<option value="รองศาสตราจารย์  ธีรพล เดโชเกียรติถวัลย์">รองศาสตราจารย์  ธีรพล เดโชเกียรติถวัลย์</option>
-					<option value="รองศาสตราจารย์  ไชยันต์  สุวรรณชีวะศิริ">รองศาสตราจารย์  ไชยันต์  สุวรรณชีวะศิริ</option>
-					<option value="รองศาสตราจารย์  เวช  วิเวก">รองศาสตราจารย์  เวช  วิเวก</option>
-					<option value="รองศาสตราจารย์  มนูญ  พ่วงพูล">รองศาสตราจารย์  มนูญ  พ่วงพูล</option>
-					<option value="ผู้ช่วยศาสตราจารย์  ศิริชัย  รุจิพัฒนพงศ์">ผู้ช่วยศาสตราจารย์  ศิริชัย  รุจิพัฒนพงศ์</option>
+					<option value="0">-----</option>
+					<option value="1">ศาสตราจารย์  ประยุทธ อัครเอกฒาลิน</option>
+					<option value="2">รองศาสตราจารย์  วิบูลย์  ชื่นแขก</option>
+					<option value="3">ผู้ช่วยศาสตราจารย์  อภิบาล  พฤกษานุบาล</option>
+					<option value="4">ผู้ช่วยศาสตราจารย์  บัลลังก์  เนียมมณี</option>
+					<option value="5">อาจารย์  ศราวุธ  ชัยมูล</option>
+					<option value="6">ผู้ช่วยศาสตราจารย์  วิไลพร  แซ่ลี้</option>
+					<option value="7">ผู้ช่วยศาสตราจารย์  ธีรธรรม  บุณยะกุล</option>
+					<option value="8">ผู้ช่วยศาสตราจารย์  พิสิษฐ์  ลิ่วธนกุล</option>
+					<option value="9">ผู้ช่วยศาสตราจารย์  สมพร  สิริสำราญนุกูล</option>
+					<option value="10">ผู้ช่วยศาสตราจารย์  ชาตรี  มหัทธนจาตุภัทร</option>
+					<option value="11">อาจารย์  เอกรัฐ  บุญภูงา</option>
+					<option value="12">อาจารย์  นพดล  ฉาบแก้ว</option>
+					<option value="13">อาจารย์  เพ็ญนภา ไพโรจน์อมรชัย</option>
+					<option value="14">อาจารย์  พิสิฐ  วนิชชานันท์</option>
+					<option value="15">รองศาสตราจารย์  สุขสันติ์  นุ่นงาม</option>
+					<option value="16">รองศาสตราจารย์  วรา  วราวิทย์</option>
+					<option value="17">รองศาสตราจารย์  ณชล  ไชยรัตนะ</option>
+					<option value="18">รองศาสตราจารย์  พงษ์ศักดิ์  กีรติวินทกร</option>
+					<option value="19">รองศาสตราจารย์  ธีรพล เดโชเกียรติถวัลย์</option>
+					<option value="20">รองศาสตราจารย์  ไชยันต์  สุวรรณชีวะศิริ</option>
+					<option value="21">รองศาสตราจารย์  เวช  วิเวก</option>
+					<option value="22">รองศาสตราจารย์  มนูญ  พ่วงพูล</option>
+					<option value="23">ผู้ช่วยศาสตราจารย์  ศิริชัย  รุจิพัฒนพงศ์</option>
 					{%if studentObj.degree == '1'%}
-					<option value="ผู้ช่วยศาสตราจารย์  ศราวุฒิ  คลี่สุวรรณ์">ผู้ช่วยศาสตราจารย์  ศราวุฒิ  คลี่สุวรรณ์</option>
-					<option value="ผู้ช่วยศาสตราจารย์  สิทธิพร  เกิดสำอางค์">ผู้ช่วยศาสตราจารย์  สิทธิพร  เกิดสำอางค์</option>
-					<option value="อาจารย์  เรวัต  ศิริโภคาภิรมย์">อาจารย์  เรวัต  ศิริโภคาภิรมย์</option>
+					<option value="24">ผู้ช่วยศาสตราจารย์  ศราวุฒิ  คลี่สุวรรณ์</option>
+					<option value="25">ผู้ช่วยศาสตราจารย์  สิทธิพร  เกิดสำอางค์</option>
+					<option value="26">อาจารย์  เรวัต  ศิริโภคาภิรมย์</option>
 					{%endif%}
 		  		</select>
 			</td>
+
 		</tr>
 		<tr><td>&nbsp;&nbsp;</td></tr>
 		<tr>
-			<td><input type="checkbox" name="viyaniponh_name" value="true">  :  </td>
+			{%for s in table_name%}
+			{%if s.name == 'true' and s.std_id == studentObj.std_id%}	<!-------------------------------------------------------------->
+			<td></td>
+				<td  width="20%" valign="top">วิทยานิพนธ์ เรื่อง</td>	<!-------------------------------------------------------------->
+		</tr>
+		<tr>
+			<td></td>
+			<td></td>
+			<td>ชื่อภาษาไทย   {{s.name_thai}}</td><!-------------------------------------------------------------->
+		</tr>
+		<tr>
+			<td></td>
+			<td></td>
+			<td>ชื่อภาษาอังกฤษ   {{s.name_eng}}</td><!-------------------------------------------------------------->
+		</tr>
+			{%endif%}	<!-------------------------------------------------------------->
+			{%endfor%}
+			<tr><td>&nbsp;&nbsp;</td></tr>
+		<tr>
+			{%for j in table_show%}
+			{%if j.adviser != '0' and j.std_id == studentObj.std_id %}
+			<td></td>
 			<td  width="20%" valign="top">เสนอวิทยานิพนธ์ เรื่อง</td>
 			<td><textarea name="name_thai" cols="60" rows="2" placeholder="ชื่อภาษาไทย"></textarea></td>
 		</tr>
@@ -169,14 +259,33 @@
 			<td></td>
 			<td valign="top">&nbsp;</td>
 			<td><font color="#FF0000">***หมายเหตุ  ต้องลงทะเบียนวิทยานิพนธ์ไม่น้อยกว่า  3  หน่วยกิตในภาคการศึกษานั้น ***</font></td>
+			{%endif%}
+			{%endfor%}
 		</tr>
 		<tr><td>&nbsp;&nbsp;</td></tr>
 		<tr>
-			<td><input type="checkbox" name="project_name" value="true">  :  </td>
+			{%for k in table_project%}
+			{%if k.project_name == 'true' and k.std_id == studentObj.std_id %}	<!-------------------------------------------------------------->
+			<td></td>
+			<td>สอบหัวข้อวิทยานิพนธ์</td>	<!-------------------------------------------------------------->
+			<td>วันที่
+		  		{{k.name_day}}	<!-------------------------------------------------------------->
+				เดือน
+		  		{{k.name_month}}	<!-------------------------------------------------------------->
+				ปี
+				{{k.name_year}}
+			</td>
+			{%endif%}	<!-------------------------------------------------------------->
+			{%endfor%}
+		</tr>
+		<tr>
+			{%for x in table_name%}
+			{%if x.name == 'true' and x.std_id == studentObj.std_id %}	<!-------------------------------------------------------------->
+			<td></td>
 			<td>สอบหัวข้อวิทยานิพนธ์</td>
 			<td>วันที่
 		  		<select name="name_day" id="day">
-					<option value="">--</option>
+					<option value="0">--</option>
 					<option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option>
 					<option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option>
 					<option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option>
@@ -188,7 +297,7 @@
 				</select>
 				เดือน
 		  		<select name="name_month" id="month">
-					<option value="">-----</option>
+					<option value="0">-----</option>
 					<option value="มกราคม">มกราคม</option>
 					<option value="กุมภาพันธ์">กุมภาพันธ์</option>
 					<option value="มีนาคม">มีนาคม</option>
@@ -204,7 +313,7 @@
 			  	</select>
 				ปี
 				<select name="name_year" id="year">
-					<option value="">----</option>
+					<option value="0">----</option>
 					<option value="2565">2565</option>
 					<option value="2564">2564</option>
 					<option value="2563">2563</option>
@@ -216,24 +325,42 @@
 					<option value="2557">2557</option>
 					<option value="2556">2556</option>
 				</select>
-				
+
 			</td>
 		</tr>
 		<tr>
 			<td></td>
 			<td></td>
 			<td><font color="#FF0000">***หมายเหตุ  ต้องดำเนินการให้แล้วเสร็จภายใน  30  วันหลังจากแต่งตั้งอาจารย์ที่ปรึกษาวิทยานิพนธ์และอนุมัติโครการวิทยานิพนธ์ที่เสนอ ***</font></td>
+			{%endif%}			<!-------------------------------------------------------------->
+			{%endfor%}
 		</tr>
 		<tr><td>&nbsp;&nbsp;</td></tr>
-		</table>
-		<table align="center" style="width:60%">
 		<tr>
-			<td><input type="checkbox" name="test" value="true">  :  </td>
+			{%for l in table_test%}
+			{%if l.test == 'true' and l.std_id == studentObj.std_id %}	<!-------------------------------------------------------------->
+			<td></td>
+			<td>สอบความก้าวหน้าวิทยานิพนธ์</td>	<!-------------------------------------------------------------->
+			<td>วันที่
+		  		{{l.test_day}}	<!-------------------------------------------------------------->
+				เดือน
+		  		{{l.test_month}}	<!-------------------------------------------------------------->
+				ปี
+				{{l.test_year}}
+			</td>
+			{%endif%}	<!-------------------------------------------------------------->
+			{%endfor%}
+		</tr>
+		</table>
+		<table align="center" style="width:60%"><!--border="1">-->
+		<tr>{%for d in table_project%}
+			{%if d.project_name == 'true' and d.std_id == studentObj.std_id%}	<!-------------------------------------------------------------->
+			<td></td>
 			<td width="26%">สอบความก้าวหน้าวิทยานิพนธ์&nbsp;</td>
 			<td>
 				วันที่
 				<select name="test_day" id="day">
-					<option value="">--</option>
+					<option value="0">--</option>
 					<option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option>
 					<option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option>
 					<option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option>
@@ -245,7 +372,7 @@
 				</select>
 				เดือน
 				<select name="test_month" id="month">
-					<option value="">-----</option>
+					<option value="0">-----</option>
 					<option value="มกราคม">มกราคม</option>
 					<option value="กุมภาพันธ์">กุมภาพันธ์</option>
 					<option value="มีนาคม">มีนาคม</option>
@@ -261,7 +388,7 @@
 				</select>
 				ปี
 				<select name="test_year" id="year">
-					<option value="">----</option>
+					<option value="0">----</option>
 					<option value="2565">2565</option>
 					<option value="2564">2564</option>
 					<option value="2563">2563</option>
@@ -275,20 +402,38 @@
 				</select
 			</td>
 		</tr>
-			<tr>
-				<td></td>
-				<td></td>
-				<td><font color="#FF0000">***หมายเหตุ ***</font></td>
-			</tr>
+		<tr>
+			<td></td>
+			<td></td>
+			<td><font color="#FF0000">***หมายเหตุ ***</font></td>
+			{%endif%}	<!-------------------------------------------------------------->
+			{%endfor%}
+		</tr>
 		<tr><td>&nbsp;&nbsp;</td></tr>
+		<tr>
+			{%for m in table_testend%}
+			{%if m.testend == 'true' and m.std_id == studentObj.std_id %}	<!-------------------------------------------------------------->
+			<td></td>
+			<td>สอบป้องกันวิทยานิพนธ์</td>	<!-------------------------------------------------------------->
+			<td>วันที่
+		  		{{m.testend_day}}    	<!-------------------------------------------------------------->
+				เดือน
+		  		{{m.testend_month}}    	<!-------------------------------------------------------------->
+				ปี
+				{{m.testend_year}}
+			</td>
+			{%endif%}	<!-------------------------------------------------------------->
+			{%endfor%}
+		</tr>
 		</table>
-		<table align="center" style="width:60%">
-			<tr>
-				<td><input type="checkbox" name="testend" value="true">  :  </td>
+		<table align="center" style="width:60%"><!--border="1">-->
+			<tr>{%for e in table_test %}
+				{%if e.test == 'true' and e.std_id == studentObj.std_id %}	<!-------------------------------------------------------------->
+				<td></td>
 				<td width="21%">สอบป้องกันวิทยานิพนธ์</td>
 				<td>วันที่
 				<select name="testend_day" id="day">
-					<option value="">--</option>
+					<option value="0">--</option>
 					<option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option>
 					<option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option>
 					<option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option>
@@ -300,7 +445,7 @@
 				</select>
 				เดือน
 				<select name="testend_month" id="month">
-					<option value="">-----</option>
+					<option value="0">-----</option>
 					<option value="มกราคม">มกราคม</option>
 					<option value="กุมภาพันธ์">กุมภาพันธ์</option>
 					<option value="มีนาคม">มีนาคม</option>
@@ -316,7 +461,7 @@
 				</select>
 				ปี
 				<select name="testend_year" id="year">
-					<option value="">----</option>
+					<option value="0">----</option>
 					<option value="2565">2565</option>
 					<option value="2564">2564</option>
 					<option value="2563">2563</option>
@@ -334,12 +479,14 @@
 				<td></td>
 				<td></td>
 				<td><font color="#FF0000">***หมายเหตุ ***</font></td>
+				{%endif%}	<!-------------------------------------------------------------->
+				{%endfor%}
 			</tr>
 			<tr><td>&nbsp;&nbsp;</td></tr>
-		</form>
-	</table>
-	&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp;
-	<a href="{% url 'group2:viyanipon' %}"><input class="btn btn-danger" type="button" value="save" name = 'save' /></a> 
-	<br><br><br><br>
+		</table>
+		&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp;
+		<input type="submit" class="btn btn-success" value="save">
+		<br><br><br><br>
+	</form>
 </body>
 {% endblock %}

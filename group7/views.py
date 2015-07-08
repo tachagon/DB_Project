@@ -24,15 +24,19 @@ def order(request,pk):
 	project = ProjectG6.objects.get(id=pk)
         teacher=Teacher.objects.get(id=project.teacher_id)
         return render(request, 'group7/order.html', {'object': project,'teacher':teacher})
-class addorder(generic.DetailView):
-	model=ProjectG6
-        template_name='group7/addorder.html'
+def addorder(request,pk):
+	projectg6 = ProjectG6.objects.get(id=pk)
+	now = datetime.datetime.now()
+	now=now.date()
+	date = datetime.datetime.strptime(str(now), '%Y-%m-%d').strftime('%Y-%m-%d')
+	return render(request, 'group7/addorder.html', {'object': date,'projectg6':projectg6})
+
 
 
         
 def addorderview(request, pk):
-	date=request.POST['date']
-	valid_date = datetime.datetime.strptime(date, '%d-%m-%Y').strftime('%Y-%m-%d')
+	date=request.GET.get('date')
+	valid_date = datetime.datetime.strptime(str(date), '%Y-%m-%d').strftime('%Y-%m-%d')
         p=Order(Projectg7_id=pk,Date=valid_date)   	
 	p.save()
         url="/group7/"+pk
@@ -68,13 +72,16 @@ class statusof(generic.DetailView):
    	template_name= 'group7/statusof.html'
 # Create your views here.
 def addstatusview(request,pk):
+	now = datetime.datetime.now()
+	now=now.date()
+	date = datetime.datetime.strptime(str(now), '%Y-%m-%d').strftime('%Y-%m-%d')
         order=Order.objects.get(id=pk)
 	stat=order.status_of_set.all()
 	laststat=""
 	id=pk
 	for s in stat:
 		laststat=s.State
-	return render(request, 'group7/addstatusof.html', {'object': laststat,'id':id})
+	return render(request, 'group7/addstatusof.html', {'object': laststat,'id':id,'now':date})
 	
 	
 	
@@ -115,7 +122,7 @@ def removeOrderinfo(request,info_id): #Page Orderinfo for delete Orderinfo
         
 def orderedit(request,pk):
         stu=Orderinfo.objects.get(id=pk)
-            
+        now = datetime.datetime.now()
         return render(request, 'group7/editorderinfo.html', {'object': stu})
     
     
@@ -182,6 +189,7 @@ def vieworderprint(request,pk):
         
 def statusofedit(request,pk):
         stu=Status_Of.objects.get(id=pk)
+	now = datetime.datetime.now()
         return render(request, 'group7/editstatusof.html', {'object': stu})
         
 def editstatusof(request,info_id): #Page Orderinfo for delete Orderinfo

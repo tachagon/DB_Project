@@ -13,6 +13,7 @@
 {% if Pro %}
     <center>
     <u>รายชื่อนักศึกษาที่รอการตรวจสอบใบคำร้องขอล่าสุด</u></br></br>
+    <form action="/group5/pdf/">
     <table style='width:85%' border=1>
         <tr>
             <td><b><center>รหัสนักศึกษา</td>
@@ -20,8 +21,10 @@
             <td><b><center>สถานที่ประกอบการ</td>
             <td><b><center>สถานะ</td>
             <td><b><center>ตรวจสอบสถานะ</td>
+            <td><b><center>อัพเดทสถานะ</td>
         </tr>
         {% for item in state %}
+        {% if item.StatusPetition = 'WaitCheck' or item.StatusPetition = 'open' %}
         <tr>
             <td>{{item.studentG5_id}}</td>
             <td>
@@ -34,11 +37,21 @@
                 {% endfor %}
             </td>
             <td>{{item.Internship_id}}</td>
-            <td>{{item.StatusPetition}}</td>
-            <td><center><button>ตรวจสอบสถานะ</button><center></td>
+            <td><center>{{item.StatusPetition}}</center></td>
+            <td><center>
+            <input type ="submit" name="Submit" value="{{item.NoPetition}}"><center></td>
+            <td><center>
+                <input type ="submit" name="Submit2" value="{{item.NoPetition}}">
+            </center></td>
         </tr>
-        {% endfor %}
+        {% endif %}
+    {% endfor %}
+    <table><select name = 'status'>
+                    <option value='WaitCheck'>รอการตรวจสอบ</option>
+                    <option value='CheckComplete'>ตรวจสอบเรียบร้อยแล้ว</option>
+    </select></table>
     </table>
+    </form>  
 {% else %}    
 หมายเหตุ
 {% endif %}

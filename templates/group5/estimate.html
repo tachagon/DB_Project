@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block pageHeader %}
+
+<ol class="breadcrumb">
+    <meta charset="UTF-8">
+    <li><a href="{% url 'login:menu' %}">เมนู</a></li>
+    <li><a href="{% url 'group5:status' %}">ตรวจสอบสถานะการฝึกงาน</a></li>
+    <li class="active">รายชื่อนักศึกษาทำเรื่องขอความอนุเคราะห์ฝึกงาน</li>
+</ol>
+		{% endblock %}
+{% block content %}
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>upload</title>
+    <center><h3>ผลแบบประเมิณการฝึกงาน และ บัญชีเวลาของนักศึกษา</h3></center>
+    <form action="/group5/upload/" method="POST" enctype="multipart/form-data">
+
+        {% csrf_token %}
+        {% for item in stuG5 %}
+	    <center><table width='20%'>
+          {%if item.studentID = sid %}
+             <tr><td width = 30% align='right'><B>รหัสนักศึกษา :</B></td> <td>&nbsp<input style="border:none" type="text" name="sid" maxlength="13" value="{{sid}}" /></td></tr>
+	     <tr><td colspan='2'>&nbsp</td></tr>
+	    {% for i in stu %}
+		{%if i.std_id == sid %}
+		    {% for j in Pro %}
+			{%if i.userprofile_id == j.id %}
+			    <tr><td align='right'><B>ชื่อ-สกุล    :</B></td> <td>&nbsp<input style="border:none" type="text" name="sid" maxlength="13" value="{{j.firstname_th}}  {{j.lastname_th}}" /></td></tr>
+			    <tr><td colspan='2'>&nbsp</td></tr>
+			{% endif %}
+		    {% endfor %}
+		{% endif %}
+	    {% endfor %}
+	     
+             {% for i in state %}
+		{%if i.studentG5_id = sid %}
+             <tr><td align='right'><B>สถานที่ฝึกงาน  : </B></td> <td>&nbsp<input style="border:none" type="text" name="com" maxlength="13" value="{{i.Internship_id}}" /></td></tr>
+	     <tr><td colspan='2'>&nbsp</td></tr>
+	     <tr><td align='right'><B>สถานะ     : </B></td><td>&nbsp<input style="border:none" type="text" name="status"  value="{{i.StatusPetition}}" /></pre></td></tr></table><br><br></center>
+	     {% endif %}
+	    {% endfor %}
+
+            <center>{{ form.as_p }}
+             <br><input class="btn btn-info" type="submit" value="Upload" name="upload"/></center><br>
+	    
+         {% endif %}
+
+        {% endfor %}
+
+
+</form>
+<center><form action="/group5/form2_p/" >
+    <td><br><br><button type = "submit" class="btn btn-info">print ขอส่งตัวนักศึกษาฝึกงาน</button></center></td>
+</form>
+<center><form action="/group5/reporting/" >
+    <td><br><br><button type = "submit" class="btn btn-info">print แบบรายงานผลการฝึกงาน</button></center></td>
+</form><br><br>
+
+</head>
+<body>
+{%if estimate%}
+{%for img in estimate%}
+  {%if img.studentID = sid %}
+    
+    <center><a href="{{img.image_estimate.url}}"><img src="{{img.image_estimate.url}}" width="420" height="594"></a><br><br>
+    <a href="{{img.image_time.url}}"><img src="{{img.image_time.url}}" width="420" height="594"></a></center>
+  {% endif %}
+{%endfor%}
+{% else %}
+    <br><font color="red" size = "5"><center>No info are available.</center></font>
+{% endif %}
+
+</body>
+{% endblock %}

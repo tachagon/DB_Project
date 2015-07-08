@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block pageHeader %}
+<ol class="breadcrumb">
+    <li><a href="{% url 'login:menu' %}">เมนู</a></li>
+    <li><a href="{% url 'group5:status' %}">ตรวจสอบสถานะการฝึกงาน</a></li>
+    <li class="active">นักศึกษาที่รอการอนุมัติผลการฝึกงาน</li>
+</ol>
+
+{% endblock %}
+
+{% block content %}
+<script type="text/javascript">
+<!--
+    function toggle_visibility(id) {
+
+       var e = document.getElementById(id);
+       if(e.style.display == 'block')
+          e.style.display = 'none';
+       else
+          e.style.display = 'block';
+    }
+//-->
+</script>
+<a href="#" onclick="toggle_visibility('foo');"><center><u>รายชื่อนักศึกษาที่รอการอนุมัติผลการฝึกงาน</u></center></a>
+<div id="foo">
+    {% if Pro %}
+    <div class="col-md-3"></div>
+         <div class="row">
+            <div class="container-fluid">
+                <div class="col-md-9">
+                    <div class="table-responsive">
+                        <table class="table table-hover table-bordered" id="no-more-tables">
+                    <tr>
+                        <td><b><center>รหัสนักศึกษา</td></center>
+                        <td><b><center>ชื่อ-สกุล</td></center>
+                        <td><b><center>สถานที่ประกอบการ</td></center>
+                        <td><b><center>สถานะ</td></center>
+                        <td><b><center>อัพเดทสถานะ</td></center>
+                    </tr>
+                    {% for item in state %}
+                    {% if item.StatusPetition == 'CheckComplete'%}
+                    <tr>
+                        <td>{{item.studentG5_id}}</td>
+                        <td>
+                            {% for item2 in Pro %}
+                            {% for item3 in stu %}
+                            {% if item2.id = item3.userprofile_id and item.studentG5_id = item3.std_id%}
+                            {{item2.firstname_th}} {{item2.lastname_th}}
+                            {% endif %}
+                            {% endfor %}
+                            {% endfor %}
+                        </td>
+                        <td>{{item.Internship_id}}</td>
+                        <td><center>{{item.StatusPetition}}</center></td>
+                        <td><center>
+                            <input type ="submit" name="Submit2" value="{{item.NoPetition}}">
+                        </center></td>
+                    </tr>
+                    {% endif %}
+                    {% endfor %}
+                        </table>
+                         </div></div>
+                </div></div></div>
+
+
+                    <table><select name = 'status'>
+                        <option value='accept'>บริษัทตอบรับคำร้องขอ</option>
+                        <option value='notaccept'>บริษัทปฏิเสธคำร้องขอ</option>
+                    </select></table>
+
+
+
+    </form>
+
+{% else %}
+หมายเหตุ
+{% endif %}
+{% endblock %}

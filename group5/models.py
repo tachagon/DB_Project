@@ -5,7 +5,6 @@ from django.contrib.auth.models import User
 class studentG5(models.Model):
     studentID = models.CharField(primary_key=True, max_length=13)
     studentYear = models.IntegerField(default=0)
-    sex = models.CharField(max_length=20)
 
 class Internship(models.Model):
     name_Internship = models.CharField(primary_key=True,max_length=50)
@@ -22,10 +21,26 @@ class StatusPetition(models.Model):
     Date2= models.DateField()
     Internship = models.ForeignKey(Internship)
     send = models.CharField(max_length=20)
+    to = models.CharField(max_length=100)
 
-#3Table 
+#3Table
 class accept(models.Model):
     No_accept = models.IntegerField(primary_key=True,default=0)
     StatusPetition = models.ForeignKey(StatusPetition)
     accept_status = models.CharField(max_length=20)
     Date= models.DateField()
+
+class Event(models.Model):
+    NoEvent = models.IntegerField(primary_key=True,default=0)
+    stuID = models.CharField(max_length=13)
+    Event = models.IntegerField(default=0)
+    Date_now= models.DateField()
+    Date_acc= models.DateField()
+    
+class Estimate(models.Model):
+    studentID = models.CharField(primary_key=True,max_length=13)
+    image_estimate = models.ImageField(upload_to = "group5/image_estimate")
+    image_time = models.ImageField(upload_to = "group5/image_time")
+class Date(models.Model):
+    studentID = models.CharField(primary_key=True,max_length=13)
+    DateEnd = models.DateField();

@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block pageHeader %}
+
+<ol class="breadcrumb">
+    <meta charset="UTF-8">
+    <li><a href="{% url 'login:menu' %}">เมนู</a></li>
+    <li><a href="{% url 'group5:status' %}">ตรวจสอบสถานะการฝึกงาน</a></li>
+    <li class="active">รายชื่อนักศึกษาทำเรื่องขอความอนุเคราะห์ฝึกงาน</li>
+</ol>
+		{% endblock %}
+{% block content %}
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>ข้อมูลนักศึกษารหัส : {{sid}}</title>
+
+</head>
+<body>
+
+<div class="col-sm-2"></div>
+ <div class="col-sm-8">
+      <h3>&nbsp &nbsp &nbsp &nbsp &nbspข้อมูลของนักศึกษารหัส : {{sid}}</h3>
+{% for item in stuG5 %}
+{%if item.studentID = sid %}
+{%for stu in stu%}
+{% if sid = stu.std_id %}
+
+<br><br>
+<p>&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbspรหัสนักศึกษา: <input style="border:none" type="text" name="sid" maxlength="13" value="{{sid}}" />ชื่อ-นามสกุล : {{stu.userprofile.firstname_th}}  {{stu.userprofile.lastname_th}}
+</p>
+{%endif%}
+{%endfor%}
+<p>&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbspสถานะ: <input style="border:none" type="text" name="status"  value="{{status}}" /></p>
+{% for state in state %}
+{%if state.studentG5_id = sid%}
+<p>&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbspสถานที่ฝึกงาน :<input style="border:none" type="text" name="place"  value="{{state.Internship.name_Internship}}" />  </p>
+<p>&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbspระยะเวลาฝึกงาน ตั้งแต่วันที่: <input style="border:none" type="text" name= "datebegin"  value="{{state.Date}}"/>
+    ถึงวันที่: <input style="border:none" type="text" name= "dateend"  value="{{state.Date2}}" /></p>
+{%endif%}
+{%endfor%}
+{% endif %}
+
+{% endfor %}
+
+{%if estimate%}
+{%for img in estimate%}
+  {%if img.studentID = sid %}
+<br>
+    <table>
+    <tr><td>
+        <center><h4>ใบประเมิณ</h4></center>
+   <center> <img src="{{img.image_estimate.url}}" width = 50%></center></td></tr>
+
+        <br>
+        <center><h4>บัญชีเวลา</h4></center>
+    <td><tr><center><img src="{{img.image_time.url}}" width = 50%></center>
+        </tr></td></table>
+  {% endif %}
+{%endfor%}
+{% else %}
+    <br><font color="red" size = "5"><center>No info are available.</center></font>
+{% endif %}
+     <br>
+     <form action="/group5/edit">
+
+<center><a href="{% url 'group5:mainG5' %}" class="btn btn-warning" value="กลับสู่หน้าหลัก">กลับสู่หน้าหลัก</a></center></form>
+<br><br><br>
+    </div>
+</body>
+
+{% endblock %}
