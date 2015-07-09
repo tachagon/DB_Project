@@ -558,7 +558,7 @@ def genpdf(request, profID): # use to generate pdf file for lend another teacher
     pdf.cell(11, 10, u'เรื่อง')
     pdf.add_font('THSarabun', '', 'THSarabun.ttf', uni=True)
     pdf.set_font('THSarabun', '', 16)
-    pdf.cell(0, 11, u'การจัดการเรียนการสอนสำหรับนักศึกษาโครงการพิเศษ(สองภาษา)')
+    pdf.cell(0, 10.5, u'การจัดการเรียนการสอนสำหรับนักศึกษาโครงการพิเศษ(สองภาษา)')
     pdf.line(40,68.5,180,68.5)
     pdf.ln(8)
     pdf.add_font('THSarabun Bold', '', 'THSarabun Bold.ttf', uni=True)
@@ -570,14 +570,31 @@ def genpdf(request, profID): # use to generate pdf file for lend another teacher
     pdf.cell(24, 11, u'หัวหน้าภาควิชา' + department)
     pdf.ln(8)
     pdf.cell(45, 10, u'')
-    pdf.cell(0, 10, u'ตามที่ภาควิชาวิศวกรรมไฟฟ้าและคอมพิวเตอร์  ได้ขอรับบริการจัดการเรียนการสอนจาก')
+    pdf.cell(0, 10, u'ตามที่ ภาควิชาวิศวกรรมไฟฟ้าและคอมพิวเตอร์  ได้ขอรับบริการจัดการเรียนการสอน')
     pdf.ln(8)
     pdf.cell(19, 10, u'')
-    pdf.cell(23, 10, u'ท่านในรายวิชา                                                              สำหรับนักศึกษาโครงการพิเศษ (สองภาษา) ')
-    pdf.cell(20, 10, u'' + subjectName + '  '  + subjectID) 
-    pdf.ln(8)
-    pdf.cell(19, 10, u'')
-    pdf.cell(0, 10, u'ภาคเรียนที่ .........  นั้น')
+    word_subject = u'จาก#ท่าน#ใน#ราย#วิชา# ' + subjectID + '#  #'  + subjectName + u' #ตอนเรียน #' + sec[2:]+u'#  สำ#หรับ#นัก#ศึก#ษา#โครง#การ#พิ#เศษ# (สอง#ภาษา) #ภาค#เรียน#ที่#..........นั้น '
+    words = word_subject.split('#')
+    
+    removed = word_subject
+    th_del = u' ุูึี๊ัํ้็่๋ื์ิฺ '
+    for i in th_del:
+        removed=removed.replace(i,'')
+    
+    sum_word = u''
+    num_word = 0
+    for each_word in words:
+        num_word = num_word  + len(each_word)
+        if num_word  > 85:
+            print num_word
+            num_word = 0
+            pdf.cell(0, 10, sum_word)
+            pdf.ln(8)
+            sum_word = u''
+            pdf.cell(19, 0, u'')
+        sum_word = sum_word + each_word
+    pdf.cell(0, 10, sum_word)
+    
     pdf.ln(8)
     pdf.cell(45, 10, u'')
     pdf.cell(0, 10, u'ภาควิชาวิศวกรรมไฟฟ้าและคอมพิวเตอร์  ขอให้ท่านยืนยันการจัดการเรียนการสอนในราย')
@@ -596,10 +613,10 @@ def genpdf(request, profID): # use to generate pdf file for lend another teacher
     pdf.ln(8)
     pdf.cell(94, 10, u'')
     pdf.cell(90, 10, u'หัวหน้าภาควิศวกรรมไฟฟ้าและคอมพิวเตอร์')
-    pdf.ln(14)
+    pdf.ln(10)
     pdf.cell(21, 10, u'')
     pdf.cell(0, 10, u'.........................................................................................................................................................................')
-    pdf.ln(8)
+    pdf.ln(13)
     pdf.cell(8, 10,u'')
     pdf.cell(30, 10, u'         ชื่อผู้สอน ' + academicPosition + pre_name + firstname + '   '+ lastname + u'            รหัสผู้สอน ' + proID )
     #pdf.cell(80, 10, u'' + academicPosition +pre_name+ firstname + '   '+ lastname)
@@ -630,23 +647,33 @@ def genpdf(request, profID): # use to generate pdf file for lend another teacher
     pdf.ln(8)
     pdf.cell(0, 10, u'                                      ภาษาอังกฤษ  ')
     
-    pdf.rect(52, 219, 3, 3)
+    pdf.rect(52, 220, 3, 3)
     pdf.ln(8)
     pdf.cell(0, 10, u'                                      ภาษาไทย')
-    pdf.rect(52, 227, 3, 3)
+    pdf.rect(52, 228, 3, 3)
     
     pdf.ln(8)
     pdf.cell(94, 10, u'')
     pdf.cell(100, 10, u'ลงชื่อ................................................อาจารย์ผู้สอน ')
     pdf.ln(8)
-    pdf.cell(100, 10, u'')
-    pdf.cell(110, 10, u''+u'( ' +short_academicPosition + pre_name + firstname +'   '+ lastname+u' )' )
+    #pdf.cell(100, 10, u'')
+    #pdf.cell(110, 10, u''+u'( ' +short_academicPosition + pre_name + firstname +'   '+ lastname+u' )' )
+    
+    th_text = u'( ' +short_academicPosition + pre_name + firstname +'   '+ lastname+u' )'
+    removed = th_text
+    th_del = u' ุูึี๊ัํ้็่๋ื์ิฺ '
+    for i in th_del:
+        removed=removed.replace(i,'')
+    pdf.cell(125-len(removed), 10, u'')
+    pdf.cell(0, 10, th_text)
+    pdf.line(135, 0, 135, 500)
+    
     pdf.ln(8)
     pdf.cell(94, 10, u'')
     pdf.cell(100, 10, u'ลงชื่อ................................................')
     pdf.ln(8)
     pdf.cell(100, 10, u'')
-    pdf.cell(110, 10, u'(..............................................) ')
+    pdf.cell(110, 10, u'(...................................................) ')
     pdf.ln(8)
     pdf.cell(94, 10, u'')
     pdf.cell(100, 10, u'หัวหน้าภาควิชา' + department)
@@ -798,7 +825,7 @@ def genallpdf(request): # grnerate pdf for show all section data.
             pdf.cell(7, 18, day)
             pdf.cell(16, 18, str(starttime))
             pdf.cell(12, 18, room)
-            pdf.cell(19, 18, phone_num)
+            pdf.cell(20, 18, phone_num)
             pdf.cell(43, 18, email)
             pdf.cell(29, 18, sahakorn)
 
@@ -842,7 +869,18 @@ def hourpdf(request, employeeID): # use to see working of temporary employee.
     
     gen_single_text(pdf, 65, u'ใบลงเวลาทำงานลูกจ้างชั่วคราวรายชั่วโมง')
     gen_single_text(pdf, 57, u'มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าพระนครเหนือ')
-    gen_single_text(pdf, 75, u'ชื่อ' + employeeObj.user.firstname_th + '   '+employeeObj.user.lastname_th)
+    pre_name = employeeObj.user.prefix_name
+    
+    if pre_name == '0':
+        pre_name = u'นาย'
+    elif pre_name == '1':
+        pre_name = u'นาง'
+    elif pre_name == '3':
+        pre_name = u'นางสาว'
+    else:
+        pre_name = u'ดร.'
+
+    gen_single_text(pdf, 75, u'ชื่อ ' +pre_name + employeeObj.user.firstname_th + '   ' + employeeObj.user.lastname_th)
     
     pdf.ln(8)
     pdf.cell(0, 18, u'      วัน                 วันที่ เดือน ปี           เวลาทำงาน  รวมชั่วโมง          ลายมือชื่อ                       หมายเหตุ')
@@ -856,19 +894,19 @@ def hourpdf(request, employeeID): # use to see working of temporary employee.
         numLine += 1
         drawAttr2(pdf, ganY[0] + (numLine*8), ganY[1] + (numLine*8))
         if working.day.weekday() == 0:  # geting day to pdf
-            pdf.cell(20, 10, u'วันจันทร์')
+            pdf.cell(20, 10, u'จันทร์')
         elif working.day.weekday() == 1:
-            pdf.cell(20, 10, u'วันอังคาร')
+            pdf.cell(20, 10, u'อังคาร')
         elif working.day.weekday() == 2:
-            pdf.cell(20, 10, u'วันพุธ')
+            pdf.cell(20, 10, u'พุธ')
         elif working.day.weekday() == 3:
-            pdf.cell(20, 10, u'วันพฤหัสบดี')
+            pdf.cell(20, 10, u'พฤหัสบดี')
         elif working.day.weekday() == 4:
-            pdf.cell(20, 10, u'วันศุกร์')
+            pdf.cell(20, 10, u'ศุกร์')
         elif working.day.weekday() == 5:
-            pdf.cell(20, 10, u'วันเสาร์')
+            pdf.cell(20, 10, u'เสาร์')
         else:
-            pdf.cell(20, 10, u'วันอาทิตย์')
+            pdf.cell(20, 10, u'อาทิตย์')
         
         space = 26
         pdf.cell(5, 10, u''+ str(working.releaseDate.day)) # get day
