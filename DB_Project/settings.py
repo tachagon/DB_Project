@@ -99,3 +99,65 @@ EMAIL_HOST_USER = 'documentece01@gmail.com'
 EMAIL_HOST_PASSWORD = 'adminece'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
+
+#---------------------------------------------- Create Log file --------------------------------------------------------
+# define CONSTANCE variable
+LOGFILE_NAME = os.path.join(BASE_DIR, 'logs/DB_Project.log')
+LOGFILE_SIZE = 1024 * 1024 * 15 # 15 MB
+LOGFILE_COUNT = 10              # 10 historical versions
+
+LOGGING = {
+    'version': 1,
+    'disable_exiting_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s',
+            'datefmt': "%d/%b/%Y %H:%M:%S",
+        },
+    },
+    'handlers': {
+        'logfile':{
+            'level': 'DEBUG',
+            'formatter': 'verbose',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': LOGFILE_NAME,
+            'maxBytes': LOGFILE_SIZE,
+            'backupCount': LOGFILE_COUNT,
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['logfile'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}
+#-----------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
