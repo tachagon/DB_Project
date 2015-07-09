@@ -45,18 +45,19 @@ class Prof2Lang(models.Model):
         return self.firstName + " " + self.lastName
 
 class Subject(models.Model):
-    subjectID = models.CharField(primary_key=True, max_length=9)
-    subjectName = models.CharField(max_length=200)
+    subjectID = models.CharField(primary_key=True, max_length=9)                # 1. รหัสวิชา
+    subjectName = models.CharField(max_length=200)                              # 2. ชื่อวิชาภาษาอังกฤษ
+    subjectName_th = models.CharField(max_length=200, default='')               # 3. ชื่อวิชาภาษาไทย
 
     def __unicode__(self):
         return self.subjectName
 
 class Section(models.Model):
-    section = models.CharField(max_length=7)
-    subject = models.ForeignKey(Subject)
-    classroom = models.CharField(max_length=20)
-    startTime = models.TimeField()
-    endTime = models.TimeField()
+    section = models.CharField(max_length=7)                                    # 1. ชื่อ section เช่น S.1
+    subject = models.ForeignKey(Subject)                                        # 2. วิชา (subject)
+    classroom = models.CharField(max_length=20)                                 # 3. ห้องเรียน
+    startTime = models.TimeField()                                              # 4. เวลาเริ่มเรียน
+    endTime = models.TimeField()                                                # 5. เวลาเลิกเรียน
 
     dateChoices = (
         ('M', 'Monday'),
@@ -66,7 +67,7 @@ class Section(models.Model):
         ('F', 'Friday'),
         ('S', 'Saturday')
     )
-    date = models.CharField(max_length=1, choices=dateChoices)
+    date = models.CharField(max_length=1, choices=dateChoices)                  # 6. วันที่เรียน เช่น จันทร์
 
     def __unicode__(self):
         return self.section + " " + self.subject.subjectName
@@ -75,25 +76,33 @@ class Section(models.Model):
         unique_together = ('section', 'subject')
 
 class Teach(models.Model):
-    prof = models.ForeignKey(Prof2Lang, blank=True, null=True)
-    subject = models.ForeignKey(Subject)
-    section = models.ForeignKey(Section)
+    prof = models.ForeignKey(Prof2Lang, blank=True, null=True)                  # 1. อาจารย์ผู้สอน
+    subject = models.ForeignKey(Subject)                                        # 2. วิชา
+    section = models.ForeignKey(Section)                                        # 3. section
+    termChoices = (
+        ('', 'กรุณาเลือกภาคเรียน'),
+        ('1', '1'),
+        ('2', '2'),
+        ('3', '3'),
+    )
+    term    = models.CharField(max_length=1, choices=termChoices, default='')   # 4. ภาคเรียน
+    year    = models.CharField(max_length=4, default='')                        # 5. ปีการศึกษา
 
 class HourlyEmployee(models.Model):
-    user = models.OneToOneField(UserProfile)
-    numberTaxpayment = models.CharField(max_length=20, blank=True, default="")  # เลขประจำตัวผู้เสียภาษี
-    status = models.CharField(max_length=50, blank=True, default="")            # ตำแหน่ง
-    employmentRate = models.FloatField(max_length=10, default=0.0)              # อัตรารายได้
+    user = models.OneToOneField(UserProfile)                                    # 1. UserProfile
+    numberTaxpayment = models.CharField(max_length=20, blank=True, default="")  # 2. เลขประจำตัวผู้เสียภาษี
+    status = models.CharField(max_length=50, blank=True, default="")            # 3. ตำแหน่ง
+    employmentRate = models.FloatField(max_length=10, default=0.0)              # 4. อัตรารายได้
 
     def __unicode__(self):
         return self.user.firstname_en + " " + self.user.lastname_en
 
 class Work(models.Model):
-    releaseDate = models.DateField(auto_now=True)   # วันที่เพิ่มข้อมูล
-    startTime = models.TimeField()                      # เวลาเริ่มทำงาน
-    endTime = models.TimeField()                        # เวลาเลิกงาน
-    note = models.TextField(blank=True)                 # หมายเหตุ
-    employee = models.ForeignKey(HourlyEmployee)        # เป็นของพนักงานคนใด
+    releaseDate = models.DateField(auto_now=True)                               # 1. วันที่เพิ่มข้อมูล
+    startTime = models.TimeField()                                              # 2. เวลาเริ่มทำงาน
+    endTime = models.TimeField()                                                # 3. เวลาเลิกงาน
+    note = models.TextField(blank=True)                                         # 4. หมายเหตุ
+    employee = models.ForeignKey(HourlyEmployee)                                # 5. เป็นของพนักงานคนใด
     day = models.DateTimeField(auto_now=True)
     class meta:
         unique_together = ('employee', 'id')
