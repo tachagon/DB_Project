@@ -11,10 +11,11 @@ class SectionInline(admin.StackedInline):
     extra = 1
 
 class SubjectAdmin(admin.ModelAdmin):
-    list_display = ('subjectID', 'subjectName')
+    list_display = ('subjectID', 'subjectName', 'subjectName_th')
     fieldsets = [
         ('Subject ID',      {'fields': ['subjectID']}),
         ('Subject Name',    {'fields': ['subjectName']}),
+        ('Subject Name in Thai', {'fields': ['subjectName_th']}),
     ]
     inlines = [SectionInline]
 

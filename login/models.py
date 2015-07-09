@@ -14,9 +14,9 @@ class UserProfile(models.Model):
     lastname_th     = models.CharField(max_length=100)                          # 5. last name in Thai
     firstname_en    = models.CharField(max_length=100)                          # 6. first name in English
     lastname_en     = models.CharField(max_length=100)                          # 7. last name in English
-    address         = models.TextField()                                        # 8. address
-    office          = models.TextField()                                        # 9. office
-    tel             = models.CharField(max_length=20)                           # 10. telephone number
+    address         = models.TextField(blank=True)                              # 8. address
+    office          = models.TextField(blank=True)                              # 9. office
+    tel             = models.CharField(max_length=20, blank=True)               # 10. telephone number
     ext             = models.CharField(max_length=10, blank=True)               # 11. ต่อ สำหรับเบอร์โทร
     departmentChoices = (
         ('0', ''),
@@ -41,10 +41,12 @@ class UserProfile(models.Model):
         ('0', 'นาย'),       # Mr.
         ('1', 'นาง'),       # Mrs.
         ('2', 'นางสาว'),    # Miss.
-        ('3', 'ดร.')        # Dr.
+        ('3', 'ดร.'),       # Dr.
+        ('4', 'อาจารย์'),
     )
-    prefix_name  = models.CharField(max_length=1, choices=prefix_name_choices)  # 15. คำนำหน้าชื่อ
-    
+    prefix_name     = models.CharField(max_length=1, choices=prefix_name_choices)   # 15. คำนำหน้าชื่อ
+    account         = models.CharField(max_length=20, blank=True, default='')       # 16. เลขบัญชี
+
     # Override the __unicode__() method to return out something meaningful!
     #def __unicode__(self):
     #    return self.user.username
@@ -106,20 +108,31 @@ class Student(models.Model):
     )
     blood_type = models.CharField(max_length=2, choices=bloodTypeChoices)   # 10. หมู่เลือด
     birthDate = models.DateField()                                          # 11. วันเกิด
+
+    planChoices = (
+        ('0', ''),
+        ('1', 'ป.โท แผน ก แบบ ก 2 ปกติ'),
+        ('2', 'ป.โท แผน ก แบบ ก 2 สหกิจศึกษา'),
+        ('3', 'ป.เอก แผน 1 แบบ 1.1'),
+        ('4', 'ป.เอก แผน 1 แบบ 2.1'),
+        ('5', 'ป.เอก แผน 2 แบบ 1.2'),
+        ('6', 'ป.เอก แผน 2 แบบ 2.2'),
+    )
+    plan = models.CharField(max_length=1, choices=planChoices, default='0') # 12. แผนการเรียน
     
     def __unicode__(self):
         return self.userprofile.firstname_en + " " + self.userprofile.lastname_en
 
 class Teacher(models.Model):
-    userprofile = models.OneToOneField(UserProfile) # 1. user profile
-    shortname = models.CharField(max_length=3)      # 2. short name ตัวย่อชื่อ
+    userprofile = models.OneToOneField(UserProfile)                     # 1. user profile
+    shortname = models.CharField(max_length=3)                          # 2. short name ตัวย่อชื่อ
     positionChoices = (
         ('0', 'ข้าราชการ'),
         ('1', 'ลูกจ้างประจำ'),
         ('2', 'ข้าราชการบำนาญ'),
         ('3', 'พนักงานมหาวิทยาลัย')
     )
-    position = models.CharField(max_length=1, choices=positionChoices)     # 3. ตำแหน่ง
+    position = models.CharField(max_length=1, choices=positionChoices)  # 3. ตำแหน่ง
 
     academic_position_choice = (
         ('0', ''),
@@ -133,14 +146,14 @@ class Teacher(models.Model):
         return self.userprofile.firstname_en + " " + self.userprofile.lastname_en
 
 class Officer(models.Model):
-    userprofile = models.OneToOneField(UserProfile) # 1. user profile
+    userprofile = models.OneToOneField(UserProfile)                     # 1. user profile
     positionChoices = (
         ('0', 'ข้าราชการ'),
         ('1', 'ลูกจ้างประจำ'),
         ('2', 'ข้าราชการบำนาญ'),
-        ('3', 'พนักงานมหาวิทยาลัย')
+        ('3', 'พนักงานมหาวิทยาลัย'),
     )
-    position = models.CharField(max_length=1, choices=positionChoices)     # 2. ตำแหน่ง
+    position = models.CharField(max_length=1, choices=positionChoices)  # 2. ตำแหน่ง
     
     def __unicode__(self):
         return self.userprofile.firstname_en + " " + self.userprofile.lastname_en
