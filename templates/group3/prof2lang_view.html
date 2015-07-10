@@ -28,6 +28,28 @@
     {% if teachObj %}
         <div class="row">
             <div class="container">
+                <div class="col-md-4"></div>
+                <div class="col-md-4">
+                    <div class="table-responsesive">
+                        <table class="table table-hover">
+                            <tr>
+                                <th>ภาคเรียนที่</th>
+                                <td>{{ teachObj.term }}</td>
+                                <td><a class="btn btn-default" id="edit-term-btn" data-toggle="modal" data-target="#edit-term-modal">แก้ไข</a></td>
+                            </tr>
+                            <tr>
+                                <th>ปีการศึกษา</th>
+                                <td>{{ teachObj.year }}</td>
+                                <td><a class="btn btn-default" id="edit-year-btn" data-toggle="modal" data-target="#edit-year-modal">แก้ไข</a></td>
+                            </tr>
+                        </table>
+                    </div><!-- /table-responsive -->
+                </div><!-- /col-md-4 -->
+                <div class="col-md-4"></div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="container">
 <!---------------------------------------------- ข้อมูลอาจารย์ผู้สอน ------------------------------------------------------>
                 <div class="col-md-6">
                     <div class="panel panel-default">
@@ -664,7 +686,99 @@
                         </form>
                     </div><!-- /modal-dialog -->
                 </div><!-- /shift-section-modal -->
+<!---------------------------------------------- edit-term-modal ------------------------------------------------------>
+                <!-- Modal -->
+                <div class="modal fade" id="edit-term-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                    <div class="modal-dialog" role="document">
+                        <form class="form-horizontal" action="{% url 'group3:editTerm' teachObj.id %}" method="post">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    <h4 class="modal-title">แก้ไขภาคเรียน</h4>
+                                </div><!-- /modal-header -->
+                                <div class="modal-body">
+                                    {% csrf_token %}
+                                    <div class="form-group">
 
+                                        <script>
+                                            $("#edit-term-btn").on("click", function () {
+                                                $('#selectTerm option').prop('selected', function() {
+                                                    return this.defaultSelected;
+                                                });
+                                            });
+                                        </script>
+
+                                        <label class="col-sm-3 control-label"><font color="red">*</font> เลือกภาคเรียน: </label>
+                                        <div class="col-sm-9">
+                                            <select class="form-control" name="selectTerm" id="selectTerm" title="เลือกภาคเรียน" required>
+                                                <option value="">กรุณาเลือกภาคเรียน</option>
+                                                <option value="1"{% if teachObj.term == '1' %} selected="selected"{% endif %}>1</option>
+                                                <option value="2"{% if teachObj.term == '2' %} selected="selected"{% endif %}>2</option>
+                                                <option value="3"{% if teachObj.term == '3' %} selected="selected"{% endif %}>3</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div><!-- /modal-body -->
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">ปิด</button>
+                                    <button type="submit" class="btn btn-primary">บันทึกการเปลี่ยนแปลง</button>
+                                </div><!-- /modal-footer -->
+                            </div><!-- /modal-content -->
+                        </form>
+                    </div><!-- /modal-dialog -->
+                </div><!-- /edit-term-modal -->
+<!---------------------------------------------- edit-year-modal ------------------------------------------------------>
+                <!-- Modal -->
+                <div class="modal fade" id="edit-year-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                    <div class="modal-dialog" role="document">
+                        <form class="form-horizontal" action="{% url 'group3:editYear' teachObj.id %}" method="post">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    <h4 class="modal-title">แก้ไขปีการศึกษา</h4>
+                                </div><!-- /modal-header -->
+                                <div class="modal-body">
+                                    {% csrf_token %}
+                                    <div class="form-group">
+
+                                        <script>
+                                            $("#edit-year-btn").on("click", function () {
+                                                $('#selectYear option').prop('selected', function() {
+                                                    return this.defaultSelected;
+                                                });
+                                            });
+                                        </script>
+
+                                        <label class="col-sm-3 control-label"><font color="red">*</font> เลือกปีการศึกษา: </label>
+                                        <div class="col-sm-9">
+                                            <select class="form-control" name="selectYear" id="selectYear" title="เลือกปีการศึกษา" required>
+                                                <option value="">กรุณาเลือกปีการศึกษา</option>
+                                                <script>
+                                                    var myDate = new Date();
+                                                    var year = myDate.getFullYear() + 543;
+                                                    j = parseInt("{{ teachObj.year }}");
+                                                    for(var i = year; i > year - 10; i--){
+                                                        if(i == j){
+                                                            document.write('<option value="' + i + '" selected="selected">' + i + '</option>');
+                                                        }
+                                                        else{
+                                                            document.write('<option value="' + i + '">' + i + '</option>');
+                                                        }
+                                                    }
+                                                </script>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div><!-- /modal-body -->
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">ปิด</button>
+                                    <button type="submit" class="btn btn-primary">บันทึกการเปลี่ยนแปลง</button>
+                                </div><!-- /modal-footer -->
+                            </div><!-- /modal-content -->
+                        </form>
+                    </div><!-- /modal-dialog -->
+                </div><!-- /edit-year-modal -->
+<!--------------------------------------------------------------------------------------------------------------------->
                 <a class="btn btn-default" href="{% url 'group3:prof2lang_index' %}"><span class="glyphicon glyphicon-arrow-left"></span> ย้อนกลับ</a>
 
             </div><!-- /container -->
