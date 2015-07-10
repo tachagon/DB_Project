@@ -181,13 +181,21 @@ def editPassword(request):
     errors = []
     error = False
 
+    try:
+        user = request.user
+        userprofile = UserProfile.objects.get(user = user)
+
+        context['userprofile'] = userprofile
+    except:
+        pass
+
     context['profile_change_password'] = 'active'
 
     if request.method == 'POST':
         # get data from template
-        currentPassword     = request.POST['currentPassword']
-        newPassword         = request.POST['newPassword']
-        newPasswordAgain    = request.POST['newPasswordAgain']
+        currentPassword     = request.POST['cPass']
+        newPassword         = request.POST['nPass']
+        newPasswordAgain    = request.POST['nPassAgain']
 
         # check current password is correct
         if not request.user.check_password(currentPassword):
@@ -201,12 +209,16 @@ def editPassword(request):
         if error:
             context['errors'] = errors
         else:
-            user = request.user
-            user.set_password(newPassword)
-            user.save()
-            context['success'] = 'เปลี่ยนรหัสผ่านเรียบร้อยแล้ว'
+            try:
+                user = request.user
+                user.set_password(newPassword)
+                user.save()
+                context['success'] = 'เปลี่ยนรหัสผ่านเรียบร้อยแล้ว'
 
-            user = authenticate(username=user.username, password=newPassword)
-            login(request, user)
+                user = authenticate(username=user.username, password=newPassword)
+                login(request, user)
+            except:
+                errors.append('เปลี่ยนรหัสผ่านไม่สำเร็จ')
+                context['errors'] = errors
 
     return render(request, template, context)
