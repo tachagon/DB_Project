@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+ใส่ Head ใน block ด้านล่าง
+{% block head %}
+
+{% endblock %}
+
+ใส่ title ใน block ด้านล่าง
+{% block title %}
+    {{ user.get_full_name }}
+{% endblock %}
+
+{% block pageHeader %}
+    <!-- ใส่ pageHeader (ส่วนที่แสดงเป็นหัวข้อด้านบนสุดของหน้าเว็บ) ที่นี่ -->
+
+{% endblock %}
+
+{% block content %}
+    {% if user.is_authenticated %}
+        <!-- ใส่เนื้อหาของหน้าเว็บ ที่นี่ -->
+        <div class="row">
+            <div class="container">
+
+                <div class="col-md-3">
+<!------------------------------------------------- ปุ่มกดเมนูด้านซ้าย ----------------------------------------------------->
+                    <!-- 1. profile-btn -->
+                    <a href="{% url 'login:profile_index' %}" class="btn btn-default btn-block {{ profile_index }}">บัญชีของฉัน</a>
+                    <a href="{% url 'login:profile_editPassword' %}" class="btn btn-default btn-block {{ profile_change_password }}">เปลี่ยนรหัสผ่าน</a>
+                    {% if userprofile.type == '0' %}
+                        <a href="#" class="btn btn-default btn-block {{ profile_student }}">สำหรับนักศึกษา</a>
+                    {% endif %}
+                </div><!-- /col-md-3 -->
+
+                <div class="col-md-9">
+<!------------------------------------------------- ข้อมูล Content ----------------------------------------------------->
+                    {% block profile_content %}{% endblock %}
+
+                </div><!-- /col-md-9 -->
+
+            </div><!-- /container -->
+        </div><!-- /row -->
+    {% else %}
+        <!-- user not authenticated -->
+        <div class="alert alert-danger" role="alert"><strong>Warning!</strong> กรุณา<a href="{% url 'login:login' %}">เข้าสู่ระบบ</a></div>
+    {% endif %}
+{% endblock %}

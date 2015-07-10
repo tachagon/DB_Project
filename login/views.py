@@ -10,6 +10,9 @@ from datetime import datetime
 
 # Create your views here.
 def index(request):
+    if request.user.is_authenticated():
+        return HttpResponseRedirect(reverse('login:menu'))
+
     template = 'login/index.html'
     context = RequestContext(request)
     registered = False
@@ -238,60 +241,64 @@ def user_register(request):
 
         # if don't have an error
         if len(errors) == 0:
-            # create new User object
-            newUser = User(
-                username        = username,
-                first_name      = firstname_en,
-                last_name       = lastname_en,
-                email           = email
-            )
-            newUser.set_password(password)
-            newUser.save()  # save new User object into database
+            try:
+                # create new User object
+                newUser = User(
+                    username        = username,
+                    first_name      = firstname_en,
+                    last_name       = lastname_en,
+                    email           = email
+                )
+                newUser.set_password(password)
+                newUser.save()  # save new User object into database
 
-            # create new UserProfile object
-            newUserProfile = UserProfile(
-                user            = newUser,          # set 1. user
-                # set 2. website
-                # set 3. picture
-                firstname_th    = firstname_th,     # set 4. first name in Thai
-                lastname_th     = lastname_th,      # set 5. last name in Thai
-                firstname_en    = firstname_en,     # set 6. first name in English
-                lastname_en     = lastname_en,      # set 7. last name in English
-                address         = address,          # set 8. address
-                office          = office,           # set 9. office
-                tel             = tel,              # set 10. telephone number
-                ext             = ext,              # set 11. ต่อ สำหรับเบอร์โทร
-                department      = department,       # set 12. department
-                faculty         = faculty,          # set 13. faculty
-                type            = '0',              # set 14. type '0' is Student
-                prefix_name     = prefix_name       # set 15. prefix_name
-            )
-            newUserProfile.save() # save new UserProfile object into database
+                # create new UserProfile object
+                newUserProfile = UserProfile(
+                    user            = newUser,          # set 1. user
+                    # set 2. website
+                    # set 3. picture
+                    firstname_th    = firstname_th,     # set 4. first name in Thai
+                    lastname_th     = lastname_th,      # set 5. last name in Thai
+                    firstname_en    = firstname_en,     # set 6. first name in English
+                    lastname_en     = lastname_en,      # set 7. last name in English
+                    address         = address,          # set 8. address
+                    office          = office,           # set 9. office
+                    tel             = tel,              # set 10. telephone number
+                    ext             = ext,              # set 11. ต่อ สำหรับเบอร์โทร
+                    department      = department,       # set 12. department
+                    faculty         = faculty,          # set 13. faculty
+                    type            = '0',              # set 14. type '0' is Student
+                    prefix_name     = prefix_name       # set 15. prefix_name
+                )
+                newUserProfile.save() # save new UserProfile object into database
 
-            birthDate = datetime.strptime(birthDate, '%d-%m-%Y').date()
-            # ปรับเป็นปี ค.ศ.
-            year = birthDate.year - 543
-            date = str(birthDate.day) + "-" + str(birthDate.month) + "-" + str(year)
-            birthDate = datetime.strptime(date, '%d-%m-%Y').date()
+                birthDate = datetime.strptime(birthDate, '%d-%m-%Y').date()
+                # ปรับเป็นปี ค.ศ.
+                year = birthDate.year - 543
+                date = str(birthDate.day) + "-" + str(birthDate.month) + "-" + str(year)
+                birthDate = datetime.strptime(date, '%d-%m-%Y').date()
 
-            # create new Student object
-            newStudent = Student(
-                userprofile     = newUserProfile,   # set 1. user profile
-                std_id          = std_id,           # set 2. student id
-                scheme          = scheme,           # set 3. scheme หลักสูตร
-                main            = main,             # set 4. main สาขา
-                sex             = sex,              # set 5. sex
-                degree          = degree,           # set 6. degree
-                id_number       = id_number,        # set 7. เลขประจำตัวประชาชน
-                nationality     = nationality,      # set 8. เชื้อชาติ
-                religion        = religion,         # set 9. ศาสนา
-                blood_type      = blood_type,       # set 10. หมู่เลือด
-                birthDate       = birthDate         # set 11. วันเกิด
-            )
-            newStudent.save() # save new Srudent object into database
+                # create new Student object
+                newStudent = Student(
+                    userprofile     = newUserProfile,   # set 1. user profile
+                    std_id          = std_id,           # set 2. student id
+                    scheme          = scheme,           # set 3. scheme หลักสูตร
+                    main            = main,             # set 4. main สาขา
+                    sex             = sex,              # set 5. sex
+                    degree          = degree,           # set 6. degree
+                    id_number       = id_number,        # set 7. เลขประจำตัวประชาชน
+                    nationality     = nationality,      # set 8. เชื้อชาติ
+                    religion        = religion,         # set 9. ศาสนา
+                    blood_type      = blood_type,       # set 10. หมู่เลือด
+                    birthDate       = birthDate         # set 11. วันเกิด
+                )
+                newStudent.save() # save new Srudent object into database
 
-            # redirect to template with register is success
-            context['registered'] = True
+                # redirect to template with register is success
+                context['registered'] = True
+            except:
+                errors.append(5)
+                context['errors'] = errors
         # if have an error
         else:
             # redirect to template with errors list

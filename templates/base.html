@@ -147,6 +147,10 @@
                             {{ user.username }}<span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu">
+                            {% if user.is_staff %}
+                                <li><a href="/admin/" target="_blank">สำหรับผู้ดูแลระบบ</a></li>
+                            {% endif %}
+                            <li><a href="{% url 'login:profile_index' %}">ตั้งค่าบัญชีผู้ใช้</a></li>
                             <li><a href="{% url 'login:logout' %}">ออกจากระบบ</a></li>
                         </ul>
                     </li>
