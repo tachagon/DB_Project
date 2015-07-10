@@ -46,10 +46,10 @@
                             <td data-title="แบบเสนอขออนุมัติโครงงานปริญญานิพนธ์"><a class="btn btn-success" href="{% url 'group6:project_docs_approveProject' approve|get_id_at_index:forloop.counter0 %}">ดูฟอร์ม</a></td>
                             <td data-title="ขั้นตอนการดำเนินงานแนวคิดกับแผนที่วางไว้"><a class="btn btn-default" href="{% url 'group6:project_docs_timeLineProject' timeLine|get_id_at_index:forloop.counter0 %}">ดูฟอร์ม</a></td>
                             <td data-title="ข้อความแจ้งเตือน">{% for text in message|get_at_index:forloop.counter0 %}
-                            <a class="btn btn-link" href="{% url 'group6:project_docs_view_notification' text.id %}">ข้อความแจ้งเตือนที่ {{ forloop.counter }}</a>{% endfor %}</td>
+                            <a class="btn btn-link" href="{% url 'group6:project_docs_view_notification' text.id %}">ข้อความแจ้งเตือนที่ {{ forloop.counter }}</a><br>{% endfor %}</td>
                             <td data-title="เมนูสำหรับแบบฟอร์ม">
                                 <a class="btn btn-danger" href="javascript:if(confirm('คุณต้องการจะลบฟอร์มนี้ใช่หรือไม่ หากใช่ให้กด OK'))
-window.location='{% url 'group6:project_docs_delete' project.id %}';" target="_blank">ลบแบบฟอร์ม</a>
+window.location='{% url 'group6:project_docs_delete' project.id %}';" target="_blank">ลบแบบฟอร์ม</a><br>
                                 <a class="btn btn-link" href="{% url 'group6:project_docs_edit' project.id %}">แก้ไขแบบฟอร์ม</a>
                             </td>
                         </tr>

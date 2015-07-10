@@ -338,7 +338,7 @@ def create_3forms_add(request):
                     except ValueError:
                         error_yearEN = "*กรุณากรอกเฉพาะตัวเลขเท่านั้น" #If not integer set error message and error to true
                         error = True
-                if 'studentID1' and 'studentNAME1' in request.POST:
+                if 'studentID1' in request.POST:
                     studentID = request.POST['studentID1']
                     no_add = checkNotInList(s_list, studentID)
                     if len(Student.objects.filter(std_id=studentID)) == 1 and no_add:
@@ -351,7 +351,7 @@ def create_3forms_add(request):
                         else:
                             error_student.append(("*เลขประจำตัว "+str(studentID)+" มีอยู่แล้ว"))
                         error = True
-                if 'studentID2' and 'studentNAME2' in request.POST:
+                if 'studentID2' in request.POST:
                     studentID = request.POST['studentID2']
                     no_add = checkNotInList(s_list, studentID)
                     if len(Student.objects.filter(std_id=studentID)) == 1 and no_add:
@@ -364,7 +364,7 @@ def create_3forms_add(request):
                         else:
                             error_student.append(("*เลขประจำตัว "+str(studentID)+" มีอยู่แล้ว"))
                         error = True
-                if 'studentID3' and 'studentNAME3' in request.POST:
+                if 'studentID3' in request.POST:
                     studentID = request.POST['studentID3']
                     no_add = checkNotInList(s_list, studentID)
                     if len(Student.objects.filter(std_id=studentID)) == 1 and no_add:
@@ -377,7 +377,7 @@ def create_3forms_add(request):
                         else:
                             error_student.append(("*เลขประจำตัว "+str(studentID)+" มีอยู่แล้ว"))
                         error = True
-                if 'studentID4' and 'studentNAME4' in request.POST:
+                if 'studentID4' in request.POST:
                     studentID = request.POST['studentID4']
                     no_add = checkNotInList(s_list, studentID)
                     if len(Student.objects.filter(std_id=studentID)) == 1 and no_add:
@@ -671,7 +671,7 @@ def edit_3forms_update(request, pjID):
                     except ValueError:
                         error_yearEN = "*กรุณากรอกเฉพาะตัวเลขเท่านั้น" #If not integer set error message and error to true
                         error = True
-                if 'studentID1' and 'studentNAME1' in request.POST:
+                if 'studentID1' in request.POST:
                     studentID = request.POST['studentID1']
                     no_add = checkNotInList(s_list, studentID)
                     if len(Student.objects.filter(std_id=studentID)) == 1 and no_add:
@@ -684,7 +684,7 @@ def edit_3forms_update(request, pjID):
                         else:
                             error_student.append(("*เลขประจำตัว "+str(studentID)+" มีอยู่แล้ว"))
                         error = True
-                if 'studentID2' and 'studentNAME2' in request.POST:
+                if 'studentID2' in request.POST:
                     studentID = request.POST['studentID2']
                     no_add = checkNotInList(s_list, studentID)
                     if len(Student.objects.filter(std_id=studentID)) == 1 and no_add:
@@ -697,7 +697,7 @@ def edit_3forms_update(request, pjID):
                         else:
                             error_student.append(("*เลขประจำตัว "+str(studentID)+" มีอยู่แล้ว"))
                         error = True
-                if 'studentID3' and 'studentNAME3' in request.POST:
+                if 'studentID3' in request.POST:
                     studentID = request.POST['studentID3']
                     no_add = checkNotInList(s_list, studentID)
                     if len(Student.objects.filter(std_id=studentID)) == 1 and no_add:
@@ -710,7 +710,7 @@ def edit_3forms_update(request, pjID):
                         else:
                             error_student.append(("*เลขประจำตัว "+str(studentID)+" มีอยู่แล้ว"))
                         error = True
-                if 'studentID4' and 'studentNAME4' in request.POST:
+                if 'studentID4' in request.POST:
                     studentID = request.POST['studentID4']
                     no_add = checkNotInList(s_list, studentID)
                     if len(Student.objects.filter(std_id=studentID)) == 1 and no_add:
@@ -919,20 +919,27 @@ def deleteForm(request, pjID):
     if request.user.is_authenticated():
         error = True
         u = UserProfile.objects.get(user=request.user)
-        s = Student.objects.get(userprofile=u)
-        p = ProjectG6.objects.get(id=pjID)
-        for student in p.student.all():
-            if student.std_id == s.std_id:
-                error = False
-                break
-        if u.type == '2':
-            error = False
-        if error == True:
-            messages.add_message(request, messages.INFO, "นักศึกษาในกลุ่มเท่านั้นที่สามารถลบฟอร์มได้")
+        if u.type != '2':
+            if u.type == '1':
+                messages.add_message(request, messages.INFO, "นักศึกษาในกลุ่มหรือเจ้าหน้าที่ภาคเท่านั้นที่สามารถลบฟอร์มได้")
+                return HttpResponseRedirect(reverse('group6:project_docs_index')) #redirect to index
+            s = Student.objects.get(userprofile=u)
+            p = ProjectG6.objects.get(id=pjID)
+            for student in p.student.all():
+                if student.std_id == s.std_id:
+                    error = False
+                    break
+            if error == True:
+                messages.add_message(request, messages.INFO, "นักศึกษาในกลุ่มหรือเจ้าหน้าที่ภาคเท่านั้นที่สามารถลบฟอร์มได้")
+                return HttpResponseRedirect(reverse('group6:project_docs_index')) #redirect to index
+            p.delete()
+            messages.add_message(request, messages.INFO, "การลบฟอร์มของโปรเจคสำเร็จ")
             return HttpResponseRedirect(reverse('group6:project_docs_index')) #redirect to index
-        p.delete()
-        messages.add_message(request, messages.INFO, "การลบฟอร์มของโปรเจคสำเร็จ")
-        return HttpResponseRedirect(reverse('group6:project_docs_index')) #redirect to index
+        else:
+            p = ProjectG6.objects.get(id=pjID)
+            p.delete()
+            messages.add_message(request, messages.INFO, "การลบฟอร์มของโปรเจคสำเร็จ")
+            return HttpResponseRedirect(reverse('group6:project_docs_index')) #redirect to index
     else:
         return render(request, 'base.html')
 
