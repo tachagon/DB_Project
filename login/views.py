@@ -10,6 +10,9 @@ from datetime import datetime
 
 # Create your views here.
 def index(request):
+    if request.user.is_authenticated():
+        return HttpResponseRedirect(reverse('login:menu'))
+
     template = 'login/index.html'
     context = RequestContext(request)
     registered = False
