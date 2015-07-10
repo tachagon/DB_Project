@@ -216,7 +216,7 @@
                 <div class="col-sm-3"></div>
             </div>
 
-            <!-- เลือกอาจารย์สองภาษา -->
+            <!-- 1. เลือกอาจารย์สองภาษา -->
             <div class="form-group">
                 <label class="col-sm-3 control-label">เลือกอาจารย์ผู้สอน: </label>
                 <div class="col-sm-6">
@@ -257,7 +257,7 @@
                 </div>
             </div-->
 
-            <!-- เลือกวิชา -->
+            <!-- 2. เลือกวิชา -->
             <div class="form-group">
                 <label class="col-sm-3 control-label"><font color="red">*</font> เลือกวิชาที่สอน: </label>
                 <div class="col-sm-6">
@@ -278,7 +278,7 @@
                 </div>
             </div>
 
-            <!-- เลือก section -->
+            <!-- 3. เลือก section -->
             <div class="form-group">
                 <label class="col-sm-3 control-label"><font color="red">*</font> เลือก Section: </label>
                 <div class="col-sm-6">
@@ -292,6 +292,38 @@
                         เพิ่ม Section
                     </button>
                 </div>
+            </div>
+
+            <!-- 4. เลือกภาคเรียน -->
+            <div class="form-group">
+                <label class="col-sm-3 control-label"><font color="red">*</font> เลือกภาคเรียน: </label>
+                <div class="col-sm-6">
+                    <select class="form-control" name="selectTerm" required>
+                        <option value="">กรุณาเลือกภาคเรียน</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                    </select>
+                </div>
+                <div class="col-sm-3"></div>
+            </div>
+
+            <!-- 5. เลือกปีการศึกษา -->
+            <div class="form-group">
+                <label class="col-sm-3 control-label"><font color="red">*</font> เลือกปีการศึกษา: </label>
+                <div class="col-sm-6">
+                    <select class="form-control" name="selectYear" required>
+                        <option value="">กรุณาเลือกปีการศึกษา</option>
+                        <script>
+                            var myDate = new Date();
+                            var year = myDate.getFullYear() + 543;
+                            for(var i = year; i > year - 10; i--){
+                                document.write('<option value="' + i +'">' + i + '</option>');
+                            }
+                        </script>
+                    </select>
+                </div>
+                <div class="col-sm-3"></div>
             </div>
 
             <div class="form-group">
