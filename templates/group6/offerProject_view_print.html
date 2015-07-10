@@ -8,6 +8,11 @@
 <style>
 body{
 	}
+*{
+	word-wrap:normal;
+	word-break:break-all;
+}
+
 .page{
 	font:14pt "Angsana New";
 	width:210mm;
@@ -149,7 +154,6 @@ body{
 		border-radius:0;
 		box-shadow: initial;
 		background: initial;
-		word-break:break-strict;
 		page-break-after: auto;
 		display:block;
 		}
@@ -220,7 +224,7 @@ body{
             	<div id="moneyothers">ค่าใช้จ่ายเบ็ดเตล็ด </div><div id="moneytails">{{ offer.priceOfOther|floatformat:"2"|intcomma }} บาท</div>
             </div>
             <div class="row">
-            	<div id="moneytotal">รวมค่าใช้จ่ายในโครงการ </div><div id="moneytails">{{ priceOfTotal|floatformat:"2"|intcomma }} บาท</div><div id="moneytails">(ดังรายระเอียดที่แนบมา)</div>
+            	<div id="moneytotal">รวมค่าใช้จ่ายในโครงการ </div><div id="moneytails">{{ priceOfTotal|floatformat:"2"|intcomma }} บาท</div><div id="moneytails">(ดังรายละเอียดที่แนบมา)</div>
             </div>
         </div>
     </div>

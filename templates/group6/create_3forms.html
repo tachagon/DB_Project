@@ -52,36 +52,6 @@
    #o1{
        text-align:center;
    }
-/*#years{
-	margin-left:0;
-	}
-#nameth{
-	margin-left:0;
-	}
-#nameen{
-	margin-left:18;
-	}
-#numbers{
-	margin-left:56;
-	}
-	*/
-    @page{
-       size:A4;
-       margin:0;
-   }
-   /*@media print {
-      .page {
-          margin:0;
-          font-size:20px;
-          position:absolute;
-          border: initial;
-          width: initial;
-          height:initial;
-          box-shadow: initial;
-          background: initial;
-          page-break-after: always;
-      }
-  }*/
   </style>
   <script>
 var dict = {
@@ -98,18 +68,27 @@ window.setInterval(function updateStudent(){
     }
 }, 1000);
 
+
 function yearselect(){
     var year = new Date();
     var list = document.getElementById("yearselect");
+	var list2 = document.getElementById("yearEnd");
     var i;
     for (i=0;i<list.length;i++){
         list.options[i].text = year.getFullYear()-i+543;
         list.options[i].value = year.getFullYear()-i+543;
     }
+	for (i=0;i<list2.length;i++){
+        list2.options[i].text = year.getFullYear()+i+543;
+        list2.options[i].value = year.getFullYear()+i+543;
+    }
+	
     var sel = document.getElementById("stdnumber");
     sel.value = {{ numOP }};
     list.value = {{ yearOE }};
+	// list2.value = {{ yearEN }};
 }
+
 
 function addMoreStd(){
     var e1 = document.getElementById("stdnumber");
@@ -241,7 +220,18 @@ p_adviser
                 <option value="010123123 โครงงาน 2 : Project II (Cpr.E 54)">010123123 โครงงาน 2 : Project II (Cpr.E 54)</option>
             </select> <font color = "FF0000" name="message">{{ error_courses }}</font><br>
     <!-- Must FIX -->
-    <H>คาดว่าจะเขียนปริญญานิพนธ์เสร็จภายในภาคที่:</H> <input id='termEND' type="text" name="semesterEnd" value="{{ semester }}"> <font color = "FF0000" name="message">{{ error_semester }}</font></br><H>ปีการศึกษา:</H> <input id='yearEND' type="text" name="yearEnd" value="{{ yearEN }}"> <font color = "FF0000" name="message">{{ error_yearEN }}</font></br>
+    <H>คาดว่าจะเขียนปริญญานิพนธ์เสร็จภายในภาคที่:</H> <input id='termEND' type="text" name="semesterEnd" value="{{ semester }}"> <font color = "FF0000" name="message">{{ error_semester }}</font></br>
+    <H>ปีการศึกษา <select id="yearEnd" name="yearEnd">
+                    <option>test1</option>
+                    <option>test2</option>
+                    <option>test3</option>
+                    <option>test4</option>
+                    <option>test5</option>
+                    <option>test6</option>
+                    <option>test7</option>
+                    <option>test8</option>
+                    <option>test9</option>
+                </select></H> <font color = "FF0000" name="message">{{ error_yearEN }}</font></br>
 </label><br>
 <font color = "FF0000" name="message">---ขั้นตอนการดำเนินงานจำกัดจำนวนตัวอักษร 150 ตัวอักษร---</font><br>
 <H>
