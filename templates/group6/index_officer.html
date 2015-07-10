@@ -106,6 +106,7 @@ function selectView() {
                             <th>แบบเสนอโครงงานปริญญานิพนธ์</th>
                             <th>แบบเสนอขออนุมัติโครงงานปริญญานิพนธ์</th>
                             <th>ขั้นตอนการดำเนินงานแนวคิดกับแผนที่วางไว้</th>
+                            <th>ข้อความแจ้งเตือน</th>
                             <th>เมนูสำหรับแบบฟอร์ม</th>
                         </tr>
                     </thead>
@@ -120,9 +121,12 @@ function selectView() {
                             <td data-title="แบบเสนอโครงงานปริญญานิพนธ์"><a class="btn btn-warning" href="{% url 'group6:project_docs_offerProject' offer0|get_id_at_index:forloop.counter0 %}">ดูฟอร์ม</a></td>
                             <td data-title="แบบเสนอขออนุมัติโครงงานปริญญานิพนธ์"><a class="btn btn-success" href="{% url 'group6:project_docs_approveProject' approve0|get_id_at_index:forloop.counter0 %}">ดูฟอร์ม</a></td>
                             <td data-title="ขั้นตอนการดำเนินงานแนวคิดกับแผนที่วางไว้"><a class="btn btn-default" href="{% url 'group6:project_docs_timeLineProject' timeLine0|get_id_at_index:forloop.counter0 %}">ดูฟอร์ม</a></td>
+                            <td data-title="ข้อความแจ้งเตือน">{% for text in message0|get_at_index:forloop.counter0 %}
+                            <a class="btn btn-link" href="{% url 'group6:project_docs_view_notification' text.id %}">ข้อความแจ้งเตือนที่ {{ forloop.counter }}</a>{% endfor %}</td>
                             <td data-title="เมนูสำหรับแบบฟอร์ม">
                                 <a class="btn btn-danger" href="javascript:if(confirm('คุณต้องการจะลบฟอร์มนี้ใช่หรือไม่ หากใช่ให้กด OK'))
 window.location='{% url 'group6:project_docs_delete' project.id %}';" target="_blank">ลบแบบฟอร์ม</a>
+                                <a class="btn btn-link" href="{% url 'group6:project_docs_add_notification' project.id %}">เพิ่มข้อความแจ้งเตือน</a>
                                 {% if categories_id0|get_at_index:forloop.counter0 %}
                                 <a class="btn btn-link" href="{% url 'group6:project_docs_edit_categories_tester' categories_id0|get_at_index:forloop.counter0 %}">แก้ไขหมายเลขโครงงาน</a>
                                 {% else %}
@@ -162,6 +166,7 @@ window.location='{% url 'group6:project_docs_delete' project.id %}';" target="_b
                             <th>แบบเสนอโครงงานปริญญานิพนธ์</th>
                             <th>แบบเสนอขออนุมัติโครงงานปริญญานิพนธ์</th>
                             <th>ขั้นตอนการดำเนินงานแนวคิดกับแผนที่วางไว้</th>
+                            <th>ข้อความแจ้งเตือน</th>
                             <th>เมนูสำหรับแบบฟอร์ม</th>
                         </tr>
                     </thead>
@@ -176,6 +181,8 @@ window.location='{% url 'group6:project_docs_delete' project.id %}';" target="_b
                             <td data-title="แบบเสนอโครงงานปริญญานิพนธ์"><a class="btn btn-warning" href="{% url 'group6:project_docs_offerProject' offer1|get_id_at_index:forloop.counter0 %}">ดูฟอร์ม</a></td>
                             <td data-title="แบบเสนอขออนุมัติโครงงานปริญญานิพนธ์"><a class="btn btn-success" href="{% url 'group6:project_docs_approveProject' approve1|get_id_at_index:forloop.counter0 %}">ดูฟอร์ม</a></td>
                             <td data-title="ขั้นตอนการดำเนินงานแนวคิดกับแผนที่วางไว้"><a class="btn btn-default" href="{% url 'group6:project_docs_timeLineProject' timeLine1|get_id_at_index:forloop.counter0 %}">ดูฟอร์ม</a></td>
+                            <td data-title="ข้อความแจ้งเตือน">{% for text in message1|get_at_index:forloop.counter0 %}
+                            <a class="btn btn-link" href="{% url 'group6:project_docs_view_notification' text.id %}">ข้อความแจ้งเตือนที่ {{ forloop.counter }}</a>{% endfor %}</td>
                             <td data-title="เมนูสำหรับแบบฟอร์ม">
                                 <a class="btn btn-danger" href="javascript:if(confirm('คุณต้องการจะลบฟอร์มนี้ใช่หรือไม่ หากใช่ให้กด OK'))
 window.location='{% url 'group6:project_docs_delete' project.id %}';" target="_blank">ลบแบบฟอร์ม</a>
@@ -218,6 +225,7 @@ window.location='{% url 'group6:project_docs_delete' project.id %}';" target="_b
                             <th>แบบเสนอโครงงานปริญญานิพนธ์</th>
                             <th>แบบเสนอขออนุมัติโครงงานปริญญานิพนธ์</th>
                             <th>ขั้นตอนการดำเนินงานแนวคิดกับแผนที่วางไว้</th>
+                            <th>ข้อความแจ้งเตือน</th>
                             <th>เมนูสำหรับแบบฟอร์ม</th>
                         </tr>
                     </thead>
@@ -232,6 +240,8 @@ window.location='{% url 'group6:project_docs_delete' project.id %}';" target="_b
                             <td data-title="แบบเสนอโครงงานปริญญานิพนธ์"><a class="btn btn-warning" href="{% url 'group6:project_docs_offerProject' offer2|get_id_at_index:forloop.counter0 %}">ดูฟอร์ม</a></td>
                             <td data-title="แบบเสนอขออนุมัติโครงงานปริญญานิพนธ์"><a class="btn btn-success" href="{% url 'group6:project_docs_approveProject' approve2|get_id_at_index:forloop.counter0 %}">ดูฟอร์ม</a></td>
                             <td data-title="ขั้นตอนการดำเนินงานแนวคิดกับแผนที่วางไว้"><a class="btn btn-default" href="{% url 'group6:project_docs_timeLineProject' timeLine2|get_id_at_index:forloop.counter0 %}">ดูฟอร์ม</a></td>
+                            <td data-title="ข้อความแจ้งเตือน">{% for text in message2|get_at_index:forloop.counter0 %}
+                            <a class="btn btn-link" href="{% url 'group6:project_docs_view_notification' text.id %}">ข้อความแจ้งเตือนที่ {{ forloop.counter }}</a>{% endfor %}</td>
                             <td data-title="เมนูสำหรับแบบฟอร์ม">
                                 <a class="btn btn-danger" href="javascript:if(confirm('คุณต้องการจะลบฟอร์มนี้ใช่หรือไม่ หากใช่ให้กด OK'))
 window.location='{% url 'group6:project_docs_delete' project.id %}';" target="_blank">ลบแบบฟอร์ม</a>
@@ -274,6 +284,7 @@ window.location='{% url 'group6:project_docs_delete' project.id %}';" target="_b
                             <th>แบบเสนอโครงงานปริญญานิพนธ์</th>
                             <th>แบบเสนอขออนุมัติโครงงานปริญญานิพนธ์</th>
                             <th>ขั้นตอนการดำเนินงานแนวคิดกับแผนที่วางไว้</th>
+                            <th>ข้อความแจ้งเตือน</th>
                             <th>เมนูสำหรับแบบฟอร์ม</th>
                         </tr>
                     </thead>
@@ -288,6 +299,8 @@ window.location='{% url 'group6:project_docs_delete' project.id %}';" target="_b
                             <td data-title="แบบเสนอโครงงานปริญญานิพนธ์"><a class="btn btn-warning" href="{% url 'group6:project_docs_offerProject' offer3|get_id_at_index:forloop.counter0 %}">ดูฟอร์ม</a></td>
                             <td data-title="แบบเสนอขออนุมัติโครงงานปริญญานิพนธ์"><a class="btn btn-success" href="{% url 'group6:project_docs_approveProject' approve3|get_id_at_index:forloop.counter0 %}">ดูฟอร์ม</a></td>
                             <td data-title="ขั้นตอนการดำเนินงานแนวคิดกับแผนที่วางไว้"><a class="btn btn-default" href="{% url 'group6:project_docs_timeLineProject' timeLine3|get_id_at_index:forloop.counter0 %}">ดูฟอร์ม</a></td>
+                            <td data-title="ข้อความแจ้งเตือน">{% for text in message3|get_at_index:forloop.counter0 %}
+                            <a class="btn btn-link" href="{% url 'group6:project_docs_view_notification' text.id %}">ข้อความแจ้งเตือนที่ {{ forloop.counter }}</a>{% endfor %}</td>
                             <td data-title="เมนูสำหรับแบบฟอร์ม">
                                 <a class="btn btn-danger" href="javascript:if(confirm('คุณต้องการจะลบฟอร์มนี้ใช่หรือไม่ หากใช่ให้กด OK'))
 window.location='{% url 'group6:project_docs_delete' project.id %}';" target="_blank">ลบแบบฟอร์ม</a>
@@ -330,6 +343,7 @@ window.location='{% url 'group6:project_docs_delete' project.id %}';" target="_b
                             <th>แบบเสนอโครงงานปริญญานิพนธ์</th>
                             <th>แบบเสนอขออนุมัติโครงงานปริญญานิพนธ์</th>
                             <th>ขั้นตอนการดำเนินงานแนวคิดกับแผนที่วางไว้</th>
+                            <th>ข้อความแจ้งเตือน</th>
                             <th>เมนูสำหรับแบบฟอร์ม</th>
                         </tr>
                     </thead>
@@ -344,6 +358,8 @@ window.location='{% url 'group6:project_docs_delete' project.id %}';" target="_b
                             <td data-title="แบบเสนอโครงงานปริญญานิพนธ์"><a class="btn btn-warning" href="{% url 'group6:project_docs_offerProject' offer4|get_id_at_index:forloop.counter0 %}">ดูฟอร์ม</a></td>
                             <td data-title="แบบเสนอขออนุมัติโครงงานปริญญานิพนธ์"><a class="btn btn-success" href="{% url 'group6:project_docs_approveProject' approve4|get_id_at_index:forloop.counter0 %}">ดูฟอร์ม</a></td>
                             <td data-title="ขั้นตอนการดำเนินงานแนวคิดกับแผนที่วางไว้"><a class="btn btn-default" href="{% url 'group6:project_docs_timeLineProject' timeLine4|get_id_at_index:forloop.counter0 %}">ดูฟอร์ม</a></td>
+                            <td data-title="ข้อความแจ้งเตือน">{% for text in message4|get_at_index:forloop.counter0 %}
+                            <a class="btn btn-link" href="{% url 'group6:project_docs_view_notification' text.id %}">ข้อความแจ้งเตือนที่ {{ forloop.counter }}</a>{% endfor %}</td>
                             <td data-title="เมนูสำหรับแบบฟอร์ม">
                                 <a class="btn btn-danger" href="javascript:if(confirm('คุณต้องการจะลบฟอร์มนี้ใช่หรือไม่ หากใช่ให้กด OK'))
 window.location='{% url 'group6:project_docs_delete' project.id %}';" target="_blank">ลบแบบฟอร์ม</a>
@@ -386,6 +402,7 @@ window.location='{% url 'group6:project_docs_delete' project.id %}';" target="_b
                             <th>แบบเสนอโครงงานปริญญานิพนธ์</th>
                             <th>แบบเสนอขออนุมัติโครงงานปริญญานิพนธ์</th>
                             <th>ขั้นตอนการดำเนินงานแนวคิดกับแผนที่วางไว้</th>
+                            <th>ข้อความแจ้งเตือน</th>
                             <th>เมนูสำหรับแบบฟอร์ม</th>
                         </tr>
                     </thead>
@@ -400,6 +417,8 @@ window.location='{% url 'group6:project_docs_delete' project.id %}';" target="_b
                             <td data-title="แบบเสนอโครงงานปริญญานิพนธ์"><a class="btn btn-warning" href="{% url 'group6:project_docs_offerProject' offer5|get_id_at_index:forloop.counter0 %}">ดูฟอร์ม</a></td>
                             <td data-title="แบบเสนอขออนุมัติโครงงานปริญญานิพนธ์"><a class="btn btn-success" href="{% url 'group6:project_docs_approveProject' approve5|get_id_at_index:forloop.counter0 %}">ดูฟอร์ม</a></td>
                             <td data-title="ขั้นตอนการดำเนินงานแนวคิดกับแผนที่วางไว้"><a class="btn btn-default" href="{% url 'group6:project_docs_timeLineProject' timeLine5|get_id_at_index:forloop.counter0 %}">ดูฟอร์ม</a></td>
+                            <td data-title="ข้อความแจ้งเตือน">{% for text in message5|get_at_index:forloop.counter0 %}
+                            <a class="btn btn-link" href="{% url 'group6:project_docs_view_notification' text.id %}">ข้อความแจ้งเตือนที่ {{ forloop.counter }}</a>{% endfor %}</td>
                             <td data-title="เมนูสำหรับแบบฟอร์ม">
                                 <a class="btn btn-danger" href="javascript:if(confirm('คุณต้องการจะลบฟอร์มนี้ใช่หรือไม่ หากใช่ให้กด OK'))
 window.location='{% url 'group6:project_docs_delete' project.id %}';" target="_blank">ลบแบบฟอร์ม</a>

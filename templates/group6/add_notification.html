@@ -1,0 +1,110 @@
+﻿{% extends "base.html" %}
+{% load custom_function %}
+
+{% block title %}ระบบ จัดการโครงงาน สำหรับนักศึกษา ปริญญาตรี - แจ้งเตือน{% endblock %}
+
+{% block pageHeader %}
+<h2>ระบบ <small>จัดการโครงงาน สำหรับนักศึกษา ปริญญาตรี</small></h2>
+<ol class="breadcrumb">
+    <li><a href="{% url 'login:menu' %}">เมนู</a></li>
+    <li><a href="{% url 'group6:project_docs_index' %}">ระบบ จัดการโครงงาน สำหรับนักศึกษา ปริญญาตรี</a></li>
+    <li class="active">แจ้งเตือน</li>
+</ol>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <style>
+    table,tr,td{
+        border-collapse: collapse;
+    }
+    body{
+       background-color:white;
+   }
+   .page{
+       width:210mm;
+       margin:auto;
+       position:relative;
+       padding: 2cm;
+       border: 1px #D3D3D3 solid;
+       border-radius: 5px;
+       background: white;
+   }
+   .form > H{
+       margin-left:10;
+   }
+   .namestd{
+       margin-left:10;
+   }
+   textarea {
+       margin-left:10;
+       resize:none;
+       outline:none;
+   }
+   H{
+       font:16pt "Angsana New";
+   }
+   input{
+       outline:none;
+       resize:none;
+   }
+   #o1{
+       text-align:center;
+   }
+/*#years{
+	margin-left:0;
+	}
+#nameth{
+	margin-left:0;
+	}
+#nameen{
+	margin-left:18;
+	}
+#numbers{
+	margin-left:56;
+	}
+	*/
+    @page{
+       size:A4;
+       margin:0;
+   }
+   /*@media print {
+      .page {
+          margin:0;
+          font-size:20px;
+          position:absolute;
+          border: initial;
+          width: initial;
+          height:initial;
+          box-shadow: initial;
+          background: initial;
+          page-break-after: always;
+      }
+  }*/
+  </style>
+    {% if edit == '1' %}
+    <form action = "{% url 'group6:project_docs_add_notification_add' project_id %}" method = "post">
+    {% elif edit == '2' %}
+    <form action = "{% url 'group6:project_docs_reply_message_add' notification_id %}" method = "post">
+    {% else %}
+    <form action = "{% url 'group6:project_docs_edit_notification_message_update' notification_id message_id %}" method = "post">
+    {% endif %}
+        {% csrf_token %}
+        <div class="page">
+            <label class="form">
+            <H>ข้อความ:</H> <font color = "FF0000" name="message">{{ error_message }}</font></br><textarea rows="6" cols="60" name="message">{{ message }}</textarea></br>   
+            </label>
+   </div>
+   <center><br>
+    <input class="btn btn-primary" type="submit" value="บันทึก" name='save' />
+    {% ifequal edit '1' %}
+    <a href="{% url 'group6:project_docs_index' %}"><input class="btn btn-danger" type="button" value="ยกเลิก" name = 'cancel' /></a>
+    {% else %}
+    <a href="{% url 'group6:project_docs_view_notification' notification_id %}"><input class="btn btn-danger" type="button" value="ยกเลิก" name = 'cancel' /></a>
+    {% endifequal %}
+</center>
+</form>
+<br>
+</div>
+{% endblock %}

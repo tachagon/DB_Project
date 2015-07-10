@@ -81,3 +81,14 @@ class StepInTimeLine(models.Model):
 
     def __unicode__(self):
         return self.timeline.project.name_eng + " (" + self.processDescription + ")"
+
+class NotificationProject(models.Model):
+    project = models.ForeignKey(ProjectG6) #Link to Project entity Many to one
+    officer = models.ForeignKey(Officer)
+
+class Message(models.Model):
+    text = models.TextField()
+    user = models.ForeignKey(UserProfile)
+    noti = models.ForeignKey(NotificationProject) #Link to NotificationProject entity Many to one
+    pub_date = models.DateTimeField('date published')
+    pub_date_last = models.DateTimeField('last edit')

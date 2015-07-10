@@ -1,5 +1,6 @@
 #-*- coding: utf-8 -*-
 from django import template
+from login.models import *
 
 register = template.Library()
 
@@ -48,3 +49,9 @@ def get_prefix_name_th_teacher(index_academic,index):
 @register.filter(name='get_list_size')
 def get_list_size(lists):
     return len(lists)
+
+@register.filter(name='get_prefix_name_th_teacher_message')
+def get_prefix_name_th_teacher_message(index):
+    u = UserProfile.objects.get(id=index)
+    t = Teacher.objects.get(userprofile=u)
+    return get_prefix_name_th_teacher(t.academic_position,u.prefix_name)

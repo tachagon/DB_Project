@@ -1,0 +1,106 @@
+﻿{% extends "base.html" %}
+{% load custom_function %}
+
+{% block title %}ระบบ จัดการโครงงาน สำหรับนักศึกษา ปริญญาตรี - แจ้งเตือน{% endblock %}
+
+{% block pageHeader %}
+<h2>ระบบ <small>จัดการโครงงาน สำหรับนักศึกษา ปริญญาตรี</small></h2>
+<ol class="breadcrumb">
+    <li><a href="{% url 'login:menu' %}">เมนู</a></li>
+    <li><a href="{% url 'group6:project_docs_index' %}">ระบบ จัดการโครงงาน สำหรับนักศึกษา ปริญญาตรี</a></li>
+    <li class="active">แจ้งเตือน</li>
+</ol>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <style>
+    table,tr,td{
+        border-collapse: collapse;
+    }
+    body{
+       background-color:white;
+   }
+   .page{
+       width:210mm;
+       margin:auto;
+       position:relative;
+       padding: 2cm;
+       border: 1px #D3D3D3 solid;
+       border-radius: 5px;
+       background: white;
+   }
+   .form > H{
+       margin-left:10;
+   }
+   .namestd{
+       margin-left:10;
+   }
+   textarea {
+       margin-left:10;
+       resize:none;
+       outline:none;
+   }
+   H{
+       font:16pt "Angsana New";
+   }
+   input{
+       outline:none;
+       resize:none;
+   }
+   #o1{
+       text-align:center;
+   }
+/*#years{
+	margin-left:0;
+	}
+#nameth{
+	margin-left:0;
+	}
+#nameen{
+	margin-left:18;
+	}
+#numbers{
+	margin-left:56;
+	}
+	*/
+    @page{
+       size:A4;
+       margin:0;
+   }
+   /*@media print {
+      .page {
+          margin:0;
+          font-size:20px;
+          position:absolute;
+          border: initial;
+          width: initial;
+          height:initial;
+          box-shadow: initial;
+          background: initial;
+          page-break-after: always;
+      }
+  }*/
+  </style>
+        <div class="page">
+            <label class="form">
+            {% for mes in message %}
+            <H>{{ mes.text }}</H><br>
+                  โดย {% if mes.user.type == '0' %}{{ mes.user.prefix_name|get_prefix_name_th }}{% elif mes.user.type == '2' %}{{ mes.user.prefix_name|get_prefix_name_th }}{% elif mes.user.type == '1' %}{{ mes.user.id|get_prefix_name_th_teacher_message }}{% endif %} {{ mes.user.firstname_th }} {{ mes.user.lastname_th }} เมื่อ {{ mes.pub_date }}<br>แก้ไขล่าสุดเมื่อ {{ mes.pub_date_last }}
+            {% if user_now.id == mes.user.id %}<a class="btn btn-info btn-xs" href="{% url 'group6:project_docs_edit_notification_message' notification.id mes.id %}">Edit Message</a>{% endif %}<br><br>
+            {% endfor %}
+            
+            </label>
+   </div>
+   <center><br>
+    <a class="btn btn-primary" href="{% url 'group6:project_docs_reply_message' notification.id %}">ตอบกลับ</a>
+    <a href="{% url 'group6:project_docs_index' %}"><input class="btn btn-danger" type="button" value="ย้อนกลับ" name = 'cancel' /></a>
+    {% if user_now.id == notification.officer.userprofile.id %}
+    <a class="btn btn-danger" href="javascript:if(confirm('คุณต้องการจะลบการแจ้งเตือนนี้ใช่หรือไม่ หากใช่ให้กด OK'))
+window.location='{% url 'group6:project_docs_delete_notification' notification.id %}';" target="_blank">ลบแบบฟอร์ม</a>
+    {% endif %}
+</center>
+<br>
+</div>
+{% endblock %}

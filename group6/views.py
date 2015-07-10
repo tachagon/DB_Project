@@ -26,20 +26,26 @@ def index(request):
             approve = []
             timeLine = []
             project_id = []
+            notification = []
             for p in project:
                 research.append(ResearchProjectForm.objects.get(project=p))
                 offer.append(OfferProjectForm.objects.get(project=p))
                 approve.append(ApproveProjectForm.objects.get(project=p))
                 timeLine.append(TimeLineForm.objects.get(project=p))
                 categories_temp = CategoriesProject.objects.filter(project=p)
+                noti_temp = NotificationProject.objects.filter(project=p)    
+                if len(noti_temp)==0:
+                    notification.append('')
+                else:
+                    notification.append(noti_temp)
                 if len(categories_temp)==0:
                     project_id.append('-')
                 else:
                     project_id.append(categories_temp[0].project_catagories+categories_temp[0].year+'-'+str(categories_temp[0].semester)+'-'+categories_temp[0].number)
-            return render(request, 'group6/index.html', {'project_list': project, 'research': research, 'offer': offer, 'approve': approve, 'timeLine': timeLine, 'project_id': project_id},)
+            return render(request, 'group6/index.html', {'project_list': project, 'research': research, 'offer': offer, 'approve': approve, 'timeLine': timeLine, 'project_id': project_id, 'message': notification},)
         elif u.type == '1':
             t = Teacher.objects.get(userprofile=u)
-            project_list, research_list, offer_list, approve_list, timeLine_list, categories_id_list, project_id_list = [], [], [], [], [], [], []
+            project_list, research_list, offer_list, approve_list, timeLine_list, categories_id_list, project_id_list, notification_list = [], [], [], [], [], [], [], []
             for cat in main_cat:
                 cp = CategoriesProject.objects.filter(project_catagories=cat)
                 project = []
@@ -49,6 +55,7 @@ def index(request):
                 timeLine = []
                 categories_id = []
                 project_id = []
+                notification = []
                 for pro in cp:
                     if pro.project.teacher == t:
                         project.append(pro.project)
@@ -62,12 +69,17 @@ def index(request):
                     approve.append(ApproveProjectForm.objects.get(project=p))
                     timeLine.append(TimeLineForm.objects.get(project=p))
                     categories_temp = CategoriesProject.objects.filter(project=p)
+                    noti_temp = NotificationProject.objects.filter(project=p)
                     if len(categories_temp)==0:
                         categories_id.append('')
                         project_id.append('-')
                     else:
                         categories_id.append(categories_temp[0].id)
                         project_id.append(categories_temp[0].project_catagories+categories_temp[0].year+'-'+str(categories_temp[0].semester)+'-'+categories_temp[0].number)
+                    if len(noti_temp)==0:
+                        notification.append('')
+                    else:
+                        notification.append(noti_temp)
                 project_list.append(project)
                 research_list.append(research)
                 offer_list.append(offer)
@@ -75,6 +87,7 @@ def index(request):
                 timeLine_list.append(timeLine)
                 categories_id_list.append(categories_id)
                 project_id_list.append(project_id)
+                notification_list.append(notification)
             project = []
             research = []
             offer = []
@@ -82,6 +95,7 @@ def index(request):
             timeLine = []
             categories_id = []
             project_id = []
+            notification = []
             for proj in ProjectG6.objects.all():
                 if proj.teacher == t:
                     if len(proj.categoriesproject_set.all()) == 0:
@@ -91,12 +105,17 @@ def index(request):
                         approve.append(ApproveProjectForm.objects.get(project=proj))
                         timeLine.append(TimeLineForm.objects.get(project=proj))
                         categories_temp = CategoriesProject.objects.filter(project=proj)
+                        noti_temp = NotificationProject.objects.filter(project=proj)
                         if len(categories_temp)==0:
                             categories_id.append('')
                             project_id.append('-')
                         else:
                             categories_id.append(categories_temp[0].id)
                             project_id.append(categories_temp[0].project_catagories+categories_temp[0].year+'-'+str(categories_temp[0].semester)+'-'+categories_temp[0].number)
+                        if len(noti_temp)==0:
+                            notification.append('')
+                        else:
+                            notification.append(noti_temp)
             project_list.append(project)
             research_list.append(research)
             offer_list.append(offer)
@@ -104,9 +123,10 @@ def index(request):
             timeLine_list.append(timeLine)
             categories_id_list.append(categories_id)
             project_id_list.append(project_id)
-            return render(request, 'group6/index_teacher.html', {'main0': main[0], 'project_list0': project_list[0], 'research0': research_list[0], 'offer0': offer_list[0], 'approve0': approve_list[0], 'timeLine0': timeLine_list[0], 'categories_id0':categories_id_list[0], 'project_id0': project_id_list[0], 'main1': main[1], 'project_list1': project_list[1], 'research1': research_list[1], 'offer1': offer_list[1], 'approve1': approve_list[1], 'timeLine1': timeLine_list[1], 'categories_id1':categories_id_list[1], 'project_id1': project_id_list[1], 'main2': main[2], 'project_list2': project_list[2], 'research2': research_list[2], 'offer2': offer_list[2], 'approve2': approve_list[2], 'timeLine2': timeLine_list[2], 'categories_id2':categories_id_list[2], 'project_id2': project_id_list[2], 'main3': main[3], 'project_list3': project_list[3], 'research3': research_list[3], 'offer3': offer_list[3], 'approve3': approve_list[3], 'timeLine3': timeLine_list[3], 'categories_id3':categories_id_list[3], 'project_id3': project_id_list[3], 'main4': main[4], 'project_list4': project_list[4], 'research4': research_list[4], 'offer4': offer_list[4], 'approve4': approve_list[4], 'timeLine4': timeLine_list[4], 'categories_id4':categories_id_list[4], 'project_id4': project_id_list[4], 'main5': 'Uncategories', 'project_list5': project_list[5], 'research5': research_list[5], 'offer5': offer_list[5], 'approve5': approve_list[5], 'timeLine5': timeLine_list[5], 'categories_id5':categories_id_list[5], 'project_id5': project_id_list[5]})
+            notification_list.append(notification)
+            return render(request, 'group6/index_teacher.html', {'main0': main[0], 'project_list0': project_list[0], 'research0': research_list[0], 'offer0': offer_list[0], 'approve0': approve_list[0], 'timeLine0': timeLine_list[0], 'categories_id0':categories_id_list[0], 'project_id0': project_id_list[0], 'message0': notification_list[0], 'main1': main[1], 'project_list1': project_list[1], 'research1': research_list[1], 'offer1': offer_list[1], 'approve1': approve_list[1], 'timeLine1': timeLine_list[1], 'categories_id1':categories_id_list[1], 'project_id1': project_id_list[1], 'message1': notification_list[1], 'main2': main[2], 'project_list2': project_list[2], 'research2': research_list[2], 'offer2': offer_list[2], 'approve2': approve_list[2], 'timeLine2': timeLine_list[2], 'categories_id2':categories_id_list[2], 'project_id2': project_id_list[2], 'message2': notification_list[2], 'main3': main[3], 'project_list3': project_list[3], 'research3': research_list[3], 'offer3': offer_list[3], 'approve3': approve_list[3], 'timeLine3': timeLine_list[3], 'categories_id3':categories_id_list[3], 'project_id3': project_id_list[3], 'message3': notification_list[3], 'main4': main[4], 'project_list4': project_list[4], 'research4': research_list[4], 'offer4': offer_list[4], 'approve4': approve_list[4], 'timeLine4': timeLine_list[4], 'categories_id4':categories_id_list[4], 'project_id4': project_id_list[4], 'message4': notification_list[4], 'main5': 'Uncategories', 'project_list5': project_list[5], 'research5': research_list[5], 'offer5': offer_list[5], 'approve5': approve_list[5], 'timeLine5': timeLine_list[5], 'categories_id5':categories_id_list[5], 'project_id5': project_id_list[5], 'message5': notification_list[5]})
         elif u.type == '2':
-            project_list, research_list, offer_list, approve_list, timeLine_list, categories_id_list, project_id_list = [], [], [], [], [], [], []
+            project_list, research_list, offer_list, approve_list, timeLine_list, categories_id_list, project_id_list, notification_list = [], [], [], [], [], [], [], []
             for cat in main_cat:
                 cp = CategoriesProject.objects.filter(project_catagories=cat)
                 project = []
@@ -116,6 +136,7 @@ def index(request):
                 timeLine = []
                 categories_id = []
                 project_id = []
+                notification = []
                 for pro in cp:
                     project.append(pro.project)
                 for p in project:
@@ -124,12 +145,17 @@ def index(request):
                     approve.append(ApproveProjectForm.objects.get(project=p))
                     timeLine.append(TimeLineForm.objects.get(project=p))
                     categories_temp = CategoriesProject.objects.filter(project=p)
+                    noti_temp = NotificationProject.objects.filter(project=p)
                     if len(categories_temp)==0:
                         categories_id.append('')
                         project_id.append('-')
                     else:
                         categories_id.append(categories_temp[0].id)
                         project_id.append(categories_temp[0].project_catagories+categories_temp[0].year+'-'+str(categories_temp[0].semester)+'-'+categories_temp[0].number)
+                    if len(noti_temp)==0:
+                        notification.append('')
+                    else:
+                        notification.append(noti_temp)
                 project_list.append(project)
                 research_list.append(research)
                 offer_list.append(offer)
@@ -137,6 +163,7 @@ def index(request):
                 timeLine_list.append(timeLine)
                 categories_id_list.append(categories_id)
                 project_id_list.append(project_id)
+                notification_list.append(notification)
             project = []
             research = []
             offer = []
@@ -144,6 +171,7 @@ def index(request):
             timeLine = []
             categories_id = []
             project_id = []
+            notification = []
             for proj in ProjectG6.objects.all():
                 if len(proj.categoriesproject_set.all()) == 0:
                     project.append(proj)
@@ -152,12 +180,17 @@ def index(request):
                     approve.append(ApproveProjectForm.objects.get(project=proj))
                     timeLine.append(TimeLineForm.objects.get(project=proj))
                     categories_temp = CategoriesProject.objects.filter(project=proj)
+                    noti_temp = NotificationProject.objects.filter(project=proj)
                     if len(categories_temp)==0:
                         categories_id.append('')
                         project_id.append('-')
                     else:
                         categories_id.append(categories_temp[0].id)
                         project_id.append(categories_temp[0].project_catagories+categories_temp[0].year+'-'+str(categories_temp[0].semester)+'-'+categories_temp[0].number)
+                    if len(noti_temp)==0:
+                        notification.append('')
+                    else:
+                        notification.append(noti_temp)
             project_list.append(project)
             research_list.append(research)
             offer_list.append(offer)
@@ -165,7 +198,8 @@ def index(request):
             timeLine_list.append(timeLine)
             categories_id_list.append(categories_id)
             project_id_list.append(project_id)
-            return render(request, 'group6/index_officer.html', {'main0': main[0], 'project_list0': project_list[0], 'research0': research_list[0], 'offer0': offer_list[0], 'approve0': approve_list[0], 'timeLine0': timeLine_list[0], 'categories_id0':categories_id_list[0], 'project_id0': project_id_list[0], 'main1': main[1], 'project_list1': project_list[1], 'research1': research_list[1], 'offer1': offer_list[1], 'approve1': approve_list[1], 'timeLine1': timeLine_list[1], 'categories_id1':categories_id_list[1], 'project_id1': project_id_list[1], 'main2': main[2], 'project_list2': project_list[2], 'research2': research_list[2], 'offer2': offer_list[2], 'approve2': approve_list[2], 'timeLine2': timeLine_list[2], 'categories_id2':categories_id_list[2], 'project_id2': project_id_list[2], 'main3': main[3], 'project_list3': project_list[3], 'research3': research_list[3], 'offer3': offer_list[3], 'approve3': approve_list[3], 'timeLine3': timeLine_list[3], 'categories_id3':categories_id_list[3], 'project_id3': project_id_list[3], 'main4': main[4], 'project_list4': project_list[4], 'research4': research_list[4], 'offer4': offer_list[4], 'approve4': approve_list[4], 'timeLine4': timeLine_list[4], 'categories_id4':categories_id_list[4], 'project_id4': project_id_list[4], 'main5': 'Uncategories', 'project_list5': project_list[5], 'research5': research_list[5], 'offer5': offer_list[5], 'approve5': approve_list[5], 'timeLine5': timeLine_list[5], 'categories_id5':categories_id_list[5], 'project_id5': project_id_list[5]})
+            notification_list.append(notification)
+            return render(request, 'group6/index_officer.html', {'main0': main[0], 'project_list0': project_list[0], 'research0': research_list[0], 'offer0': offer_list[0], 'approve0': approve_list[0], 'timeLine0': timeLine_list[0], 'categories_id0':categories_id_list[0], 'project_id0': project_id_list[0], 'message0': notification_list[0], 'main1': main[1], 'project_list1': project_list[1], 'research1': research_list[1], 'offer1': offer_list[1], 'approve1': approve_list[1], 'timeLine1': timeLine_list[1], 'categories_id1':categories_id_list[1], 'project_id1': project_id_list[1], 'message1': notification_list[1], 'main2': main[2], 'project_list2': project_list[2], 'research2': research_list[2], 'offer2': offer_list[2], 'approve2': approve_list[2], 'timeLine2': timeLine_list[2], 'categories_id2':categories_id_list[2], 'project_id2': project_id_list[2], 'message2': notification_list[2], 'main3': main[3], 'project_list3': project_list[3], 'research3': research_list[3], 'offer3': offer_list[3], 'approve3': approve_list[3], 'timeLine3': timeLine_list[3], 'categories_id3':categories_id_list[3], 'project_id3': project_id_list[3], 'message3': notification_list[3], 'main4': main[4], 'project_list4': project_list[4], 'research4': research_list[4], 'offer4': offer_list[4], 'approve4': approve_list[4], 'timeLine4': timeLine_list[4], 'categories_id4':categories_id_list[4], 'project_id4': project_id_list[4], 'message4': notification_list[4], 'main5': 'Uncategories', 'project_list5': project_list[5], 'research5': research_list[5], 'offer5': offer_list[5], 'approve5': approve_list[5], 'timeLine5': timeLine_list[5], 'categories_id5':categories_id_list[5], 'project_id5': project_id_list[5], 'message5': notification_list[5]})
     else:
         return render(request, 'base.html')
 
@@ -1225,6 +1259,132 @@ def edit_categories_tester_update(request, cpID):
         cp.year = yearOE
         cp.save()
         messages.add_message(request, messages.INFO, "การแก้ไข Categories กับอาจารย์สอบโปรเจคสำเร็จ")
+        return HttpResponseRedirect(reverse('group6:project_docs_index')) #redirect to index
+    else:
+        return render(request, 'base.html')
+
+def add_notification(request, pjID):
+    if request.user.is_authenticated():
+        u = UserProfile.objects.get(user=request.user)
+        if u.type != '2':
+            messages.add_message(request, messages.INFO, "เจ้าหน้าที่ภาควิชาเท่านั้นที่สามารถสร้างข้อความแจ้งเตือนได้")
+            return HttpResponseRedirect(reverse('group6:project_docs_index')) #redirect to index
+        else:
+            return render(request, 'group6/add_notification.html', {'edit': '1', 'project_id': pjID})
+    else:
+        return render(request, 'base.html')
+
+def add_notification_add(request, pjID):
+    if request.user.is_authenticated():
+        u = UserProfile.objects.get(user=request.user)
+        if u.type != '2':
+            messages.add_message(request, messages.INFO, "เจ้าหน้าที่ภาควิชาเท่านั้นที่สามารถสร้างข้อความแจ้งเตือนได้")
+            return HttpResponseRedirect(reverse('group6:project_docs_index')) #redirect to index
+        p = ProjectG6.objects.get(id=pjID)
+        message = ""
+        error_message = ""
+        try:
+            if 'message' in request.POST: #Check key in POST
+                message = request.POST['message'] #Get Value from key
+                if message == "" : #Check user_name is empty???
+                    error_message = "*กรุณากรอกข้อความ" #If empty set error message and error to true
+                    raise ValueError
+            else: #If key invalid raise to exception
+                raise KeyError 
+        except (KeyError, ValueError): #When exception render form with error message
+            return render(request, 'group6/add_notification.html', {'edit': '1', 'project_id': pjID, 'message': message, 'error_message': error_message})
+        notification = NotificationProject(project = p, officer = Officer.objects.get(userprofile=u))
+        notification.save()
+        now = datetime.now()
+        message_db = Message(text = message, user = u, noti = notification, pub_date = now, pub_date_last= now)
+        message_db.save()
+        messages.add_message(request, messages.INFO, "การสร้างข้อความแจ้งเตือนสำเร็จ")
+        return HttpResponseRedirect(reverse('group6:project_docs_index')) #redirect to index
+    else:
+        return render(request, 'base.html')
+
+def view_notification(request, nID):
+    if request.user.is_authenticated():
+        u = UserProfile.objects.get(user=request.user)
+        notification = NotificationProject.objects.get(id=nID)
+        message = Message.objects.filter(noti=notification).order_by('pub_date')
+        return render(request, 'group6/notification_view.html', {'notification': notification, 'message': message, 'user_now': u})
+    else:
+        return render(request, 'base.html')
+
+def reply_message(request, nID):
+    if request.user.is_authenticated():
+        u = UserProfile.objects.get(user=request.user)
+        return render(request, 'group6/add_notification.html', {'edit': '2', 'notification_id': nID})
+    else:
+        return render(request, 'base.html')
+
+def reply_message_add(request, nID):
+    if request.user.is_authenticated():
+        u = UserProfile.objects.get(user=request.user)
+        message = ""
+        error_message = ""
+        try:
+            if 'message' in request.POST: #Check key in POST
+                message = request.POST['message'] #Get Value from key
+                if message == "" : #Check user_name is empty???
+                    error_message = "*กรุณากรอกข้อความ" #If empty set error message and error to true
+                    raise ValueError
+            else: #If key invalid raise to exception
+                raise KeyError 
+        except (KeyError, ValueError): #When exception render form with error message
+            return render(request, 'group6/add_notification.html', {'edit': '2', 'notification_id': nID, 'message': message, 'error_message': error_message})
+        notification = NotificationProject.objects.get(id = nID)
+        now = datetime.now()
+        message_db = Message(text = message, user = u, noti = notification, pub_date = now, pub_date_last= now)
+        message_db.save()
+        return HttpResponseRedirect(reverse('group6:project_docs_view_notification', args=(nID))) #redirect to view notification
+    else:
+        return render(request, 'base.html')
+
+def edit_notification_message(request, nID, mID):
+    if request.user.is_authenticated():
+        u = UserProfile.objects.get(user=request.user)
+        message = Message.objects.get(id=mID)
+        if u.id != message.user.id:
+            return HttpResponseRedirect(reverse('group6:project_docs_view_notification', args=(nID))) #redirect to view notification
+        return render(request, 'group6/add_notification.html', {'edit': '0', 'notification_id': nID, 'message_id': mID, 'message': message.text})
+    else:
+        return render(request, 'base.html')
+
+def edit_notification_message_update(request, nID, mID):
+    if request.user.is_authenticated():
+        u = UserProfile.objects.get(user=request.user)
+        message_db = Message.objects.get(id=mID)
+        if u.id != message_db.user.id:
+            return HttpResponseRedirect(reverse('group6:project_docs_view_notification', args=(nID))) #redirect to view notification
+        message = ""
+        error_message = ""
+        try:
+            if 'message' in request.POST: #Check key in POST
+                message = request.POST['message'] #Get Value from key
+                if message == "" : #Check user_name is empty???
+                    error_message = "*กรุณากรอกข้อความ" #If empty set error message and error to true
+                    raise ValueError
+            else: #If key invalid raise to exception
+                raise KeyError 
+        except (KeyError, ValueError): #When exception render form with error message
+            return render(request, 'group6/add_notification.html', {'edit': '0', 'notification_id': nID, 'message_id': mID, 'message': message, 'error_message': error_message})
+        message_db.text = message
+        message_db.pub_date_last = datetime.now()
+        message_db.save()
+        return HttpResponseRedirect(reverse('group6:project_docs_view_notification', args=(nID))) #redirect to view notification
+    else:
+        return render(request, 'base.html')
+
+def delete_notification(request, nID):
+    if request.user.is_authenticated():
+        u = UserProfile.objects.get(user=request.user)
+        notification = NotificationProject.objects.get(id=nID)
+        if u.id != notification.officer.userprofile.id:
+            return HttpResponseRedirect(reverse('group6:project_docs_view_notification', args=(nID))) #redirect to view notification
+        notification.delete()
+        messages.add_message(request, messages.INFO, "การลบข้อความแจ้งเตือนสำเร็จ")
         return HttpResponseRedirect(reverse('group6:project_docs_index')) #redirect to index
     else:
         return render(request, 'base.html')
