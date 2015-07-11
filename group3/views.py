@@ -936,8 +936,18 @@ def hourpdf(request, employeeID): # use to see working of temporary employee.
     numLine = 0
     payment = 0
     show_payment = 0
+    line_new_page = 21
     for working in ListWork:
         numLine += 1
+        if ( numLine % line_new_page ) == 0:
+            ganY = [22, 30]  # line bettwen collumn.
+            pdf.add_page()
+            numLine = 1
+            pdf.ln(8)
+            pdf.cell(0, 18, u'      วัน                 วันที่ เดือน ปี              เวลาทำงาน    รวมชั่วโมง         ลายมือชื่อ                      หมายเหตุ')
+            drawAttr2(pdf, ganY[0], ganY[1], True)
+            pdf.ln(12)
+            line_new_page = 24
         drawAttr2(pdf, ganY[0] + (numLine*8), ganY[1] + (numLine*8))
         if working.day.weekday() == 0:  # geting day to pdf
             pdf.cell(20, 10, u'จันทร์')
@@ -989,13 +999,31 @@ def hourpdf(request, employeeID): # use to see working of temporary employee.
         elif (str(working.startTime.minute) == '0') and ( str(working.endTime.minute) == '0' ):
             pdf.cell(30, 10, u''+ str(working.startTime.hour)+':'+'00'+' - '+str(working.endTime.hour)+':'+'00')
         else:
-            pdf.cell(30, 10, u''+ str(working.startTime.hour)+':'+str(working.startTime.minute)+' - '+str(working.endTime.hour)+':'+str(working.endTime.minute))
+            if (int(str(working.startTime.minute)) < 10) and ( int(str(working.endTime.minute)) >= 10 ):
+                pdf.cell(30, 10, u''+ str(working.startTime.hour)+':'+'0'+str(working.startTime.minute)+' - '+str(working.endTime.hour)+':'+str(working.endTime.minute))
+            elif (int(str(working.endTime.minute)) < 10) and (int(str(working.startTime.minute)) >= 10):
+                pdf.cell(30, 10, u''+ str(working.startTime.hour)+':'+str(working.startTime.minute)+' - '+str(working.endTime.hour)+':'+'0'+str(working.endTime.minute))
+            elif ( int(str(working.startTime.minute)) < 10 ) and ( int(str(working.endTime.minute)) < 10 ):
+                pdf.cell(30, 10, u''+ str(working.startTime.hour)+':'+'0'+str(working.startTime.minute)+' - '+str(working.endTime.hour)+':'+'0'+str(working.endTime.minute))
+            else:
+                pdf.cell(30, 10, u''+ str(working.startTime.hour)+':'+str(working.startTime.minute)+' - '+str(working.endTime.hour)+':'+str(working.endTime.minute))
         come_time = str(working.startTime.hour)+':'+str(working.startTime.minute) # time that employee come to work.
         back_time = str(working.endTime.hour)+':'+str(working.endTime.minute) # time that employee go home
-        diff_min = int(back_time.split(':')[1]) - int(come_time.split(':')[1])    # calculate differ value of come_time
-        diff_hour = int(back_time.split(':')[0]) - int(come_time.split(':')[0])  # calculate differ value of back_time
+        if (int(come_time.split(':')[0]) == 12) and ( int(back_time.split(':')[0]) > 12 ):
+            diff_min = int(back_time.split(':')[1]) - 0    # calculate differ value of come_time
+            diff_hour = int(back_time.split(':')[1]) - 13
+        elif (int(come_time.split(':')[0]) < 12) and ( int(back_time.split(':')[0]) == 12 ):
+            diff_min = 0 - int(come_time.split(':')[1])    # calculate differ value of come_time
+            diff_hour = int(back_time.split(':')[0]) - int(come_time.split(':')[0])  # calculate differ value of back_time
+        elif (int(come_time.split(':')[0]) == 12) and ( int(back_time.split(':')[0]) == 12 ):
+            diff_min = 0
+            diff_hour = 0
+        else:
+            diff_min = int(back_time.split(':')[1]) - int(come_time.split(':')[1])    # calculate differ value of come_time
+            diff_hour = int(back_time.split(':')[0]) - int(come_time.split(':')[0])  # calculate differ value of back_time
         if diff_min < 0:
             diff_min = 60 + diff_min
+            diff_hour = diff_hour - 1
         diff_min_100 = float(str(diff_min))/60
         
         try:

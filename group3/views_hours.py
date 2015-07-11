@@ -23,10 +23,10 @@ def add_work(request, employeeID):
             return render(request, template, context)
         endTime_minute   = request.POST["endTime_minute"]
 
-        if (int(startTime_hour) >= int(endTime_hour)) or (int(startTime_hour) < 9) or (int(startTime_hour) > 16) or ( int(endTime_hour) > 16 ) or ( int(endTime_hour) < 9 ):
+        if (int(startTime_hour) > int(endTime_hour)) or (int(startTime_hour) < 9) or (int(startTime_hour) > 16) or ( int(endTime_hour) > 16 )or( int(endTime_hour) < 9 ):
             context['error'] = "เวลาเริ่มงานไม่ถูกต้อง"
             return render(request, template, context)
-        elif (int(startTime_hour) == int(endTime_hour)) and ( int(startTime_minute) > int(endTime_minute) ):
+        elif (int(startTime_hour) == int(endTime_hour)) and ( int(startTime_minute) == int(endTime_minute) ):
             context['error'] = "เวลาเริ่มงานไม่ถูกต้อง"
             return render(request, template, context)
         
