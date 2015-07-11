@@ -8,6 +8,7 @@ from group6.models import *
 from login.models import *
 from datetime import datetime
 
+#Global variable for match data
 month = ['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม']
 department = ['','วิศวกรรมไฟฟ้าและคอมพิวเตอร์']
 faculty = ['','วิศวกรรมศาสตร์']
@@ -15,9 +16,10 @@ scheme = ['ปรับปรุง Cpr.E 54','ปรับปรุง EE 51','
 main = ['Cpr.E','G','U','C','EP']
 main_cat = ['Cp','G','U','C','EP']
 
+#function for render page index of this app
 def index(request):
-    if request.user.is_authenticated():
-        u = UserProfile.objects.get(user=request.user)
+    if request.user.is_authenticated(): #check user already authenticated
+        u = UserProfile.objects.get(user=request.user) #get current user data
         if u.type == '0':
             s = Student.objects.get(userprofile=u)
             project = s.projectg6_set.all()
@@ -201,11 +203,11 @@ def index(request):
             notification_list.append(notification)
             return render(request, 'group6/index_officer.html', {'main0': main[0], 'project_list0': project_list[0], 'research0': research_list[0], 'offer0': offer_list[0], 'approve0': approve_list[0], 'timeLine0': timeLine_list[0], 'categories_id0':categories_id_list[0], 'project_id0': project_id_list[0], 'message0': notification_list[0], 'main1': main[1], 'project_list1': project_list[1], 'research1': research_list[1], 'offer1': offer_list[1], 'approve1': approve_list[1], 'timeLine1': timeLine_list[1], 'categories_id1':categories_id_list[1], 'project_id1': project_id_list[1], 'message1': notification_list[1], 'main2': main[2], 'project_list2': project_list[2], 'research2': research_list[2], 'offer2': offer_list[2], 'approve2': approve_list[2], 'timeLine2': timeLine_list[2], 'categories_id2':categories_id_list[2], 'project_id2': project_id_list[2], 'message2': notification_list[2], 'main3': main[3], 'project_list3': project_list[3], 'research3': research_list[3], 'offer3': offer_list[3], 'approve3': approve_list[3], 'timeLine3': timeLine_list[3], 'categories_id3':categories_id_list[3], 'project_id3': project_id_list[3], 'message3': notification_list[3], 'main4': main[4], 'project_list4': project_list[4], 'research4': research_list[4], 'offer4': offer_list[4], 'approve4': approve_list[4], 'timeLine4': timeLine_list[4], 'categories_id4':categories_id_list[4], 'project_id4': project_id_list[4], 'message4': notification_list[4], 'main5': 'Uncategories', 'project_list5': project_list[5], 'research5': research_list[5], 'offer5': offer_list[5], 'approve5': approve_list[5], 'timeLine5': timeLine_list[5], 'categories_id5':categories_id_list[5], 'project_id5': project_id_list[5], 'message5': notification_list[5]})
     else:
-        return render(request, 'base.html')
+        return render(request, 'base.html') #render page to warning user to login
 
 def create_3forms(request):
-    if request.user.is_authenticated():
-        u = UserProfile.objects.get(user=request.user)
+    if request.user.is_authenticated(): #check user already authenticated
+        u = UserProfile.objects.get(user=request.user) #get current user data
         if u.type != '0':
             messages.add_message(request, messages.INFO, "นักเรียนเท่านั้นที่สามารถสร้างฟอร์มได้")
             return HttpResponseRedirect(reverse('group6:project_docs_index')) #redirect to index
@@ -214,11 +216,11 @@ def create_3forms(request):
             teachers = Teacher.objects.all()
             return render(request, 'group6/create_3forms.html', {'teachers': teachers, 'student': s, 'numOP': 1, 'yearOE': int(datetime.now().year + 543), 'edit': '1', 'student_all': Student.objects.all(), 'yearEN': int(datetime.now().year + 543), 'semester': '1'},)
     else:
-        return render(request, 'base.html')
+        return render(request, 'base.html') #render page to warning user to login
 
 def create_3forms_add(request):
-    if request.user.is_authenticated():
-        u = UserProfile.objects.get(user=request.user)
+    if request.user.is_authenticated(): #check user already authenticated
+        u = UserProfile.objects.get(user=request.user) #get current user data
         if u.type != '0':
             messages.add_message(request, messages.INFO, "นักเรียนเท่านั้นที่สามารถสร้างฟอร์มได้")
             return HttpResponseRedirect(reverse('group6:project_docs_index')) #redirect to index
@@ -492,7 +494,7 @@ def create_3forms_add(request):
         messages.add_message(request, messages.INFO, "การสร้างฟอร์มของโปรเจคสำเร็จ")
         return HttpResponseRedirect(reverse('group6:project_docs_index')) #redirect to index
     else:
-        return render(request, 'base.html')
+        return render(request, 'base.html') #render page to warning user to login
 
 def checkNotInList(storeList, item):
     for i in storeList:
@@ -502,8 +504,8 @@ def checkNotInList(storeList, item):
     return True
 
 def edit_3forms(request, pjID):
-    if request.user.is_authenticated():
-        u = UserProfile.objects.get(user=request.user)
+    if request.user.is_authenticated(): #check user already authenticated
+        u = UserProfile.objects.get(user=request.user) #get current user data
         if u.type != '0':
             messages.add_message(request, messages.INFO, "นักเรียนเท่านั้นที่สามารถแก้ไขฟอร์มได้")
             return HttpResponseRedirect(reverse('group6:project_docs_index')) #redirect to index
@@ -546,11 +548,11 @@ def edit_3forms(request, pjID):
                     s_list.append(i)
             return render(request, 'group6/create_3forms.html', {'teachers': teachers, 'student': s, 'nameTH': p.name_thai, 'nameEN': p.name_eng, 'obj': p.objective, 'scopes': p.scope, 'benefits': p.benefit, 'reasons': p.reason, 'priceOM': offer.priceOfMaterial, 'priceOO': offer.priceOfOther, 'credits': approve.credit, 'courses': approve.course, 'semester': approve.semesterEnd, 'yearEN': approve.yearEnd, 'student_list': s_list, 'numOP': research.numberOfPeople, 'yearOE': p.yearOfEducation, 'edit': '0', 'project_id': p.id, 'startDate': startDate, 'note': timeLine.note, 'process1': process[0], 'checkList1': myCheck[0], 'process2': process[1], 'checkList2': myCheck[1], 'process3': process[2], 'checkList3': myCheck[2], 'process4': process[3], 'checkList4': myCheck[3], 'process5': process[4], 'checkList5': myCheck[4], 'process6': process[5], 'checkList6': myCheck[5], 'process7': process[6], 'checkList7': myCheck[6], 'process8': process[7], 'checkList8': myCheck[7], 'student_all': Student.objects.all()},)
     else:
-        return render(request, 'base.html')
+        return render(request, 'base.html') #render page to warning user to login
 
 def edit_3forms_update(request, pjID):
-    if request.user.is_authenticated():
-        u = UserProfile.objects.get(user=request.user)
+    if request.user.is_authenticated(): #check user already authenticated
+        u = UserProfile.objects.get(user=request.user) #get current user data
         if u.type != '0':
             messages.add_message(request, messages.INFO, "นักเรียนเท่านั้นที่สามารถแก้ไขฟอร์มได้")
             return HttpResponseRedirect(reverse('group6:project_docs_index')) #redirect to index
@@ -864,11 +866,11 @@ def edit_3forms_update(request, pjID):
         messages.add_message(request, messages.INFO, "การแก้ไขฟอร์มของโปรเจคสำเร็จ")
         return HttpResponseRedirect(reverse('group6:project_docs_index')) #redirect to index
     else:
-        return render(request, 'base.html')
+        return render(request, 'base.html') #render page to warning user to login
 
 def approveProject(request, apID):
-    if request.user.is_authenticated():
-        u = UserProfile.objects.get(user=request.user)
+    if request.user.is_authenticated(): #check user already authenticated
+        u = UserProfile.objects.get(user=request.user) #get current user data
         approve = ApproveProjectForm.objects.get(id=apID)
         if u.type == '0':
             s = Student.objects.get(userprofile=u)
@@ -878,10 +880,10 @@ def approveProject(request, apID):
             year = int(datetime.now().year - 2000 + 43) - int(approve.student.std_id[:2])
             return render(request, 'group6/approveProject_view.html', {'approve': approve, 'scheme': scheme[int(approve.student.scheme)], 'department': department[int(approve.student.userprofile.department)], 'main': main[int(approve.student.main)], 'currentYear': year},)
     else:
-        return render(request, 'base.html')
+        return render(request, 'base.html') #render page to warning user to login
 
 def offerProject(request, opID):
-    if request.user.is_authenticated():
+    if request.user.is_authenticated(): #check user already authenticated
         offer = OfferProjectForm.objects.get(id=opID)
         sumofprice = offer.priceOfMaterial + offer.priceOfOther
         student_head = ApproveProjectForm.objects.get(project=offer.project).student
@@ -892,17 +894,17 @@ def offerProject(request, opID):
                     s_list.append(i)
         return render(request, 'group6/offerProject_view.html', {'offer': offer, 'priceOfTotal': sumofprice, 'student_list': s_list},)
     else:
-        return render(request, 'base.html')
+        return render(request, 'base.html') #render page to warning user to login
 
 def researchProject(request, rpID):
-    if request.user.is_authenticated():
+    if request.user.is_authenticated(): #check user already authenticated
         research = ResearchProjectForm.objects.get(id=rpID)
         return render(request, 'group6/researchProject_view.html', {'research': research},)
     else:
-        return render(request, 'base.html')
+        return render(request, 'base.html') #render page to warning user to login
 
 def timeLineProject(request, tlID):
-    if request.user.is_authenticated():
+    if request.user.is_authenticated(): #check user already authenticated
         timeLine = TimeLineForm.objects.get(id=tlID)
         processList = []
         for i in range(8):
@@ -913,12 +915,12 @@ def timeLineProject(request, tlID):
                 processList.append(pro[0])
         return render(request, 'group6/timeLineProject_view.html', {'timeLine': timeLine, 'processList': processList, 'officer': UserProfile.objects.get(user=request.user).type},)
     else:
-        return render(request, 'base.html')
+        return render(request, 'base.html') #render page to warning user to login
 
 def deleteForm(request, pjID):
-    if request.user.is_authenticated():
+    if request.user.is_authenticated(): #check user already authenticated
         error = True
-        u = UserProfile.objects.get(user=request.user)
+        u = UserProfile.objects.get(user=request.user) #get current user data
         if u.type != '2':
             if u.type == '1':
                 messages.add_message(request, messages.INFO, "นักศึกษาในกลุ่มหรือเจ้าหน้าที่ภาคเท่านั้นที่สามารถลบฟอร์มได้")
@@ -941,11 +943,11 @@ def deleteForm(request, pjID):
             messages.add_message(request, messages.INFO, "การลบฟอร์มของโปรเจคสำเร็จ")
             return HttpResponseRedirect(reverse('group6:project_docs_index')) #redirect to index
     else:
-        return render(request, 'base.html')
+        return render(request, 'base.html') #render page to warning user to login
 
 def approveProjectPrint(request, apID):
-    if request.user.is_authenticated():
-        u = UserProfile.objects.get(user=request.user)
+    if request.user.is_authenticated(): #check user already authenticated
+        u = UserProfile.objects.get(user=request.user) #get current user data
         approve = ApproveProjectForm.objects.get(id=apID)
         if u.type == '0':
             s = Student.objects.get(userprofile=u)
@@ -955,10 +957,10 @@ def approveProjectPrint(request, apID):
             year = int(datetime.now().year - 2000 + 43) - int(approve.student.std_id[:2])
             return render(request, 'group6/approveProject_view_print.html', {'approve': approve, 'scheme': scheme[int(approve.student.scheme)], 'department': department[int(approve.student.userprofile.department)], 'main': main[int(approve.student.main)], 'currentYear': year},)
     else:
-        return render(request, 'base.html')
+        return render(request, 'base.html') #render page to warning user to login
 
 def offerProjectPrint(request, opID):
-    if request.user.is_authenticated():
+    if request.user.is_authenticated(): #check user already authenticated
         offer = OfferProjectForm.objects.get(id=opID)
         sumofprice = offer.priceOfMaterial + offer.priceOfOther
         student_head = ApproveProjectForm.objects.get(project=offer.project).student
@@ -969,17 +971,17 @@ def offerProjectPrint(request, opID):
                     s_list.append(i)
         return render(request, 'group6/offerProject_view_print.html', {'offer': offer, 'priceOfTotal': sumofprice, 'student_list': s_list},)
     else:
-        return render(request, 'base.html')
+        return render(request, 'base.html') #render page to warning user to login
 
 def researchProjectPrint(request, rpID):
-    if request.user.is_authenticated():
+    if request.user.is_authenticated(): #check user already authenticated
         research = ResearchProjectForm.objects.get(id=rpID)
         return render(request, 'group6/researchProject_view_print.html', {'research': research},)
     else:
-        return render(request, 'base.html')
+        return render(request, 'base.html') #render page to warning user to login
 
 def timeLineProjectPrint(request, tlID):
-    if request.user.is_authenticated():
+    if request.user.is_authenticated(): #check user already authenticated
         timeLine = TimeLineForm.objects.get(id=tlID)
         processList = []
         for i in range(8):
@@ -990,10 +992,10 @@ def timeLineProjectPrint(request, tlID):
                 processList.append(pro[0])
         return render(request, 'group6/timeLineProject_view_print.html', {'timeLine': timeLine, 'processList': processList},)
     else:
-        return render(request, 'base.html')
+        return render(request, 'base.html') #render page to warning user to login
 
 def timeLineProjectPrintCheck(request, tlID):
-    if request.user.is_authenticated():
+    if request.user.is_authenticated(): #check user already authenticated
         timeLine = TimeLineForm.objects.get(id=tlID)
         processList = []
         for i in range(8):
@@ -1004,11 +1006,11 @@ def timeLineProjectPrintCheck(request, tlID):
                 processList.append(pro[0])
         return render(request, 'group6/timeLineProject_view_print_check.html', {'timeLine': timeLine, 'processList': processList},)
     else:
-        return render(request, 'base.html')
+        return render(request, 'base.html') #render page to warning user to login
 
 def add_categories_tester(request, pjID):
-    if request.user.is_authenticated():
-        u = UserProfile.objects.get(user=request.user)
+    if request.user.is_authenticated(): #check user already authenticated
+        u = UserProfile.objects.get(user=request.user) #get current user data
         if u.type != '2':
             messages.add_message(request, messages.INFO, "เจ้าหน้าที่ภาควิชาเท่านั้นที่สามารถกำหนด Categories กับอาจารย์สอบโปรเจคได้")
             return HttpResponseRedirect(reverse('group6:project_docs_index')) #redirect to index
@@ -1020,7 +1022,7 @@ def add_categories_tester(request, pjID):
             teachers = Teacher.objects.all()
             return render(request, 'group6/add_categories_exam_teacher.html', {'edit': '1', 'teacher_project': p.teacher, 'project_id': p.id, 'teachers': teachers, 'numOT': '1', 'yearOE': int(datetime.now().year + 43 - 2000), 'projNum':"01", 'main':'Cp', 'semester':'1',})
     else:
-        return render(request, 'base.html')
+        return render(request, 'base.html') #render page to warning user to login
 
 def checkNotInListTeacher(storeList, item):
     for t in storeList:
@@ -1030,8 +1032,8 @@ def checkNotInListTeacher(storeList, item):
     return True
 
 def add_categories_tester_add(request, pjID):
-    if request.user.is_authenticated():
-        u = UserProfile.objects.get(user=request.user)
+    if request.user.is_authenticated(): #check user already authenticated
+        u = UserProfile.objects.get(user=request.user) #get current user data
         if u.type != '2':
             messages.add_message(request, messages.INFO, "เจ้าหน้าที่ภาควิชาเท่านั้นที่สามารถกำหนด Categories กับอาจารย์สอบโปรเจคได้")
             return HttpResponseRedirect(reverse('group6:project_docs_index')) #redirect to index
@@ -1138,11 +1140,11 @@ def add_categories_tester_add(request, pjID):
         messages.add_message(request, messages.INFO, "การกำหนด Categories กับอาจารย์สอบโปรเจคสำเร็จ")
         return HttpResponseRedirect(reverse('group6:project_docs_index')) #redirect to index
     else:
-        return render(request, 'base.html')
+        return render(request, 'base.html') #render page to warning user to login
 
 def edit_categories_tester(request, cpID):
-    if request.user.is_authenticated():
-        u = UserProfile.objects.get(user=request.user)
+    if request.user.is_authenticated(): #check user already authenticated
+        u = UserProfile.objects.get(user=request.user) #get current user data
         if u.type != '2':
             messages.add_message(request, messages.INFO, "เจ้าหน้าที่ภาควิชาเท่านั้นที่สามารถแก้ไข Categories กับอาจารย์สอบโปรเจคได้")
             return HttpResponseRedirect(reverse('group6:project_docs_index')) #redirect to index
@@ -1156,11 +1158,11 @@ def edit_categories_tester(request, cpID):
                     t_list.append(t)
             return render(request, 'group6/add_categories_exam_teacher.html', {'edit': '0', 'teacher_project': cp.project.teacher, 'project_id': cp.project.id, 'teachers': teachers, 'numOT': len(cp.teacher.all()), 'yearOE': cp.year, 'projNum': cp.number, 'main': cp.project_catagories, 'semester': cp.semester, 'teacher_list': t_list, 'categories_id': cp.id})
     else:
-        return render(request, 'base.html')
+        return render(request, 'base.html') #render page to warning user to login
 
 def edit_categories_tester_update(request, cpID):
-    if request.user.is_authenticated():
-        u = UserProfile.objects.get(user=request.user)
+    if request.user.is_authenticated(): #check user already authenticated
+        u = UserProfile.objects.get(user=request.user) #get current user data
         if u.type != '2':
             messages.add_message(request, messages.INFO, "เจ้าหน้าที่ภาควิชาเท่านั้นที่สามารถแก้ไข Categories กับอาจารย์สอบโปรเจคได้")
             return HttpResponseRedirect(reverse('group6:project_docs_index')) #redirect to index
@@ -1268,22 +1270,22 @@ def edit_categories_tester_update(request, cpID):
         messages.add_message(request, messages.INFO, "การแก้ไข Categories กับอาจารย์สอบโปรเจคสำเร็จ")
         return HttpResponseRedirect(reverse('group6:project_docs_index')) #redirect to index
     else:
-        return render(request, 'base.html')
+        return render(request, 'base.html') #render page to warning user to login
 
 def add_notification(request, pjID):
-    if request.user.is_authenticated():
-        u = UserProfile.objects.get(user=request.user)
+    if request.user.is_authenticated(): #check user already authenticated
+        u = UserProfile.objects.get(user=request.user) #get current user data
         if u.type != '2':
             messages.add_message(request, messages.INFO, "เจ้าหน้าที่ภาควิชาเท่านั้นที่สามารถสร้างข้อความแจ้งเตือนได้")
             return HttpResponseRedirect(reverse('group6:project_docs_index')) #redirect to index
         else:
             return render(request, 'group6/add_notification.html', {'edit': '1', 'project_id': pjID})
     else:
-        return render(request, 'base.html')
+        return render(request, 'base.html') #render page to warning user to login
 
 def add_notification_add(request, pjID):
-    if request.user.is_authenticated():
-        u = UserProfile.objects.get(user=request.user)
+    if request.user.is_authenticated(): #check user already authenticated
+        u = UserProfile.objects.get(user=request.user) #get current user data
         if u.type != '2':
             messages.add_message(request, messages.INFO, "เจ้าหน้าที่ภาควิชาเท่านั้นที่สามารถสร้างข้อความแจ้งเตือนได้")
             return HttpResponseRedirect(reverse('group6:project_docs_index')) #redirect to index
@@ -1308,27 +1310,27 @@ def add_notification_add(request, pjID):
         messages.add_message(request, messages.INFO, "การสร้างข้อความแจ้งเตือนสำเร็จ")
         return HttpResponseRedirect(reverse('group6:project_docs_index')) #redirect to index
     else:
-        return render(request, 'base.html')
+        return render(request, 'base.html') #render page to warning user to login
 
 def view_notification(request, nID):
-    if request.user.is_authenticated():
-        u = UserProfile.objects.get(user=request.user)
+    if request.user.is_authenticated(): #check user already authenticated
+        u = UserProfile.objects.get(user=request.user) #get current user data
         notification = NotificationProject.objects.get(id=nID)
         message = Message.objects.filter(noti=notification).order_by('pub_date')
         return render(request, 'group6/notification_view.html', {'notification': notification, 'message': message, 'user_now': u})
     else:
-        return render(request, 'base.html')
+        return render(request, 'base.html') #render page to warning user to login
 
 def reply_message(request, nID):
-    if request.user.is_authenticated():
-        u = UserProfile.objects.get(user=request.user)
+    if request.user.is_authenticated(): #check user already authenticated
+        u = UserProfile.objects.get(user=request.user) #get current user data
         return render(request, 'group6/add_notification.html', {'edit': '2', 'notification_id': nID})
     else:
-        return render(request, 'base.html')
+        return render(request, 'base.html') #render page to warning user to login
 
 def reply_message_add(request, nID):
-    if request.user.is_authenticated():
-        u = UserProfile.objects.get(user=request.user)
+    if request.user.is_authenticated(): #check user already authenticated
+        u = UserProfile.objects.get(user=request.user) #get current user data
         message = ""
         error_message = ""
         try:
@@ -1347,21 +1349,21 @@ def reply_message_add(request, nID):
         message_db.save()
         return HttpResponseRedirect(reverse('group6:project_docs_view_notification', args=(nID))) #redirect to view notification
     else:
-        return render(request, 'base.html')
+        return render(request, 'base.html') #render page to warning user to login
 
 def edit_notification_message(request, nID, mID):
-    if request.user.is_authenticated():
-        u = UserProfile.objects.get(user=request.user)
+    if request.user.is_authenticated(): #check user already authenticated
+        u = UserProfile.objects.get(user=request.user) #get current user data
         message = Message.objects.get(id=mID)
         if u.id != message.user.id:
             return HttpResponseRedirect(reverse('group6:project_docs_view_notification', args=(nID))) #redirect to view notification
         return render(request, 'group6/add_notification.html', {'edit': '0', 'notification_id': nID, 'message_id': mID, 'message': message.text})
     else:
-        return render(request, 'base.html')
+        return render(request, 'base.html') #render page to warning user to login
 
 def edit_notification_message_update(request, nID, mID):
-    if request.user.is_authenticated():
-        u = UserProfile.objects.get(user=request.user)
+    if request.user.is_authenticated(): #check user already authenticated
+        u = UserProfile.objects.get(user=request.user) #get current user data
         message_db = Message.objects.get(id=mID)
         if u.id != message_db.user.id:
             return HttpResponseRedirect(reverse('group6:project_docs_view_notification', args=(nID))) #redirect to view notification
@@ -1382,16 +1384,16 @@ def edit_notification_message_update(request, nID, mID):
         message_db.save()
         return HttpResponseRedirect(reverse('group6:project_docs_view_notification', args=(nID))) #redirect to view notification
     else:
-        return render(request, 'base.html')
+        return render(request, 'base.html') #render page to warning user to login
 
 def delete_notification(request, nID):
-    if request.user.is_authenticated():
-        u = UserProfile.objects.get(user=request.user)
-        notification = NotificationProject.objects.get(id=nID)
-        if u.id != notification.officer.userprofile.id:
+    if request.user.is_authenticated(): #check user already authenticated
+        u = UserProfile.objects.get(user=request.user) #get current user data
+        notification = NotificationProject.objects.get(id=nID) #get notification data from database by id
+        if u.id != notification.officer.userprofile.id: #check user command to delete is same as user that create notification
             return HttpResponseRedirect(reverse('group6:project_docs_view_notification', args=(nID))) #redirect to view notification
-        notification.delete()
-        messages.add_message(request, messages.INFO, "การลบข้อความแจ้งเตือนสำเร็จ")
+        notification.delete() #delete data from database
+        messages.add_message(request, messages.INFO, "การลบข้อความแจ้งเตือนสำเร็จ") #add message to show on index page
         return HttpResponseRedirect(reverse('group6:project_docs_index')) #redirect to index
     else:
-        return render(request, 'base.html')
+        return render(request, 'base.html') #render page to warning user to login
