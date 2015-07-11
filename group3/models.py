@@ -108,4 +108,9 @@ class Work(models.Model):
             diff_hour = int(t_end.split(':')[0]) - int(t_start.split(':')[0])  # calculate differ value of back_time
             if diff_min < 0:
                 diff_min = 60 - diff_min
+            try:
+                if int(t_end.split(':')[0]) > 12:
+                    diff_hour = diff_hour - 1
+            except:
+                pass
             return str(diff_hour) + ':'+str(diff_min)

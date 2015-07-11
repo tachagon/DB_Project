@@ -18,6 +18,13 @@ def add_work(request, employeeID):
         endTime_hour     = request.POST["endTime_hour"]
         endTime_minute   = request.POST["endTime_minute"]
 
+        if (int(startTime_hour) >= int(endTime_hour)) or (int(startTime_hour) < 9) or ( int(endTime_hour) > 16 ):
+            context['show_error1'] = "error"
+            return render(request, template, context)
+        elif (int(startTime_hour) == int(endTime_hour)) and ( int(startTime_minute) > int(endTime_minute) ):
+            context['show_error1'] = "error"
+            return render(request, template, context)
+        
         startTime = str(startTime_hour + ":" + startTime_minute + ":00")
         endTime   = str(endTime_hour   + ":" + endTime_minute   + ":00")
 
