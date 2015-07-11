@@ -212,7 +212,7 @@ def create_3forms(request):
         else:
             s = Student.objects.get(userprofile=u)
             teachers = Teacher.objects.all()
-            return render(request, 'group6/create_3forms.html', {'teachers': teachers, 'student': s, 'numOP': 1, 'yearOE': int(datetime.now().year + 543), 'edit': '1', 'student_all': Student.objects.all()},)
+            return render(request, 'group6/create_3forms.html', {'teachers': teachers, 'student': s, 'numOP': 1, 'yearOE': int(datetime.now().year + 543), 'edit': '1', 'student_all': Student.objects.all(), 'yearEN': int(datetime.now().year + 543), 'semester': '1'},)
     else:
         return render(request, 'base.html')
 

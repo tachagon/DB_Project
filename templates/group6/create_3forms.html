@@ -72,7 +72,8 @@ window.setInterval(function updateStudent(){
 function yearselect(){
     var year = new Date();
     var list = document.getElementById("yearselect");
-	var list2 = document.getElementById("yearEnd");
+    var list2 = document.getElementById("yearEnd");
+    var list3 = document.getElementById("termEND");
     var i;
     for (i=0;i<list.length;i++){
         list.options[i].text = year.getFullYear()-i+543;
@@ -86,7 +87,8 @@ function yearselect(){
     var sel = document.getElementById("stdnumber");
     sel.value = {{ numOP }};
     list.value = {{ yearOE }};
-	// list2.value = {{ yearEN }};
+    list2.value = {{ yearEN }};
+    list3.value = {{ semester }}
 }
 
 
@@ -220,7 +222,11 @@ p_adviser
                 <option value="010123123 โครงงาน 2 : Project II (Cpr.E 54)">010123123 โครงงาน 2 : Project II (Cpr.E 54)</option>
             </select> <font color = "FF0000" name="message">{{ error_courses }}</font><br>
     <!-- Must FIX -->
-    <H>คาดว่าจะเขียนปริญญานิพนธ์เสร็จภายในภาคที่:</H> <input id='termEND' type="text" name="semesterEnd" value="{{ semester }}"> <font color = "FF0000" name="message">{{ error_semester }}</font></br>
+    <H>คาดว่าจะเขียนปริญญานิพนธ์เสร็จภายในภาคที่:</H> <select id="termEND" name="semesterEnd">
+                <option value="1">1</option>
+                <option value="2">2</option>
+            </select>
+            <!--<input id='termEND' type="text" name="semesterEnd" value="{{ semester }}">--> <font color = "FF0000" name="message">{{ error_semester }}</font></br>
     <H>ปีการศึกษา <select id="yearEnd" name="yearEnd">
                     <option>test1</option>
                     <option>test2</option>
