@@ -86,12 +86,14 @@ def getUserType(request):
 def prof2lang_index_sort(request, sort):
     return prof2lang_index(request, sort)
 
-def prof2lang_index(request, sort='id'):
+def prof2lang_index(request, sort=''):
     prof_add_in()   # add Teacher to Prof2Lang
     template = 'group3/prof2lang_index.html'    # get template
     context = {}
     if sort == 'fullname':
         teachList = Teach.objects.all().order_by('prof__prefix_name', 'prof__academic_position', 'prof__firstName', 'prof__lastName')
+    elif sort == '':
+        teachList = Teach.objects.all().order_by('-year', '-term', '-id')
     else:
         teachList = Teach.objects.all().order_by(sort)     # get all Prof2Lang objects
 
@@ -210,25 +212,32 @@ def prof2lang_add(request, option = '0'):
         if request.method == 'POST':
             try:
                 # get data from html template
-                # get object of Prof2Lang
+                # 1. get object of Prof2Lang
                 profID = request.POST['selectProf']
                 if profID == 'null':
                     prof = None
                 else:
                     prof = Prof2Lang.objects.get(profID = profID)
 
-                # get object of Subject
+                # 2. get object of Subject
                 subjectID = request.POST['selectSubject']
                 subject = Subject.objects.get(subjectID = subjectID)
 
-                # get object of Section
+                # 3. get object of Section
                 sectionID = request.POST['selectSection']
                 section = Section.objects.get(id = sectionID)
+
+                # 4. get term
+                term = request.POST['selectTerm']
+                # 5. get year
+                year = request.POST['selectYear']
 
                 newTeach = Teach(
                     prof = prof,
                     subject = subject,
-                    section = section
+                    section = section,
+                    term = term,
+                    year = year
                 )
                 newTeach.save()
                 context = {
@@ -266,6 +275,40 @@ def prof2lang_add(request, option = '0'):
         template,
         context
     )
+
+# this function for edit term of Teach Object
+def editTerm(request, teachID):
+    if request.method == 'POST':
+        try:
+            # get Teach object from id
+            teach = Teach.objects.get(id = teachID)
+            # get term from 'group3/prof2lang_view.html' template
+            term = request.POST['selectTerm']
+
+            # edit term of Teach Object
+            teach.term = term
+            # save change
+            teach.save()
+        except:
+            pass
+    return HttpResponseRedirect(reverse('group3:prof2lang_view', args=[teachID]))
+
+# this function for edit year of Teach Object
+def editYear(request, teachID):
+    if request.method == 'POST':
+        try:
+            # get Teach object from id
+            teach = Teach.objects.get(id = teachID)
+            # get year from 'group3/prof2lang_view.html' template
+            year = request.POST['selectYear']
+
+            # edit year of Teach Object
+            teach.year = year
+            # save change
+            teach.save()
+        except:
+            pass
+    return HttpResponseRedirect(reverse('group3:prof2lang_view', args=[teachID]))
 
 # This function for get data and create new Prof2Lang object.
 def addProf(request):

@@ -16,12 +16,36 @@
             {% csrf_token %}
             <div class="col-md-6">
                 <div class="row">
+                    {% if error %}
+                        <div class="alert alert-danger alert-dismissible" role="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <strong>Error!</strong> {{ error }}
+                        </div>
+                    {% endif %}
+
                     <!-- เวลาเริ่ม และ สิ้นสุด -->
                     <div class="form-group form-group-sm">
                         <label class="col-sm-2 control-label">เริ่มงาน: </label>
+
+                        <script>
+                            function sentstarth(in1, in2){
+                                var s1 = document.getElementById(in1);
+                                var s2 = document.getElementById(in2);
+                                s2.innerHTML = "";
+                                var chosestarth = s1.value;
+                                console.log(chosestarth);
+                                for (var i = chosestarth ; i < 24 ; i++){
+                                    var newOption = document.createElement("option");
+                                    newOption.value = i;
+                                    newOption.text = i;
+                                    s2.options.add(newOption);
+                                }
+                            }
+                        </script>
+
                         <!-- ชั่วโมง เริ่ม -->
                         <div class="col-sm-2">
-                            <select name="startTime_hour" class="form-control">
+                            <select name="startTime_hour" id="starth" class="form-control" onclick=sentstarth('starth','endh')>
                                 <script>
                                         for(var i = 0; i < 24; i++){
                                             document.write('<option value="' + i + '">' + i + '</option>');
@@ -43,12 +67,8 @@
                         <div class="col-sm-2"><center>ถึง</center></div>
                         <!-- ชั่วโมง สิ้นสุด -->
                         <div class="col-sm-2">
-                            <select name="endTime_hour" class="form-control">
-                                <script>
-                                        for(var i = 0; i < 24; i++){
-                                            document.write('<option value="' + i + '">' + i + '</option>');
-                                        }
-                                    </script>
+                            <select name="endTime_hour" id="endh" class="form-control">
+
                             </select>
                         </div>
                         <!-- นาที สิ้นสุด -->
