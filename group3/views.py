@@ -995,7 +995,7 @@ def hourpdf(request, employeeID): # use to see working of temporary employee.
         diff_min = int(back_time.split(':')[1]) - int(come_time.split(':')[1])    # calculate differ value of come_time
         diff_hour = int(back_time.split(':')[0]) - int(come_time.split(':')[0])  # calculate differ value of back_time
         if diff_min < 0:
-            diff_min = 60 - diff_min
+            diff_min = 60 + diff_min
         diff_min_100 = float(str(diff_min))/60
         
         try:
@@ -1020,12 +1020,6 @@ def hourpdf(request, employeeID): # use to see working of temporary employee.
             show_complete_pay = i + show_complete_pay 
     
     payment = show_payment * 45.45
-    try:
-        if int(str(working.endTime.hour)) > 12: # except a lunch time.
-            payment = payment - 45.45
-            show_payment = show_payment -1
-    except:
-        pass
     gen_single_text(pdf, 90, u'รวมจำนวนชั่วโมง ' +str(show_payment)+ u' ชั่วโมง') # call spacial funtion to write a text per line.
     gen_single_text(pdf, 94, u'อัตรา 45.45 บาท ชั่วโมง')
     th_sum_money = u'รวมเป็นเงินทั้งสิ้น ' + "{0:.2f}".format(payment) +u' บาท'

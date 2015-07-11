@@ -108,18 +108,14 @@ class Work(models.Model):
         unique_together = ('employee', 'id')
         
     def get_time_diff(self):
-        if str(self.endTime) == '00:00:01':
-            return ''
-        else:
-            t_start = str(self.startTime.hour)+':'+str(self.startTime.minute) # time that employee come to work.
-            t_end = str(self.endTime.hour)+':'+str(self.endTime.minute) # time that employee go home
-            diff_min = int(t_end.split(':')[1]) - int(t_start.split(':')[1])    # calculate differ value of come_time
-            diff_hour = int(t_end.split(':')[0]) - int(t_start.split(':')[0])  # calculate differ value of back_time
-            if diff_min < 0:
-                diff_min = 60 - diff_min
-            try:
-                if int(t_end.split(':')[0]) > 12:
-                    diff_hour = diff_hour - 1
-            except:
-                pass
-            return str(diff_hour) + ':'+str(diff_min)
+        diff_min = int(str(self.endTime.minute)) - int(str(self.startTime.minute))    # calculate differ value of come_time
+        diff_hour = int(str(self.endTime.hour)) - int(str(self.startTime.hour))  # calculate differ value of back_time
+        if diff_min < 0:
+            diff_min = 60 + diff_min
+            diff_hour = diff_hour - 1
+        try:
+            if int(str(self.endTime.hour)) > 12:
+                diff_hour = diff_hour - 1
+        except:
+            pass
+        return str(diff_hour) + ':'+str(diff_min)
