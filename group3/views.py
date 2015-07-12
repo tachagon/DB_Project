@@ -419,6 +419,32 @@ def set_center_point(pdf, th_text, point, end=0, padding=10): # to put text to b
     pdf.cell(point-len(removed), padding, u'')
     pdf.cell(end, padding, th_text)
 
+def to_thai_num(num): # convert to thai number.
+    thai_num = ''
+    for sub_num in num:
+        if sub_num == '1':
+            thai_num = thai_num + u'๑'
+        elif sub_num == '2':
+            thai_num = thai_num + u'๒'
+        elif sub_num == '3':
+            thai_num = thai_num + u'๓'
+        elif sub_num == '4':
+            thai_num = thai_num + u'๔'
+        elif sub_num == '5':
+            thai_num = thai_num + u'๕'
+        elif sub_num == '6':
+            thai_num = thai_num + u'๖'
+        elif sub_num == '7':
+            thai_num = thai_num + u'๗'
+        elif sub_num == '8':
+            thai_num = thai_num + u'๘'
+        elif sub_num == '9':
+            thai_num = thai_num + u'๙'
+        else:
+            thai_num = thai_num + u'๐'
+    return thai_num
+
+
 def genpdf(request, profID): # use to generate pdf file for lend another teacher.
     teachObj = Teach.objects.get(pk= int(profID))   # get all objects teacher.
     pdf = FPDF('P', 'mm', 'A4')    # start pdf file
@@ -624,7 +650,10 @@ def genpdf(request, profID): # use to generate pdf file for lend another teacher
     pdf.cell(0, 10, u'ตามที่ ภาควิชาวิศวกรรมไฟฟ้าและคอมพิวเตอร์  ได้ขอรับบริการจัดการเรียนการสอน')
     pdf.ln(8)
     pdf.cell(19, 10, u'')
-    word_subject = u'จาก#ท่าน#ใน#ราย#วิชา# ' + subjectID + '#  #'  + subjectName + u' #ตอนเรียน #' + sec[2:]+u'#  สำ#หรับ#นัก#ศึก#ษา#โครง#การ#พิ#เศษ# (สอง#ภาษา) #ภาค#เรียน#ที่#..........นั้น '
+    show_term = to_thai_num(str(teachObj.term))
+    show_year = to_thai_num(str(teachObj.year))
+        
+    word_subject = u'จาก#ท่าน#ใน#ราย#วิชา# ' + subjectID + '#  #'  + subjectName + u' #ตอนเรียน #' + sec[2:]+u'#  สำ#หรับ#นัก#ศึก#ษา#โครง#การ#พิ#เศษ# (สอง#ภาษา) #ภาค#เรียน#ที่# ' + show_term+ '/' + show_year + u' นั้น'
     words = word_subject.split('#')
     
     removed = word_subject
