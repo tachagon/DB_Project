@@ -1,9 +1,12 @@
+<!-- Extend in base.html as a body -->
 {% extends "base.html" %}
+<!-- Use customfunction in this page -->
 {% load custom_function %}
+<!-- Use staticfiles in this page -->
 {% load staticfiles %}
-
+<!-- Command for setting title of page -->
 {% block title %}ระบบ จัดการโครงงาน สำหรับนักศึกษา ปริญญาตรี{% endblock %}
-
+<!-- Command for setting header of page -->
 {% block pageHeader %}
 <h2>ระบบ <small>จัดการโครงงาน สำหรับนักศึกษา ปริญญาตรี</small></h2>
 <ol class="breadcrumb">
@@ -11,9 +14,11 @@
     <li class="active">ระบบ จัดการโครงงาน สำหรับนักศึกษา ปริญญาตรี</li>
 </ol>
 {% endblock %}
-
+<!-- This for content in base.html -->
 {% block content %}
+<!-- java script -->
 <script>
+<!-- selectView use for select categories for viewing -->
 function selectView() {
     var e1 = document.getElementById("categories");
     var m0 = document.getElementById("main0");
@@ -23,6 +28,7 @@ function selectView() {
     var m4 = document.getElementById("main4");
     var m5 = document.getElementById("main5");
     var mode = e1.value;
+	<!-- display all categories -->
     if(mode == "All"){
         m0.style.display = 'block';
         m1.style.display = 'block';
@@ -30,6 +36,7 @@ function selectView() {
         m3.style.display = 'block';
         m4.style.display = 'block';
         m5.style.display = 'block';
+	<!-- Display only main Cpr.E -->
     }else if(mode == "main0"){
         m0.style.display = 'block';
         m1.style.display = 'none';
@@ -37,6 +44,7 @@ function selectView() {
         m3.style.display = 'none';
         m4.style.display = 'none';
         m5.style.display = 'none';
+	<!-- Display only main G -->
     }else if(mode == "main1"){
         m0.style.display = 'none';
         m1.style.display = 'block';
@@ -44,6 +52,7 @@ function selectView() {
         m3.style.display = 'none';
         m4.style.display = 'none';
         m5.style.display = 'none';
+	<!-- Display only main U -->
     }else if(mode == "main2"){
         m0.style.display = 'none';
         m1.style.display = 'none';
@@ -51,6 +60,7 @@ function selectView() {
         m3.style.display = 'none';
         m4.style.display = 'none';
         m5.style.display = 'none';
+	<!-- Display only main C -->
     }else if(mode == "main3"){
         m0.style.display = 'none';
         m1.style.display = 'none';
@@ -58,6 +68,7 @@ function selectView() {
         m3.style.display = 'block';
         m4.style.display = 'none';
         m5.style.display = 'none';
+	<!-- Display only main EP -->
     }else if(mode == "main4"){
         m0.style.display = 'none';
         m1.style.display = 'none';
@@ -65,6 +76,7 @@ function selectView() {
         m3.style.display = 'none';
         m4.style.display = 'block';
         m5.style.display = 'none';
+	<!-- Display only uncategories main -->
     }else if(mode == "main5"){
         m0.style.display = 'none';
         m1.style.display = 'none';
@@ -75,6 +87,9 @@ function selectView() {
     }
 }
 </script>
+<!-- after this are HTML coding  -->
+<!-- {.{ ... }} is syntax for access database and add | for function in custom_function ("{.{" to avoid error) -->
+<!-- {.% ... %} is syntax for operation ex. if/else , forloop, etc. ("{.%" to aviod error) -->
 <div class="container-fluid">
     {% for message in messages %}
         <br><font color = "FF0000" name="message">*{{ message }}</font>

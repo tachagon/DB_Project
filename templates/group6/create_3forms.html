@@ -1,8 +1,10 @@
-﻿{% extends "base.html" %}
+﻿<!-- Extend in base.html as a body -->
+{% extends "base.html" %}
+<!-- Use customfunction in this page -->
 {% load custom_function %}
-
+<!-- Command for setting title of page -->
 {% block title %}ระบบ จัดการโครงงาน สำหรับนักศึกษา ปริญญาตรี - สร้างฟอร์มเสนอโครงงานใหม่{% endblock %}
-
+<!-- Command for setting header of page -->
 {% block pageHeader %}
 <h2>ระบบ <small>จัดการโครงงาน สำหรับนักศึกษา ปริญญาตรี</small></h2>
 <ol class="breadcrumb">
@@ -11,10 +13,11 @@
     <li class="active">สร้างแบบฟอร์มเสนอโครงงานใหม่</li>
 </ol>
 {% endblock %}
-
+<!-- This for content in base.html -->
 {% block content %}
 <div class="container-fluid">
     <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <!-- Style sheet : Use CSS for each tag name or class -->
     <style>
     table,tr,td{
         border-collapse: collapse;
@@ -53,6 +56,7 @@
        text-align:center;
    }
   </style>
+  <!-- java script -->
   <script>
 var dict = {
 {% for s in student_all %}
@@ -60,6 +64,7 @@ var dict = {
 {% endfor %}
 };
 
+<!-- Use for update when type the student number -->
 window.setInterval(function updateStudent(){
     var e1 = document.getElementById("stdnumber");
     var stdnum = e1.value;
@@ -68,35 +73,35 @@ window.setInterval(function updateStudent(){
     }
 }, 1000);
 
-
+<!-- function yearselect use for select semester, year end of project -->
 function yearselect(){
-    var year = new Date();
-    var list = document.getElementById("yearselect");
-    var list2 = document.getElementById("yearEnd");
-    var list3 = document.getElementById("termEND");
-    var i;
-    for (i=0;i<list.length;i++){
+    var year = new Date();										<!-- Value of current date -->
+    var list = document.getElementById("yearselect");			<!-- set tag id "yearselect" as "list" -->
+    var list2 = document.getElementById("yearEnd");				<!-- set tag id "yearEnd" as "list2" -->
+    var list3 = document.getElementById("termEND");				<!-- set tag id "termEND" as "list3" -->
+    var i;														<!-- variable for looping -->
+    for (i=0;i<list.length;i++){								<!-- loop for edit value in list as yesr -->
         list.options[i].text = year.getFullYear()-i+543;
         list.options[i].value = year.getFullYear()-i+543;
-    }
-	for (i=0;i<list2.length;i++){
+    }		
+	for (i=0;i<list2.length;i++){								<!-- loop for edit value in list as yesr end project -->
         list2.options[i].text = year.getFullYear()+i+543;
         list2.options[i].value = year.getFullYear()+i+543;
     }
-	
-    var sel = document.getElementById("stdnumber");
+	<!-- Update value when edit this page -->
+    var sel = document.getElementById("stdnumber");				
     sel.value = {{ numOP }};
     list.value = {{ yearOE }};
     list2.value = {{ yearEN }};
     list3.value = {{ semester }}
 }
 
-
+	<!-- Function for add more student in project -->
 function addMoreStd(){
-    var e1 = document.getElementById("stdnumber");
-    var stdnum = e1.value;
+    var e1 = document.getElementById("stdnumber");				<!-- set tag id "stdnumber" as "e1" -->
+    var stdnum = e1.value;										<!-- stdnum is value of e1 -->
     var txts = "";
-    for (i = 1; i < 5; i++) { 
+    for (i = 1; i < 5; i++) { 									<!-- in this loop is for add textbox for add student -->
         var e2 = document.getElementById("studentElement"+i);
         if(i < stdnum){
             if(e2 == null){
@@ -127,13 +132,18 @@ p_nameen
 adviser
 p_adviser
 -->
-<body onLoad="yearselect();">
+<body onLoad="yearselect();">									<!-- load function yearselect when load this page -->
+    <!-- if/else for check that update case or new case -->
     {% ifequal edit '1' %}
     <form action = "{% url 'group6:project_docs_create_3forms_add' %}" method = "post">
     {% else %}
     <form action = "{% url 'group6:project_docs_edit_update' project_id %}" method = "post">
     {% endifequal %}
         {% csrf_token %}
+        
+<!-- after this are HTML coding  -->
+<!-- {.{ ... }} is syntax for access database and add | for function in custom_function ("{.{" to avoid error) -->
+<!-- {.% ... %} is syntax for operation ex. if/else , forloop, etc. ("{.%" to aviod error) -->
         <div class="page">
             <center>
                 <H>แบบฟอร์มสำรวจหัวข้อโครงงานปริญญานิพนธ์</H><br>

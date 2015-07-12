@@ -1,10 +1,13 @@
-﻿{% load custom_function %}
+﻿<!-- Use customfunction in this page -->
+{% load custom_function %}
+<!-- Use humanize of django for operating the number for this page -->
 {% load humanize %}
 <!DOCTYPE>
 <html>
 <head>
 <title>แบบ วศ. 4-01</title>
 <meta http-equiv="content-type" content="text/html;charset=utf-8">
+<!-- Style sheet : Use CSS for each tag name or class -->
 <style>
 body{
 	}
@@ -180,6 +183,9 @@ body{
 <script>
 </script>
 </head>
+<!-- after this are HTML coding  -->
+<!-- {.{ ... }} is syntax for access database and add | for function in custom_function ("{.{" to avoid error) -->
+<!-- {.% ... %} is syntax for operation ex. if/else , forloop, etc. ("{.%" to aviod error) -->
 <body onLoad="return window.print()">
 <div class="page">
 <H id="topright">แบบ วศ. 4-01</H><br>

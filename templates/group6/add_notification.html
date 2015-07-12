@@ -1,8 +1,10 @@
-﻿{% extends "base.html" %}
+﻿<!-- Extend in base.html as a body -->
+{% extends "base.html" %}
+<!-- Use customfunction in this page -->
 {% load custom_function %}
-
+<!-- Command for setting title of page -->
 {% block title %}ระบบ จัดการโครงงาน สำหรับนักศึกษา ปริญญาตรี - แจ้งเตือน{% endblock %}
-
+<!-- Command for setting header of page -->
 {% block pageHeader %}
 <h2>ระบบ <small>จัดการโครงงาน สำหรับนักศึกษา ปริญญาตรี</small></h2>
 <ol class="breadcrumb">
@@ -11,10 +13,11 @@
     <li class="active">แจ้งเตือน</li>
 </ol>
 {% endblock %}
-
+<!-- This for content in base.html -->
 {% block content %}
 <div class="container-fluid">
     <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <!-- Style sheet : Use CSS for each tag name or class -->
     <style>
     table,tr,td{
         border-collapse: collapse;
@@ -52,37 +55,12 @@
    #o1{
        text-align:center;
    }
-/*#years{
-	margin-left:0;
-	}
-#nameth{
-	margin-left:0;
-	}
-#nameen{
-	margin-left:18;
-	}
-#numbers{
-	margin-left:56;
-	}
-	*/
     @page{
        size:A4;
        margin:0;
    }
-   /*@media print {
-      .page {
-          margin:0;
-          font-size:20px;
-          position:absolute;
-          border: initial;
-          width: initial;
-          height:initial;
-          box-shadow: initial;
-          background: initial;
-          page-break-after: always;
-      }
-  }*/
   </style>
+		<!-- If/else statement for checking post and reply between student and department -->
     {% if edit == '1' %}
     <form action = "{% url 'group6:project_docs_add_notification_add' project_id %}" method = "post">
     {% elif edit == '2' %}
@@ -91,6 +69,9 @@
     <form action = "{% url 'group6:project_docs_edit_notification_message_update' notification_id message_id %}" method = "post">
     {% endif %}
         {% csrf_token %}
+        <!-- after this are HTML coding  -->
+		<!-- {.{ ... }} is syntax for access database and add | for function in custom_function ("{.{" to avoid error) -->
+		<!-- {.% ... %} is syntax for operation ex. if/else , forloop, etc. ("{.%" to aviod error) -->
         <div class="page">
             <label class="form">
             <H>ข้อความ:</H> <font color = "FF0000" name="message">{{ error_message }}</font></br><textarea rows="6" cols="60" name="message">{{ message }}</textarea></br>   

@@ -1,8 +1,10 @@
-﻿{% extends "base.html" %}
+﻿<!-- Extend in base.html as a body -->
+{% extends "base.html" %}
+<!-- Use customfunction in this page -->
 {% load custom_function %}
-
+<!-- Command for setting title of page -->
 {% block title %}ระบบ จัดการโครงงาน สำหรับนักศึกษา ปริญญาตรี - แบบฟอร์มสำรวจหัวข้อโครงงานปริญญานิพนธ์ - {{ research.project.name_thai }}{% endblock %}
-
+<!-- Command for setting header of page -->
 {% block pageHeader %}
 <h2>ระบบ <small>จัดการโครงงาน สำหรับนักศึกษา ปริญญาตรี</small></h2>
 <ol class="breadcrumb">
@@ -11,10 +13,11 @@
     <li class="active">แบบฟอร์มสำรวจหัวข้อโครงงานปริญญานิพนธ์ - {{ research.project.name_thai }}</li>
 </ol>
 {% endblock %}
-
+<!-- This for content in base.html -->
 {% block content %}
 <div class="container-fluid">
 <meta http-equiv="content-type" content="text/html;charset=utf-8">
+<!-- Style sheet : Use CSS for each tag name or class -->
 <style>
 body{
 	}
@@ -86,6 +89,9 @@ body{
 		}
 }
 </style>
+<!-- after this are HTML coding  -->
+<!-- {.{ ... }} is syntax for access database and add | for function in custom_function ("{.{" to avoid error) -->
+<!-- {.% ... %} is syntax for operation ex. if/else , forloop, etc. ("{.%" to aviod error) -->
 <div class="page">
 <center>
 <H><b>แบบฟอร์มสำรวจหัวข้อโครงงานปริญญานิพนธ์</b></H><br>

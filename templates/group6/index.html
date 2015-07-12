@@ -1,9 +1,12 @@
+<!-- Extend in base.html as a body -->
 {% extends "base.html" %}
+<!-- Use customfunction in this page -->
 {% load custom_function %}
+<!-- Use staticfiles in this page -->
 {% load staticfiles %}
-
+<!-- Command for setting title of page -->
 {% block title %}ระบบ จัดการโครงงาน สำหรับนักศึกษา ปริญญาตรี{% endblock %}
-
+<!-- Command for setting header of page -->
 {% block pageHeader %}
 <h2>ระบบ <small>จัดการโครงงาน สำหรับนักศึกษา ปริญญาตรี</small></h2>
 <ol class="breadcrumb">
@@ -11,8 +14,12 @@
     <li class="active">ระบบ จัดการโครงงาน สำหรับนักศึกษา ปริญญาตรี</li>
 </ol>
 {% endblock %}
-
+<!-- This for content in base.html -->
 {% block content %}
+
+<!-- after this are HTML coding  -->
+<!-- {.{ ... }} is syntax for access database and add | for function in custom_function ("{.{" to avoid error) -->
+<!-- {.% ... %} is syntax for operation ex. if/else , forloop, etc. ("{.%" to aviod error) -->
 <div class="container-fluid">
     {% for message in messages %}
         <br><font color = "FF0000" name="message">*{{ message }}</font>

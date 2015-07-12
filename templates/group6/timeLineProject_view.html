@@ -1,7 +1,8 @@
-﻿{% extends "base.html" %}
-
+﻿<!-- Extend in base.html as a body -->
+{% extends "base.html" %}
+<!-- Command for setting title of page -->
 {% block title %}ระบบ จัดการโครงงาน สำหรับนักศึกษา ปริญญาตรี - ขั้นตอนการดำเนินงานแนวคิดกับแผนที่วางไว้ - {{ timeLine.project.name_thai }}{% endblock %}
-
+<!-- Command for setting header of page -->
 {% block pageHeader %}
 <h2>ระบบ <small>จัดการโครงงาน สำหรับนักศึกษา ปริญญาตรี</small></h2>
 <ol class="breadcrumb">
@@ -10,10 +11,11 @@
     <li class="active">ขั้นตอนการดำเนินงานแนวคิดกับแผนที่วางไว้ - {{ timeLine.project.name_thai }}</li>
 </ol>
 {% endblock %}
-
+<!-- This for content in base.html -->
 {% block content %}
 <div class="container-fluid">
-      <meta http-equiv="content-type" content="text/html;charset=utf-8">
+<meta http-equiv="content-type" content="text/html;charset=utf-8">
+<!-- Style sheet : Use CSS for each tag name or class -->
       <style>
 .page{
 	font:14pt "Angsana New";
@@ -113,7 +115,11 @@
            
             width: 5cm;
       }
-      </style><div class="page">
+      </style>
+<!-- after this are HTML coding  -->
+<!-- {.{ ... }} is syntax for access database and add | for function in custom_function ("{.{" to avoid error) -->
+<!-- {.% ... %} is syntax for operation ex. if/else , forloop, etc. ("{.%" to aviod error) -->
+      <div class="page">
       <!--<div id='pageset'>-->
             <span  id='headset'>ขั้นตอนการดำเนินงานแนวคิดกับแผนที่วางไว้</span>
             <table id='maintable' border="1" cellpadding="0" cellspacing="0"> 

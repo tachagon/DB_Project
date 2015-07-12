@@ -1059,7 +1059,7 @@ def add_categories_tester_add(request, pjID):
         if len(CategoriesProject.objects.filter(project=p)) != 0: #check project already have categories
             messages.add_message(request, messages.INFO, "โครงงานนี้ได้กำหนด Categories กับอาจารย์สอบโปรเจคแล้ว") #add message to show on index page
             return HttpResponseRedirect(reverse('group6:project_docs_index')) #redirect to index
-        t_list = [] [] #create empty list to store teacher tester
+        t_list = [] #create empty list to store teacher tester
         t_list.append(p.teacher) #add adviser of project to list
         yearOE, numOT, projNum, main, semester = "", "", "", "", "" #declare variable to get from POST
         error_yearOE, error_numOT, error_projNum, error_main, error_semester = "", "", "", "", "" #declare variable to store error message
