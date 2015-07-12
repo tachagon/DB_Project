@@ -45,6 +45,7 @@ urlpatterns = patterns('',
     url(r'^hourindex/$', views.hour_index, name='hour_index'),
     url(r'^hourindex/searchname/$', views.search_hour_worker, name='worker_name'),
     url(r'^hourindex/searchname/(\d+)/$', views.returnsearch, name='returnsearch'),
+    url(r'^hourindex/searchname/(\d+)/(\d+)/$', views.returnsearch, name='returnsearch'), # forward backward month and year
     url(r'^addhourpage/(\d+)/$', views.add_hour_page, name='add_hour_page'),
     url(r'^add_hour_note/(\d+)/$', views.add_hour_note, name='add_hour_note'),
     url(r'^add_hour_date/(\d+)/$', views.add_hour_date, name='add_hour_date'),

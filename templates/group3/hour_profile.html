@@ -16,6 +16,18 @@
             <a class="btn btn-primary btn-block" href="{% url 'group3:add_work' employObj.id %}"><span class="glyphicon glyphicon-plus"></span> บันทึกเวลาทำงาน </a>
             <a class="btn btn-default btn-block" href="{% url 'group3:hourpdf' employObj.id %}" target = _blank><span class="glyphicon glyphicon-print"></span> พิมพ์ข้อมูล </a>
             <a class="btn btn-default btn-block" href="{% url 'group3:hour_index' %}" ><span class="glyphicon glyphicon-arrow-left"> ย้อนกลับ</span></a>
+        
+            <form action="#" method="post">
+              <select >
+                <option selected="selected" disabled>ดูข้อมูลย้อนหลัง :</option>
+                <option value="10">10</option>
+                <option value="20">20</option>
+                <option value="30">30</option>
+                <option value="40">40</option>
+                <option value="50">50</option>
+              </select>
+              <input type="submit" value="ตกลง" class="btn btn-primary" >
+            </form>
 
         </div> <p>{{check}}</p>
         <div class="col-md-9">

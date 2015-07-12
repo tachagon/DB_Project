@@ -703,15 +703,15 @@ def genpdf(request, profID): # use to generate pdf file for lend another teacher
     #pdf.cell(80, 10, u'' + proID)
     pdf.ln(8)
     pdf.cell(8, 10,u'')
-    pdf.cell(30, 10, u'         ภาควิชา')
-    pdf.cell(60, 10, u'' + department)
-    pdf.cell(20, 10, u'คณะ')
+    pdf.cell(27, 10, u'         ภาควิชา')
+    pdf.cell(63, 10, u'' + department)
+    pdf.cell(14, 10, u'คณะ')
     pdf.cell(20, 10, u'' + faculty)
     pdf.ln(8)
     pdf.cell(8, 10,u'')
-    pdf.cell(30, 10, u'         รหัสวิชา')
-    pdf.cell(60, 10, u'' +subjectID)
-    pdf.cell(20, 10, u'ชื่อวิชา')
+    pdf.cell(27, 10, u'         รหัสวิชา')
+    pdf.cell(63, 10, u'' +subjectID)
+    pdf.cell(14, 10, u'ชื่อวิชา')
     pdf.cell(20, 10, u'' + subjectName) 
     pdf.ln(8)
     pdf.cell(8, 10,u'')
@@ -719,7 +719,7 @@ def genpdf(request, profID): # use to generate pdf file for lend another teacher
     pdf.cell(40, 10, u'' + sec)
     pdf.cell(10, 10, u'วัน')
     pdf.cell(40, 10, u'' + day)
-    pdf.cell(15, 10, u'เวลา')
+    pdf.cell(12, 10, u'เวลา')
     pdf.cell(20, 10, u'' + str(time)[:5] + u' น.')
     pdf.ln(8)
     pdf.cell(8, 10,u'')
@@ -1285,11 +1285,18 @@ def search_hour_worker(request):
             context
         )
 
-def returnsearch(request, id):
+def returnsearch(request, id, backward=0):
     template = "group3/hour_profile.html"
     context = {}
     worker = HourlyEmployee.objects.get(id=int(id))
     ListWork = worker.work_set.all().order_by('id')
+    ####################################################################################
+    #month_now = datetime.datetime.now().date().month - backward 
+    #year_now = datetime.datetime.now().date().year
+    #print str(type(ListWork[0].releaseDate.year))
+    #print str(type(year_now))
+    #ListWork = ListWork.get(releaseDate = year_now)#.get(releaseDate = month_now)
+    ###################################################################################33
     try:
         profile = worker.user
 
