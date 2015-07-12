@@ -1,4 +1,12 @@
 /* Tatchagon edit */
+
+/* change color table-striped */
+.table-striped>tbody>tr:nth-child(odd)>td,
+.table-striped>tbody>tr:nth-child(odd)>th {
+   background-color: #E7E7E7;
+ }
+/*---------------------------*/
+
 header {
   background: #36648B;
   height:auto;

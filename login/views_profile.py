@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from datetime import datetime
 
+########################################### Information of User Profile ################################################
 # this function for profile index that show information of current user
 # Usage: login:profile_index
 def index(request, context={}):
@@ -159,16 +160,102 @@ def editTel(request):
             userprofile = UserProfile.objects.get(user = user)
 
             # get data from template
-            tel    = request.POST['tel']
+            tel     = request.POST['tel']
+            ext     = request.POST['ext']
 
             # update date
-            userprofile.tel    = tel
+            userprofile.tel     = tel
+            userprofile.ext     = ext
             # save change
             userprofile.save()
 
             context['success'] = 'เปลี่ยนเบอร์โทรศัพท์เรียบร้อยแล้ว'
         except:
             errors.append('ไม่สามารถเปลี่ยนเบอร์โทรศัพท์ได้')
+            context['errors'] = errors
+
+    return index(request, context)
+
+# this function for edit address of user profile
+# Usage: login:profile_editAddress
+def editAddress(request):
+    context = {}
+    errors = []
+
+    if request.method == 'POST':
+        try:
+            # get current user
+            user = request.user
+            # get current user profile
+            userprofile = UserProfile.objects.get(user = user)
+
+            # get data from template
+            address = request.POST['address']
+
+            # update date
+            userprofile.address = address
+            # save change
+            userprofile.save()
+
+            context['success'] = 'เปลี่ยนที่อยู่เรียบร้อยแล้ว'
+        except:
+            errors.append('ไม่สามารถเปลี่ยนที่อยู่ได้')
+            context['errors'] = errors
+
+    return index(request, context)
+
+# this function for edit office of user profile
+# Usage: login:profile_editOffice
+def editOffice(request):
+    context = {}
+    errors = []
+
+    if request.method == 'POST':
+        try:
+            # get current user
+            user = request.user
+            # get current user profile
+            userprofile = UserProfile.objects.get(user = user)
+
+            # get data from template
+            office = request.POST['office']
+
+            # update date
+            userprofile.office = office
+            # save change
+            userprofile.save()
+
+            context['success'] = 'เปลี่ยนที่ทำงานเรียบร้อยแล้ว'
+        except:
+            errors.append('ไม่สามารถเปลี่ยนที่ทำงานได้')
+            context['errors'] = errors
+
+    return index(request, context)
+
+# this function for edit account number of user profile
+# Usage: login:profile_editAccount
+def editAccount(request):
+    context = {}
+    errors = []
+
+    if request.method == 'POST':
+        try:
+            # get current user
+            user = request.user
+            # get current user profile
+            userprofile = UserProfile.objects.get(user = user)
+
+            # get data from template
+            account = request.POST['account']
+
+            # update date
+            userprofile.account = account
+            # save change
+            userprofile.save()
+
+            context['success'] = 'เปลี่ยนเลขที่บัญชีเรียบร้อยแล้ว'
+        except:
+            errors.append('ไม่สามารถเปลี่ยนเลขที่บัญชีได้')
             context['errors'] = errors
 
     return index(request, context)
@@ -220,5 +307,31 @@ def editPassword(request):
             except:
                 errors.append('เปลี่ยนรหัสผ่านไม่สำเร็จ')
                 context['errors'] = errors
+
+    return render(request, template, context)
+
+########################################## END of Information User Profile #############################################
+
+########################################## Information of Student Profile ##############################################
+# this fuction for show information of current student profile
+# Usage: login:profile_student
+def student(request, context={}):
+    template = 'login/profile/profile_student.html'
+
+    try:
+        user = request.user
+        userprofile = UserProfile.objects.get(user = user)
+
+        # user is Student
+        if userprofile.type == '0':
+            student = Student.objects.get(userprofile = userprofile)
+            context['student'] = student
+        # user is not Student
+        else:
+            return HttpResponseRedirect(reverse('login:profile_index'))
+        context['userprofile'] = userprofile
+        context['profile_student'] = 'active'
+    except:
+        pass
 
     return render(request, template, context)

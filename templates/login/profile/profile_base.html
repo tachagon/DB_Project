@@ -19,27 +19,26 @@
 {% block content %}
     {% if user.is_authenticated %}
         <!-- ใส่เนื้อหาของหน้าเว็บ ที่นี่ -->
-        <div class="row">
-            <div class="container">
+        <div class="container">
 
-                <div class="col-md-3">
+            <div class="col-md-3">
 <!------------------------------------------------- ปุ่มกดเมนูด้านซ้าย ----------------------------------------------------->
-                    <!-- 1. profile-btn -->
-                    <a href="{% url 'login:profile_index' %}" class="btn btn-default btn-block {{ profile_index }}">บัญชีของฉัน</a>
-                    <a href="{% url 'login:profile_editPassword' %}" class="btn btn-default btn-block {{ profile_change_password }}">เปลี่ยนรหัสผ่าน</a>
-                    {% if userprofile.type == '0' %}
-                        <a href="#" class="btn btn-default btn-block {{ profile_student }}">สำหรับนักศึกษา</a>
-                    {% endif %}
-                </div><!-- /col-md-3 -->
+                <!-- 1. profile-btn -->
+                <a href="{% url 'login:profile_index' %}" class="btn btn-default btn-block {{ profile_index }}">บัญชีของฉัน</a>
+                <a href="{% url 'login:profile_editPassword' %}" class="btn btn-default btn-block {{ profile_change_password }}">เปลี่ยนรหัสผ่าน</a>
+                {% if userprofile.type == '0' %}
+                <a href="{% url 'login:profile_student' %}" class="btn btn-default btn-block {{ profile_student }}">ข้อมูลนักศึกษา</a>
+                {% endif %}
+            </div><!-- /col-md-3 -->
 
-                <div class="col-md-9">
+            <div class="col-md-9">
 <!------------------------------------------------- ข้อมูล Content ----------------------------------------------------->
-                    {% block profile_content %}{% endblock %}
+                {% block profile_content %}{% endblock %}
 
-                </div><!-- /col-md-9 -->
+            </div><!-- /col-md-9 -->
 
-            </div><!-- /container -->
-        </div><!-- /row -->
+        </div><!-- /container -->
+
     {% else %}
         <!-- user not authenticated -->
         <div class="alert alert-danger" role="alert"><strong>Warning!</strong> กรุณา<a href="{% url 'login:login' %}">เข้าสู่ระบบ</a></div>
