@@ -1,8 +1,10 @@
-﻿{% extends "base.html" %}
+﻿<!-- Extend in base.html as a body -->
+{% extends "base.html" %}
+<!-- Use customfunction in this page -->
 {% load custom_function %}
-
+<!-- Command for setting title of page -->
 {% block title %}ระบบ จัดการโครงงาน สำหรับนักศึกษา ปริญญาตรี - กำหนดกรรมการสอบ และ Categories{% endblock %}
-
+<!-- Command for setting header of page -->
 {% block pageHeader %}
 <h2>ระบบ <small>จัดการโครงงาน สำหรับนักศึกษา ปริญญาตรี</small></h2>
 <ol class="breadcrumb">
@@ -11,10 +13,11 @@
     <li class="active">กำหนดกรรมการสอบ และ Categories</li>
 </ol>
 {% endblock %}
-
+<!-- This for content in base.html -->
 {% block content %}
 <div class="container-fluid">
     <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <!-- Style sheet : Use CSS for each tag name or class -->
     <style>
     table,tr,td{
         border-collapse: collapse;
@@ -52,48 +55,21 @@
    #o1{
        text-align:center;
    }
-/*#years{
-	margin-left:0;
-	}
-#nameth{
-	margin-left:0;
-	}
-#nameen{
-	margin-left:18;
-	}
-#numbers{
-	margin-left:56;
-	}
-	*/
-    @page{
-       size:A4;
-       margin:0;
-   }
-   /*@media print {
-      .page {
-          margin:0;
-          font-size:20px;
-          position:absolute;
-          border: initial;
-          width: initial;
-          height:initial;
-          box-shadow: initial;
-          background: initial;
-          page-break-after: always;
-      }
-  }*/
   </style>
+  <!-- java script -->
   <script>
+  <!-- function yearselect use for select project code, year of project, exam teacher and main of project -->
 function yearselect(){
-	var year = new Date();
-	var list = document.getElementById("yearselect");
-	var i;
+	var year = new Date();										<!-- Value of current date -->
+	var list = document.getElementById("yearselect"); 			<!-- set tag id "yearselect" as "list" -->
+	var i;														<!-- variable for looping -->
 	for (i=0;i<list.length;i++){
-		list.options[i].text = year.getFullYear()-i+43-2000;
+		list.options[i].text = year.getFullYear()-i+43-2000;	<!-- set text and value in list as 2 character of year number -->
 		list.options[i].value = year.getFullYear()-i+43-2000;
         }
-        var sel = document.getElementById("testerNum");
-        var sel2 = document.getElementById("projectOfMain");
+																<!-- set value of testerNum, projectOfMain -->
+        var sel = document.getElementById("testerNum");			<!-- semesterNum, projectNum when edit  -->
+        var sel2 = document.getElementById("projectOfMain");	<!-- then we don't have to re-select the value of them -->
         var sel3 = document.getElementById("semesterNum");
         var sel4 = document.getElementById("projectNum");
         sel.value = {{ numOT }};
@@ -102,6 +78,8 @@ function yearselect(){
         sel3.value = {{ semester }};
         sel4.value = "{{ projNum }}";
         var e_list = [{% for teachs in teacher_list %}
+		
+																<!-- Check the same teacher for get error if it have -->
 {% ifequal forloop.counter 1 %}
 ''
 {% else %}
@@ -112,11 +90,12 @@ function yearselect(){
                 e2.value = e_list[j];
         }
 }
+	<!-- Function for add more exam teacher in project -->
 function addMoreTester(){
-	var e1 = document.getElementById("testerNum");
-	var stdnum = e1.value;
+	var e1 = document.getElementById("testerNum");				<!-- set tag id "testerNum" as e1 -->
+	var stdnum = e1.value;										<!-- stdnum is value of e1 -->
 	var txts = "";
-	for (i = 1; i < 5; i++) { 
+	for (i = 1; i < 5; i++) { 									<!-- in this loop is for add textbox for add tester -->
 		var e2 = document.getElementById("TesterElement"+i);
 		if(i < stdnum){
 			if(e2 == null){
@@ -133,17 +112,22 @@ function addMoreTester(){
 			}
 		}
 	}
-	document.getElementById("namestd").innerHTML += txts;
+	document.getElementById("namestd").innerHTML += txts;		
 }
 
 </script>
-<body onLoad='yearselect();'>
+
+<body onLoad='yearselect();'>									<!-- load function yearselect when load this page -->
+    <!-- if/else for check that update case or new case -->
     {% ifequal edit '1' %}
     <form action = "{% url 'group6:project_docs_add_categories_tester_add' project_id %}" method = "post">
     {% else %}
     <form action = "{% url 'group6:project_docs_edit_categories_tester_update' categories_id %}" method = "post">
     {% endifequal %}
         {% csrf_token %}
+        <!-- after this are HTML coding  -->
+		<!-- {.{ ... }} is syntax for access database and add | for function in custom_function ("{.{" to avoid error) -->
+		<!-- {.% ... %} is syntax for operation ex. if/else , forloop, etc. ("{.%" to aviod error) -->
         <div class="page">
             <center>
             </center>

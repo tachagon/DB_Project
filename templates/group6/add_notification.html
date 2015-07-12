@@ -1,0 +1,91 @@
+﻿<!-- Extend in base.html as a body -->
+{% extends "base.html" %}
+<!-- Use customfunction in this page -->
+{% load custom_function %}
+<!-- Command for setting title of page -->
+{% block title %}ระบบ จัดการโครงงาน สำหรับนักศึกษา ปริญญาตรี - แจ้งเตือน{% endblock %}
+<!-- Command for setting header of page -->
+{% block pageHeader %}
+<h2>ระบบ <small>จัดการโครงงาน สำหรับนักศึกษา ปริญญาตรี</small></h2>
+<ol class="breadcrumb">
+    <li><a href="{% url 'login:menu' %}">เมนู</a></li>
+    <li><a href="{% url 'group6:project_docs_index' %}">ระบบ จัดการโครงงาน สำหรับนักศึกษา ปริญญาตรี</a></li>
+    <li class="active">แจ้งเตือน</li>
+</ol>
+{% endblock %}
+<!-- This for content in base.html -->
+{% block content %}
+<div class="container-fluid">
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <!-- Style sheet : Use CSS for each tag name or class -->
+    <style>
+    table,tr,td{
+        border-collapse: collapse;
+    }
+    body{
+       background-color:white;
+   }
+   .page{
+       width:210mm;
+       margin:auto;
+       position:relative;
+       padding: 2cm;
+       border: 1px #D3D3D3 solid;
+       border-radius: 5px;
+       background: white;
+   }
+   .form > H{
+       margin-left:10;
+   }
+   .namestd{
+       margin-left:10;
+   }
+   textarea {
+       margin-left:10;
+       resize:none;
+       outline:none;
+   }
+   H{
+       font:16pt "Angsana New";
+   }
+   input{
+       outline:none;
+       resize:none;
+   }
+   #o1{
+       text-align:center;
+   }
+    @page{
+       size:A4;
+       margin:0;
+   }
+  </style>
+		<!-- If/else statement for checking post and reply between student and department -->
+    {% if edit == '1' %}
+    <form action = "{% url 'group6:project_docs_add_notification_add' project_id %}" method = "post">
+    {% elif edit == '2' %}
+    <form action = "{% url 'group6:project_docs_reply_message_add' notification_id %}" method = "post">
+    {% else %}
+    <form action = "{% url 'group6:project_docs_edit_notification_message_update' notification_id message_id %}" method = "post">
+    {% endif %}
+        {% csrf_token %}
+        <!-- after this are HTML coding  -->
+		<!-- {.{ ... }} is syntax for access database and add | for function in custom_function ("{.{" to avoid error) -->
+		<!-- {.% ... %} is syntax for operation ex. if/else , forloop, etc. ("{.%" to aviod error) -->
+        <div class="page">
+            <label class="form">
+            <H>ข้อความ:</H> <font color = "FF0000" name="message">{{ error_message }}</font></br><textarea rows="6" cols="60" name="message">{{ message }}</textarea></br>   
+            </label>
+   </div>
+   <center><br>
+    <input class="btn btn-primary" type="submit" value="บันทึก" name='save' />
+    {% ifequal edit '1' %}
+    <a href="{% url 'group6:project_docs_index' %}"><input class="btn btn-danger" type="button" value="ยกเลิก" name = 'cancel' /></a>
+    {% else %}
+    <a href="{% url 'group6:project_docs_view_notification' notification_id %}"><input class="btn btn-danger" type="button" value="ยกเลิก" name = 'cancel' /></a>
+    {% endifequal %}
+</center>
+</form>
+<br>
+</div>
+{% endblock %}

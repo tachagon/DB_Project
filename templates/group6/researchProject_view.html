@@ -1,8 +1,10 @@
-﻿{% extends "base.html" %}
+﻿<!-- Extend in base.html as a body -->
+{% extends "base.html" %}
+<!-- Use customfunction in this page -->
 {% load custom_function %}
-
+<!-- Command for setting title of page -->
 {% block title %}ระบบ จัดการโครงงาน สำหรับนักศึกษา ปริญญาตรี - แบบฟอร์มสำรวจหัวข้อโครงงานปริญญานิพนธ์ - {{ research.project.name_thai }}{% endblock %}
-
+<!-- Command for setting header of page -->
 {% block pageHeader %}
 <h2>ระบบ <small>จัดการโครงงาน สำหรับนักศึกษา ปริญญาตรี</small></h2>
 <ol class="breadcrumb">
@@ -11,24 +13,28 @@
     <li class="active">แบบฟอร์มสำรวจหัวข้อโครงงานปริญญานิพนธ์ - {{ research.project.name_thai }}</li>
 </ol>
 {% endblock %}
-
+<!-- This for content in base.html -->
 {% block content %}
 <div class="container-fluid">
 <meta http-equiv="content-type" content="text/html;charset=utf-8">
+<!-- Style sheet : Use CSS for each tag name or class -->
 <style>
 body{
 	}
+*{
+	word-wrap:normal;
+	word-break:break-all;
+}
 .page{
 	font:14pt "Angsana New";
-	width:210mm;
+	width:170mm;
 	height:auto;
 	margin:auto;
 	position:relative;
     padding: 2cm;
-    border: 1px #D3D3D3 solid;
-    border-radius: 5px;
+    border:solid;
+	border-width:thin;
     background: white;
-	word-break:break-strict;
 	}
 .form > H{
 	margin-left:0;
@@ -41,8 +47,7 @@ body{
 	
 	}
 #nameeng{
-	padding-left:20mm;
-	word-break:break-all;
+	padding-left:18mm;
 	}
 #yearspace{
 	display:block;
@@ -50,7 +55,6 @@ body{
 	 }
 #nameth{
 	padding-left:2mm;
-	word-break:break-all;
 	}
 @media print {
 	.page {
@@ -85,6 +89,9 @@ body{
 		}
 }
 </style>
+<!-- after this are HTML coding  -->
+<!-- {.{ ... }} is syntax for access database and add | for function in custom_function ("{.{" to avoid error) -->
+<!-- {.% ... %} is syntax for operation ex. if/else , forloop, etc. ("{.%" to aviod error) -->
 <div class="page">
 <center>
 <H><b>แบบฟอร์มสำรวจหัวข้อโครงงานปริญญานิพนธ์</b></H><br>
@@ -95,16 +102,17 @@ body{
 <br id="yearspace">
 </center>
 <label class="form">
-<H>ชื่อโครงการ</H><H id="nameth">(ภาษาไทย) {{ research.project.name_thai }}</H><br>
-<H id="nameeng">(ภาษาอังกฤษ) {{ research.project.name_eng }}</H><br>
+<H>ชื่อโครงการ</H><H id="nameth">(ภาษาไทย)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ research.project.name_thai }}</H><br>
+<H id="nameeng">(ภาษาอังกฤษ)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ research.project.name_eng }}</H><br>
 <H>จำนวนนักศึกษา {{ research.numberOfPeople }} คน </H><br>
-<H>ชื่ออาจารย์ที่ปรึกษา {{ research.project.teacher.academic_position|get_prefix_name_th_teacher:research.project.teacher.userprofile.prefix_name }} {{ research.project.teacher.userprofile.firstname_th }} {{ research.project.teacher.userprofile.lastname_th }} ({{ research.project.teacher.shortname }})</H>
-	<div class="text">วัตถุประสงค์ {{ research.project.objective }}</div>
-	<div class="text">แนวเหตุผล ทฤฏีสำคัญหรือสมมุติฐาน {{ research.project.reason }}</div>
-	<div class="text">ขอบเขตของการทำโครงงาน {{ research.project.scope }}</div>
-	<div class="text">ผลประโยชน์ที่คาดว่าจะได้รับ {{ research.project.benefit }}</div>
+<H>ชื่ออาจารย์ที่ปรึกษา&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ research.project.teacher.academic_position|get_prefix_name_th_teacher:research.project.teacher.userprofile.prefix_name }} {{ research.project.teacher.userprofile.firstname_th }} {{ research.project.teacher.userprofile.lastname_th }} ({{ research.project.teacher.shortname }})</H>
+	<div class="text">วัตถุประสงค์&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ research.project.objective }}</div>
+	<div class="text">แนวเหตุผล ทฤษฎีสำคัญหรือสมมติฐาน&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ research.project.reason }}</div>
+	<div class="text">ขอบเขตของการทำโครงการ&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ research.project.scope }}</div>
+	<div class="text">ผลประโยชน์ที่คาดว่าจะได้รับ&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ research.project.benefit }}</div>
 	</label>
-</div><br>
+</div>
+<br>
 <a href="{% url 'group6:project_docs_index' %}"><input class="btn btn-danger" type="button" value="ย้อนกลับ" name = 'cancel' /></a> 
 <a class="btn btn-default" href="javascript:if(confirm('! คำเตือน !\n
 ใช้ Browser : Chrome\n

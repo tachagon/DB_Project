@@ -1,9 +1,12 @@
+<!-- Extend in base.html as a body -->
 {% extends "base.html" %}
+<!-- Use customfunction in this page -->
 {% load custom_function %}
+<!-- Use staticfiles in this page -->
 {% load staticfiles %}
-
+<!-- Command for setting title of page -->
 {% block title %}ระบบ จัดการโครงงาน สำหรับนักศึกษา ปริญญาตรี{% endblock %}
-
+<!-- Command for setting header of page -->
 {% block pageHeader %}
 <h2>ระบบ <small>จัดการโครงงาน สำหรับนักศึกษา ปริญญาตรี</small></h2>
 <ol class="breadcrumb">
@@ -11,21 +14,19 @@
     <li class="active">ระบบ จัดการโครงงาน สำหรับนักศึกษา ปริญญาตรี</li>
 </ol>
 {% endblock %}
-
+<!-- This for content in base.html -->
 {% block content %}
-<script type="type/javascript">
-function confirmLeave() {
-if(!confirm("Do you wish to continue without finishing the payment process? Your account will not be setup...")) return;
-window.open('popup.html','width=400,height=400');
-}
-</script>
+
+<!-- after this are HTML coding  -->
+<!-- {.{ ... }} is syntax for access database and add | for function in custom_function ("{.{" to avoid error) -->
+<!-- {.% ... %} is syntax for operation ex. if/else , forloop, etc. ("{.%" to aviod error) -->
 <div class="container-fluid">
     {% for message in messages %}
         <br><font color = "FF0000" name="message">*{{ message }}</font>
     {% endfor %}
     {% if project_list %}  
             <div class="table-responsive">
-                <table class="table table-hover table-bordered" id="no-more-tables">
+                <table class="table table-hover table-bordered table-striped" id="no-more-tables">
                     <thead>
                         <tr>
                             <th>ลำดับ</th>
@@ -36,6 +37,7 @@ window.open('popup.html','width=400,height=400');
                             <th>แบบเสนอโครงงานปริญญานิพนธ์</th>
                             <th>แบบเสนอขออนุมัติโครงงานปริญญานิพนธ์</th>
                             <th>ขั้นตอนการดำเนินงานแนวคิดกับแผนที่วางไว้</th>
+                            <th>ข้อความแจ้งเตือน</th>
                             <th>เมนูสำหรับแบบฟอร์ม</th>
                         </tr>
                     </thead>
@@ -50,9 +52,11 @@ window.open('popup.html','width=400,height=400');
                             <td data-title="แบบเสนอโครงงานปริญญานิพนธ์"><a class="btn btn-warning" href="{% url 'group6:project_docs_offerProject' offer|get_id_at_index:forloop.counter0 %}">ดูฟอร์ม</a></td>
                             <td data-title="แบบเสนอขออนุมัติโครงงานปริญญานิพนธ์"><a class="btn btn-success" href="{% url 'group6:project_docs_approveProject' approve|get_id_at_index:forloop.counter0 %}">ดูฟอร์ม</a></td>
                             <td data-title="ขั้นตอนการดำเนินงานแนวคิดกับแผนที่วางไว้"><a class="btn btn-default" href="{% url 'group6:project_docs_timeLineProject' timeLine|get_id_at_index:forloop.counter0 %}">ดูฟอร์ม</a></td>
+                            <td data-title="ข้อความแจ้งเตือน">{% for text in message|get_at_index:forloop.counter0 %}
+                            <a class="btn btn-link" href="{% url 'group6:project_docs_view_notification' text.id %}">ข้อความแจ้งเตือนที่ {{ forloop.counter }}</a><br>{% endfor %}</td>
                             <td data-title="เมนูสำหรับแบบฟอร์ม">
                                 <a class="btn btn-danger" href="javascript:if(confirm('คุณต้องการจะลบฟอร์มนี้ใช่หรือไม่ หากใช่ให้กด OK'))
-window.location='{% url 'group6:project_docs_delete' project.id %}';" target="_blank">ลบแบบฟอร์ม</a>
+window.location='{% url 'group6:project_docs_delete' project.id %}';" target="_blank">ลบแบบฟอร์ม</a><br>
                                 <a class="btn btn-link" href="{% url 'group6:project_docs_edit' project.id %}">แก้ไขแบบฟอร์ม</a>
                             </td>
                         </tr>
