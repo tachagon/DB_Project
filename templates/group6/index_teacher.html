@@ -1,9 +1,12 @@
+<!-- Extend in base.html as a body -->
 {% extends "base.html" %}
+<!-- Use customfunction in this page -->
 {% load custom_function %}
+<!-- Use staticfiles in this page -->
 {% load staticfiles %}
-
+<!-- Command for setting title of page -->
 {% block title %}ระบบ จัดการโครงงาน สำหรับนักศึกษา ปริญญาตรี{% endblock %}
-
+<!-- Command for setting header of page -->
 {% block pageHeader %}
 <h2>ระบบ <small>จัดการโครงงาน สำหรับนักศึกษา ปริญญาตรี</small></h2>
 <ol class="breadcrumb">
@@ -11,9 +14,11 @@
     <li class="active">ระบบ จัดการโครงงาน สำหรับนักศึกษา ปริญญาตรี</li>
 </ol>
 {% endblock %}
-
+<!-- This for content in base.html -->
 {% block content %}
+<!-- java script -->
 <script>
+<!-- selectView use for select categories for viewing -->
 function selectView() {
     var e1 = document.getElementById("categories");
     var m0 = document.getElementById("main0");
@@ -23,6 +28,7 @@ function selectView() {
     var m4 = document.getElementById("main4");
     var m5 = document.getElementById("main5");
     var mode = e1.value;
+	<!-- display all categories -->
     if(mode == "All"){
         m0.style.display = 'block';
         m1.style.display = 'block';
@@ -30,6 +36,7 @@ function selectView() {
         m3.style.display = 'block';
         m4.style.display = 'block';
         m5.style.display = 'block';
+	<!-- Display only main Cpr.E -->
     }else if(mode == "main0"){
         m0.style.display = 'block';
         m1.style.display = 'none';
@@ -37,6 +44,7 @@ function selectView() {
         m3.style.display = 'none';
         m4.style.display = 'none';
         m5.style.display = 'none';
+	<!-- Display only main G -->
     }else if(mode == "main1"){
         m0.style.display = 'none';
         m1.style.display = 'block';
@@ -44,6 +52,7 @@ function selectView() {
         m3.style.display = 'none';
         m4.style.display = 'none';
         m5.style.display = 'none';
+	<!-- Display only main U -->
     }else if(mode == "main2"){
         m0.style.display = 'none';
         m1.style.display = 'none';
@@ -51,6 +60,7 @@ function selectView() {
         m3.style.display = 'none';
         m4.style.display = 'none';
         m5.style.display = 'none';
+	<!-- Display only main C -->
     }else if(mode == "main3"){
         m0.style.display = 'none';
         m1.style.display = 'none';
@@ -58,6 +68,7 @@ function selectView() {
         m3.style.display = 'block';
         m4.style.display = 'none';
         m5.style.display = 'none';
+	<!-- Display only main EP -->
     }else if(mode == "main4"){
         m0.style.display = 'none';
         m1.style.display = 'none';
@@ -65,6 +76,7 @@ function selectView() {
         m3.style.display = 'none';
         m4.style.display = 'block';
         m5.style.display = 'none';
+	<!-- Display only uncategories main -->
     }else if(mode == "main5"){
         m0.style.display = 'none';
         m1.style.display = 'none';
@@ -75,6 +87,9 @@ function selectView() {
     }
 }
 </script>
+<!-- after this are HTML coding  -->
+<!-- {.{ ... }} is syntax for access database and add | for function in custom_function ("{.{" to avoid error) -->
+<!-- {.% ... %} is syntax for operation ex. if/else , forloop, etc. ("{.%" to aviod error) -->
 <div class="container-fluid">
     {% for message in messages %}
         <br><font color = "FF0000" name="message">*{{ message }}</font>
@@ -105,6 +120,7 @@ function selectView() {
                             <th>แบบเสนอโครงงานปริญญานิพนธ์</th>
                             <th>แบบเสนอขออนุมัติโครงงานปริญญานิพนธ์</th>
                             <th>ขั้นตอนการดำเนินงานแนวคิดกับแผนที่วางไว้</th>
+                            <th>ข้อความแจ้งเตือน</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -118,6 +134,8 @@ function selectView() {
                             <td data-title="แบบเสนอโครงงานปริญญานิพนธ์"><a class="btn btn-warning" href="{% url 'group6:project_docs_offerProject' offer0|get_id_at_index:forloop.counter0 %}">ดูฟอร์ม</a></td>
                             <td data-title="แบบเสนอขออนุมัติโครงงานปริญญานิพนธ์"><a class="btn btn-success" href="{% url 'group6:project_docs_approveProject' approve0|get_id_at_index:forloop.counter0 %}">ดูฟอร์ม</a></td>
                             <td data-title="ขั้นตอนการดำเนินงานแนวคิดกับแผนที่วางไว้"><a class="btn btn-default" href="{% url 'group6:project_docs_timeLineProject' timeLine0|get_id_at_index:forloop.counter0 %}">ดูฟอร์ม</a></td>
+                            <td data-title="ข้อความแจ้งเตือน">{% for text in message0|get_at_index:forloop.counter0 %}
+                            <a class="btn btn-link" href="{% url 'group6:project_docs_view_notification' text.id %}">ข้อความแจ้งเตือนที่ {{ forloop.counter }}</a>{% endfor %}</td>
                         </tr>
                     {% endfor %}
                     </tbody>
@@ -151,6 +169,7 @@ function selectView() {
                             <th>แบบเสนอโครงงานปริญญานิพนธ์</th>
                             <th>แบบเสนอขออนุมัติโครงงานปริญญานิพนธ์</th>
                             <th>ขั้นตอนการดำเนินงานแนวคิดกับแผนที่วางไว้</th>
+                            <th>ข้อความแจ้งเตือน</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -164,6 +183,8 @@ function selectView() {
                             <td data-title="แบบเสนอโครงงานปริญญานิพนธ์"><a class="btn btn-warning" href="{% url 'group6:project_docs_offerProject' offer1|get_id_at_index:forloop.counter0 %}">ดูฟอร์ม</a></td>
                             <td data-title="แบบเสนอขออนุมัติโครงงานปริญญานิพนธ์"><a class="btn btn-success" href="{% url 'group6:project_docs_approveProject' approve1|get_id_at_index:forloop.counter0 %}">ดูฟอร์ม</a></td>
                             <td data-title="ขั้นตอนการดำเนินงานแนวคิดกับแผนที่วางไว้"><a class="btn btn-default" href="{% url 'group6:project_docs_timeLineProject' timeLine1|get_id_at_index:forloop.counter0 %}">ดูฟอร์ม</a></td>
+                            <td data-title="ข้อความแจ้งเตือน">{% for text in message0|get_at_index:forloop.counter0 %}
+                            <a class="btn btn-link" href="{% url 'group6:project_docs_view_notification' text.id %}">ข้อความแจ้งเตือนที่ {{ forloop.counter }}</a>{% endfor %}</td>
                         </tr>
                     {% endfor %}
                     </tbody>
@@ -197,6 +218,7 @@ function selectView() {
                             <th>แบบเสนอโครงงานปริญญานิพนธ์</th>
                             <th>แบบเสนอขออนุมัติโครงงานปริญญานิพนธ์</th>
                             <th>ขั้นตอนการดำเนินงานแนวคิดกับแผนที่วางไว้</th>
+                            <th>ข้อความแจ้งเตือน</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -210,6 +232,8 @@ function selectView() {
                             <td data-title="แบบเสนอโครงงานปริญญานิพนธ์"><a class="btn btn-warning" href="{% url 'group6:project_docs_offerProject' offer2|get_id_at_index:forloop.counter0 %}">ดูฟอร์ม</a></td>
                             <td data-title="แบบเสนอขออนุมัติโครงงานปริญญานิพนธ์"><a class="btn btn-success" href="{% url 'group6:project_docs_approveProject' approve2|get_id_at_index:forloop.counter0 %}">ดูฟอร์ม</a></td>
                             <td data-title="ขั้นตอนการดำเนินงานแนวคิดกับแผนที่วางไว้"><a class="btn btn-default" href="{% url 'group6:project_docs_timeLineProject' timeLine2|get_id_at_index:forloop.counter0 %}">ดูฟอร์ม</a></td>
+                            <td data-title="ข้อความแจ้งเตือน">{% for text in message0|get_at_index:forloop.counter0 %}
+                            <a class="btn btn-link" href="{% url 'group6:project_docs_view_notification' text.id %}">ข้อความแจ้งเตือนที่ {{ forloop.counter }}</a>{% endfor %}</td>
                         </tr>
                     {% endfor %}
                     </tbody>
@@ -243,6 +267,7 @@ function selectView() {
                             <th>แบบเสนอโครงงานปริญญานิพนธ์</th>
                             <th>แบบเสนอขออนุมัติโครงงานปริญญานิพนธ์</th>
                             <th>ขั้นตอนการดำเนินงานแนวคิดกับแผนที่วางไว้</th>
+                            <th>ข้อความแจ้งเตือน</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -256,6 +281,8 @@ function selectView() {
                             <td data-title="แบบเสนอโครงงานปริญญานิพนธ์"><a class="btn btn-warning" href="{% url 'group6:project_docs_offerProject' offer3|get_id_at_index:forloop.counter0 %}">ดูฟอร์ม</a></td>
                             <td data-title="แบบเสนอขออนุมัติโครงงานปริญญานิพนธ์"><a class="btn btn-success" href="{% url 'group6:project_docs_approveProject' approve3|get_id_at_index:forloop.counter0 %}">ดูฟอร์ม</a></td>
                             <td data-title="ขั้นตอนการดำเนินงานแนวคิดกับแผนที่วางไว้"><a class="btn btn-default" href="{% url 'group6:project_docs_timeLineProject' timeLine3|get_id_at_index:forloop.counter0 %}">ดูฟอร์ม</a></td>
+                            <td data-title="ข้อความแจ้งเตือน">{% for text in message0|get_at_index:forloop.counter0 %}
+                            <a class="btn btn-link" href="{% url 'group6:project_docs_view_notification' text.id %}">ข้อความแจ้งเตือนที่ {{ forloop.counter }}</a>{% endfor %}</td>
                         </tr>
                     {% endfor %}
                     </tbody>
@@ -289,6 +316,7 @@ function selectView() {
                             <th>แบบเสนอโครงงานปริญญานิพนธ์</th>
                             <th>แบบเสนอขออนุมัติโครงงานปริญญานิพนธ์</th>
                             <th>ขั้นตอนการดำเนินงานแนวคิดกับแผนที่วางไว้</th>
+                            <th>ข้อความแจ้งเตือน</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -302,6 +330,8 @@ function selectView() {
                             <td data-title="แบบเสนอโครงงานปริญญานิพนธ์"><a class="btn btn-warning" href="{% url 'group6:project_docs_offerProject' offer4|get_id_at_index:forloop.counter0 %}">ดูฟอร์ม</a></td>
                             <td data-title="แบบเสนอขออนุมัติโครงงานปริญญานิพนธ์"><a class="btn btn-success" href="{% url 'group6:project_docs_approveProject' approve4|get_id_at_index:forloop.counter0 %}">ดูฟอร์ม</a></td>
                             <td data-title="ขั้นตอนการดำเนินงานแนวคิดกับแผนที่วางไว้"><a class="btn btn-default" href="{% url 'group6:project_docs_timeLineProject' timeLine4|get_id_at_index:forloop.counter0 %}">ดูฟอร์ม</a></td>
+                            <td data-title="ข้อความแจ้งเตือน">{% for text in message0|get_at_index:forloop.counter0 %}
+                            <a class="btn btn-link" href="{% url 'group6:project_docs_view_notification' text.id %}">ข้อความแจ้งเตือนที่ {{ forloop.counter }}</a>{% endfor %}</td>
                         </tr>
                     {% endfor %}
                     </tbody>
@@ -324,7 +354,7 @@ function selectView() {
     {% if project_list5 %}  
             <div class="table-responsive">
                 <B>Categories: {{ main5 }}</B>
-                <table class="table table-hover table-bordered" id="no-more-tables">
+                <table class="table table-hover table-bordered table-striped" id="no-more-tables">
                     <thead>
                         <tr>
                             <th>ลำดับ</th>
@@ -335,6 +365,7 @@ function selectView() {
                             <th>แบบเสนอโครงงานปริญญานิพนธ์</th>
                             <th>แบบเสนอขออนุมัติโครงงานปริญญานิพนธ์</th>
                             <th>ขั้นตอนการดำเนินงานแนวคิดกับแผนที่วางไว้</th>
+                            <th>ข้อความแจ้งเตือน</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -348,6 +379,8 @@ function selectView() {
                             <td data-title="แบบเสนอโครงงานปริญญานิพนธ์"><a class="btn btn-warning" href="{% url 'group6:project_docs_offerProject' offer5|get_id_at_index:forloop.counter0 %}">ดูฟอร์ม</a></td>
                             <td data-title="แบบเสนอขออนุมัติโครงงานปริญญานิพนธ์"><a class="btn btn-success" href="{% url 'group6:project_docs_approveProject' approve5|get_id_at_index:forloop.counter0 %}">ดูฟอร์ม</a></td>
                             <td data-title="ขั้นตอนการดำเนินงานแนวคิดกับแผนที่วางไว้"><a class="btn btn-default" href="{% url 'group6:project_docs_timeLineProject' timeLine5|get_id_at_index:forloop.counter0 %}">ดูฟอร์ม</a></td>
+                            <td data-title="ข้อความแจ้งเตือน">{% for text in message0|get_at_index:forloop.counter0 %}
+                            <a class="btn btn-link" href="{% url 'group6:project_docs_view_notification' text.id %}">ข้อความแจ้งเตือนที่ {{ forloop.counter }}<br></a>{% endfor %}</td>
                         </tr>
                     {% endfor %}
                     </tbody>

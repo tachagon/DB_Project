@@ -1,9 +1,11 @@
+<!-- Use staticfiles in this page -->
 {% load staticfiles %}
 <!DOCTYPE>
 <html>
 <head>
     <title>WorksTable</title>
     <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <!-- Style sheet : Use CSS for each tag name or class -->
     <style>
 	#pageset{
 		margin-top: 0mm;
@@ -189,30 +191,27 @@
 		}
 	}
       </style>
+      <!-- Java script -->
 	<script type="text/javascript">
-	elements2 = document.getElementsByClassName('checknulls');
-	elements = document.getElementsByClassName("Cellc");
+	elements = document.getElementsByClassName("Cellc");				<!-- Get element by class name as elements -->
+	<!-- Function setBgColor use for set img in check box that get value from database -->
 	function setBgColor() {
-		for (var i = 0; i < elements.length; i++) {
-			if(elements[i].innerHTML == "True"){
+		for (var i = 0; i < elements.length; i++) {						<!-- For loop for detect value in each box -->
+			if(elements[i].innerHTML == "True"){						<!-- If it checked we will replace with black image -->
 				elements[i].innerHTML = "<img src='{% static 'group6/Checkbox1.jpg' %}' alt='Check' width='100%' height='14px'>";
-			}else{
-				elements[i].innerHTML = "<font color='white'>-</font>";
+			}else{														<!-- If it unchecked we will replace with "-" white color -->
+				elements[i].innerHTML = "<font color='white'>-</font>";	<!-- to avoid the table display wrong -->
 			}
 		}
-		checknulls();
-		window.print();
+		window.print();													<!-- use for auto call printing window -->
 	}
-	
-	function checknulls(){
-		for (var i = 0; i < elements2.length; i++) {
-			console.log(elements2[i].innerHTML);
-		}
-	}
-	
 		
     </script>
 </head>
+      
+<!-- after this are HTML coding  -->
+<!-- {.{ ... }} is syntax for access database and add | for function in custom_function ("{.{" to avoid error) -->
+<!-- {.% ... %} is syntax for operation ex. if/else , forloop, etc. ("{.%" to aviod error) -->
 <body onLoad="return setBgColor();">
       <div id="pageset">
             <div  class='Title'>ขั้นตอนการดำเนินงานแนวคิดกับแผนที่วางไว้</div>
