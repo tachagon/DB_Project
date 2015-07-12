@@ -930,14 +930,20 @@ def gen_single_text(pdf, position, text=""): # use to create a single text for o
     pdf.cell(position, 18, u'' + text)
     pdf.ln(8)
 
-def hourpdf(request, employeeID): # use to see working of temporary employee.
+def hourpdf(request, employeeID, scan_month, scan_year): # use to see working of temporary employee.
     pdf = FPDF('P', 'mm', 'A4')
     pdf.add_page()
     ganY = [46, 54]  # line bettwen collumn.
     
     employeeObj = HourlyEmployee.objects.get(pk=int(employeeID))
     ListWork = employeeObj.work_set.all()
-    
+    ################################   scan_time #####################################3
+    new_ListWork  = []
+    for each_work in ListWork:
+        if (each_work.releaseDate.year == int(scan_year)) and (each_work.releaseDate.month == int(scan_month)):
+            new_ListWork.append(each_work)
+    ListWork = new_ListWork
+    ##############################################################################3
     pdf.add_font('THSarabun', '', 'THSarabun.ttf', uni=True)
     pdf.set_font('THSarabun', '', 16)
     
@@ -1285,18 +1291,28 @@ def search_hour_worker(request):
             context
         )
 
-def returnsearch(request, id, backward=0):
+def returnsearch(request, id, choose_month=0, choose_year=0):
     template = "group3/hour_profile.html"
     context = {}
     worker = HourlyEmployee.objects.get(id=int(id))
     ListWork = worker.work_set.all().order_by('id')
-    ####################################################################################
-    #month_now = datetime.datetime.now().date().month - backward 
-    #year_now = datetime.datetime.now().date().year
-    #print str(type(ListWork[0].releaseDate.year))
-    #print str(type(year_now))
-    #ListWork = ListWork.get(releaseDate = year_now)#.get(releaseDate = month_now)
-    ###################################################################################33
+    ##################### scan_time   ############################
+    if (int(choose_month) != 0) and (int(choose_year) != 0):
+        month_now = int(choose_month)
+        year_now = int(choose_year) - 543
+        context['scan_month'] = month_now
+        context['scan_year'] = year_now
+    else:
+        month_now = datetime.datetime.now().date().month  
+        year_now = datetime.datetime.now().date().year
+        context['scan_month'] = month_now
+        context['scan_year'] = year_now
+    new_ListWork  = []
+    for each_work in ListWork:
+        if (each_work.releaseDate.year == year_now) and (each_work.releaseDate.month == month_now):
+            new_ListWork.append(each_work)
+    ListWork = new_ListWork
+    ###################################################################################
     try:
         profile = worker.user
 

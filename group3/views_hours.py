@@ -47,3 +47,20 @@ def add_work(request, employeeID):
         template,
         context
     )
+
+def choose_work(request, employeeID):
+    template = 'group3/worker/choose_work.html'
+    context = {}
+    employee = HourlyEmployee.objects.get(id=employeeID)
+    context["employee"] = employee
+    
+    if request.method == "POST":
+        choose_month = request.POST["choose_month"]
+        choose_year = request.POST["choose_year"]
+        return HttpResponseRedirect(reverse('group3:returnsearch', args=[employeeID, int(choose_month), int(choose_year)]))
+    
+    return render(
+        request,
+        template,
+        context
+    )
