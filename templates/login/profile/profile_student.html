@@ -1,0 +1,198 @@
+{% extends "login/profile/profile_base.html" %}
+{% load staticfiles %}
+
+{% block profile_content %}
+
+<!-- if have errors -->
+    {% for error in errors %}
+        <div class="alert alert-danger alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <strong>ล้มเหลว! </strong> {{ error }}
+        </div>
+    {% empty %}
+    {% endfor %}
+
+    {% if success %}
+        <div class="alert alert-success alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <strong>สำเร็จ! </strong> {{ success }}
+        </div>
+    {% endif %}
+
+<!-- 1. รหัสนักศึกษา --------------------------------------------------------------------------------------------------->
+    <div class="well">
+        <div class="row">
+            <div class="col-md-3">รหัสนักศึกษา: </div>
+            <div class="col-md-6">{{ student.std_id }}</div>
+            <div class="col-md-3">
+                <!--button data-target="#editStd_id" class="btn btn-default btn-xs" type="button" data-toggle="collapse">แก้ไข</button-->
+            </div><!-- /col-md-3 -->
+        </div><!-- /row -->
+        <!-- collapse -------------------------------------------------------->
+        <div class="collapse" id="editStd_id">
+            <br>
+            <!-- form -------------------------------------------------------->
+            <form class="form-horizontal" action="#" method="post">
+                {% csrf_token %}
+
+                <!-- 1. std_id -->
+                <div class="form-group">
+                    <label class="col-md-3 control-label">รหัสนักศึกษา: </label>
+                    <div class="col-md-6">
+                        <input type="text" name="std_id" value="{{ student.std_id }}" maxlength="13" title="รหัสนักศึกษา" placeholder="รหัสนักศึกษา" class="form-control" required>
+                    </div>
+                </div>
+
+                <!-- Button -->
+                <div class="form-group">
+                    <label class="col-md-3 control-label"></label>
+                    <div class="col-md-6">
+                        <button data-target="#editStd_id" class="btn btn-default btn-sm" type="button" data-toggle="collapse">ยกเลิก</button>
+                        <button class="btn btn-primary btn-sm" type="submit">บันทึกการเปลี่ยนแปลง</button>
+                    </div>
+                </div>
+
+            </form>
+
+        </div><!-- /collapse -->
+    </div><!-- /well -->
+
+<!-- 2. เลขประจำตัวประชาชน ---------------------------------------------------------------------------------------------->
+    <div class="well">
+        <div class="row">
+            <div class="col-md-3">เลขประจำตัวประชาชน: </div>
+            <div class="col-md-6">{{ student.id_number }}</div>
+            <div class="col-md-3"></div><!-- /col-md-3 -->
+        </div><!-- /row -->
+    </div><!-- /well -->
+
+<!-- 3. เชื้อชาติ ---------------------------------------------------------------------------------------------->
+    <div class="well">
+        <div class="row">
+            <div class="col-md-3">เชื้อชาติ: </div>
+            <div class="col-md-6">{{ student.nationality }}</div>
+            <div class="col-md-3"></div><!-- /col-md-3 -->
+        </div><!-- /row -->
+    </div><!-- /well -->
+
+<!-- 4. ศาสนา ---------------------------------------------------------------------------------------------->
+    <div class="well">
+        <div class="row">
+            <div class="col-md-3">ศาสนา: </div>
+            <div class="col-md-6">{{ student.religion }}</div>
+            <div class="col-md-3"></div><!-- /col-md-3 -->
+        </div><!-- /row -->
+    </div><!-- /well -->
+
+<!-- 5. หมู่เลือด ---------------------------------------------------------------------------------------------->
+    <div class="well">
+        <div class="row">
+            <div class="col-md-3">หมู่เลือด: </div>
+            <div class="col-md-6">
+                {% if student.blood_type == '0' %}O{% endif %}
+                {% if student.blood_type == '1' %}A{% endif %}
+                {% if student.blood_type == '2' %}B{% endif %}
+                {% if student.blood_type == '3' %}AB{% endif %}
+            </div>
+            <div class="col-md-3"></div><!-- /col-md-3 -->
+        </div><!-- /row -->
+    </div><!-- /well -->
+
+<!-- 6. วันเกิด ---------------------------------------------------------------------------------------------->
+    <div class="well">
+        <div class="row">
+            <div class="col-md-3">วันเกิด: </div>
+            <div class="col-md-6">{{ student.birthDate|date:'j' }}
+                {% if student.birthDate|date:'m' == '01' %}มกราคม{% endif %}
+                {% if student.birthDate|date:'m' == '02' %}กุมภาพันธ์{% endif %}
+                {% if student.birthDate|date:'m' == '03' %}มีนาคม{% endif %}
+                {% if student.birthDate|date:'m' == '04' %}เมษายน{% endif %}
+                {% if student.birthDate|date:'m' == '05' %}พฤษภาคม{% endif %}
+                {% if student.birthDate|date:'m' == '06' %}มิถุนายน{% endif %}
+                {% if student.birthDate|date:'m' == '07' %}กรกฎาคม{% endif %}
+                {% if student.birthDate|date:'m' == '08' %}สิงหาคม{% endif %}
+                {% if student.birthDate|date:'m' == '09' %}กันยายน{% endif %}
+                {% if student.birthDate|date:'m' == '10' %}ตุลาคม{% endif %}
+                {% if student.birthDate|date:'m' == '11' %}พฤศจิกายน{% endif %}
+                {% if student.birthDate|date:'m' == '12' %}ธันวาคม{% endif %}
+                {{ student.birthDate|date:'Y'|add:'543' }}
+            </div>
+            <div class="col-md-3"></div><!-- /col-md-3 -->
+        </div><!-- /row -->
+    </div><!-- /well -->
+
+<!-- 7. เพศ ---------------------------------------------------------------------------------------------->
+    <div class="well">
+        <div class="row">
+            <div class="col-md-3">เพศ: </div>
+            <div class="col-md-6">
+                {% if student.sex == '0' %}ชาย{% endif %}
+                {% if student.sex == '1' %}หญิง{% endif %}
+            </div>
+            <div class="col-md-3"></div><!-- /col-md-3 -->
+        </div><!-- /row -->
+    </div><!-- /well -->
+
+<!-- 8. ระดับ ---------------------------------------------------------------------------------------------->
+    <div class="well">
+        <div class="row">
+            <div class="col-md-3">ระดับ: </div>
+            <div class="col-md-6">
+                {% if student.degree == '0' %}ปริญญาตรี{% endif %}
+                {% if student.degree == '1' %}ปริญญาโท{% endif %}
+                {% if student.degree == '2' %}ปริญญาเอก{% endif %}
+            </div>
+            <div class="col-md-3"></div><!-- /col-md-3 -->
+        </div><!-- /row -->
+    </div><!-- /well -->
+
+<!-- 9. หลักสูตร ---------------------------------------------------------------------------------------------->
+    <div class="well">
+        <div class="row">
+            <div class="col-md-3">หลักสูตร: </div>
+            <div class="col-md-6">
+                {% if student.scheme == '0' %}หลักสูตรปรับปรุง Cpr.E 54{% endif %}
+                {% if student.scheme == '1' %}หลักสูตรปรับปรุง EE 51{% endif %}
+                {% if student.scheme == '2' %}หลักสูตรปรับปรุง ECE 55{% endif %}
+                {% if student.scheme == '3' %}หลักสูตรมหาบัณฑิต 55{% endif %}
+                {% if student.scheme == '4' %}หลักสูตรดุษฎีบัณฑิต 55{% endif %}
+            </div>
+            <div class="col-md-3"></div><!-- /col-md-3 -->
+        </div><!-- /row -->
+    </div><!-- /well -->
+
+<!-- 10. สาขา ---------------------------------------------------------------------------------------------->
+    <div class="well">
+        <div class="row">
+            <div class="col-md-3">สาขา: </div>
+            <div class="col-md-6">
+                {% if student.main == '0' %}วิศวกรรมคอมพิวเตอร์{% endif %}
+                {% if student.main == '1' %}วิศวกรรมไฟฟ้ากำลัง{% endif %}
+                {% if student.main == '2' %}วิศวกรรมควบคุม{% endif %}
+                {% if student.main == '3' %}วิศวกรรมไฟฟ้าสื่อสาร{% endif %}
+            </div>
+            <div class="col-md-3"></div><!-- /col-md-3 -->
+        </div><!-- /row -->
+    </div><!-- /well -->
+
+{% if student.degree != '0' %}
+<!-- สำหรับ ป.โท ป.เอก -->
+    <!-- 11. แผนการเรียน ---------------------------------------------------------------------------------------------->
+    <div class="well">
+        <div class="row">
+            <div class="col-md-3">แผนการเรียน: </div>
+            <div class="col-md-6">
+                {% if student.plan == '0' %}{% endif %}
+                {% if student.plan == '1' %}ป.โท แผน ก แบบ ก 2 ปกติ{% endif %}
+                {% if student.plan == '2' %}ป.โท แผน ก แบบ ก 2 สหกิจศึกษา{% endif %}
+                {% if student.plan == '3' %}ป.เอก แผน 1 แบบ 1.1{% endif %}
+                {% if student.plan == '4' %}ป.เอก แผน 1 แบบ 1.2{% endif %}
+                {% if student.plan == '5' %}ป.เอก แผน 2 แบบ 2.1{% endif %}
+                {% if student.plan == '6' %}ป.เอก แผน 2 แบบ 2.2{% endif %}
+            </div>
+            <div class="col-md-3"></div><!-- /col-md-3 -->
+        </div><!-- /row -->
+    </div><!-- /well -->
+{% endif %}
+
+{% endblock %}
