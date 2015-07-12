@@ -27,7 +27,12 @@
                 <a href="{% url 'login:profile_index' %}" class="btn btn-default btn-block {{ profile_index }}">บัญชีของฉัน</a>
                 <a href="{% url 'login:profile_editPassword' %}" class="btn btn-default btn-block {{ profile_change_password }}">เปลี่ยนรหัสผ่าน</a>
                 {% if userprofile.type == '0' %}
-                <a href="{% url 'login:profile_student' %}" class="btn btn-default btn-block {{ profile_student }}">ข้อมูลนักศึกษา</a>
+                    <!-- for Student -->
+                    <a href="{% url 'login:profile_student' %}" class="btn btn-default btn-block {{ profile_student }}">ข้อมูลนักศึกษา</a>
+                {% endif %}
+                {% if userprofile.type == '1' %}
+                    <!-- for Teacher -->
+                    <a href="{% url 'login:profile_teacher' %}" class="btn btn-default btn-block {{ profile_teacher }}">ข้อมูลอาจารย์</a>
                 {% endif %}
             </div><!-- /col-md-3 -->
 

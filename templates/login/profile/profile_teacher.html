@@ -1,0 +1,185 @@
+{% extends "login/profile/profile_base.html" %}
+{% load staticfiles %}
+
+{% block profile_content %}
+
+<!-- if have errors -->
+    {% for error in errors %}
+        <div class="alert alert-danger alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <strong>ล้มเหลว! </strong> {{ error }}
+        </div>
+    {% empty %}
+    {% endfor %}
+
+    {% if success %}
+        <div class="alert alert-success alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <strong>สำเร็จ! </strong> {{ success }}
+        </div>
+    {% endif %}
+
+<!-- 1. รหัสนักศึกษา --------------------------------------------------------------------------------------------------->
+    <div class="well">
+        <div class="row">
+            <div class="col-md-3">คำนำหน้าชื่อ: </div>
+            <div class="col-md-6">
+                {% ifequal teacher.academic_position "0"%}
+                    {% if userprofile.prefix_name == "3" %}ดร.
+                        {% else %}อาจารย์
+                    {% endif%}
+                {% endifequal %}
+                {% ifequal teacher.academic_position "1"%}ผู้ช่วยศาสตราจารย์{% ifequal userprofile.prefix_name "3" %} ดร.{% endifequal %}{% endifequal %}
+                {% ifequal teacher.academic_position "2"%}รองศาสตราจารย์{% ifequal userprofile.prefix_name "3" %} ดร.{% endifequal %}{% endifequal %}
+                {% ifequal teacher.academic_position "3"%}ศาสตราจารย์{% ifequal userprofile.prefix_name "3" %} ดร.{% endifequal %}{% endifequal %}
+            </div>
+            <div class="col-md-3">
+                <button data-target="#editPrefix" id="prefix_btn" onclick="defaultSelect('prefix_btn','prefix')" class="btn btn-default btn-xs" type="button" data-toggle="collapse">แก้ไข</button>
+            </div><!-- /col-md-3 -->
+        </div><!-- /row -->
+        <!-- collapse -------------------------------------------------------->
+        <div class="collapse" id="editPrefix">
+            <br>
+            <!-- form -------------------------------------------------------->
+            <form class="form-horizontal" action="{% url 'login:profile_editPrefix' %}" method="post">
+                {% csrf_token %}
+
+                <!-- 1. prefix -->
+                <div class="form-group">
+                    <label class="col-md-3 control-label">คำนำหน้าชื่อ: </label>
+                    <div class="col-md-6">
+                        <select name="prefix" id="prefix" class="form-control" required>
+                            <option value="">กรุณาเลือก</option>
+                            <option value="0"
+                                    {% if userprofile.prefix_name == '4' and teacher.academic_position == '0' %} selected="selected"{% endif %}
+                            >อาจารย์</option>
+                            <option value="1"
+                                    {% if userprofile.prefix_name == '3' and teacher.academic_position == '0' %} selected="selected"{% endif %}
+                            >ดร.</option>
+                            <option value="2"
+                                    {% if userprofile.prefix_name != '3' and teacher.academic_position == '1' %} selected="selected"{% endif %}
+                            >ผศ.</option>
+                            <option value="3"
+                                    {% if userprofile.prefix_name != '3' and teacher.academic_position == '2' %} selected="selected"{% endif %}
+                            >รศ.</option>
+                            <option value="4"
+                                    {% if userprofile.prefix_name != '3' and teacher.academic_position == '3' %} selected="selected"{% endif %}
+                            >ศ.</option>
+                            <option value="5"
+                                    {% if userprofile.prefix_name == '3' and teacher.academic_position == '1' %} selected="selected"{% endif %}
+                            >ผศ.ดร.</option>
+                            <option value="6"
+                                    {% if userprofile.prefix_name == '3' and teacher.academic_position == '2' %} selected="selected"{% endif %}
+                            >รศ.ดร.</option>
+                            <option value="7"
+                                    {% if userprofile.prefix_name == '3' and teacher.academic_position == '3' %} selected="selected"{% endif %}
+                            >ศ.ดร.</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Button -->
+                <div class="form-group">
+                    <label class="col-md-3 control-label"></label>
+                    <div class="col-md-6">
+                        <button data-target="#editPrefix" class="btn btn-default btn-sm" type="button" data-toggle="collapse">ยกเลิก</button>
+                        <button class="btn btn-primary btn-sm" type="submit">บันทึกการเปลี่ยนแปลง</button>
+                    </div>
+                </div>
+
+            </form>
+
+        </div><!-- /collapse -->
+    </div><!-- /well -->
+
+<!-- 2. ตัวย่อชื่อ --------------------------------------------------------------------------------------------------->
+    <div class="well">
+        <div class="row">
+            <div class="col-md-3">ตัวย่อชื่อ: </div>
+            <div class="col-md-6">
+                {{ teacher.shortname }}
+            </div>
+            <div class="col-md-3">
+                <button data-target="#editShortname" class="btn btn-default btn-xs" type="button" data-toggle="collapse">แก้ไข</button>
+            </div><!-- /col-md-3 -->
+        </div><!-- /row -->
+        <!-- collapse -------------------------------------------------------->
+        <div class="collapse" id="editShortname">
+            <br>
+            <!-- form -------------------------------------------------------->
+            <form class="form-horizontal" action="{% url 'login:profile_editShortname' %}" method="post">
+                {% csrf_token %}
+
+                <!-- 1. shortname -->
+                <div class="form-group">
+                    <label class="col-md-3 control-label">คำนำหน้าชื่อ: </label>
+                    <div class="col-md-6">
+                        <input type="text" name="shortname" pattern="[A-Z]{3}" maxlength="3" value="{{ teacher.shortname }}" class="form-control" title="กรอกตัวย่อชื่อเป็นภาษาอังกฤษตัวพิมพ์ใหญ่ 3 ตัวอักษร" placeholder="ตัวย่อชื่อ" required>
+                        <p class="help-block">กรอกอักษรภาษาอังกฤษตัวพิมพ์ใหญ่จำนวน 3 ตัวอักษร</p>
+                    </div>
+                </div>
+
+                <!-- Button -->
+                <div class="form-group">
+                    <label class="col-md-3 control-label"></label>
+                    <div class="col-md-6">
+                        <button data-target="#editShortname" class="btn btn-default btn-sm" type="button" data-toggle="collapse">ยกเลิก</button>
+                        <button class="btn btn-primary btn-sm" type="submit">บันทึกการเปลี่ยนแปลง</button>
+                    </div>
+                </div>
+
+            </form>
+
+        </div><!-- /collapse -->
+    </div><!-- /well -->
+
+<!-- 3. ตำแหน่ง --------------------------------------------------------------------------------------------------->
+    <div class="well">
+        <div class="row">
+            <div class="col-md-3">ตำแหน่ง: </div>
+            <div class="col-md-6">
+                {% if teacher.position == '0' %}ข้าราชการ{% endif %}
+                {% if teacher.position == '1' %}ลูกจ้างประจำ{% endif %}
+                {% if teacher.position == '2' %}ข้าราชการบำนาญ{% endif %}
+                {% if teacher.position == '3' %}พนักงานมหาวิทยาลัย{% endif %}
+            </div>
+            <div class="col-md-3">
+                <button data-target="#editPosition" id="position_btn" onclick="defaultSelect('position_btn','position')" class="btn btn-default btn-xs" type="button" data-toggle="collapse">แก้ไข</button>
+            </div><!-- /col-md-3 -->
+        </div><!-- /row -->
+        <!-- collapse -------------------------------------------------------->
+        <div class="collapse" id="editPosition">
+            <br>
+            <!-- form -------------------------------------------------------->
+            <form class="form-horizontal" action="{% url 'login:profile_editTeacherPosition' %}" method="post">
+                {% csrf_token %}
+
+                <!-- 1. position -->
+                <div class="form-group">
+                    <label class="col-md-3 control-label">ตำแหน่ง: </label>
+                    <div class="col-md-6">
+                        <select name="position" id="position" class="form-control" required>
+                            <option value="">กรุณาเลือก</option>
+                            <option value="0"{% if teacher.position == '0' %} selected="selected"{% endif %}>ข้าราชการ</option>
+                            <option value="1"{% if teacher.position == '1' %} selected="selected"{% endif %}>ลูกจ้างประจำ</option>
+                            <option value="2"{% if teacher.position == '2' %} selected="selected"{% endif %}>ข้าราชการบำนาญ</option>
+                            <option value="3"{% if teacher.position == '3' %} selected="selected"{% endif %}>พนักงานมหาวิทยาลัย</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Button -->
+                <div class="form-group">
+                    <label class="col-md-3 control-label"></label>
+                    <div class="col-md-6">
+                        <button data-target="#editPosition" class="btn btn-default btn-sm" type="button" data-toggle="collapse">ยกเลิก</button>
+                        <button class="btn btn-primary btn-sm" type="submit">บันทึกการเปลี่ยนแปลง</button>
+                    </div>
+                </div>
+
+            </form>
+
+        </div><!-- /collapse -->
+    </div><!-- /well -->
+
+{% endblock %}
