@@ -32,4 +32,8 @@ urlpatterns = patterns('',
     url(r'^profile/teacher/edit/prefix/$',  views_profile.editPrefix,   name='profile_editPrefix'),
     url(r'^profile/teacher/edit/shortname/$',views_profile.editShortname,name='profile_editShortname'),
     url(r'^profile/teacher/edit/position/$',views_profile.editTeacherPosition, name='profile_editTeacherPosition'),
+    # information officer profile --------------------------------------------------------------------------------------
+    url(r'^profile/officer/$',              views_profile.officer,      name='profile_officer'),
+    # edit officer profile ---------------------------------------------------------------------------------------------
+    url(r'^profile/officer/edit/position/$',views_profile.editOfficerPosition, name='profile_editOfficerPosition'),
 )

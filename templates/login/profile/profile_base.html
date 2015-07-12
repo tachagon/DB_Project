@@ -34,6 +34,10 @@
                     <!-- for Teacher -->
                     <a href="{% url 'login:profile_teacher' %}" class="btn btn-default btn-block {{ profile_teacher }}">ข้อมูลอาจารย์</a>
                 {% endif %}
+                {% if userprofile.type == '2' %}
+                    <!-- for Officer -->
+                    <a href="{% url 'login:profile_officer' %}" class="btn btn-default btn-block {{ profile_officer }}">ข้อมูลพนักงาน/เจ้าหน้าที่</a>
+                {% endif %}
             </div><!-- /col-md-3 -->
 
             <div class="col-md-9">

@@ -375,7 +375,7 @@ def teacher(request, context={}):
         user = request.user
         userprofile = UserProfile.objects.get(user = user)
 
-        # user is Student
+        # user is Teacher
         if userprofile.type == '1':
             teacher = Teacher.objects.get(userprofile = userprofile)
             context['teacher'] = teacher
@@ -521,5 +521,57 @@ def editTeacherPosition(request):
 ######################################### END of Information Teacher Profile ###########################################
 
 ########################################## Information of Officer profile ##############################################
+# this function for show information of current officer profile
+# Usage: login:profile_officer
+def officer(request, context={}):
+    template = 'login/profile/profile_officer.html'
 
+    try:
+        user = request.user
+        userprofile = UserProfile.objects.get(user = user)
+
+        # user is Officer
+        if userprofile.type == '2':
+            officer = Officer.objects.get(userprofile = userprofile)
+            context['officer'] = officer
+        # user is not Student
+        else:
+            return HttpResponseRedirect(reverse('login:profile_index'))
+        context['userprofile'] = userprofile
+        context['profile_officer'] = 'active'
+    except:
+        pass
+
+    return render(request, template, context)
+
+# this function for edit position of teacher profile
+# Usage: login:profile_editOfficerPosition
+def editOfficerPosition(request):
+    context = {}
+    errors = []
+
+    if request.method == 'POST':
+        try:
+            # get current user
+            user = request.user
+            # get current user profile
+            userprofile = UserProfile.objects.get(user = user)
+            # get current teacher profile
+            officerObj = Officer.objects.get(userprofile = userprofile)
+
+            # get data from template
+            position = request.POST['position']
+
+            # update date
+            officerObj.position = position
+
+            # save change
+            officerObj.save()
+
+            context['success'] = 'เปลี่ยนตำแหน่งเรียบร้อยแล้ว'
+        except:
+            errors.append('ไม่สามารถเปลี่ยนตำแหน่งได้')
+            context['errors'] = errors
+
+    return officer(request, context)
 ######################################### END of Information Officer Profile ###########################################
