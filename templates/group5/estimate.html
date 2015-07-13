@@ -5,71 +5,172 @@
 <ol class="breadcrumb">
     <meta charset="UTF-8">
     <li><a href="{% url 'login:menu' %}">เมนู</a></li>
-    <li><a href="{% url 'group5:status' %}">ตรวจสอบสถานะการฝึกงาน</a></li>
-    <li class="active">รายชื่อนักศึกษาทำเรื่องขอความอนุเคราะห์ฝึกงาน</li>
+    <li><a href="{% url 'group5:mainG5' %}">รายชื่อนักศึกษาที่อยู่ในระบบฝึกงานทั้งหมด<</a></li>
+    <li class="active">แบบประเมิณการฝึกงาน และ บัญชีเวลาของนักศึกษา</li>
 </ol>
 		{% endblock %}
 {% block content %}
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>upload</title>
-    <center><h3>ผลแบบประเมิณการฝึกงาน และ บัญชีเวลาของนักศึกษา</h3></center>
-    <form action="/group5/upload/" method="POST" enctype="multipart/form-data">
-
-        {% csrf_token %}
-        {% for item in stuG5 %}
-	    <center><table width='20%'>
-          {%if item.studentID = sid %}
-             <tr><td width = 30% align='right'><B>รหัสนักศึกษา :</B></td> <td>&nbsp<input style="border:none" type="text" name="sid" maxlength="13" value="{{sid}}" /></td></tr>
-	     <tr><td colspan='2'>&nbsp</td></tr>
-	    {% for i in stu %}
-		{%if i.std_id == sid %}
-		    {% for j in Pro %}
-			{%if i.userprofile_id == j.id %}
-			    <tr><td align='right'><B>ชื่อ-สกุล    :</B></td> <td>&nbsp<input style="border:none" type="text" name="sid" maxlength="13" value="{{j.firstname_th}}  {{j.lastname_th}}" /></td></tr>
-			    <tr><td colspan='2'>&nbsp</td></tr>
-			{% endif %}
-		    {% endfor %}
-		{% endif %}
-	    {% endfor %}
-	     
-             {% for i in state %}
-		{%if i.studentG5_id = sid %}
-             <tr><td align='right'><B>สถานที่ฝึกงาน  : </B></td> <td>&nbsp<input style="border:none" type="text" name="com" maxlength="13" value="{{i.Internship_id}}" /></td></tr>
-	     <tr><td colspan='2'>&nbsp</td></tr>
-	     <tr><td align='right'><B>สถานะ     : </B></td><td>&nbsp<input style="border:none" type="text" name="status"  value="{{i.StatusPetition}}" /></pre></td></tr></table><br><br></center>
-	     {% endif %}
-	    {% endfor %}
-
-            <center>{{ form.as_p }}
-             <br><input class="btn btn-info" type="submit" value="Upload" name="upload"/></center><br>
-	    
-         {% endif %}
-
-        {% endfor %}
-
-
-</form>
-<center><form action="/group5/form2_p/" >
-    <td><br><br><button type = "submit" class="btn btn-info">print ขอส่งตัวนักศึกษาฝึกงาน</button></center></td>
-</form>
-<center><form action="/group5/reporting/" >
-    <td><br><br><button type = "submit" class="btn btn-info">print แบบรายงานผลการฝึกงาน</button></center></td>
-</form><br><br>
-
-</head>
+    </head>
+    <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-11"><h3> &nbsp<u>แบบประเมิณการฝึกงาน และ บัญชีเวลาของนักศึกษา</u></h3></div>
+    </div>
+    <br>
 <body>
-{%if estimate%}
-{%for img in estimate%}
-  {%if img.studentID = sid %}
-    
-    <center><a href="{{img.image_estimate.url}}"><img src="{{img.image_estimate.url}}" width="420" height="594"></a><br><br>
-    <a href="{{img.image_time.url}}"><img src="{{img.image_time.url}}" width="420" height="594"></a></center>
-  {% endif %}
-{%endfor%}
-{% else %}
-    <br><font color="red" size = "5"><center>No info are available.</center></font>
-{% endif %}
 
+<div class="row">
+    <div class="container">
+
+        <!----------------------- Student info. --------------------------->
+
+        {% for info1 in stu %}
+        {%if info1.std_id = sid%}
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4>ข้อมูลนักศึกษา</h4>
+                </div>
+                <div class="panel-body">
+                    <table class="table table-responsive table-hover table-bordered">
+                        <tr>
+                            <th>รหัสนักศึกษา</th>
+                            <td>{{info1.std_id}}</td>
+                        </tr>
+                        <tr>
+                            <th>ชื่อ - นามสกุล</th>
+                            <td>{{info1.userprofile.firstname_th}} {{info1.userprofile.lastname_th}}</td>
+                        </tr>
+                        <tr>
+                            <th>สาขาวิขา</th>
+                            <td>{{info1.main}}</td>
+                        </tr>
+                        <th>ภาควิชา</th>
+                        <td>{{info1.userprofile.department}}</td>
+                        </tr>
+                        <tr>
+                            <th>คณะ</th>
+                            <td>{{info1.userprofile.faculty}}</td>
+                        </tr>
+                        <tr>
+                            <th>ระดับการศึกษา</th>
+                            <td>{{info1.degree}}</td>
+                        </tr>
+                        <tr>
+                            <th>เบอร์โทรศัพท์</th>
+                            <td>{{info1.userprofile.tel}}</td>
+                        </tr>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+
+        {%endif%}
+        {%endfor%}
+
+        <!----------------------- Internship info. --------------------------->
+        {% for info2 in state %}
+        {%if info2.studentG5_id = sid %}
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4>ข้อมูลการฝึกงาน</h4>
+                </div>
+                <div class="panel-body">
+                    <table class="table table-responsive table-hover table-bordered">
+                        <tr>
+                            <th>บริษัทฝึกงาน</th>
+                            <td>{{info2.Internship.name_Internship}}</td>
+                        </tr>
+                        <tr>
+                            <th>ที่อยู่บริษัท</th>
+                            <td>{{info2.Internship.add_Internship}}</td>
+                        </tr>
+                        <tr>
+                            <th>เบอร์โทรศัพท์บริษัท</th>
+                            <td>{{info2.Internship.Tel}}</td>
+                        </tr>
+                        <tr>
+                            <th>แฟกซ์บริษัท</th>
+                            <td>{{info2.Internship.Fax}}</td>
+                        </tr>
+                        <tr>
+                            <th>ระยะเวลาฝึกงาน</th>
+                            <td>ตั้งแต่วันที่ {{dStart}}<br> ถึงวันที่ {{dEnd}}</td>
+                        </tr>
+
+                    </table>
+                </div>
+            </div>
+            {%endif%}
+            {%endfor%}
+            <!----------------------- status info. --------------------------->
+            {% for info2 in state %}
+            {%if info2.studentG5_id = sid %}
+
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4>ข้อมูลสถานะการฝึกงาน</h4>
+                </div>
+                <div class="panel-body">
+                    <table class="table table-responsive table-hover table-bordered">
+                        <tr>
+                            <th>สถานะการฝึกงาน</th>
+                            <td>
+                                {%if info2.StatusPetition = "ไม่ได้รับการอนุมัติฝึกงาน"%}
+                                <b><font color="red">{{info2.StatusPetition}}</font></b>
+                                {%elif info2.StatusPetition = "เสร็จสิ้น"%}
+                                <b><font color="green">{{info2.StatusPetition}}</font></b>
+                                {%else%}
+                                <b><font color="blue">{{info2.StatusPetition}}</font></b>
+                                {%endif%}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>รูปแบบการจัดส่งหนังสือ<br>ขอความอนุเคราะห์ฝึกงาน</th>
+                            {{state.send}}
+                            <td>{%if info2.send = "send by student" %}
+                                ขอรับหนังสืออนุเคราะห์ฝึกงานไปยื่นด้วยตนเอง
+                                {%else%}
+                                ขอให้ภาควิชาฯ จัดส่งหนังสือขอความอนุเคราะห์ฝึกงาน
+                                {%endif%}
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th>การแก้ไขข้อมูล</th>
+                           <td>แก้ไขข้อมูลล่าสุดเมื่อ <i>{{dFormat}}เวลา {{tFormat}}น.</i></td>
+                        </tr>
+
+
+                    </table>
+
+                      <form action="/group5/upload/" method="POST" enctype="multipart/form-data">
+                          {% csrf_token %}
+
+{{ form.as_p }}
+             <br><center><input class="btn btn-info" type="submit" style="width:45%" value="Upload" name="upload"/>
+                          <a href="{% url 'group5:mainG5' %}" class="btn btn-warning" style='width:45%'
+                               value="กลับสู่หน้าหลัก">กลับสู่หน้าหลัก</a>
+                        </center>
+                    </form>
+
+                </div>
+
+                {%endif%}
+                {%endfor%}
+                <br>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<br><br><br>
 </body>
+
+
 {% endblock %}

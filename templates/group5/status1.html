@@ -4,67 +4,258 @@
 <ol class="breadcrumb">
     <meta charset="UTF-8">
     <li><a href="{% url 'login:menu' %}">เมนู</a></li>
-    <li><a href="{% url 'group5:status' %}">ตรวจสอบสถานะการฝึกงาน</a></li>
-    <li class="active">รายชื่อนักศึกษาทำเรื่องขอความอนุเคราะห์ฝึกงาน</li>
+    <li><a href="{% url 'group5:mainG5' %}">รายชื่อนักศึกษาที่อยู่ในระบบฝึกงานทั้งหมด</a></li>
+    <li class="active">นักศึกษาที่ทำเรื่องขอความอนุเคราะห์ฝึกงาน</li>
 </ol>
 {% endblock %}
 {% block content %}
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>status1</title>
-    <center><h3>ตรวจสอบคำร้องขอความอนุเคราะห์ฝึกงาน</h3></center><br>
 
+    <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-11"><h3> &nbsp<u>ตรวจสอบคำร้องขอความอนุเคราะห์ฝึกงาน</u></h3></div>
+    </div>
+    <br>
 
 
 </head>
 <body>
+<div class="row">
+    <div class="container">
 
-        {% csrf_token %}
-        {% for item in stuG5 %}
-          {%if item.studentID = sid %}
-              <center><table>
+        <!----------------------- Student info. --------------------------->
 
-             <tr>
-                <th><B>รหัสนักศึกษา : </B></th>
-                <td><input style="border:none" type="text" name="sid" maxlength="13" value="{{sid}}" /></td>
-            </tr>
-            <tr>
-                
-                <th><br><B>สถานะ    :</B></th>
-                <td><br><input style="border:none" type="text" name="status"  value="{{status}}" /></td>
-            </tr>
-            </table></center>
-            <center><table width = 50%>
-            <form action="/group5/form1/" >
-              <td><br><br><center><button type = "submit" class="btn btn-info">print ขอความอนุเคราะห์นักศึกษาฝึกงาน</button></center></td>
-              </form>
-            <form action="/group5/accept_trainee_print/" >
-              <td><br><br><center><button type = "submit" class="btn btn-info">print แบบตอบรับนักศึกษาฝึกงาน</button></center></td>
-              </form>
-              <form action="/group5/ChangeStatus/" method="get" >
-                  {%for state in state%}
+        {% for info1 in stu %}
+        {%if info1.std_id = sid%}
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4>ข้อมูลนักศึกษา</h4>
+                </div>
+                <div class="panel-body">
+                    <table class="table table-responsive table-hover table-bordered">
+                        <tr>
+                            <th>รหัสนักศึกษา</th>
+                            <td>{{info1.std_id}}</td>
+                        </tr>
+                        <tr>
+                            <th>ชื่อ - นามสกุล</th>
+                            <td>{{info1.userprofile.firstname_th}} {{info1.userprofile.lastname_th}}</td>
+                        </tr>
+                        <tr>
+                            <th>สาขาวิขา</th>
+                            <td>{{info1.main}}</td>
+                        </tr>
+                        <th>ภาควิชา</th>
+                        <td>{{info1.userprofile.department}}</td>
+                        </tr>
+                        <tr>
+                            <th>คณะ</th>
+                            <td>{{info1.userprofile.faculty}}</td>
+                        </tr>
+                        <tr>
+                            <th>ระดับการศึกษา</th>
+                            <td>{{info1.degree}}</td>
+                        </tr>
+                        <tr>
+                            <th>เบอร์โทรศัพท์</th>
+                            <td>{{info1.userprofile.tel}}</td>
+                        </tr>
+                    </table>
 
-              {%if state.studentG5_id = sid %}
+                </div>
+            </div>
+        </div>
 
-             {%if state.send = sendbyStudent %}
-             <p>นักศึกษาได้เลือกรูปแบบ : การส่งข้อมูลด้วยตัวเอง </p>
-             <p>กรุณาใส่วันที่ที่นักศึกษาต้องมารับเอกสาร :  </p>
-          <input type="date" name="date" value="{{date}}" class="form-control" placeholder="วันที่ต้องมารับเอกสาร" title="วันที่ต้องมารับเอกสาร" required>
-
-     <p>&nbsp</p>
-     <p>&nbsp</p>
-       {%else%}<p>นักศึกษาได้เลือกรูปแบบ : ให้ภาคส่งให้</p>
-        {%endif%}
         {%endif%}
         {%endfor%}
-                <td><br><br><center><button type = "submit" class="btn btn-info" name="input" value="กำลังดำเนินการ" >อัพเดทสถานะ</button></center></td>
 
-              </form>
-            </tr>
-            </table></center>
+        <!----------------------- Internship info. --------------------------->
+        {% for info2 in state %}
+        {%if info2.studentG5_id = sid %}
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4>ข้อมูลการฝึกงาน</h4>
+                </div>
+                <div class="panel-body">
+                    <table class="table table-responsive table-hover table-bordered">
+                        <tr>
+                            <th>บริษัทฝึกงาน</th>
+                            <td>{{info2.Internship.name_Internship}}</td>
+                        </tr>
+                        <tr>
+                            <th>ที่อยู่บริษัท</th>
+                            <td>{{info2.Internship.add_Internship}}</td>
+                        </tr>
+                        <tr>
+                            <th>เบอร์โทรศัพท์บริษัท</th>
+                            <td>{{info2.Internship.Tel}}</td>
+                        </tr>
+                        <tr>
+                            <th>แฟกซ์บริษัท</th>
+                            <td>{{info2.Internship.Fax}}</td>
+                        </tr>
+                        <tr>
+                            <th>ระยะเวลาฝึกงาน</th>
+                            <td>ตั้งแต่วันที่ {{dStart}}<br> ถึงวันที่ {{dEnd}}</td>
+                        </tr>
 
-         {% endif %}
+                    </table>
+                </div>
+            </div>
+            {%endif%}
+            {%endfor%}
+            <!----------------------- status info. --------------------------->
+            {% for info2 in state %}
+            {%if info2.studentG5_id = sid %}
 
-        {% endfor %}
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4>ข้อมูลสถานะการฝึกงาน</h4>
+                </div>
+                <div class="panel-body">
+                    <table class="table table-responsive table-hover table-bordered">
+                        <tr>
+                            <th>สถานะการฝึกงาน</th>
+                            <td>
+                                {%if info2.StatusPetition = "ไม่ได้รับการอนุมัติฝึกงาน"%}
+                                <b><font color="red">{{info2.StatusPetition}}</font></b>
+
+                                {%elif info2.StatusPetition = "เสร็จสิ้น"%}
+                                <b><font color="green">{{info2.StatusPetition}}</font></b>
+                                {%else%}
+                                <b><font color="blue">{{info2.StatusPetition}}</font></b>
+                                {%endif%}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>รูปแบบการจัดส่งหนังสือ<br>ขอความอนุเคราะห์ฝึกงาน</th>
+                            {{state.send}}
+                            <td>{%if info2.send = "send by student" %}
+                                ขอรับหนังสืออนุเคราะห์ฝึกงานไปยื่นด้วยตนเอง
+                                {%else%}
+                                ขอให้ภาควิชาฯ จัดส่งหนังสือขอความอนุเคราะห์ฝึกงาน
+                                {%endif%}
+                            </td>
+                        </tr>
+                         <th> กรุณากรอกวันที่ยื่นเอกสาร</th>
+                        <td>
+                            <form action="/group5/form1/">
+                            <select name="date">
+                                <option value="๑">1</option>
+                                <option value="๒">2</option>
+                                <option value="๓">3</option>
+                                <option value="๔">4</option>
+                                <option value="๕">5</option>
+                                <option value="๖">6</option>
+                                <option value="๗">7</option>
+                                <option value="๘">8</option>
+                                <option value="๙">9</option>
+                                <option value="๑๐">10</option>
+                                <option value="๑๑">11</option>
+                                <option value="๑๒">12</option>
+                                <option value="๑๓">13</option>
+                                <option value="๑๔">14</option>
+                                <option value="๑๕">15</option>
+                                <option value="๑๖">16</option>
+                                <option value="๑๗">17</option>
+                                <option value="๑๘">18</option>
+                                <option value="๑๙">19</option>
+                                <option value="๒๐">20</option>
+                                <option value="๒๑">21</option>
+                                <option value="๒๒">22</option>
+                                <option value="๒๓">23</option>
+                                <option value="๒๔">24</option>
+                                <option value="๒๕">25</option>
+                                <option value="๒๖">26</option>
+                                <option value="๒๗">27</option>
+                                <option value="๒๘">28</option>
+                                <option value="๒๙">29</option>
+                                <option value="๓๐">30</option>
+                                <option value="๓๑">31</option>
+                            </select>
+                        </td>
+                        </tr>
+                        <tr>
+                            <th>ไฟล์เอกสาร</th>
+                            <td>
+                                    <center>
+                                         <input type=hidden name=id value={{sid}}>
+                                        <button type="submit" class="btn btn-info" style='width:100%'  formtarget="_blank">
+                                            <span class="glyphicon glyphicon-print"></span>
+                                            พิมพ์เอกสารขอความอนุเคราะห์นักศึกษาฝึกงาน
+                                        </button>
+                                    </center>
+
+                                </form>
+                                <br>
+
+                                <form action="/group5/accept_trainee_print/">
+
+                                    <center>
+                                        <button type="submit" class="btn btn-info" style='width:100%' formtarget="_blank">
+                                            <span class="glyphicon glyphicon-print"></span> พิมพ์แบบตอบรับนักศึกษาฝึกงาน
+                                        </button>
+                                    </center>
+
+                                </form>
+
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>การแก้ไขข้อมูล</th>
+                            <td>แก้ไขข้อมูลล่าสุดเมื่อ <i>{{dFormat}}เวลา {{tFormat}}น.</i></td>
+                        </tr>
+
+
+                    </table>
+
+                    <form action="/group5/ChangeStatus/" method="get">
+                        {%if info2.send = "send by student" %}
+                        กรุณาระบุวันที่นักศึกษามารับเอกสาร
+
+
+                        <input type="date"
+                               name="date"
+                               value="{{date}}"
+                               class="form-control"
+                               placeholder="วันที่ต้องมารับเอกสาร"
+                               title="วันที่ต้องมารับเอกสาร"
+                               required></p>
+
+
+{%endif%}
+                        <p><font color="red">*<u>หมายเหตุ</u> กรุณาพิมพ์เอกสารให้ครบก่อนคลิกปุ่มอัพเดทสถานะ</font></p>
+                        <center>
+
+
+                            <button type="submit" class="btn btn-info" style='width:45%' name="input"
+                                    value="กำลังดำเนินการ">
+                                อัพเดทสถานะ
+                            </button>
+
+                            <a href="{% url 'group5:mainG5' %}" class="btn btn-warning" style='width:45%'
+                               value="กลับสู่หน้าหลัก">กลับสู่หน้าหลัก</a>
+                        </center>
+                    </form>
+
+                </div>
+
+                {%endif%}
+                {%endfor%}
+                <br>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<br>
+<br><br>
+
 </body>
 {% endblock %}

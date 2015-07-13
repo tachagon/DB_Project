@@ -13,18 +13,19 @@
 
 {% block content %}
 <div class="container-fluid">
-<center><h3>แสดงรายการใบสั่งซื้อในขั้นตอนตรวจสอบวัสดุและใบเสร็จ</h3></center>
+<center><font size="7" face="Angsana New"><b>แสดงรายการใบสั่งซื้อในขั้นตอนตรวจสอบวัสดุและใบเสร็จ</b></font></center>
 
 <center>
-<table border ="1"  width="100%"><font color="BLACK">
+<div class="table-responsive">
+<table class="table table-striped table-bordered">
 	<tr>
-		<th><center>ชื่อโครงงาน</center></th>
-		<th><center>วัน/เดือน/ปี</center></th> <!-- Pull from Order -->		
+		<th bgcolor="#E6E6E6"><font size="6" face="Angsana New"><center>ชื่อโครงงาน</center></th>
+		<th bgcolor="#E6E6E6"><font size="6" face="Angsana New"><center>วัน/เดือน/ปี</center></th> <!-- Pull from Order -->		
 	</tr>
 	<tr>
 {% for item in data %}
 	
-		<td><center>{{item}}</center></td>
+		<td><font size="5" face="Angsana New"><center>{{item}}</center></td>
 		{% if forloop.counter|divisibleby:"2" %}
 		     </tr>
 	        {%endif%}
@@ -38,7 +39,7 @@
 <table border ="0"  width="100%"><font color="BLACK">
 	<tr>
 		<td align="center">
-			<a href="/group7/summary" style="text-decoration:none"><input type="button" value="ย้อนกลับ" ></a>	
+			<a href="/group7/summary"><button type="button"class="btn btn-danger">ย้อนกลับ</button></a>	
 		</form></td>
 </center>
 {% endblock %}

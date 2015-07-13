@@ -15,18 +15,18 @@
 
 {% block content %}
 <div class="container-fluid">
-<h3>แก้ไขรายละเอียดใบสั่งวัสดุภาควิชาวิศวกรรมไฟฟ้าและคอมพิวเตอร์</h3>
+<font size="7" face="Angsana New"><b>แก้ไขรายละเอียดใบสั่งวัสดุภาควิชาวิศวกรรมไฟฟ้าและคอมพิวเตอร์</b></font>
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 <form action="/group7/{{object.id}}/editorf/" enctype="multipart/form-data" >
 {% csrf_token %}
 <table border=0>
-    	<tr><td> บริษัท: </td><td><input type="text" name="company" value="{{object.Company}}"></td></tr>
-	<tr><td> ที่อยู่บริษัท: </td><td><input type="text" name="id" value="{{object.OrderID}}"></td></tr>
-    	<tr><td> รายการวัสดุ : </td><td><input type="text" name="itemname_orderinfo" value="{{object.Item_name}}"></td></tr>
-    	<tr><td> จำนวน : </td><td><input type="text" name="amount_orderinfo" value="{{object.Amount}}"></td></tr>
-    	<tr><td> ราคา/หน่วย : </td><td><input type="text" name="price_orderinfo" value="{{object.Cost}}"></td></tr>
+    	<tr><td><font size="6" face="Angsana New"> บริษัท: </td><td><input type="text" name="company" value="{{object.Company}}"></td></tr>
+	<tr><td><font size="6" face="Angsana New"> ที่อยู่บริษัท: </td><td><input type="text" name="id" value="{{object.OrderID}}"></td></tr>
+    	<tr><td><font size="6" face="Angsana New"> ชื่อวัสดุ : </td><td><input type="text" name="itemname_orderinfo" value="{{object.Item_name}}"></td></tr>
+    	<tr><td><font size="6" face="Angsana New"> จำนวน : </td><td><input type="text" name="amount_orderinfo" value="{{object.Amount}}"></td></tr>
+    	<tr><td><font size="6" face="Angsana New"> ราคา/หน่วย : </td><td><input type="text" name="price_orderinfo" value="{{object.Cost}}"></td></tr>
 </table>
-<input type="submit" value="ยืนยัน" /><a href="/group7/{{object.Order_id}}/orderinfo/" style="text-decoration:none"><input type="button" value="ยกเลิก" ></a>
+<button type="submit"class="btn btn-success">ยืนยัน</button>&nbsp<a href="/group7/{{object.Order_id}}/orderinfo/" ><button type="button"class="btn btn-danger">ยกเลิก</button></a>
 </form>
 {% endblock %}
 

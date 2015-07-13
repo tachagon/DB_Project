@@ -28,7 +28,7 @@ function confirmLeave() {
     	<tr>
 			<td width = 20%></td>
 			<td width = 5%><h4>รหัสนักศึกษา</h4></td>
-			<td width = 10%><h4>{{stu.std_id}}</h4></td>
+			<td width = 10%><u><h4>{{stu.std_id}}</h4></u></td>
 			<td></td>
     	</tr>
 		<tr>
@@ -47,10 +47,15 @@ function confirmLeave() {
 							<th>สถานที่ฝึกงาน</th>
 							<th>วันที่ยื่นใบคำร้องขอ</th>
 							<th>สถานะ</th>
+							{% if item.StatusPetition = "ไม่ได้รับการอนุมัติเข้าฝึกงาน" %}
 							<th>แก้ไขแบบคำร้องขอฝึกงาน</th>
-							<th>ปริ้นแบบคำร้องขอฝึกงาน</th>
-							{% if item.StatusPetition = "ยื่นคำร้อง" or item.StatusPetition = "ไม่ได้รับการอนุมัติเข้าฝึกงาน" %}
+							{% endif %}
+							<th>พิมพ์แบบคำร้องขอฝึกงาน</th>
+							<!--{% if item.StatusPetition = "ยื่นคำร้อง" or item.StatusPetition = "ไม่ได้รับการอนุมัติเข้าฝึกงาน" %}
 							<th>ลบแบบคำร้องขอฝึกงาน</th>
+							{% endif %}-->
+							{% if item.StatusPetition = "กำลังดำเนินการ" and item.send = "send by student" %}
+							<th>วันที่ต้องไปรับเอกสาร</th>
 							{% endif %}
 						</tr>
 							{% endif %}
@@ -61,14 +66,14 @@ function confirmLeave() {
 							{% if stu.std_id =  item.studentG5_id%}
 								<tr>
 	    							<td data-title= 'สถานที่ฝึกงาน'>{{item.Internship_id}}</td>
-	    							<td data-title= 'วันที่ยื่นใบคำร้องขอ'>{{item.Date}}</td>
+	    							<td data-title= 'วันที่ยื่นใบคำร้องขอ'>{{item.created_at}}</td>
 	   					 			<td data-title= 'สถานะ'>{{item.StatusPetition}}</td>
+									{% if item.StatusPetition = "ไม่ได้รับการอนุมัติเข้าฝึกงาน" %}
 									<td data-title= 'แก้ไขแบบคำร้องขอฝึกงาน'><a class="btn btn-warning"  href="{% url 'group5:status_edit' stu.std_id %}">ดูฟอร์ม</a></td>
-									<td data-title= 'ปริ้นแบบคำร้องขอฝึกงาน'><a class="btn btn-info" href="{% url 'group5:status_print' stu.std_id %}">ดูฟอร์ม</a></td>
-									{% if item.StatusPetition = "ยื่นคำร้อง" or item.StatusPetition = "ไม่ได้รับการอนุมัติเข้าฝึกงาน" %}
-									<td data-title= 'ลบแบบคำร้องขอฝึกงาน'>
-										 <a class="btn btn-danger" href = "javascript:if(confirm('คุณต้องการจะลบฟอร์มนี้ใช่หรือไม่ หากใช่ให้กด OK'))
-										 window.location='{% url 'group5:status_delete' stu.std_id %}';" target="_blank">ลบแบบฟอร์ม</a>
+									{% endif %}
+									<td data-title= 'พิมพ์แบบคำร้องขอฝึกงาน'><a class="btn btn-info" href="{% url 'group5:status_print' stu.std_id %}">ดูฟอร์ม</a></td>
+									{% if item.StatusPetition = "กำลังดำเนินการ" and item.send = "send by student" %}
+										<td data-title= 'วันที่ต้องไปรับเอกสาร'>{{dateShow}}</td>
 									{% endif %}
 								 </tr>
 							{% endif %}
@@ -76,6 +81,7 @@ function confirmLeave() {
 					</tbody>
 				</table>
 	</div>
+
 	</center><br>
 {% else %}
 	<div class="row">
@@ -89,6 +95,8 @@ function confirmLeave() {
 		<div class="col-md-3"></div>
 	</div>
 {% endif %}
+	<font color="#FF0000">**หมายเหตุ : กรณีที่สถานะ "ไม่อนุมัติการเข้ารับฝึกงาน" ให้แก้ไขข้อมูล เพื่อทำการส่งแบบคำร้องใหม่**</font>
+	<br>
 	<center><a href="{% url 'login:menu' %}"><input class="btn btn-danger"  type ="button" name="Cancel_status" value="ย้อนกลับ" /></br></a></center>
 </div>
 {% endblock %}

@@ -3,7 +3,7 @@
 
 {% block head %}
     <style>
-
+		
     </style>
 {% endblock %}
 
@@ -27,17 +27,13 @@
 	background-color:#FFFFFF;
 	}
 
-	
-
-
-
 .botton1{
     position: absolute;
     left: 346px;
     padding: 10px 10px;
-    background-color: #A8D9E8;
+    background-color: #3366CC;
     text-decoration: none;
-    color: #117777;
+    color: #fff;
     border-radius: 10px;
 }
 
@@ -45,9 +41,9 @@
     position: absolute;
     left: 442px;
     padding: 10px 10px;
-    background-color: #A8D9E8;
+    background-color: #5964ff;
     text-decoration: none;
-    color: #117777;
+    color: #fff;
     border-radius: 10px;
 }
 
@@ -55,9 +51,9 @@
     position: absolute;
     left: 546px;
     padding: 10px 10px;
-    background-color: #A8D9E8;
+    background-color: #6fa3ff;
     text-decoration: none;
-    color: #117777;
+    color: #fff;
     border-radius: 10px;
 }
 
@@ -65,43 +61,41 @@
     position: absolute;
     left: 665px;
     padding: 10px 10px;
-    background-color: #00B3EE;
+    background-color: #66CCFF;
     text-decoration: none;
     color: #fff;
     border-radius: 10px;
 }
 </style>
 
-{% if currentUser.type = "0" %}
-<a href="{% url 'group2:profile' %}" class="botton1">ประวัติส่วนตัว</a>
+<a href="{% url 'group2:profile' %}" class="botton1"> ประวัติส่วนตัว ></a>
 <a href="{% url 'group2:data_student' %}" class="botton2">ข้อมูลนักศึกษา</a>
 <a href="{% url 'group2:regis_result' %}" class="botton3">ผลการลงทะเบียน</a>
 <a href="{% url 'group2:viyanipon' %}" class="botton4">การทำวิทยานิพนธ์เเละการสอบวิทยานิพนธ์</a>
-{% endif %}
-{% if currentUser.type != "0" %}
-<a href="{% url 'group2:profile_admin' studentObj.std_id %}" class="botton1">ประวัติส่วนตัว</a>
-<a href="{% url 'group2:data_student_admin' studentObj.std_id %}" class="botton2">ข้อมูลนักศึกษา</a>
-<!--a href="{% url 'group2:regis_result_admin' studentObj.std_id %}" class="botton3">ผลการลงทะเบียน</a-->
-<a href="{% url 'group2:viyanipon_admin' studentObj.std_id %}" class="botton4">การทำวิทยานิพนธ์เเละการสอบวิทยานิพนธ์</a>
-{% endif %}
-
 
 <br>
 <br>
+<br>
+<center>
+<!--h1>Viyanipon</h1-->
+</center>
 <body>
-	{%if studentObj.degree != '0'%}
+	{%if studentObj.degree != '0' %}
 	<table align="center" style="width:60%"><!--border="1">-->
 		<form action="{% url 'group2:viyanipon' %}">
 		<tr>
 			<td>เลขประจำตัว   </td>
+			<td></td>
 			<td> {{ studentObj.std_id }}  </td>
 		</tr>
 		<tr>
+			<td>ชื่อ - นามสกุล</td>
 			<td></td>
 			<td>{{ studentObj.userprofile.firstname_th }}&nbsp{{ studentObj.userprofile.lastname_th }}</td>
 		</tr>
 		<tr>
 			<td>เรียน</td>
+			<td></td>
 			<td>
 			<script>
 				x = {{ studentObj.degree }}
@@ -120,6 +114,7 @@
 			<td>
 				อาจารย์ที่ปรึกษาวิทยานิพนธ์
 			</td>
+			<td></td>
 			<td>
 				{%if i.adviser == '1'%}
 					ศาสตราจารย์  ประยุทธ อัครเอกฒาลิน
@@ -185,17 +180,21 @@
 			{%if j.name_thai != '' and j.std_id == studentObj.std_id %}
 			<td  width="20%" valign="top">เสนอวิทยานิพนธ์ เรื่อง</td>
 			<td></td>
+			<td></td>
 		</tr>
 		<tr>
+			<td></td>
 			<td></td>
 			<td>ชื่อภาษาไทย   {{j.name_thai}}</td>
 		</tr>
 		<tr>
 			<td></td>
+			<td></td>
 			<td>ชื่อภาษาอังกฤษ   {{j.name_eng}}</td>
 		</tr>
 		<tr>
 			<td valign="top">&nbsp;</td>
+			<td></td>
 			<td><font color="#FF0000">***หมายเหตุ  ต้องลงทะเบียนวิทยานิพนธ์ไม่น้อยกว่า  3  หน่วยกิตในภาคการศึกษานั้น ***</font></td>
 			{%endif%}
 			{%endfor%}
@@ -205,6 +204,7 @@
 			{%for k in table_project%}
 			{%if k.project_name == 'true' and k.std_id == studentObj.std_id %}
 			<td>สอบหัวข้อวิทยานิพนธ์</td>
+			<td></td>
 			<td>วันที่
 		  		{{k.name_day}}
 				เดือน
@@ -214,6 +214,7 @@
 			</td>
 		</tr>
 		<tr>
+			<td></td>
 			<td></td>
 			<td><font color="#FF0000">***หมายเหตุ  ต้องดำเนินการให้แล้วเสร็จภายใน  30  วันหลังจากแต่งตั้งอาจารย์ที่ปรึกษาวิทยานิพนธ์และอนุมัติโครการวิทยานิพนธ์ที่เสนอ ***</font></td>
 			{%endif%}
@@ -226,16 +227,18 @@
 			{%for l in table_test%}
 			{%if l.test == 'true' and l.std_id == studentObj.std_id %}
 			<td width="26%">สอบความก้าวหน้าวิทยานิพนธ์&nbsp;</td>
+			<td></td>
 			<td>
-				วันที่
-				{{l.test_day}}
-				เดือน
-				{{l.test_month}}
-				ปี
-				{{l.test_year}}
+				วันที่  
+				{{l.test_day}}    
+				เดือน  
+				{{l.test_month}}    
+				ปี  
+				{{l.test_year}}    
 			</td>
 		</tr>
 		<tr>
+			<td></td>
 			<td></td>
 			<td><font color="#FF0000">***หมายเหตุ ***</font></td>
 			{%endif%}
@@ -248,16 +251,18 @@
 			{%for m in table_testend%}
 			{%if m.testend == 'true' and m.std_id == studentObj.std_id%}
 			<td width="21%">สอบป้องกันวิทยานิพนธ์</td>
+			<td></td>
 			<td>
-			วันที่
-			{{m.testend_day}}
-			เดือน
-			{{m.testend_month}}
-			ปี
-			{{m.testend_year}}
+			วันที่  
+			{{m.testend_day}}    
+			เดือน  
+			{{m.testend_month}}    
+			ปี  
+			{{m.testend_year}}     
 			</td>
 		</tr>
 		<tr>
+			<td></td>
 			<td></td>
 			<td><font color="#FF0000">***หมายเหตุ ***</font></td>
 			{%endif%}
@@ -269,10 +274,9 @@
 		<input type="submit" class="btn btn-success" value="แก้ไข">
 		<br><br><br><br>
 	</form>
-	{%else%}
-		<center><h3>สำหรับนักศึกษาปริญญาโทและปริญญาเอก</h3></center>
+	<center>
+		<h2><font color="#FF0000">สำหรับนักศึกษาปริญญาโทและปริญญาเอกเท่านั้น</font></h2>
+	</center>
 	{%endif%}
 </body>
-
-
 {% endblock %}

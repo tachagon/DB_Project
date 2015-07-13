@@ -54,8 +54,8 @@
                     <h4>ระบบ <small>การเบิกจ่ายค่ารักษาพยาบาล</small></h4>
                 </div>
                 <div class="panel-body">
-                    <a href="#">หน้าหลักของผู้ดูแลระบบ</a><br>
-                    <a href="#">หน้าหลักของผู้ใช้งาน</a><br>
+                    <a href="{% url 'group4:adminIndexPage' %}">หน้าหลักของผู้ดูแลระบบ</a><br>
+                    <a href="{% url 'group4:userPage' %}">หน้าหลักของผู้ใช้งาน</a><br>
                 </div>
             </div>
         </div>
@@ -63,7 +63,7 @@
         <div class="col-md-4">
             <div class="panel panel-info">
                 <div class="panel-heading">
-                    <h4>ระบบ <small>ฝึกงาน</small></h4>
+                    <h4>ระบบ <small>การฝึกงาน</small></h4>
                 </div>
                 <div class="panel-body">
                     <a href="{% url 'group5:addpet' %}">แบบคำร้องขอหนังสือขอความอนุเคราะห์ฝึกงาน</a><br>

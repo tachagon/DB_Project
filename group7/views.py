@@ -1,4 +1,4 @@
-#-*- coding: utf-8 -*-
+﻿#-*- coding: utf-8 -*-
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.core.urlresolvers import reverse
@@ -11,33 +11,45 @@ from datetime import datetime
 from django.views import generic
 import datetime
 
-
-def home(request):
-	stu = ProjectG6.objects.all()
+month = ['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม']
+def home(request):#ส่วนสำหรับแสดงหน้าhome
+	stu = ProjectG6.objects.all()#เลือกโปรเจ็คทั้งหมดที่มีออกมา
         teacher=[]
-        for name in stu:
-            teacher.append(Teacher.objects.get(id=name.teacher_id))
-            
-        return render(request, 'group7/home.html', {'object': stu,'teacher':teacher})
+        for name in stu:#วนลูปเพื่อเข้าถึงทุกobjectsในprojectแต่ละproject
+            p=Teacher.objects.get(id=name.teacher_id)#เก็ทค่าของteacherที่เป็นที่ปรึกษาโปรเจคนั้นๆ
+	    q=UserProfile.objects.get(id=p.userprofile_id)#เก็ทค่ารายละเอียดของอาจารย์ออกมา
+	    n=q.firstname_th+"  "+q.lastname_th#เก็บค่าชื่อไทยของอาจารย์
+	    teacher.append(name.name_thai)#เก็บค่าชื่อโปรเจ็คภาษาไทยไว้ในตัวแปรteacher
+	    teacher.append(name.name_eng)#เก็บค่าชื่อโปรเจ็คภาษาอังกฤษไว้ในตัวแปรteacher
+            teacher.append(n)#เก็บค่าชื่ออาจารย์ภาษาไทยไว้ในตัวแปรteacher
+	    teacher.append(name.id)
+        return render(request, 'group7/home.html', {'teacher':teacher})
                 
 def order(request,pk):
-	project = ProjectG6.objects.get(id=pk)
-        teacher=Teacher.objects.get(id=project.teacher_id)
-        return render(request, 'group7/order.html', {'object': project,'teacher':teacher})
+	project = ProjectG6.objects.get(id=pk)#เลือกโปรเจ็คทั้งหมดที่มีออกมา
+	order=Order.objects.all()#เลือกorderทั้งหมดที่มีออกมา
+	date=[]
+	for r in order:
+		if r.Projectg7_id==project.id:
+			date.append(str((r.Date).day)+"/"+month[(r.Date).month-1] +"/"+str((r.Date).year))#เปลี่ยนแปลงรูปแบบวันที่ที่ต้องการแสดง
+        teacher=Teacher.objects.get(id=project.teacher_id)#เก็ทค่าของteacherที่เป็นที่ปรึกษาโปรเจคนั้นๆ
+	usr=UserProfile.objects.get(id=teacher.userprofile_id)#เก็ทค่ารายละเอียดของอาจารย์ออกมา
+	pid=CategoriesProject.objects.get(project_id=pk)
+        return render(request, 'group7/order.html', {'object': project,'teacher':usr,'dates':date,'pid':pid})
 def addorder(request,pk):
-	projectg6 = ProjectG6.objects.get(id=pk)
+	projectg6 = ProjectG6.objects.get(id=pk)#เลือกโปรเจ็คที่id=pk
 	now = datetime.datetime.now()
 	now=now.date()
-	date = datetime.datetime.strptime(str(now), '%Y-%m-%d').strftime('%Y-%m-%d')
+	date = datetime.datetime.strptime(str(now), '%Y-%m-%d').strftime('%d-%m-%Y')#เก็บค่าวันที่ปัจจุบันในรูปแบบ ปี เดือน วัน
 	return render(request, 'group7/addorder.html', {'object': date,'projectg6':projectg6})
 
 
 
         
 def addorderview(request, pk):
-	date=request.GET.get('date')
-	valid_date = datetime.datetime.strptime(str(date), '%Y-%m-%d').strftime('%Y-%m-%d')
-        p=Order(Projectg7_id=pk,Date=valid_date)   	
+	date=request.GET.get('date')#รับค่าวันที่จากtemplate
+	valid_date = datetime.datetime.strptime(str(date), '%d-%m-%Y').strftime('%Y-%m-%d')#เก็บค่าวันที่ปัจจุบันในรูปแบบ ปี เดือน วัน
+        p=Order(Projectg7_id=pk,Date=valid_date)  #สร้าง orderใหม่ 	
 	p.save()
         url="/group7/"+pk
         return HttpResponseRedirect(url)
@@ -46,9 +58,11 @@ def orderinfo(request,pk):
         s = Order.objects.get(id=pk)
         info=s.orderinfo_set.all()
         sum=0
+	sum2=""
         for price in info:
             sum+=price.Cost_total
-        return render(request, 'group7/orderinfo.html', {'object': info,'sum':sum,'s':s})
+	sum2='{:,.2f}'.format(sum)
+        return render(request, 'group7/orderinfo.html', {'object': info,'sum':sum2,'s':s})
 
 #----------------------------- Add OrderInfo -------------------------------------------#
 class addorderinfo(generic.DetailView):
@@ -61,20 +75,31 @@ def addorderinfoview(request, pk):
 	price=request.POST['price_orderinfo']
         company=request.POST['company']
         id=request.POST['id']
-        sum=int(price)*int(amount)
+        sum=float(price)*float(amount)
         p=Orderinfo(Order_id=pk,Item_name=itemname, Amount=amount,Company=company,OrderID=id, Cost=price, Cost_total=sum)   	
 	p.save()
         url="/group7/"+pk+"/orderinfo/"
         return HttpResponseRedirect(url)
 #----------------------------- StatusOf -------------------------------------------#
-class statusof(generic.DetailView):
-	model=Order
-   	template_name= 'group7/statusof.html'
+def statusof(request,pk):
+	s = Order.objects.get(id=pk)
+        order=Status_Of.objects.all()
+	data=[]
+	rid=[]
+	for r in order:
+		if r.Order_id==s.id:
+			data.append(str((r.Date).day)+"/"+month[(r.Date).month-1] +"/"+str((r.Date).year))
+			data.append(r.State)
+			data.append(r.Status)
+			data.append(r.Moreabout)
+			data.append(r.id)
+
+	return render(request, 'group7/statusof.html', {'data': data,'s':s})
 # Create your views here.
 def addstatusview(request,pk):
 	now = datetime.datetime.now()
 	now=now.date()
-	date = datetime.datetime.strptime(str(now), '%Y-%m-%d').strftime('%Y-%m-%d')
+	date = datetime.datetime.strptime(str(now), '%Y-%m-%d').strftime('%d-%m-%Y')
         order=Order.objects.get(id=pk)
 	stat=order.status_of_set.all()
 	laststat=""
@@ -83,21 +108,20 @@ def addstatusview(request,pk):
 		laststat=s.State
 	return render(request, 'group7/addstatusof.html', {'object': laststat,'id':id,'now':date})
 	
-	
-	
 def addstatus(request,pk):
     date=request.GET.get('date')
     valid_date = datetime.datetime.strptime(date, '%d-%m-%Y').strftime('%Y-%m-%d')
     state = request.GET.get('state_status')
     more=request.GET.get('more')
     status=""
-    if (request.GET.get('requisition_id')!=""):
-        reqid=request.GET.get('requisition_id')
-	req=Requisition(Status_of_id=pk,Requisition_Id=reqid)
-	req.save()
+    
     if (request.GET.get('state_status')=="complete"):
         status="สมบูรณ์"
         state="ใบเบิกวัสดุ"
+	if (request.GET.get('requisition_id')!="None"):
+		reqid=request.GET.get('requisition_id')
+		req=Requisition(Status_of_id=pk,Requisition_Id=reqid)
+		req.save()
     else:
         status="ไม่สมบูรณ์"
     p=Status_Of(Order_id=pk,Date=valid_date,State=state, Status=status ,Moreabout=more,Prove="Ok") 
@@ -132,7 +156,7 @@ def editOrderinfo(request,info_id): #Page Orderinfo for delete Orderinfo
 	price=request.GET.get('price_orderinfo')
         company=request.GET.get('company')
         id=request.GET.get('id')
-        sum=int(price)*int(amount)
+        sum=float(price)*float(amount)
         q=Orderinfo.objects.get(id=info_id)
 	p=Orderinfo(id=info_id,Order_id=q.Order_id,Item_name=itemname, Amount=amount,Company=company,OrderID=id, Cost=price, Cost_total=sum)   	
 	p.save()
@@ -157,40 +181,49 @@ class vieworderinfo(generic.DetailView):
 def viewrequi(request,pk):
         now=""
 	order = Order.objects.get(id=pk) 
-	reqid=[]
-	r=order.requisition_set.all() 
-	for i in r: 
-		reqid.append(i) 
-	stat4=order.status_of_set.all()
+	reqid=""
 	moreabout=""
+	id=""
+	stat4=order.status_of_set.all()
 	for r in stat4:
+		id=r.id
 		status4=r.State.encode('utf-8')
 		date4=r.Date
 		moreabout=r.Moreabout
 	if status4 == "ใบเบิกวัสดุ":
-		now=date4
+		req=Requisition.objects.get(Status_of_id=pk)
+		reqid=req.Requisition_Id
+		now=str((date4).day)+"/"+month[(date4).month-1] +"/"+str((date4).year)
 	project=ProjectG6.objects.get(id=order.Projectg7_id)
         return render(request, 'group7/requisitionview.html', {'order': order,'project':project,'date':now,'req':reqid,'more':moreabout})
 
 def vieworderprint(request,pk):
         now = datetime.datetime.now()
-        
 	order = Order.objects.get(id=pk)
+	date3=str((order.Date).day)+"/"+month[(order.Date).month-1] +"/"+str((order.Date).year)
         project=ProjectG6.objects.get(id=order.Projectg7_id)
         stu = ProjectG6.objects.all()
         teacher=[]
 	student=[]
         for name in stu:
-                teacher.append(Teacher.objects.get(id=name.teacher_id))
+                p=Teacher.objects.get(id=name.teacher_id)
+		q=UserProfile.objects.get(id=p.userprofile_id)#เก็ทค่ารายละเอียดของอาจารย์ออกมา
+		n=q.firstname_th+"  "+q.lastname_th#เก็บค่าชื่อไทยของอาจารย์
+		teacher.append(n)
 	namestd=project.student.all()
 	for std in namestd:
-		student.append(std)
-        return render(request, 'group7/orderinfoview.html', {'order': order,'teacher':teacher,'project':project,'date':now,'student':student})
+		q=UserProfile.objects.get(id=std.userprofile_id)#เก็ทค่ารายละเอียดของอาจารย์ออกมา
+		n=q.firstname_th+"  "+q.lastname_th
+		student.append(n)
+        return render(request, 'group7/orderinfoview.html', {'order': order,'teacher':teacher,'project':project,'date':date3,'student':student})
         
 def statusofedit(request,pk):
         stu=Status_Of.objects.get(id=pk)
+	req=""
+	if stu.State.encode('utf-8') == "ใบเบิกวัสดุ":
+		req=Requisition.objects.get(Status_of_id=stu.Order_id)
 	now = datetime.datetime.now()
-        return render(request, 'group7/editstatusof.html', {'object': stu})
+        return render(request, 'group7/editstatusof.html', {'object': stu,'req':req})
         
 def editstatusof(request,info_id): #Page Orderinfo for delete Orderinfo
 	date=request.GET.get('date')
@@ -198,12 +231,19 @@ def editstatusof(request,info_id): #Page Orderinfo for delete Orderinfo
     	state = request.GET.get('state_status')
     	more=request.GET.get('more')
     	status=""
+	q=Status_Of.objects.get(id=info_id)
     	if (request.GET.get('state_status')=="complete"):
         	status="สมบูรณ์"
         	state="ใบเบิกวัสดุ"
+		if (request.GET.get('requisition_id')!="None"):
+			reqid=request.GET.get('requisition_id')
+			re=Requisition.objects.get(Status_of_id=q.Order_id)
+			req=Requisition(id=re.id,Status_of_id=q.Order_id,Requisition_Id=reqid)
+			req.save()
+		
     	else:
         	status="ไม่สมบูรณ์"
-	q=Status_Of.objects.get(id=info_id)
+	
     	p=Status_Of(id=info_id,Order_id=q.Order_id,Date=valid_date,State=state, Status=status ,Moreabout=more,Prove="Ok") 
     	p.save()
     	url="/group7/"+str(q.Order_id)+"/statusof/"
@@ -218,7 +258,7 @@ def sumdate(request):
 		stat=s.status_of_set.all()
 		for r in stat:
 			status=r.State.encode('utf-8')
-			date=r.Date
+			date=str((r.Date).day)+"/"+month[(r.Date).month-1] +"/"+str((r.Date).year)
 		if status == "วันที่ในการซื้อวัสดุ":
 			data=(ProjectG6.objects.get(id=s.Projectg7_id))
 			dataset.append(data.name_thai)
@@ -236,7 +276,7 @@ def sumcheck(request):
 		stat2=s.status_of_set.all()
 		for r in stat2:
 			status2=r.State.encode('utf-8')
-			date2=r.Date
+			date2=str((r.Date).day)+"/"+month[(r.Date).month-1] +"/"+str((r.Date).year)
 			
 		if status2 == "ตรวจสอบวัสดุและใบเสร็จ":
 			data2=(ProjectG6.objects.get(id=s.Projectg7_id))
@@ -257,8 +297,7 @@ def sumreq(request):
 		for r in stat3:
 			c+=1
 			status3=r.State.encode('utf-8')
-			
-			date3=r.Date
+			date3=str((r.Date).day)+"/"+month[(r.Date).month-1] +"/"+str((r.Date).year)
 		if status3 == "ใบเบิกวัสดุ":
 			count.append(c)
 			data=(ProjectG6.objects.get(id=s.Projectg7_id))
@@ -267,8 +306,8 @@ def sumreq(request):
 		status3=""
 	return render(request, 'group7/showlistrequi.html', {'data': dataset3,'c':count})
 	
-def summarypro(request):
-	va_name = ProjectG6.objects.all()
+def summarypro(request):#หน้าแสดงรายงานรวม
+	va_name = ProjectG6.objects.all()#เรียกรายชื่อโปรเจ็คทั้งหมด
 	student_list2=[]
 	project=[]
 	member=[]
@@ -282,25 +321,26 @@ def summarypro(request):
 	check=0
 	complete=0
 	costtotal=[]
-	for s in va_name:
+	pname=[]
+	for s in va_name:#ลูปสำหรับเรียกค่า นศ และ ชื่อ โปรเจ็ค
 		project.append(s)
 		student_list2.append(s.student.all())
 	
-	for t in student_list2:
+	for t in student_list2:#ลูปสำหรับนับจำนวนสมาชิก
 		for r in t:
 			count+=1
 		member.append(count)
 		count=0
-	for u in member:
+	for u in member:#ลูปสำหรับคำนวณเงินที่ใช้ได้ในแต่ละโปรเจค
 		cost.append(u*5000)
 		
-	for s in project:
-		order=Order.objects.all()
+	for s in project:#ลูปสำหรับคำนวณเงินที่ใช้ได้ในแต่ละโปรเจคทีใช้ไปในปัจจุบัน
+		order=Order.objects.all()#ลเก็ทรายการสั่งซื้อทั้งหมดออกมา
 		for ord in order:
 			if ord.Projectg7_id==s.id:
 				status=ord.status_of_set.all()
 				for i in status:
-					if (i.Status).encode('utf-8') == "สมบูรณ์":
+					if (i.Status).encode('utf-8') == "สมบูรณ์":#หากรายการสั่งซื้อนั้นสถานะสมบูรณ์จะนำเงินในใบสั่งซื้อมาคำนวณ
 						costt=Orderinfo.objects.all()
 						for cst in costt:
 							if cst.Order_id==i.Order_id:
@@ -308,8 +348,13 @@ def summarypro(request):
 		costtotal.append(round)
 		round=0
 		
-	for s in project:
-		summary.append(s.name_thai)
+	for s in project:#ลูปสำหรับเก็บค่าไปแสดงในหน้าแสดงผล
+		pid=CategoriesProject.objects.get(project_id=s.id)
+		pname.append(s.name_thai)
+		pname.append(str(pid.project_catagories)+str(pid.year)+"-"+str(pid.semester)+"-"+str(pid.number))
+		pname.append(" ")
+		pname.append(" ")
+		summary.append(" ")
 		summary.append(cost[count2])
 		summary.append(costtotal[count2])
 		summary.append(cost[count2]-costtotal[count2])
@@ -329,4 +374,19 @@ def summarypro(request):
 				check-=1
 				if check<0:check=0
 		
-        return render(request, 'group7/sumallproject.html', {'cost':summary,'buy':buy,'check':check,'complete':complete})
+        return render(request, 'group7/sumallproject.html', {'cost':summary,'buy':buy,'check':check,'complete':complete,'p':pname})
+
+def Orderedit(request,pk):
+        stu = Order.objects.get(id=pk)
+        now = stu.Date
+	valid_date = datetime.datetime.strptime(str(now), '%Y-%m-%d').strftime('%d-%m-%Y')
+        return render(request, 'group7/editorder.html', {'object':stu,'dates':valid_date})
+   
+def editOrder(request,info_id):
+        date=request.GET.get('date')
+	valid_date = datetime.datetime.strptime(str(date), '%d-%m-%Y').strftime('%Y-%m-%d')
+	q=Order.objects.get(id=info_id) 
+        p=Order(id=info_id,Projectg7_id=q.Projectg7_id,Date=valid_date)   	
+	p.save()
+        url="/group7/"+str(q.Projectg7_id)
+        return HttpResponseRedirect(url)

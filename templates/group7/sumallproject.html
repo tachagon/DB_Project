@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-
+{% load humanize %}
 {% block title %}Group7{% endblock %}
 
 {% block pageHeader %}
@@ -12,41 +12,54 @@
 
 {% block content %}
 <div class="container-fluid">
-<center><h3>สรุปรายละเอียดการเบิกจ่ายแต่ละโครงงาน</h3></center>
+<center><font size="7" face="Angsana New"><b>สรุปรายละเอียดการเบิกจ่ายแต่ละโครงงาน</b></font></center>
 
 <center>
-<table border ="1"  width="100%"><font color="BLACK">
+<div class="table-responsive">
+<table class="table table-striped table-bordered">
 	<tr>
-		<th><center>ชื่อโครงงาน</center></th>
-		<th><center>งบประมาณที่สามารถใช้ได้</center></th>
-		<th><center>งบประมาณที่ถูกใช้ไปแล้ว</center></th>
-		<th><center>งบประมาณคงเหลือ</center></th>		
+		<th bgcolor="#E6E6E6"><font size="6" face="Angsana New"><center>ชื่อโครงงาน</center></th>
+		<th bgcolor="#E6E6E6"><font size="6" face="Angsana New"><center>เลขที่โครงงาน</center></th>
+		<th bgcolor="#E6E6E6"><font size="6" face="Angsana New"><center>งบประมาณที่สามารถใช้ได้</center></th>
+		<th bgcolor="#E6E6E6"><font size="6" face="Angsana New"><center>งบประมาณที่ถูกใช้ไปแล้ว</center></th>
+		<th bgcolor="#E6E6E6"><font size="6" face="Angsana New"><center>งบประมาณคงเหลือ</center></th>		
 	</tr>
 	    <tr>
 	    {% for a in cost%}
+		 {% if forloop.counter|divisibleby:"5" %}
+		    <tr>
+		{% endif%}
+		{% for q in p%}
+	    
+		    {% ifequal forloop.parentloop.counter forloop.counter%}
+			{%ifnotequal q " "%}
+			<td><font size="5" face="Angsana New"><center>{{q}}</center></td>
+		    {%endifnotequal%}		
+		{%endifequal%}
+		{%endfor%}
+	    {%ifnotequal a " "%}
 	    {% if a < 0%}
-	    <td><font color="red"><center>{{a}}</center></font></td>
+	    <td><font color="red" size="5" face="Angsana New"><center>{{a|floatformat:2|intcomma }}</center></font></td>
 	    {%else%}
-	    <td><center>{{a}}</center></td>
+	    <td><font size="5" face="Angsana New"><center>{{a|floatformat:2|intcomma }}</center></td>
 	    {%endif%}
-	    {% if forloop.counter|divisibleby:"4" %}
-		<tr>
-	    {% endif%}
+	   {%endifnotequal%}
 	    {%endfor%}
 
 </table>
 &nbsp
 
-<table border ="1"  width="100%"><font color="BLACK">
+<div class="table-responsive">
+<table class="table table-striped table-bordered">
 	<tr>
-		<th><center>จำนวนใบสั่งซื้อในขั้นตอนการตกลงวันที่ซื้อวัสดุ</center></th>
-		<th><center>จำนวนใบสั่งซื้อในขั้นตอนการตรวจสอบวัสดุและใบเสร็จ</center></th>
-		<th><center>จำนวนใบสั่งซื้อในขั้นตอนการทำใบเบิกวัสดุ</center></th>		
+		<th bgcolor="#E6E6E6"><font size="5" face="Angsana New"><center>จำนวนใบสั่งซื้อในขั้นตอนการตกลงวันที่ซื้อวัสดุ</center></th>
+		<th bgcolor="#E6E6E6"><font size="5" face="Angsana New"><center>จำนวนใบสั่งซื้อในขั้นตอนการตรวจสอบวัสดุและใบเสร็จ</center></th>
+		<th bgcolor="#E6E6E6"><font size="5" face="Angsana New"><center>จำนวนใบสั่งซื้อในขั้นตอนการทำใบเบิกวัสดุ</center></th>		
 	</tr>
 	<tr>
-		<td><center><a href="/group7/summarydate/">{{buy}}</a></center></td>
-		<td><center><a href="/group7/summarycheck/">{{check}}</a></center></td>
-		<td><center><a href="/group7/summaryreq/">{{complete}}</a></center></td>	
+		<td><font size="5" face="Angsana New"><center><a href="/group7/summarydate/">{{buy}}</a></center></td>
+		<td><font size="5" face="Angsana New"><center><a href="/group7/summarycheck/">{{check}}</a></center></td>
+		<td><font size="5" face="Angsana New"><center><a href="/group7/summaryreq/">{{complete}}</a></center></td>	
 	</tr>
 </table>
 &nbsp

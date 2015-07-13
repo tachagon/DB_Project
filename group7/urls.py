@@ -23,7 +23,7 @@ urlpatterns = patterns('',
 	url(r'^/(?P<pk>\d+)/addorderinfoview/$', views.addorderinfoview, name='addorderinfoview'),
 #-----------------------------------------------------------------------------------------# Add OrderInfo
 #ex: /group7/Project_id/orderinfo/ --> EX: localhost:8000/group7/1/statusof/
-	url(r'^/(?P<pk>\d+)/statusof/$', views.statusof.as_view(), name='statusof'),
+	url(r'^/(?P<pk>\d+)/statusof/$', views.statusof, name='statusof'),
         url(r'^/(?P<pk>\d+)/statusof/addstatusof/$', views.addstatusview, name='addstatusof'),
         url(r'^/(?P<pk>\d+)/addstatusof/$', views.addstatus, name='addstatus'),
         url(r'^/(?P<info_id>\d+)/remove/$', views.removeOrder, name='removeOrder'),
@@ -38,5 +38,8 @@ urlpatterns = patterns('',
         url(r'^/summarydate/$', views.sumdate, name='summarydate'),
         url(r'^/summarycheck/$', views.sumcheck, name='summarycheck'),
         url(r'^/summaryreq/$', views.sumreq, name='summaryreq'),
+
+	url(r'^/(?P<pk>\d+)/edit/$', views.Orderedit, name='eOrder'),
+        url(r'^/(?P<info_id>\d+)/editorder/$', views.editOrder, name='editOrder'),
 
 )

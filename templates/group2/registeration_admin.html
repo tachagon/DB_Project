@@ -1,0 +1,260 @@
+{% extends "base.html" %}
+{% load custom_function %}
+{% block title %}ลงทะเบียนนักศึกษา{% endblock %}
+
+{% block pageHeader %}
+
+<h2>ลงทะเบียน</h2>
+<ol class="breadcrumb">
+    <li><a href="{% url 'login:menu' %}">เมนู</a></li>
+    <li class="active">ลงทะเบียนนักศึกษา</li>
+</ol>
+{% endblock %}
+
+{% block content %}
+<style>
+
+#bod{
+	white-space:nowrap;
+	margin:  0px 0% 0%;
+	padding: 0px 340px 0px;
+	background-color:#FFFFFF;
+	}
+
+
+.table{
+		width: 50%;
+		border:3px solid  #3366CC;//blue
+		font:14pt "Angsana New";
+	}
+
+	
+tr,td,th{
+    
+    border:3px solid #ab82ff;//blue
+    font:14pt "Angsana New";
+}
+
+.botton1{
+    position: absolute;
+    left: 0px;
+    padding: 10px 10px;
+    background-color: #A8D9E8;
+    text-decoration: none;
+    color: #fff;
+    border-radius: 10px;
+}
+
+.botton2{
+    position: absolute;
+    left: 0px;
+    padding: 10px 10px;
+    background-color: #00B3EE;
+    text-decoration: none;
+    color: #117777;
+    border-radius: 10px;
+}
+
+.botton3{
+    position: absolute;
+    left: 0px;
+    padding: 10px 10px;
+    background-color: #A8D9E8;
+    text-decoration: none;
+    color: #117777;
+    border-radius: 10px;
+}
+
+</style>
+
+
+
+
+
+{%if user.is_staff %}
+<center>
+
+<a href="{% url 'group2:registeration_admin' %}" class="botton2">&nbsp ลงทะบียนนักศึกษา&nbsp &nbsp </a>
+<br><br><a href="{% url 'group2:drop_admin' %}" class="botton3">ถอนวิชาเรียนนักศึกษา </a>
+<br><br><a href="{% url 'group2:registeration' %}" class="botton1">เพิ่ม/แก้ไขรายวิชาเรียน</a>
+<p class='norm'><h4>ค้นหารายวิชา</h4></p>
+{%if error_find_course %}
+
+<FONT COLOR=#FF0000>***ใส่รหัสวิชา***</FONT>
+<br>
+{%endif%}
+{%if error_find_sec %}
+
+<FONT COLOR=#FF0000>***ใส่ตอนเรียน***</FONT>
+<br>
+{%endif%}
+{%if error_data %}
+
+<FONT COLOR=#FF0000>***ไม่พบรายวิชาที่ต้องการค้นหา***</FONT>
+<br>
+{%endif%}
+{%if error_date %}
+<br>
+<FONT COLOR=#FF0000>***ไม่ได้อยู่ในช่วงเวลาลงทะเบียน***</FONT>
+{%endif%}
+
+<form method="post" action="{% url 'group2:Find_Admin_check_register' %}">
+	{%csrf_token%}
+<table class="table table-striped table-bordered table-condensed" align="center">
+<thead>
+<tr>
+	<th align="center" bgcolor="#C0C0C0" ><b>รหัสวิชา</b></th>
+	<th align="center" bgcolor="#C0C0C0" ><b>ตอนเรียน</b></th></tr>
+
+</thead>
+<tbody>
+<tr>
+
+
+
+                <td><input name="c1"  type="text" ></td>
+				
+				<td><select name="s1" >
+                	<option value="1">1</option>
+  					<option value="2">2</option>
+  					<option value="3">3</option>
+					
+
+                </select></td>
+
+</tr>
+</tbody>
+
+
+
+
+
+</table>
+<br><input type ="submit"  value="Show" class="btn btn-info"  >
+<br></form>
+<br>
+<br>    <p><h4>ข้อมูลรายวิชา</h4></p>
+
+
+	{%csrf_token%}
+        <table class="table table-striped table-bordered table-condensed" align="center">
+        <tr>
+		<th  bgcolor="#C0C0C0"><b>รหัสนศ</th>	
+		<th  bgcolor="#C0C0C0" ><b>รหัสวิชา</b></th>
+        <th  bgcolor="#C0C0C0"><b>วิชา</b></th>
+        <th  bgcolor="#C0C0C0"><b>ตอนเรียน</b></th>
+		<th  bgcolor="#C0C0C0"><b>สถานะ</b></th>
+		</tr>
+		
+
+
+
+
+	{%for i in table_show %}
+
+
+        
+
+		
+		<tr>
+		<td>{{i.std_id.std_id}}</td>
+	    <td>{{i.Course_ID.Course_ID}} </td>
+ 	    <td>{{i.Course_ID.Course_Name}} </td>
+        <td>{{i.Section.Section}} </td>
+		<td>{{i.check}} </td>
+		</tr>		
+      
+        
+		
+
+	
+	{%endfor%}
+	</table>
+		
+	<p></p>	
+<br><p class='norm'><h4>การอนุมัติลงทะเบียน</h4></p>
+{%if error_edit %}
+
+<FONT COLOR=#FF0000>***ไม่พบรายวิชานี้***</FONT>
+<br>
+
+{%endif%}
+
+{%if put_frist %}
+<br>
+<FONT COLOR=#FF0000>***ใส่รหัสวิชาเเละตอนเรียนช่องบนสุดก่อน***</FONT>
+<br>
+{%endif%}
+{%if error_course %}
+<br>
+<FONT COLOR=#FF0000>***ใส่รหัสวิชา***</FONT>
+<br>
+{%endif%}
+{%if error_date %}
+<br>
+<FONT COLOR=#FF0000>***ไม่อยู่ในช่วงเวลาลงทะเบียน***</FONT>
+<br>
+{%endif%}
+<form method="post" action="{% url 'group2:Update_check_admin' %}">
+	{%csrf_token%}
+	    <table class="table table-striped table-bordered table-condensed" align="center">
+
+		<tr >
+                <td><b>รหัสวิชา</b></td><td><input name="c_id"  type="text" ></td>
+				<td><b>ตอนเรียน</b></td><td><select name="sec" >
+                	<option value="1">1</option>
+  					<option value="2">2</option>
+  					<option value="3">3</option>
+                
+                </select></td>
+		</tr>		
+     
+        
+		
+
+		<tr>
+                <td><b>รหัสนศ.</b></td><td><input name="s_id1"  type="text" ></td>
+                <td><b>สถานะ</b></td><td><select name="state1" >
+  					<option value="อนุมัติ">อนุมัติ</option>
+                	<option value="อนุมัติดรอป">อนุมัติดรอป</option>
+                </select></td>
+		</tr>
+
+		<tr>
+                <td><b>รหัสนศ.</b></td><td><input name="s_id2"  type="text" ></td>
+                <td><b>สถานะ</b></td><td><select name="state2" >
+  					<option value="อนุมัติ">อนุมัติ</option>
+                	<option value="อนุมัติดรอป">อนุมัติดรอป</option>
+                </select></td>
+		</tr>
+		
+		<tr>
+                <td><b>รหัสนศ.</b></td><td><input name="s_id3"  type="text" ></td>
+                <td><b>สถานะ</b></td><td><select name="state3" >
+  					<option value="อนุมัติ">อนุมัติ</option>
+                	<option value="อนุมัติดรอป">อนุมัติดรอป</option>
+                </select></td>
+		</tr>
+		
+		<tr>
+                <td><b>รหัสนศ.</b></td><td><input name="s_id4"  type="text" ></td>
+                <td><b>สถานะ</b></td><td><select name="state4" >
+  					<option value="อนุมัติ">อนุมัติ</option>
+                	<option value="อนุมัติดรอป">อนุมัติดรอป</option>
+                </select></td>
+		</tr>
+		
+
+		
+		
+        </table>		
+		<br>
+			
+
+<br><input type ="submit"  value="Submit" class="btn btn-primary"  >
+<br><br><br></form>
+<br>
+<br>
+
+{% endif %}
+{% endblock %}

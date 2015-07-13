@@ -1,0 +1,279 @@
+<meta charset="UTF-8">
+{% extends "base.html" %}
+
+{% block head %}
+    <style>
+		
+    </style>
+{% endblock %}
+
+{% block title %}ประวัตินักศึกษา{% endblock %}
+
+{% block pageHeader %}
+
+<ol class="breadcrumb">
+    <li><a href="{% url 'login:menu' %}">เมนู</a></li>
+    <li class="active">ประวัตินักศึกษา</li>
+</ol>
+{% endblock %}
+
+{% block content %}
+<style>
+
+#bod{
+	white-space:nowrap;
+	margin:  0px 0% 0%;
+	padding: 0px 340px 0px;
+	background-color:#FFFFFF;
+	}
+
+.botton1{
+    position: absolute;
+    left: 346px;
+    padding: 10px 10px;
+    background-color: #3366CC;
+    text-decoration: none;
+    color: #fff;
+    border-radius: 10px;
+}
+
+.botton2{
+    position: absolute;
+    left: 442px;
+    padding: 10px 10px;
+    background-color: #5964ff;
+    text-decoration: none;
+    color: #fff;
+    border-radius: 10px;
+}
+
+.botton3{
+    position: absolute;
+    left: 546px;
+    padding: 10px 10px;
+    background-color: #6fa3ff;
+    text-decoration: none;
+    color: #fff;
+    border-radius: 10px;
+}
+
+.botton4{
+    position: absolute;
+    left: 665px;
+    padding: 10px 10px;
+    background-color: #66CCFF;
+    text-decoration: none;
+    color: #fff;
+    border-radius: 10px;
+}
+</style>
+
+<a href="{% url 'group2:profile' %}" class="botton1"> ประวัติส่วนตัว ></a>
+<a href="{% url 'group2:data_student' %}" class="botton2">ข้อมูลนักศึกษา</a>
+<a href="{% url 'group2:regis_result' %}" class="botton3">ผลการลงทะเบียน</a>
+<a href="{% url 'group2:viyanipon' %}" class="botton4">การทำวิทยานิพนธ์เเละการสอบวิทยานิพนธ์</a>
+
+<br>
+<br>
+<br>
+<center>
+<!--h1>Viyanipon</h1-->
+</center>
+<body>
+	
+	<table align="center" style="width:60%">
+		<form method="post" class="form-horizontal" action="{% url 'group2:viyaniponadmin2' %}">
+		{% csrf_token %}
+		{%for a in studentObj%}
+		{%if a.std_id != ''%}
+		<tr>
+			<td>เลขประจำตัว   </td>
+			<td></td>
+			<td> {{ a.std_id }}  </td>
+		</tr>
+		<tr>
+			{%for n in table_stdobj%}
+			{%if n.user_id == a.std_id %}
+			<td>ชื่อ - นามสกุล</td>
+			<td></td>
+			<td>{{ n.userprofile.firstname_th }}&nbsp{{ n.userprofile.lastname_th }}</td>
+			{%endif%}
+			{%endfor%}
+		</tr>
+		<tr>
+			<td>เรียน&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp;</td>
+			<td></td>
+			<td>
+			<script>
+				x = {{ studentObj.degree }}
+				if (x == '1') {
+					document.write('มหาบัณฑิต   :  ปริญญาโท')
+				}
+				else if (x == '2'){
+					document.write('ดุษฎีบัณฑิต  :  ปริญญาเอก')
+				}
+			</script></td>
+		</tr>
+		<tr><td>&nbsp;&nbsp;</td></tr>
+		<tr>
+			{%for i in table_show%}
+			{%if i.std_id != ''%}
+			<td>
+				อาจารย์ที่ปรึกษาวิทยานิพนธ์
+			</td>
+			<td></td>
+			<td>
+				{%if i.adviser == '1'%}
+					ศาสตราจารย์  ประยุทธ อัครเอกฒาลิน
+				{%elif i.adviser == '2'%}
+					รองศาสตราจารย์  วิบูลย์  ชื่นแขก
+				{%elif i.adviser == '3'%}
+					ผู้ช่วยศาสตราจารย์  อภิบาล  พฤกษานุบาล
+				{%elif i.adviser == '4'%}
+					ผู้ช่วยศาสตราจารย์  บัลลังก์  เนียมมณี
+				{%elif i.adviser == '5'%}
+					อาจารย์  ศราวุธ  ชัยมูล
+				{%elif i.adviser == '6'%}
+					ผู้ช่วยศาสตราจารย์  วิไลพร  แซ่ลี้
+				{%elif i.adviser == '7'%}
+					ผู้ช่วยศาสตราจารย์  ธีรธรรม  บุณยะกุล
+				{%elif i.adviser == '8'%}
+					ผู้ช่วยศาสตราจารย์  พิสิษฐ์  ลิ่วธนกุล
+				{%elif i.adviser == '9'%}
+					ผู้ช่วยศาสตราจารย์  สมพร  สิริสำราญนุกูล
+				{%elif i.adviser == '10'%}
+					ผู้ช่วยศาสตราจารย์  ชาตรี  มหัทธนจาตุภัทร
+				{%elif i.adviser == '11'%}
+					อาจารย์  เอกรัฐ  บุญภูงา
+				{%elif i.adviser == '12'%}
+					อาจารย์  นพดล  ฉาบแก้ว
+				{%elif i.adviser == '13'%}
+					อาจารย์  เพ็ญนภา ไพโรจน์อมรชัย
+				{%elif i.adviser == '14'%}
+					อาจารย์  พิสิฐ  วนิชชานันท์
+				{%elif i.adviser == '15'%}
+					รองศาสตราจารย์  สุขสันติ์  นุ่นงาม
+				{%elif i.adviser == '16'%}
+					รองศาสตราจารย์  วรา  วราวิทย์
+				{%elif i.adviser == '17'%}
+					รองศาสตราจารย์  ณชล  ไชยรัตนะ
+				{%elif i.adviser == '18'%}
+					รองศาสตราจารย์  พงษ์ศักดิ์  กีรติวินทกร
+				{%elif i.adviser == '19'%}
+					รองศาสตราจารย์  ธีรพล เดโชเกียรติถวัลย์
+				{%elif i.adviser == '20'%}
+					รองศาสตราจารย์  ไชยันต์  สุวรรณชีวะศิริ
+				{%elif i.adviser == '21'%}
+					adviser1 = "รองศาสตราจารย์  เวช  วิเวก
+				{%elif i.adviser == '22'%}
+					รองศาสตราจารย์  มนูญ  พ่วงพูล"
+				{%elif i.adviser == '23'%}
+					ผู้ช่วยศาสตราจารย์  ศิริชัย  รุจิพัฒนพงศ์
+				{%elif i.adviser == '24'%}
+					ผู้ช่วยศาสตราจารย์  ศราวุฒิ  คลี่สุวรรณ์
+				{%elif i.adviser == '25'%}
+					ผู้ช่วยศาสตราจารย์  สิทธิพร  เกิดสำอางค์
+				{%elif i.adviser == '26'%}
+					อาจารย์  เรวัต  ศิริโภคาภิรมย์
+				{%else%}
+				{%endif%}
+			</td>
+			{%endif%}
+			{%endfor%}
+		</tr>
+		<tr><td>&nbsp;&nbsp;</td></tr>
+		<tr>
+			{%for i in table_name%}
+			{%if i.std_id != ''%}
+			<td  width="20%" valign="top">เสนอวิทยานิพนธ์ เรื่อง</td>
+			<td></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td></td>
+			<td></td>
+			<td>ชื่อภาษาไทย   {{i.name_thai}}</td>
+		</tr>
+		<tr>
+			<td></td>
+			<td></td>
+			<td>ชื่อภาษาอังกฤษ   {{i.name_eng}}</td>
+		</tr>
+		<tr>
+			<td valign="top">&nbsp;</td>
+			<td></td>
+			{%endif%}
+			{%endfor%}
+		</tr>
+		<tr><td>&nbsp;&nbsp;</td></tr>
+		<tr>
+			{%for i in table_project%}
+			{%if i.std_id != ''%}
+			<td>สอบหัวข้อวิทยานิพนธ์</td>
+			<td></td>
+			<td>วันที่
+		  		{{i.name_day}}
+				เดือน
+		  		{{i.name_month}}
+				ปี
+				{{i.name_year}}
+			</td>
+		</tr>
+		<tr>
+			<td></td>
+			<td></td>
+			{%endif%}
+			{%endfor%}
+		</tr>
+		<tr><td>&nbsp;&nbsp;</td></tr>
+		<tr>
+			{%for l in table_test%}
+			{%if l.std_id != ''%}
+			<td width="26%">สอบความก้าวหน้าวิทยานิพนธ์&nbsp;</td>
+			<td></td>
+			<td>
+				วันที่  
+				{{l.test_day}}    
+				เดือน  
+				{{l.test_month}}    
+				ปี  
+				{{l.test_year}}    
+			</td>
+			{%endif%}
+			{%endfor%}
+		</tr>
+		<tr>
+			<td></td>
+			<td></td>
+		</tr>
+		<tr><td>&nbsp;&nbsp;</td></tr>
+		<tr>
+			{%for m in table_testend%}
+			{%if m.std_id != ''%}
+			<td width="21%">สอบป้องกันวิทยานิพนธ์</td>
+			<td></td>
+			<td>
+			วันที่  
+			{{m.testend_day}}    
+			เดือน  
+			{{m.testend_month}}    
+			ปี  
+			{{m.testend_year}}     
+			</td>
+			{%endif%}
+			{%endfor%}
+		</tr>
+		<tr><td>&nbsp;&nbsp;</td></tr>
+		{%else%}
+		<font color="#FF0000">ไม่พบข้อมูลของนักศึกษา</font>
+		ddssdvcxvcxvc
+		{%endif%}
+		{%endfor%}
+		</table>
+		<br><br><br>
+		&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp;&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp;
+		<input type="submit" class="btn btn-success" value="กลับ">
+		<br><br><br><br>
+	</form>
+</body>
+{% endblock %}

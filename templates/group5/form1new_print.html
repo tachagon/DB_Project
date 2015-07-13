@@ -125,8 +125,12 @@ body{
 			</br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			ข้าพเจ้า {{prefix_name1}} {{currentUser.firstname_th}} {{currentUser.lastname_th}}</font>
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			รหัสประจำ {{stu.std_id}}</font></br>
-			นักศึกษาชั้นปีที่ {{stuG5.studentYear}}</font>
+			รหัสประจำ {{id_student}}</font></br>
+			{% for b in stuG5 %}
+				{% if b.studentID =  stu.std_id %}
+					นักศึกษาชั้นปีที่ {{b.studentYear}}</font>
+				{% endif %}
+			{% endfor %}
 			&nbsp;&nbsp;มีความประสงค์ขอให้ภาควิชาวิศวกรรมไฟฟ้าและคอมพิวเตอร์ ออกหนังสือ
 				<br>ขอความอนุเคราะห์ฝึกงาน  ตามรายละเอียดดังต่อไปนี้
 			</br>
@@ -134,6 +138,7 @@ body{
 			{% for item in pet %}
 				{% for j in Intern %}
 					{% if item.Internship_id == j.name_Internship %}
+						{% if stu.std_id =  item.studentG5_id%}
 				<tr>
 					<td width="25%">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;เรียน</td>
 					<td>{{item.to}}</font></td>
@@ -144,39 +149,43 @@ body{
 				</tr>
 				<tr>
 					<td width="25%">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ที่อยู่</td>
-					<td>ใส่ข้อมูล{{j.add_Internship}}</td>
+					<td>{{j.add_Internship}}</td>
 				</tr>
 				<tr>
-					<td width="25%">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;โทรศัพท</td>
+					<td width="25%">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;โทรศัพท์</td>
 					<td>{{j.Tel}}
 					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;โทรสาร (FAX)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 					{{j.Fax}}</td>
 				</tr>
-				{% endif %}
-		{% endfor %}
 				<tr>
 					<td colspan="2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ระยะเวลาการฝึกงาน  ตั้งแต่&nbsp;
-					{{item.Date}}</font>
+					{{date_since}}</font>
 					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ถึงวันที่&nbsp;
-					{{item.Date2}}</font>
+					{{date_until}}</font>
 					</td>
 				</tr>
+										{% endif %}
+						{% endif %}
+				{% endfor %}
+			{% endfor %}
+
 			</table>
 			</td>
 		</tr>
+		{% for item in pet %}
 		{% if stu.std_id =  item.studentG5_id%}
 		<tr>
 			<td colspan="2" valign="top" height="10%"></br><u>ทั้งนี้ข้าพเจ้ามีความประสงค์</u></br>
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 				{{send}}</font>
-			</br>จึงเรียนมาเพื่อโปรดพิจารณา
+			<br></br>จึงเรียนมาเพื่อโปรดพิจารณา
 			</td>
 		</tr>
 		{% endif %}
 		{% endfor %}
 		<tr>
-			<td colspan="2" valign="top" align="right"><br>ลงชื่อ  {{currentUser.firstname_th}} {{currentUser.lastname_th}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
-			<br>({{prefix_name1}} {{currentUser.firstname_th}} {{currentUser.lastname_th}})&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<td colspan="2" valign="top" align="right"><br>ลงชื่อ .............................................&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+			<br>(.............................................)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		    <br><br>ผู้ยื่นคำร้อง&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			</td>
 		</tr>
