@@ -2,7 +2,7 @@
 from django.shortcuts import render
 from group4.models import *
 from django.http import HttpResponse,HttpResponseRedirect
-from checkWeb import *
+#from checkWeb import *
 from django.core.urlresolvers import reverse
 from fpdf import FPDF
 from django.utils import timezone
@@ -58,7 +58,8 @@ def adminIndexPage(request): # Method to control and send data to adminIndexPage
         for index in requeststudy:
             month_in_th_child.append(convertTothai(index.dateCommit)) 
         #Tab 2
-        check =  check_update()
+        check=""
+#        check =  check_update()
         if(check =="checkdone"):
             adminTab=1
         getlen = DataFromWeb.objects.all()

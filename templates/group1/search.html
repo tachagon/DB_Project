@@ -143,7 +143,7 @@
 						<option value="12">ธันวาคม</option>
 					</select>
 					&nbsp;&nbsp;<label for="year">ปี พ.ศ.</label>
-					&nbsp;&nbsp;<input type="text" name="year_file" value="{{year_file}}" id="year_file" placeholder="ปี พ.ศ.">
+					&nbsp;&nbsp;<input type="text" name="year_file" value="{{year_file}}" id="year_file" placeholder="ปี พ.ศ." size="14">
 			</div>
 		</div>
 	<!------------------------------------------------------------------------------------------------------------------------------------------------>
@@ -196,9 +196,6 @@
 			
 			<div class="Heading">
 				<div class="Cell">
-					<p>ลำดับที่</p>
-				</div>
-				<div class="Cell">
 					<p>ชื่อเรื่อง</p>
 				</div>
 				<div class="Cell">
@@ -231,18 +228,17 @@
 				<div class="Cell">
 					<p>ดาวน์โหลด</p>
 				</div>
+				{% if user.username == "admin" or user.username == "admin_doc" or user.username == modify.0.username or user.username == modify.1.username %}				
 				<div class="Cell">
 					<p>แก้ไข</p>
 				</div>
+				{% endif %}
 			</div>
 				
 	<!------------------------------------------------------------------------------------------------------------------------------------------------>
 	
 		 	{% for item in documents %}
 			<div class="Row">
-				<div class="Cell" valign="top">					
-					<p><br>{{item.id}}&nbsp;</p>
-				</div>
 				<div class="Cell" valign="top">
 					<p><br>{{item.name}}&nbsp;</p>
 				</div>
@@ -299,8 +295,8 @@
 					<a href="{{item.docfile.url}}" class="postlink" target="_blank" rel="nofollow">	
 						<img src="{% static 'images/download.png' %}" alt="" border="0" /></a>
 				</div>
-				{% if user.username == "admin" or user.username == "admin_doc" or user.username == "Kannekar_Nuchu" or user.username == "Pimruthai_Saikaow" %}
-				<div class="Cell" align="middle" valign="middle"><br>
+				{% if user.username == "admin" or user.username == "admin_doc" or user.username == modify.0.username or user.username == modify.1.username %}
+					<div class="Cell" align="middle" valign="middle"><br>
 					<button type="button" class="btn btn-primary" id="edit" onClick="location.href='/group1/edit_file/{{item.id}}/'">
 						แก้ไข</button>		
 				</div>

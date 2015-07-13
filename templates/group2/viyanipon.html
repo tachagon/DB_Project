@@ -27,13 +27,20 @@
 	background-color:#FFFFFF;
 	}
 
+	
+table{
+    width: 50%;
+    border:3px solid  #3366CC;//blue
+    font:14pt "Angsana New";
+}
+
 .botton1{
     position: absolute;
     left: 346px;
     padding: 10px 10px;
-    background-color: #3366CC;
+    background-color: #A8D9E8;
     text-decoration: none;
-    color: #fff;
+    color: #117777;
     border-radius: 10px;
 }
 
@@ -41,27 +48,17 @@
     position: absolute;
     left: 442px;
     padding: 10px 10px;
-    background-color: #5964ff;
+    background-color: #A8D9E8;
     text-decoration: none;
-    color: #fff;
+    color: #117777;
     border-radius: 10px;
 }
 
 .botton3{
     position: absolute;
-    left: 546px;
+    left: 562px;
     padding: 10px 10px;
-    background-color: #6fa3ff;
-    text-decoration: none;
-    color: #fff;
-    border-radius: 10px;
-}
-
-.botton4{
-    position: absolute;
-    left: 665px;
-    padding: 10px 10px;
-    background-color: #66CCFF;
+    background-color: #00B3EE;
     text-decoration: none;
     color: #fff;
     border-radius: 10px;
@@ -240,7 +237,7 @@
 		<tr>
 			<td></td>
 			<td></td>
-			<td><font color="#FF0000">***หมายเหตุ ***</font></td>
+			<td><font color="#FF0000">***หมายเหตุ  ต้องได้รับอนุมัติหัวข้อวิทยานิพนธ์เเล้วไม่น้อยกว่า  240 วัน ***</font></td>
 			{%endif%}
 			{%endfor%}
 		</tr>
@@ -264,7 +261,7 @@
 		<tr>
 			<td></td>
 			<td></td>
-			<td><font color="#FF0000">***หมายเหตุ ***</font></td>
+			<td><font color="#FF0000">****หมายเหตุ  ต้องได้รับอนุมัติหัวข้อวิทยานิพนธ์เเล้วไม่น้อยกว่า  240 วัน ***</font></td>
 			{%endif%}
 			{%endfor%}
 		</tr>
@@ -274,6 +271,7 @@
 		<input type="submit" class="btn btn-success" value="แก้ไข">
 		<br><br><br><br>
 	</form>
+	{%else%}
 	<center>
 		<h2><font color="#FF0000">สำหรับนักศึกษาปริญญาโทและปริญญาเอกเท่านั้น</font></h2>
 	</center>

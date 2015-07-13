@@ -26,25 +26,17 @@
 	</tr>
 	    <tr>
 	    {% for a in cost%}
-		 {% if forloop.counter|divisibleby:"5" %}
+		 
+		
+		{% if a < 0%}
+		<td><font color="red" size="5" face="Angsana New"><center>{{a}}</center></font></td>
+		{%else%}
+		<td><font size="5" face="Angsana New"><center>{{a}}</center></td>
+	    {%endif%}
+	    {% if forloop.counter|divisibleby:"5" %}
 		    <tr>
 		{% endif%}
-		{% for q in p%}
-	    
-		    {% ifequal forloop.parentloop.counter forloop.counter%}
-			{%ifnotequal q " "%}
-			<td><font size="5" face="Angsana New"><center>{{q}}</center></td>
-		    {%endifnotequal%}		
-		{%endifequal%}
 		{%endfor%}
-	    {%ifnotequal a " "%}
-	    {% if a < 0%}
-	    <td><font color="red" size="5" face="Angsana New"><center>{{a|floatformat:2|intcomma }}</center></font></td>
-	    {%else%}
-	    <td><font size="5" face="Angsana New"><center>{{a|floatformat:2|intcomma }}</center></td>
-	    {%endif%}
-	   {%endifnotequal%}
-	    {%endfor%}
 
 </table>
 &nbsp

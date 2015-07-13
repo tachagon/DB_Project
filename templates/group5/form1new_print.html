@@ -123,7 +123,13 @@ body{
 		<tr>
 			<td colspan="2" valign="top" height="10%">
 			</br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			ข้าพเจ้า {{prefix_name1}} {{currentUser.firstname_th}} {{currentUser.lastname_th}}</font>
+			ข้าพเจ้า
+				{% if currentUser.prefix_name == '0' %}นาย{% endif %}
+				{% if currentUser.prefix_name == '1' %}นาง{% endif %}
+				{% if currentUser.prefix_name == '2' %}นางสาว{% endif %}
+				{% if currentUser.prefix_name == '3' %}ดร.{% endif %}
+				{% if currentUser.prefix_name == '4' %}อาจารย์{% endif %}
+				 {{currentUser.firstname_th}} {{currentUser.lastname_th}}</font>
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			รหัสประจำ {{id_student}}</font></br>
 			{% for b in stuG5 %}
@@ -159,9 +165,36 @@ body{
 				</tr>
 				<tr>
 					<td colspan="2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ระยะเวลาการฝึกงาน  ตั้งแต่&nbsp;
-					{{date_since}}</font>
+					{{date_since|date:"j"}}
+						{% if date_since|date:"m" == '01' %}มกราคม{% endif %}
+						{% if date_since|date:"m" == '02' %}กุมภาพันธ์{% endif %}
+						{% if date_since|date:"m" == '03' %}มีนาคม{% endif %}
+						{% if date_since|date:"m" == '04' %}เมษายน{% endif %}
+						{% if date_since|date:"m" == '05' %}พฤษภาคม{% endif %}
+						{% if date_since|date:"m" == '06' %}มิถุนายน{% endif %}
+						{% if date_since|date:"m" == '07' %}กรกฎาคม{% endif %}
+						{% if date_since|date:"m" == '08' %}สิงหาคม{% endif %}
+						{% if date_since|date:"m" == '09' %}กันยายน{% endif %}
+						{% if date_since|date:"m" == '10' %}ตุลาคม{% endif %}
+						{% if date_since|date:"m" == '11' %}พฤศจิกายน{% endif %}
+						{% if date_since|date:"m" == '12' %}ธันวาคม{% endif %}
+						 {{ date_since|date:"Y"|add:543 }}
+						</font>
 					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ถึงวันที่&nbsp;
-					{{date_until}}</font>
+					{{date_until|date:"j"}}
+						{% if date_until|date:"m" == '01' %}มกราคม{% endif %}
+						{% if date_until|date:"m" == '02' %}กุมภาพันธ์{% endif %}
+						{% if date_until|date:"m" == '03' %}มีนาคม{% endif %}
+						{% if date_until|date:"m" == '04' %}เมษายน{% endif %}
+						{% if date_until|date:"m" == '05' %}พฤษภาคม{% endif %}
+						{% if date_until|date:"m" == '06' %}มิถุนายน{% endif %}
+						{% if date_until|date:"m" == '07' %}กรกฎาคม{% endif %}
+						{% if date_until|date:"m" == '08' %}สิงหาคม{% endif %}
+						{% if date_until|date:"m" == '09' %}กันยายน{% endif %}
+						{% if date_until|date:"m" == '10' %}ตุลาคม{% endif %}
+						{% if date_until|date:"m" == '11' %}พฤศจิกายน{% endif %}
+						{% if date_until|date:"m" == '12' %}ธันวาคม{% endif %}
+						 {{ date_until|date:"Y"|add:543 }}</font>
 					</td>
 				</tr>
 										{% endif %}

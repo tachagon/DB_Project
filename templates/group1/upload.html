@@ -11,26 +11,11 @@
     <li class="active">อัพโหลดเอกสาร</li>
 </ol>
 
-
-
 {% endblock %}
 
 {% block content %}
 
-<!-- User Checker -->
-<!--
-{% for p_item in modify %}
-{% if forloop.counter|divisibleby:2 %}
-	<input name="user_mod_2" value="{{p_item.username}}" id="user_mod_2">user2<br></input>
-{% else %}
-	<input name="user_mod_1" value="{{p_item.username}}" id="user_mod_1">user1<br></input>
-{% endif %}
-{% endfor %}
--->
-
-
-
-{% if user.username == "admin" or user.username == "admin_doc" or user.username == "Kannekar_Nuchu" or user.username == "Pimruthai_Saikaow" %}
+{% if user.username == "admin" or user.username == "admin_doc" or user.username == modify.0.username or user.username == modify.1.username %}
 
 {% load static %}
 
@@ -234,7 +219,7 @@ cells.insertRow
 				});
 				
 				</script>
-					<input id="foo" name="foo" type="text" value="" size="41" disabled>
+					<input id="foo" name="foo" type="text" value="" size="22" disabled>
 					     
 				
 			</div>
@@ -317,7 +302,7 @@ cells.insertRow
 								<TD>
                                   <SELECT name="pers_email[]" onchange="showHide() ">
                                       <option value="" selected><label>กรุณาเลือกบุคลากร</label></option>
-                                      <!--<option value="person_all"><label>เลือกบุคลากรทั้งหมด</label></option>-->
+                                      <!--option value="person_all"><label>เลือกบุคลากรทั้งหมด</label></option-->
 					{% for per in persons %}
                                       <option value="{{per.id}}"><label>{{per.firstname_th}}  {{per.lastname_th}}</label></option>
 					{% endfor %}                                      

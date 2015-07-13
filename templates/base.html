@@ -59,15 +59,18 @@
                             งานสารบัญ<span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu">
-                            {% if user.is_staff or user.username == "admin_doc" or user.username == "Kannekar_Nuchu" or user.username == "Pimruthai_Saikaow" %}
-							    <li><a href="{% url 'group1:add_category' %}">เพิ่มหมวดของเอกสาร</a></li>
-                                <li><a href="{% url 'group1:upload_file' %}">อัพโหลดเอกสาร</a> </li>
-                                <li><a href="{% url 'group1:search_file' %}">ค้นหาเอกสาร</a> </li>
-                                {% if user.is_staff or user.username == "admin_doc" %}
-							        <li><a href="{% url 'group1:add_people' %}">ผู้ดูแลเอกสาร</a></li>
-                                {% endif %}
-                            {% else %}
-                                <li><a href="{% url 'group1:search_file' %}">ค้นหาเอกสาร</a> </li>
+                            {% if user.username == "admin" or user.username == "admin_doc" or user.username == "kaka.kunnikung" or user.username == "pimruthai26" %}
+<!--
+							Have to modify by id of username in table
+-->
+							<li><a href="{% url 'group1:add_category' %}">เพิ่มหมวดของเอกสาร</a></li>
+                            <li><a href="{% url 'group1:upload_file' %}">อัพโหลดเอกสาร</a> </li>
+                            <li><a href="{% url 'group1:search_file' %}">ค้นหาเอกสาร</a> </li>
+                            {% if user.username == "admin" or user.username == "admin_doc" %}
+							<li><a href="{% url 'group1:add_people' %}">ผู้ดูแลเอกสาร</a></li>
+                             {% endif %}
+                             {% else %}
+                            <li><a href="{% url 'group1:search_file' %}">ค้นหาเอกสาร</a> </li>
                             {% endif %}
                         </ul>
                     </li>

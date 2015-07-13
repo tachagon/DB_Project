@@ -187,10 +187,10 @@ def viewrequi(request,pk):
 	stat4=order.status_of_set.all()
 	for r in stat4:
 		id=r.id
-		status4=r.State.encode('utf-8')
+		status4=r.State
 		date4=r.Date
 		moreabout=r.Moreabout
-	if status4 == "ใบเบิกวัสดุ":
+	if status4.encode('utf-8') == "ใบเบิกวัสดุ":
 		req=Requisition.objects.get(Status_of_id=pk)
 		reqid=req.Requisition_Id
 		now=str((date4).day)+"/"+month[(date4).month-1] +"/"+str((date4).year)
@@ -350,14 +350,14 @@ def summarypro(request):#หน้าแสดงรายงานรวม
 		
 	for s in project:#ลูปสำหรับเก็บค่าไปแสดงในหน้าแสดงผล
 		pid=CategoriesProject.objects.get(project_id=s.id)
-		pname.append(s.name_thai)
-		pname.append(str(pid.project_catagories)+str(pid.year)+"-"+str(pid.semester)+"-"+str(pid.number))
-		pname.append(" ")
-		pname.append(" ")
-		summary.append(" ")
-		summary.append(cost[count2])
-		summary.append(costtotal[count2])
-		summary.append(cost[count2]-costtotal[count2])
+		summary.append(s.name_thai)
+		summary.append(str(pid.project_catagories)+str(pid.year)+"-"+str(pid.semester)+"-"+str(pid.number))
+		sum1='{:,.2f}'.format(cost[count2])
+		sum2='{:,.2f}'.format(costtotal[count2])
+		sum3=(cost[count2]-costtotal[count2])
+		summary.append(sum1)
+		summary.append(sum2)
+		summary.append(sum3)
 		count2+=1
 	ordd=Order.objects.all()
 	for s in ordd:
@@ -374,7 +374,7 @@ def summarypro(request):#หน้าแสดงรายงานรวม
 				check-=1
 				if check<0:check=0
 		
-        return render(request, 'group7/sumallproject.html', {'cost':summary,'buy':buy,'check':check,'complete':complete,'p':pname})
+        return render(request, 'group7/sumallproject.html', {'cost':summary,'buy':buy,'check':check,'complete':complete})
 
 def Orderedit(request,pk):
         stu = Order.objects.get(id=pk)

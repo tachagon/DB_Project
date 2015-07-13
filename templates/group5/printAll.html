@@ -94,8 +94,13 @@
                            <tr><td>
             <center>
 
-                <a class="btn btn-primary" href="{% url 'group5:status_printALL' state.studentG5_id %}" style='width:95%'  > <span class="glyphicon glyphicon-primary"></span>
-                    ตรวจสอบแบบคำร้องขอฝึกงาน</a>
+                <form action="/group5/status/printALL/">
+											<input type=hidden name=id value={{state.studentG5_id }}>
+                                        	<button type="submit" class="btn btn-primary" style='width:95%' formtarget="_blank">
+                                                <span class="glyphicon glyphicon-primary"></span>
+                                           ตรวจสอบแบบคำร้องขอฝึกงาน
+                                        	</button>
+										 </form>
             </center>
                                <br>
    </td> </tr>

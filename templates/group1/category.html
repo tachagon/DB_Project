@@ -16,7 +16,7 @@
 
 {% block content %}
 
-{% if user.username == "admin" or user.username == "admin_doc" or user.username == "Kannekar_Nuchu" or user.username == "Pimruthai_Saikaow" %}
+{% if user.username == "admin" or user.username == "admin_doc" or user.username == modify.0.username or user.username == modify.1.username %}
 
 {% load static %}
 
@@ -72,7 +72,6 @@
                         {% csrf_token %}
 							    <table id="category-table" border="1px"  align="center" style="cellpadding:100px">
        <tr bgcolor="#E6E6E6" style="text-align:center;padding-left: 5px;padding-right: 5px">
-			<th style="text-align:center;padding-left: 5px;padding-right: 5px">ลำดับที่</th>
 		   <th style="width:250px;text-align:center;padding-left: 5px;padding-right: 5px">ชื่อหมวดเอกสาร</th>
 		
                 </tr>
@@ -80,7 +79,6 @@
 	<!------------------------------------------------------------------------------------------------------------------------------------------------>
 		{% for item in categories %}
             <tr valign="middle" align = "middle" style="padding-left: 5px;padding-right: 5px">        
-				<td >{{item.id}}&nbsp;</td>
 				<td >{{item.name}}&nbsp;</td>
 			</tr>
                 {% endfor %}

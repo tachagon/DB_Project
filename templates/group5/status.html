@@ -51,9 +51,6 @@ function confirmLeave() {
 							<th>แก้ไขแบบคำร้องขอฝึกงาน</th>
 							{% endif %}
 							<th>พิมพ์แบบคำร้องขอฝึกงาน</th>
-							<!--{% if item.StatusPetition = "ยื่นคำร้อง" or item.StatusPetition = "ไม่ได้รับการอนุมัติเข้าฝึกงาน" %}
-							<th>ลบแบบคำร้องขอฝึกงาน</th>
-							{% endif %}-->
 							{% if item.StatusPetition = "กำลังดำเนินการ" and item.send = "send by student" %}
 							<th>วันที่ต้องไปรับเอกสาร</th>
 							{% endif %}
@@ -66,14 +63,20 @@ function confirmLeave() {
 							{% if stu.std_id =  item.studentG5_id%}
 								<tr>
 	    							<td data-title= 'สถานที่ฝึกงาน'>{{item.Internship_id}}</td>
-	    							<td data-title= 'วันที่ยื่นใบคำร้องขอ'>{{item.created_at}}</td>
+	    							<td data-title= 'วันที่ยื่นใบคำร้องขอ'>{{createdat}}</td>
 	   					 			<td data-title= 'สถานะ'>{{item.StatusPetition}}</td>
 									{% if item.StatusPetition = "ไม่ได้รับการอนุมัติเข้าฝึกงาน" %}
-									<td data-title= 'แก้ไขแบบคำร้องขอฝึกงาน'><a class="btn btn-warning"  href="{% url 'group5:status_edit' stu.std_id %}">ดูฟอร์ม</a></td>
+									<td data-title= 'แก้ไขแบบคำร้องขอฝึกงาน'><a class="btn btn-warning"  href="{% url 'group5:status_edit' stu.std_id %}">แก้ไขแบบคำร้องขอฝึกงาน</a></td>
 									{% endif %}
-									<td data-title= 'พิมพ์แบบคำร้องขอฝึกงาน'><a class="btn btn-info" href="{% url 'group5:status_print' stu.std_id %}">ดูฟอร์ม</a></td>
+									<td data-title= 'พิมพ์แบบคำร้องขอฝึกงาน'><form action="/group5/status/print/">
+											<input type=hidden name=id value={{state.studentG5_id }}>
+                                        	<button type="submit" class="btn btn-primary" style='width:95%' formtarget="_blank">
+                                                <span class="glyphicon glyphicon-primary"></span>
+                                           ตรวจสอบแบบคำร้องขอฝึกงาน
+                                        	</button>
+										 </form></td>
 									{% if item.StatusPetition = "กำลังดำเนินการ" and item.send = "send by student" %}
-										<td data-title= 'วันที่ต้องไปรับเอกสาร'>{{dateShow}}</td>
+										<td data-title= 'วันที่ต้องไปรับเอกสาร'>{{date_end}}</td>
 									{% endif %}
 								 </tr>
 							{% endif %}

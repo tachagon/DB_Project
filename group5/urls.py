@@ -10,20 +10,14 @@ urlpatterns = patterns('',
     url(r'^/company/$', views.table_company , name = 'company'  ),
     #url(r'^/form1/$', views.tablef1_status , name = 'form1'  ),
     url(r'^/addpet/$', views.table_addpet , name = 'addpet'  ),
-#    url(r'^/form4/$', views.tablef4_status , name = 'form4'  ),
-    #vvvvvvvvvvvvvvvvvvvvvv      Add            vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
-    #url(r'^/pdf/$', views.table_pdf , name = 'pdf'  ),
-    #url(r'^/form2/$', views.table_waitPettition , name = 'form2'  ),
-    #url(r'^/form3/$', views.table_Finish , name = 'form3'  ),
-    #url(r'^/form5/$', views.table5_waitPettition , name = 'form5'  ),
-    #url(r'^/delete/(\d+)/$', views.deleteForm, name='status_delete'),
-    url(r'^/status/print/(\d+)$', views.printForm, name='status_print'),
+
+    url(r'^/status/print/$', views.printForm, name='status_print'),
     url(r'^/status/edit/(\d+)$', views.editForm, name='status_edit'),
     #vvvvvvvvvvvvvvvv       new  vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
    # url(r'^/main/$', views.main_dep , name = 'main'  ),
    # url(r'^/main2/$', views.main_dep2 , name = 'main2'  ),
     url(r'^/student1/$', views.main_dep3 , name = 'student1'  ),
-    url(r'^/status/printALL/(\d+)$', views.printForm_ALL, name='status_printALL'),
+    url(r'^/status/printALL/$', views.printForm_ALL, name='status_printALL'),
 
     #-----------------------------------------new aom ------------------------------------------
     url(r'^/mainG5/$', views.table_mainG5 , name = 'mainG5'  ),

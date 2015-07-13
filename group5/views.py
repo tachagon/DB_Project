@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+#-*- coding: utf-8 -*-
 # !/usr/bin/env python
 
 from django.shortcuts import render, render_to_response
@@ -30,11 +30,6 @@ def getUserType(request):
     except:
         return 'admin'
 
-
-# ทำการ split ค่าวันที่พิมพ์แบบคำร้อง ออกมา
-# ทำให้เป็น พ.ศ.
-# นำเอาวัน เดือน ปี ให้อยู่ในรูปแบบ "02 ก.ค. 2558"
-
 def table_status(request):          # เป็นฟังก์ชั่นที่จะส่งค่าต่างๆไปยัง หน้า status.html
     if getUserType(request) == '0':         # ถ้าเป็น User
         date = Date.objects.all()
@@ -55,7 +50,7 @@ def table_status(request):          # เป็นฟังก์ชั่นท
                 year1 = int(year1)  + 543                                               # ทำให้เป็น พ.ศ.
                 date_end = str(day1) + ' '+ name_month[int(month1)-1] + ' ' +str(year1) # นำเอาวัน เดือน ปี ให้อยู่ในรูปแบบ "02 ก.ค. 2558"
             else:
-                date_end=""
+                date_end =""
 
         for item in pet:                                            # for สำหรับ ตาราง StatusPetition
             if item.studentG5_id == stu.std_id:                     # เลือกนักศึกษาที่ login เข้าระบบมา ดูได้จาก CurrentUser.id ซึ่งจะเป็น ลำดับของนักศึกษาที่ทำการลงทะเบียน
@@ -67,8 +62,6 @@ def table_status(request):          # เป็นฟังก์ชั่นท
         return render(request, 'group5/status.html', context)       # จะเรียกหน้า .html แล้วส่งค่า context ไปยังหน้านั้นด้วย
     else:                                                           # ถ้าเป็น admin
         return render(request, 'group5/error.html')                 # จะเรียกหน้า .html
-
-
 
 
 def table_company(request):
@@ -154,8 +147,8 @@ def empty(variable):
         return True
     return False
 
-def printForm(request, pjID):
-
+def printForm(request):
+    pjID = request.GET.get('id', '')
     thisuser = request.user                                     # รับค่า user
     currentUser = UserProfile.objects.get(user=thisuser)        # ดึงตาราง UserProfile โดยดูจากค่า User
     stu = Student.objects.get(userprofile_id=currentUser.id)    # ดึงข้อมูลจากตาราง Student โดยดึงจาก CurrentUser.id ซึ่งจะเป็น ลำดับของนักศึกษาที่ทำการลงทะเบียน
@@ -164,40 +157,51 @@ def printForm(request, pjID):
     pet = StatusPetition.objects.filter(studentG5_id=stuG5)             # ดึงข้อมูลจากตาราง StatusPetition โดยจะดึงจากข้อมูลที่มี id = studentG5
     Intern = Internship.objects.all()                                   # ดึงข้อมูลจากตาราง Internship
 
-    name_month =['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.']
+    #prefix_name1 = ['นาย', 'นาง', 'นางสาว', 'ดร.']
+    #name_month =['มกราคม','กพ','มีค','เมย','พค','มิย','กค','สค','กย','ตค','พย','ธค']
 
-    prefix_name1 = ['นาย', 'นาง', 'นางสาว', 'ดร.']
+
+
 
     date_1 = time.strftime("%x")
     month,day, year = date_1.split("/")
     year = int(year) + 2000 + 543
-    print 'month :' + month
-    print 'int mouth-1 :' +str(int(month)-1)
-    print str(name_month[int(month)-1])
-    date_print = day + " " + name_month[int(month)-1] + " " + str(year)
-    print "stu.std_id :"+str(stu.std_id)
+   # print 'month :' + month
+    #print 'int mouth-1 :' +str(int(month)-1)
+    #print str(name_month[int(month)-1])
+    #date_print = day + " " + str(name_month[int(month)-1]) + " " + str(year)
+    #print "stu.std_id :"+str(stu.std_id)
 
     for item in pet:
         if item.studentG5_id == stu.std_id:
             id_student = stu.std_id[:2]+'-'+ stu.std_id[2:-1] +'-'+stu.std_id[-1:]
+
+            date1 = item.Date
+            date2 = item.Date2
+
+            """
             year1, month1, day1 = str(item.Date).split("-")
             year1 = int(year1) + 543
             date_since = str(day1) + ' '+ name_month[int(month1)-1] + ' ' +str(year1)
+
+
             year2, month2, day2 = str(item.Date2).split("-")
             year2 = int(year2)+ 543
             date_until = str(day2) + ' '+ name_month[int(month2)-1] + ' ' +str(year2)
+            """
+
         if item.send == "send by department":
             send = "- ขอให้ภาควิชาฯ จัดส่งหนังสือขอความอนุเคราะห์ฝึกงานไปตามที่อยู่ข้างบนนี้"
         if item.send == "send by student":
             send = "- ขอรับหนังสืออนุเคราะห์ฝึกงานไปยื่นด้วยตนเอง"
 
     context = {'currentUser': currentUser, 'stu': stu, 'stuG5': stuG5, 'stat': stat, 'pet': pet,
-               'date_print': date_print, 'send': send, 'Intern': Intern,'date_since':date_since,'date_until':date_until,'id_student':id_student,
-               'prefix_name1': prefix_name1[int(currentUser.prefix_name)]}
+               'date_print': date_1, 'send': send, 'Intern': Intern,'date_since':date1,'date_until':date2,'id_student':id_student,
+               }
     return render(request, 'group5/form1new_print.html', context)
 
-def printForm_ALL(request, pjID):
-
+def printForm_ALL(request):
+    pjID = request.GET.get('id', '')
     stuG5 = studentG5.objects.all()
     stu = Student.objects.get(std_id=pjID)
     currentUser = UserProfile.objects.get(user=int(stu.userprofile_id)+1)
@@ -205,36 +209,25 @@ def printForm_ALL(request, pjID):
     stat = StatusPetition.objects.all().aggregate(Max('NoPetition'))
     Intern = Internship.objects.all()
     pet = StatusPetition.objects.filter(studentG5_id=stuG5)
-    name_month =['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.']        #เดือนเป็นภาษาไทย
-
-    prefix_name1 = ['นาย', 'นาง', 'นางสาว', 'ดร.']                        # คำนำหน้าชื่อ
 
     #วันที่ ที่ทำการพิมพ์แบบฟอร์ม
-    date_1 = time.strftime("%x")                                            # รับค่าวันที่มา
-    month,day, year = date_1.split("/")                                     # ทำการ split ค่าวันที่พิมพ์แบบคำร้อง ออกมา
-    year = int(year) + 2000 + 543                                           # ทำให้เป็น พ.ศ.
-    date_print = day + " " + name_month[int(month)-1] + " " + str(year)     # นำเอาวัน เดือน ปี ให้อยู่ในรูปแบบ "02 ก.ค. 2558"
+    date_1 = time.strftime("%x")
+    month,day, year = date_1.split("/")
+    year = int(year) + 2000 + 543
 
     for item in pet:
         if item.studentG5_id == pjID:
             id_student = pjID[:2]+'-'+ pjID[2:-1] +'-'+pjID[-1:]            # ปรับรูปแบบของ id student
-
-            year1, month1, day1 = str(item.Date).split("-")                 # ทำการ split ค่าวันที่ฝึกงาน ตั้งแต่ ออกมา
-            year1 = int(year1) + 543                                        # ทำให้เป็น พ.ศ.
-            date_since = str(day1) + ' '+ name_month[int(month1)-1] + ' ' +str(year1)   # นำเอาวัน เดือน ปี ให้อยู่ในรูปแบบ "02 ก.ค. 2558"
-
-            year2, month2, day2 = str(item.Date2).split("-")                # ทำการ split ค่าวันที่ฝึกงาน ถึง ออกมา
-            year2 = int(year2)+ 543                                         # ทำให้เป็น พ.ศ.
-            date_until = str(day2) + ' '+ name_month[int(month2)-1] + ' ' +str(year2)   # นำเอาวัน เดือน ปี ให้อยู่ในรูปแบบ "02 ก.ค. 2558"
-
+            date1 = item.Date
+            date2 = item.Date2
         if item.send == "send by department":                               #ถ้าค่าของsend มีค่าเท่ากับ "send by department"
             send = "- ขอให้ภาควิชาฯ จัดส่งหนังสือขอความอนุเคราะห์ฝึกงานไปตามที่อยู่ข้างบนนี้"   #จะทำการส่งข้อความไปยังหน้า form1new_print.html
         if item.send == "send by student":                                  #ถ้าค่าของsend มีค่าเท่ากับ "send by student"
             send = "- ขอรับหนังสืออนุเคราะห์ฝึกงานไปยื่นด้วยตนเอง"              #จะทำการส่งข้อความไปยังหน้า form1new_print.html
 
     context = { 'currentUser': currentUser, 'stu': stu,'stuG5': stuG5, 'stat': stat, 'pet': pet,
-               'date_print': date_print, 'send': send, 'Intern': Intern,'date_since':date_since,'date_until':date_until,'id_student':id_student,
-               'prefix_name1': prefix_name1[int(currentUser.prefix_name)]}
+               'date_print': date_1, 'send': send, 'Intern': Intern,'date_since':date1,'date_until':date2,'id_student':id_student,
+               }
     return render(request, 'group5/form1new_print.html', context)           #จะเรียกหน้า .html แล้วส่งค่า context ไปยังหน้านั้นด้วย
 
 
@@ -676,8 +669,8 @@ def table_printAll(request, sid, status):
 
 def upload(request):
     global G_sid, G_status                                          #global variable
-    G_sid = sid                                                     #insert value to G_sid[studentID]
-    G_status = status                                               #insert value to G_statustudentID]
+    sid = G_sid                                                     #insert value to G_sid[studentID]
+    #G_status = status                                               #insert value to G_statustudentID]
     state = StatusPetition.objects.all()                            #create objects StatusPetition[from group5:models.py]
     for i in state:                                                 #loop for each objects in state
         if i.studentG5_id == sid:                                   #if state.studentG5_id = sid

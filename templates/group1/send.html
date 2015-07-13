@@ -21,7 +21,7 @@
 
 {% load static %}
 
-{% if user.username == "admin" or user.username == "admin_doc"%}
+{% if user.username == "admin" or user.username == "admin_doc" or user.username == modify.0.username or user.username == modify.1.username %}
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
 <br>

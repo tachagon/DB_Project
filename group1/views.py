@@ -27,6 +27,7 @@ from login.models import UserProfile
 from group1.forms import DocumentForm
 
 
+
 def upload_file(request):
 
     # Handle file upload
@@ -58,7 +59,7 @@ def upload_file(request):
 	    # Redirect to upload page if category is none
         if category_file == '':
             return render_to_response('group1/upload.html', 
-				{'persons':persons, 'category': category, 'name_file':name_file, 'year_file':year_file,'modify':modify,
+				{'persons':persons, 'category': category, 'name_file':name_file, 'year_file':year_file, 'modify': modify,
                                  'number_file2':number_file2, 'number_file':number_file, 'form':form, 'msg':204 },
                               	context_instance=RequestContext(request))
 
@@ -74,14 +75,14 @@ def upload_file(request):
 				cate = Category.objects.get(name=category_file)
 			except:
 				return render_to_response('group1/upload.html', 
-				{'persons':persons, 'category': category, 'name_file':name_file, 'year_file':year_file,'modify':modify,
+				{'persons':persons, 'category': category, 'name_file':name_file, 'year_file':year_file, 'modify': modify,
                                  'number_file2':number_file2, 'number_file':number_file, 'form':form, 'msg':204 },
                               	context_instance=RequestContext(request))
 				
                 if(Document.objects.filter(year=year_file, number= number_file)):
                     msg = 202
 
-                    return render_to_response('group1/upload.html',{ 'persons': persons, 'category':category, 'modify':modify,
+                    return render_to_response('group1/upload.html',{ 'persons': persons, 'category':category, 'modify': modify,
                                             'name_file':name_file, 'year_file':year_file, 'number_file2':number_file2,
                                             'number_file':number_file, 'msg':msg},context_instance=RequestContext(request))	   
 		
@@ -104,27 +105,27 @@ def upload_file(request):
                 documents = documents.filter(number=number_file)
                 documents = documents.filter(number2=number_file2)
 
-                return render_to_response('group1/search.html', {'form': form,'persons':persons,'modify':modify,
+                return render_to_response('group1/search.html', {'form': form,'persons':persons, 'modify': modify,
 					'category': category, 'name_file':name_file, 'year_file':year_file,
 					'number_file':number_file, 'number_file2':number_file2, 'msg':200, 'documents':documents},
 					context_instance=RequestContext(request))
             except:
 
                 # Redirect to upload page
-                return render_to_response('group1/upload.html', {'form': form,'persons':persons,'modify':modify,
+                return render_to_response('group1/upload.html', {'form': form,'persons':persons, 'modify': modify,
                                           'category': category, 'name_file':name_file, 'year_file':year_file,
                                           'number_file':number_file, 'number_file2':number_file2, 'msg': 201},
                                           context_instance=RequestContext(request))
         else:
             form = DocumentForm()  # A empty, unbound form
-            return render_to_response('group1/upload.html', {'form': form,'persons':persons,'category': category, 'modify':modify,'name_file':name_file,
-                                      'year_file':year_file, 'number_file':number_file, 'number_file2':number_file2, 'msg': 203,
+            return render_to_response('group1/upload.html', {'form': form,'persons':persons,'category': category,'name_file':name_file,
+                                      'year_file':year_file, 'number_file':number_file, 'number_file2':number_file2, 'msg': 203, 'modify': modify,
                                       'error_msg_upload':"***Please select file***"},context_instance=RequestContext(request))	    
 
     form = DocumentForm()  # A empty, unbound form
     # Render list page with the documents and the form
 
-    return render_to_response('group1/upload.html', {'form': form,'persons':persons, 'modify':modify,
+    return render_to_response('group1/upload.html', {'form': form,'persons':persons, 'modify': modify,
                               'category': category},
                               context_instance=RequestContext(request))
 
@@ -137,6 +138,7 @@ def search_file(request):
 
     # Load categories for the list page....
     category = Category.objects.all()
+    modify = Personal.objects.all()
 
     if request.method == 'POST':        
         name_file = request.POST.get('name_file')
@@ -175,10 +177,10 @@ def search_file(request):
             documents = documents.filter(send_status=mail_sended)
         print documents
         return render_to_response('group1/search.html',
-                                  {'documents': documents, 'category': category},
+                                  {'documents': documents, 'modify': modify, 'category': category},
                                    context_instance=RequestContext(request))
     
-    return render_to_response('group1/search.html', {'category': category},
+    return render_to_response('group1/search.html', {'modify': modify, 'category': category},
                               context_instance=RequestContext(request))
 
 ########################################################################################
@@ -188,11 +190,13 @@ def edit_file(request, doc_id):
     categories = Category.objects.all();
     cate = Category.objects.get(id=document.category.id)
     persons = UserProfile.objects.all()
-    return render_to_response('group1/edit.html', {'document': document, 'modify_history': document.document_modify_set.all(), 'categories':categories, 'category_name':cate, 'persons':persons},context_instance=RequestContext(request))
+    modify = Personal.objects.all()
+    return render_to_response('group1/edit.html', {'document': document, 'modify': modify, 'modify_history': document.document_modify_set.all(), 'categories':categories, 'category_name':cate, 'persons':persons},context_instance=RequestContext(request))
 
 def edit_this_file(request):
     categories = Category.objects.all();
     persons = UserProfile.objects.all()
+    modify = Personal.objects.all()
 	
     if request.method == 'POST':
         try:
@@ -220,7 +224,7 @@ def edit_this_file(request):
 		
             if(len(Document.objects.filter(year=document.year, number= number_file))>1):
                 msg = 202
-                return render_to_response('group1/edit.html',{ 'document': document, 'categories':categories, 'cate':cate, 'persons':persons, 'msg':msg, 'modify_history': document.document_modify_set.all()},context_instance=RequestContext(request))
+                return render_to_response('group1/edit.html',{ 'document': document, 'modify': modify, 'categories':categories, 'cate':cate, 'persons':persons, 'msg':msg, 'modify_history': document.document_modify_set.all()},context_instance=RequestContext(request))
 	  
             document.name = name_file
             document.category = cate	   
@@ -250,64 +254,68 @@ def edit_this_file(request):
 
         except:
             msg = 201
-    return render_to_response('group1/edit.html',{ 'document': document, 'categories':categories, 'cate':cate, 'dept_file': dept_file,'persons':persons, 'msg':msg, 'modify_history': document.document_modify_set.all()},context_instance=RequestContext(request))
+    return render_to_response('group1/edit.html',{ 'document': document, 'modify': modify, 'categories':categories, 'cate':cate, 'dept_file': dept_file,'persons':persons, 'msg':msg, 'modify_history': document.document_modify_set.all()},context_instance=RequestContext(request))
 
 ########################################################################################
 
 def send_email(request, doc_id):
 	document = Document.objects.get(id=doc_id)
-	return render_to_response('group1/send.html', {'document': document},context_instance=RequestContext(request))
+	modify = Personal.objects.all()
+	return render_to_response('group1/send.html', {'modify': modify, 'document': document},context_instance=RequestContext(request))
 
 def sender(request):
 	
-    if request.method == 'POST':
-        doc_id = request.POST.get('doc_id')
-        comment = request.POST.get('comment')
-        name_email = request.POST.get('name_email')
-
-        print (comment)
-
-        document = Document.objects.get(id=doc_id)
-        personals = document.userProfile.all()
-        send_to = []
-
-        for per in personals:
-            send_to.append(per.user.email)
-
-        # Build message
-        email = EmailMessage(subject=name_email, body=comment, from_email='documentece01@gmail.com',to=send_to, headers = {'Reply-To': 'documentece01@gmail.com'})
-
-        # Open file
-        attachment = open(u'media/'+document.docfile.name, 'rb')
-
-        # Attach file
-        email.attach("attach_file.pdf", attachment.read(),'application/pdf')
-
-        # Send message with built-in send() method
-        email.send()
+	modify = Personal.objects.all()
+	
+	if request.method == 'POST':
+		doc_id = request.POST.get('doc_id')
+		comment = request.POST.get('comment')
+		name_email = request.POST.get('name_email')
+	
+		print (comment)
+	
+		document = Document.objects.get(id=doc_id)
+		personals = document.userProfile.all()
+		send_to = []
+	
+		for per in personals:
+			send_to.append(per.user.email)
+	
+		# Build message
+		email = EmailMessage(subject=name_email, body=comment, from_email='documentece01@gmail.com',to=send_to, headers = {'Reply-To': 'documentece01@gmail.com'})
+	
+		# Open file
+		attachment = open(u'media/'+document.docfile.name, 'rb')
+	
+		# Attach file
+		email.attach("attach_file.pdf", attachment.read(),'application/pdf')
+	
+		# Send message with built-in send() method
+		email.send()
 
 	document.send_status = 1
 	document.save()
 		
-        return render_to_response('group1/send.html', {'document': document, 'msg': 200} ,
+        return render_to_response('group1/send.html', {'document': document, 'modify': modify, 'msg': 200} ,
                               context_instance=RequestContext(request))    
 
-    return render_to_response('group1/send.html', {'document': document} ,
+	return render_to_response('group1/send.html', {'document': document, 'modify': modify} ,
                               context_instance=RequestContext(request))
 
 ########################################################################################
 
 def add_category(request):
 	categories = Category.objects.all()
+	modify = Personal.objects.all()
 	if request.method == 'POST':
 		category_name = request.POST.get('category_name')
 
 		category = Category(name = category_name)
 		category.save()
 
-		return render_to_response('group1/category.html', {'msg':200, 'category':category, 'categories':categories},
+		return render_to_response('group1/category.html', {'msg':200, 'modify': modify, 'category':category, 'categories':categories},
 							  context_instance=RequestContext(request))        
-	return render_to_response('group1/category.html', {'categories':categories}, context_instance=RequestContext(request))
+	return render_to_response('group1/category.html', {'categories':categories, 'modify': modify}, context_instance=RequestContext(request))
 
 ########################################################################################
 
