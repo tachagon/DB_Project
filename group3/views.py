@@ -1027,7 +1027,6 @@ def hourpdf(request, employeeID, scan_month, scan_year): # use to see working of
             pdf.cell(space, 10, u' ธันวาคม พ.ศ. ' )
         
         pdf.cell(15, 10, u''+ str(543+int(str(working.releaseDate.year))) )
-        print str(working.startTime.minute) +' : '+ str(working.endTime.minute)
         if (str(working.startTime.minute) == '0') and ( str(working.endTime.minute) != '0' ):
             if int(str(working.endTime.minute)) <10:
                 print 'W1'
@@ -1053,31 +1052,7 @@ def hourpdf(request, employeeID, scan_month, scan_year): # use to see working of
                 pdf.cell(30, 10, u''+ str(working.startTime.hour)+':'+'0'+str(working.startTime.minute)+' - '+str(working.endTime.hour)+':'+'0'+str(working.endTime.minute))
             else:
                 pdf.cell(30, 10, u''+ str(working.startTime.hour)+':'+str(working.startTime.minute)+' - '+str(working.endTime.hour)+':'+str(working.endTime.minute))
-        """come_time = str(working.startTime.hour)+':'+str(working.startTime.minute) # time that employee come to work.
-        back_time = str(working.endTime.hour)+':'+str(working.endTime.minute) # time that employee go home
-        if (int(come_time.split(':')[0]) == 12) and ( int(back_time.split(':')[0]) > 12 ):
-            diff_min = int(back_time.split(':')[1]) - 0    # calculate differ value of come_time
-            diff_hour = int(back_time.split(':')[1]) - 13
-        elif (int(come_time.split(':')[0]) < 12) and ( int(back_time.split(':')[0]) == 12 ):
-            diff_min = 0 - int(come_time.split(':')[1])    # calculate differ value of come_time
-            diff_hour = int(back_time.split(':')[0]) - int(come_time.split(':')[0])  # calculate differ value of back_time
-        elif (int(come_time.split(':')[0]) == 12) and ( int(back_time.split(':')[0]) == 12 ):
-            diff_min = 0
-            diff_hour = 0
-        else:
-            diff_min = int(back_time.split(':')[1]) - int(come_time.split(':')[1])    # calculate differ value of come_time
-            diff_hour = int(back_time.split(':')[0]) - int(come_time.split(':')[0])  # calculate differ value of back_time
-        if diff_min < 0:
-            diff_min = 60 + diff_min
-            diff_hour = diff_hour - 1 """
 
-        """
-        try:
-            if (int(back_time.split(':')[0]) > 12):
-                diff_hour = diff_hour - 1
-                print "Diff hour"
-        except:
-            pass"""
         diff_hour = working.get_time_diff().split(':')[0]
         diff_min = working.get_time_diff().split(':')[1]
         diff_min_100 = float(str(diff_min))/60
@@ -1086,21 +1061,11 @@ def hourpdf(request, employeeID, scan_month, scan_year): # use to see working of
         pdf.cell(90, 10, u''+working.note)
         pdf.ln(8)
         payment = payment + (float(str(diff_min_100)[:4]) + float(diff_hour))
-        
-    
-    index_str = 0
-    show_complete_pay = ''
-    for i in str(payment)[:4][::-1]:
-        index_str = index_str + 1
-        if (index_str % 3) == 0:
-            show_complete_pay = ',' + i + show_complete_pay 
-        else:
-            show_complete_pay = i + show_complete_pay 
     
     payment = show_payment * 45.45
     gen_single_text(pdf, 90, u'รวมจำนวนชั่วโมง ' +str(show_payment)+ u' ชั่วโมง') # call spacial funtion to write a text per line.
     gen_single_text(pdf, 94, u'อัตรา 45.45 บาท ชั่วโมง')
-    th_sum_money = u'รวมเป็นเงินทั้งสิ้น ' + "{0:.2f}".format(payment) +u' บาท'
+    th_sum_money = u'รวมเป็นเงินทั้งสิ้น ' + convert(payment) +u' บาท'
     set_center_point(pdf, th_sum_money, 110, 0, 18)
     gen_single_text(pdf, 85, u'(                                     )')
     gen_single_text(pdf, 95, u'ได้ตรวจสอบถูกต้องแล้ว')
@@ -1413,3 +1378,9 @@ def check_user(request):
         return True
     else:
         return False
+    
+import locale
+
+def convert(number):
+    locale.setlocale(locale.LC_ALL, '')
+    return locale.format("%.2f", number, grouping=True)
