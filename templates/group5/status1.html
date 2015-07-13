@@ -46,18 +46,40 @@
                         </tr>
                         <tr>
                             <th>สาขาวิขา</th>
-                            <td>{{info1.main}}</td>
+                            <td>{%if info1.main = '0'%}
+                                Cpr.E
+                                {%elif info1.main = '1'%}
+                                G
+                                {%elif info1.main = '2'%}
+                                U
+                                {%elif info1.main = '3'%}
+                                C
+                                {%endif%}
+                            </td>
                         </tr>
                         <th>ภาควิชา</th>
-                        <td>{{info1.userprofile.department}}</td>
+                        <td>{%if info1.userprofile.department %}
+                        วิศวกรรมไฟฟ้าและคอมพิวเตอร์
+                            {%endif%}
+                        </td>
                         </tr>
                         <tr>
+                            {% if info1.userprofile.faculty = '1'%}
                             <th>คณะ</th>
-                            <td>{{info1.userprofile.faculty}}</td>
+                            <td>วิศวกรรมศาสตร์</td>
+                            {% endif %}
                         </tr>
                         <tr>
                             <th>ระดับการศึกษา</th>
-                            <td>{{info1.degree}}</td>
+
+                            <td>{%if info1.degree = '0' %}
+                            ปริญญาตรี
+                            {%elif info1.degree = '1' %}
+                            ปริญญาโท
+                            {%else%}
+                            ปริญญาเอก
+                            {%endif%}
+                            </td>
                         </tr>
                         <tr>
                             <th>เบอร์โทรศัพท์</th>
@@ -141,71 +163,89 @@
                                 {%endif%}
                             </td>
                         </tr>
-                         <th> กรุณากรอกวันที่ยื่นเอกสาร</th>
+                        <th> กรุณากรอกวันที่ยื่นเอกสาร</th>
                         <td>
                             <form action="/group5/form1/">
-                            <select name="date">
-                                <option value="๑">1</option>
-                                <option value="๒">2</option>
-                                <option value="๓">3</option>
-                                <option value="๔">4</option>
-                                <option value="๕">5</option>
-                                <option value="๖">6</option>
-                                <option value="๗">7</option>
-                                <option value="๘">8</option>
-                                <option value="๙">9</option>
-                                <option value="๑๐">10</option>
-                                <option value="๑๑">11</option>
-                                <option value="๑๒">12</option>
-                                <option value="๑๓">13</option>
-                                <option value="๑๔">14</option>
-                                <option value="๑๕">15</option>
-                                <option value="๑๖">16</option>
-                                <option value="๑๗">17</option>
-                                <option value="๑๘">18</option>
-                                <option value="๑๙">19</option>
-                                <option value="๒๐">20</option>
-                                <option value="๒๑">21</option>
-                                <option value="๒๒">22</option>
-                                <option value="๒๓">23</option>
-                                <option value="๒๔">24</option>
-                                <option value="๒๕">25</option>
-                                <option value="๒๖">26</option>
-                                <option value="๒๗">27</option>
-                                <option value="๒๘">28</option>
-                                <option value="๒๙">29</option>
-                                <option value="๓๐">30</option>
-                                <option value="๓๑">31</option>
-                            </select>
+                                <select name="date">
+                                    <option value="๑">1</option>
+                                    <option value="๒">2</option>
+                                    <option value="๓">3</option>
+                                    <option value="๔">4</option>
+                                    <option value="๕">5</option>
+                                    <option value="๖">6</option>
+                                    <option value="๗">7</option>
+                                    <option value="๘">8</option>
+                                    <option value="๙">9</option>
+                                    <option value="๑๐">10</option>
+                                    <option value="๑๑">11</option>
+                                    <option value="๑๒">12</option>
+                                    <option value="๑๓">13</option>
+                                    <option value="๑๔">14</option>
+                                    <option value="๑๕">15</option>
+                                    <option value="๑๖">16</option>
+                                    <option value="๑๗">17</option>
+                                    <option value="๑๘">18</option>
+                                    <option value="๑๙">19</option>
+                                    <option value="๒๐">20</option>
+                                    <option value="๒๑">21</option>
+                                    <option value="๒๒">22</option>
+                                    <option value="๒๓">23</option>
+                                    <option value="๒๔">24</option>
+                                    <option value="๒๕">25</option>
+                                    <option value="๒๖">26</option>
+                                    <option value="๒๗">27</option>
+                                    <option value="๒๘">28</option>
+                                    <option value="๒๙">29</option>
+                                    <option value="๓๐">30</option>
+                                    <option value="๓๑">31</option>
+                                </select>
                         </td>
                         </tr>
                         <tr>
                             <th>ไฟล์เอกสาร</th>
                             <td>
-                                    <center>
-                                         <input type=hidden name=id value={{sid}}>
-                                        <button type="submit" class="btn btn-info" style='width:100%'  formtarget="_blank">
-                                            <span class="glyphicon glyphicon-print"></span>
-                                            พิมพ์เอกสารขอความอนุเคราะห์นักศึกษาฝึกงาน
-                                        </button>
-                                    </center>
+         <center>
+                                          {%for state in state %}
+                        {%if state.studentG5_id = sid%}
 
-                                </form>
-                                <br>
-
-                                <form action="/group5/accept_trainee_print/">
-
-                                    <center>
-                                        <button type="submit" class="btn btn-info" style='width:100%' formtarget="_blank">
-                                            <span class="glyphicon glyphicon-print"></span> พิมพ์แบบตอบรับนักศึกษาฝึกงาน
-                                        </button>
-                                    </center>
-
-                                </form>
+                                    <a class="btn btn-primary"
+                                       href="{% url 'group5:status_printALL' state.studentG5_id %}" style='width:100%'>
+                                        <span class="glyphicon glyphicon-primary"></span>
+                                        ตรวจสอบแบบคำร้องขอฝึกงาน</a>
+                                    {%endif%}{%endfor%}
+                                </center>
+<br>
 
 
-                            </td>
+                        <center>
+
+                            <input type=hidden name=id value={{sid}}>
+                            <button type="submit" class="btn btn-info" style='width:100%' formtarget="_blank">
+                                <span class="glyphicon glyphicon-print"></span>
+                                พิมพ์เอกสารขอความอนุเคราะห์นักศึกษาฝึกงาน
+                            </button>
+                        </center>
+
+                        </form>
+                        <br>
+
+                        <form action="/group5/accept_trainee_print/">
+
+                            <center>
+                                <button type="submit" class="btn btn-info" style='width:100%' formtarget="_blank">
+                                    <span class="glyphicon glyphicon-print"></span> พิมพ์แบบตอบรับนักศึกษาฝึกงาน
+                                </button>
+                            </center>
+
+                        </form>
+
+
+
+                        </td>
                         </tr>
+
+
+
                         <tr>
                             <th>การแก้ไขข้อมูล</th>
                             <td>แก้ไขข้อมูลล่าสุดเมื่อ <i>{{dFormat}}เวลา {{tFormat}}น.</i></td>
@@ -228,7 +268,7 @@
                                required></p>
 
 
-{%endif%}
+                        {%endif%}
                         <p><font color="red">*<u>หมายเหตุ</u> กรุณาพิมพ์เอกสารให้ครบก่อนคลิกปุ่มอัพเดทสถานะ</font></p>
                         <center>
 

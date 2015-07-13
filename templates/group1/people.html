@@ -1,18 +1,19 @@
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 {% extends "base.html" %}
 
 {% block pageHeader %}
 
+<!------------------------------------------------------------------------------------------------------------------------------------------------>
+<!------ Page Header ------>
+
 <h2>ระบบ<small>งานสารบัญ</small></h2>
 
 <ol class="breadcrumb">
     <li><a href="{% url 'login:menu' %}">เมนู</a></li>
-    <li class="active">เพิ่มผู้ที่ได้รับมอบหมาย</li>
+    <li class="active">ผู้ดูแลเอกสาร</li>
 </ol>
 
-
+<!------------------------------------------------------------------------------------------------------------------------------------------------>
 
 {% endblock %}
 
@@ -22,135 +23,155 @@
 
 {% load static %}
 
-
 <form action="/group1/add_people/" method="post" enctype="multipart/form-data" class="form-horizontal">
 {% csrf_token %}
 <div style="width: auto; margin: 0 auto; padding: 10px 10px 10px;">
+
+<!------------------------------------------------------------------------------------------------------------------------------------------------>
+<!------ Alert Message ------>
+		
+	{% if msg = 200 %}
+	<div class="alert alert-success" role="alert"><strong>แก้ไขสำเร็จ บันทึกเรียบร้อย</strong></div>
+	{% elif msg = 201 %}
+	<div class="alert alert-danger" role="alert"><strong>ไม่สามารถแก้ไขได้</strong></div>
+	{% endif %}
 	
+<!------------------------------------------------------------------------------------------------------------------------------------------------>
+
 		<fieldset>
-          <legend>เพิ่มผู้ได้รับมอบหมาย</legend>
+			<legend>ผู้ดูแลเอกสาร</legend>
 		
-	<!------------------------------------------------------------------------------------------------------------------------------------------------>
-	
-		
-	<!------------------------------------------------------------------------------------------------------------------------------------------------->
-        
-        <div class="form-group">
-			<label for="name" class="col-sm-2 control-label">ชื่อ - นามสกุล<font color = "red">*</font></label> 
-			<div class="col-sm-5">
-				<input type="text" name="t_name_file"  value="{{t_name_file}}" class="form-control" id="name" placeholder="ชื่อ - นามสกุล" required>
-				
-			</div>
-		</div>
-		
-	<!------------------------------------------------------------------------------------------------------------------------------------------------>
-
-		<div class="form-group">
-			<label for="abbName" class="col-sm-2 control-label">ชื่อย่อ<font color = "red">*</font></label> 
-			<div class="col-sm-5">
-				<input type="text" name="t_code_name"  value="{{t_code_name}}" class="form-control" id="title" placeholder="ชื่อย่อ" required>
-				
-			</div>
-		</div>
-		
- 	<!------------------------------------------------------------------------------------------------------------------------------------------------>
-         
-         <div class="form-group">
-			<label for="email" class="col-sm-2 control-label">email<font color = "red">*</font></label> 
-			<div class="col-sm-5">
-				<input type="email" name="email_file"  value="{{email_file}}" class="form-control" id="email" placeholder="Email" required>
-				
-			</div>
-		</div>
-		 
-	<!------------------------------------------------------------------------------------------------------------------------------------------------>
-	
-	<div class="form-group">
-			<label for="title" class="col-sm-2 control-label"></label> 
-			<div class="col-sm-5">
-				<button type="submit" class="btn btn-success" >ยืนยัน</button>
-				
-			</div>
-		</div>
-		 
-	<!------------------------------------------------------------------------------------------------------------------------------------------------>
-	
-	</div>
-	
-
-				
-	<!------------------------------------------------------------------------------------------------------------------------------------------------>
-          		<table id="personal-table" border="1px"  align="center" style="cellpadding:100px">
-       <tr bgcolor="#E6E6E6" style="text-align:center;padding-left: 5px;padding-right: 5px">
+<!------------------------------------------------------------------------------------------------------------------------------------------------>
+<!------ Table (Header) ------>
 			
-		   
-		    <th style="text-align:center;padding-left: 5px;padding-right: 5px">ชื่อย่อ</th>
-		    <th style="width:250px;text-align:center;padding-left: 5px;padding-right: 5px">ชื่อ - นามสกุล</th>
-		    <th style="width:200px;text-align:center;padding-left: 5px;padding-right: 5px">อีเมล</th>
-		{% if user.username == "admin" or user.username == "admin_doc"%}
-			<th style="text-align:center;padding-left: 5px;padding-right: 5px">ลบบุคคล</th>
-		{% endif %}
-		
-                </tr>
+			<div class="form-group">
+			<label for="title" class="col-sm-2 control-label"></label>
+			<div class="col-sm-5">
+			<table id="personal-table" border="1px"  align="left" style="cellpadding:100px" class="TFtable">
+				<tr style="text-align:center;padding-left: 5px;padding-right: 5px">
+					<th style="width:80px;text-align:center;padding-left: 5px;padding-right: 5px">ลำดับที่</th>
+					<th style="width:250px;text-align:center;padding-left: 5px;padding-right: 5px">Username</th>
+					<th style="width:200px;text-align:center;padding-left: 5px;padding-right: 5px">ชื่อ - นามสกุล</th>
+<!--
+					<th style="text-align:center;padding-left: 5px;padding-right: 5px">แก้ไข</th>
+-->
+				</tr>
 				
-	<!------------------------------------------------------------------------------------------------------------------------------------------------>
-		{% for item in persons %}
+<!------------------------------------------------------------------------------------------------------------------------------------------------>
+<!------ Table (Body) ------>
+
+				{% for item in persons %}
                 <tr valign="middle" align = "middle" style="padding-left: 5px;padding-right: 5px">
-             
-
-		    <td >
-		    
-				{{item.code_name}}&nbsp;
-		  
-
-		    </td>
-		    
-		    <td >
-		    
-				{{item.name}}&nbsp;
-		  
-
-		    </td>
-		    
-		    
-		    
-		    <td >
-		   
-				&nbsp;{{item.email}}&nbsp;
-		   
-		    <br>
-		    
-		{% if user.username == "admin" or user.username == "admin_doc"%}
-			
-			<td valign="middle" align = "middle" style="padding-left: 5px;padding-right: 5px;padding-top: 5px;padding-bottom: 5px">
-				&nbsp;<!--button type="button" class="btn btn-danger" id="delete" onClick="location.href='/group1/delete/'" align="middle">ลบ</button-->
-				<button type="button" class="btn btn-danger" id="delete" onClick="location.href='/admin/group1/personal/{{item.code_name}}/delete/'" align="middle">ลบ</button>
-				&nbsp;
-			</td>
-		{% endif %}
-                </tr>
+					<td>{{item.id}}</td>
+					<td>{{item.username}}</td>
+					<td>{{item.name}}</td>
+<!--
+					<td><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal_addModerator">แก้ไข</button></td>
+-->
+				</tr>
                 {% endfor %}
-                
-             </table>  
-				
-	<!------------------------------------------------------------------------------------------------------------------------------------------------>
-                
-               
-            
-	<!--------------------------------------------------------------------------------------------------------------------------------------->
+            </table>
+			</div>
+			</div>
+			
+			<style type="text/css">				
+				.TFtable{
+					<!--width:100%;--> 
+					border-collapse:collapse; 
+					
+				}
+				.TFtable td{ 
+					padding:7px; border:#000000 1px solid;
+				}
+				.TFtable th{ 
+					padding:7px; border:#000000 2px solid;
+					background: #0B4C5F;
+					color: white;
+				}
+				/* provide some minimal visual ACCOMODATION for IE8 and below */
+				.TFtable tr{
+					background: #000000;
+				}
+				/*  Define the background color for all the ODD background rows  */
+				.TFtable tr:nth-child(odd){ 
+					background: #CEECF5;
+				}
+				/*  Define the background color for all the EVEN background rows  */
+				.TFtable tr:nth-child(even){
+					background: #A9D0F5;
+					
+					
+				}
+			</style>
+		 
+<!------------------------------------------------------------------------------------------------------------------------------------------------>
+<!------ Button ------>
 
-	</from>	
-	
+			<div class="form-group">
+				<label for="title" class="col-sm-2 control-label"></label> 
+				<div class="col-sm-5">
+					<button type="button" class="btn btn-primary" onClick="location.href='/menu'">ย้อนกลับ</button>
+				</div>
+			</div>
+		
+<!------------------------------------------------------------------------------------------------------------------------------------------------>
+<!------ Modal Pop-Up ------>
+ 
+		<div class="modal fade" id="modal_addModerator" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+                    <!-- modal header -->
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title">แก้ไขผู้ดูแลเอกสาร</h4>
+                    </div>
+                    <!-- modal body -->
+                    <div class="modal-body">
+                    {% csrf_token %}
+					
+<!------------------------------------------------------------------------------------------------------------------------------------------------>
+<!------ Pop-Up Body ------>
+				{% for p_item in persons %}
+					<div class="form-group">
+							<label for="p_username" class="col-sm-3 control-label">Username</label> 
+							<div class="col-sm-7">
+								<input type="text" name="p_username" value="{{p_item.username}}" class="form-control" id="p_username">
+							</div>
+						</div>
 
+						<div class="form-group">
+							<label for="name" class="col-sm-3 control-label">ชื่อ - นามสกุล</label> 
+							<div class="col-sm-7">
+								<input type="text" name="p_name" value="{{p_item.name}}" class="form-control" id="p_name">
+							</div>
+						</div>
+				<!-- {% endfor %} -->
+					
+<!------------------------------------------------------------------------------------------------------------------------------------------------>
+<!------ Pop-Up Submit ------>
 	
-	
-    <br><br><br><br><br><br><br><br><br><br>
+						<div class="form-group">
+							<label for="title" class="col-sm-3 control-label"></label> 
+							<div class="col-sm-6">
+								<button type="submit" class="btn btn-success">บันทึก</button>
+								<button type="button" class="btn btn-danger" data-dismiss="modal">ยกเลิก</button>
+							</div>
+						</div>
+					
+<!------------------------------------------------------------------------------------------------------------------------------------------------>
 
- {% else %}
-        <div class="alert alert-danger" role="alert"><strong>Warning!</strong> สำหรับเจ้าหน้าที่งานสารบัญ</div>
+					</div>
+				<!-- modal footer -->
+				</div>
+</div>
+</from>	
+
+<!------------------------------------------------------------------------------------------------------------------------------------------------>
+
+{% else %}
+<div class="alert alert-danger" role="alert"><strong>Warning!</strong> สำหรับเจ้าหน้าที่งานสารบัญ</div>
 {% endif %}
 
-
-
 {% endblock %}
-

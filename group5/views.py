@@ -524,12 +524,17 @@ def table_ChangeStatus2(request):
     sid = G_sid                                                     #sid = G_sid
     status = request.GET.get('input2')                              #get status from status2.html in id ='input2'
     state = StatusPetition.objects.all()                            #create objects state from StatusPetition
+    stu = Student.objects.all()                             #create objects Student [from login:models.py]
+    Pro = UserProfile.objects.all()                         #create objects UserProfile [from login:models.py]
+    stuG5 = studentG5.objects.all()                         #create objects StudentG5 [from group5:models.py]
     if empty(status) == False:
         status = status.encode("utf-8", "ignore")                   #encode status
         for i in state:                                             #loop for each objects in state
-            if i.studentG5_id == sid:                               #if state.studentG5_id = sid
+            if i.studentG5_id == sid:                              #if state.studentG5_id = sid
+              #  return render(request, 'group5/error.html')
                 st = StatusPetition.objects.get(studentG5_id=sid)   #create objects st from StatusPetition at studentG5_id=sid[this Student]
                 if status == 'ได้รับการอนุมัติเข้าฝึกงาน':              #if status = 'ได้รับการอนุมัติเข้าฝึกงาน' then save status in table
+                    #return HttpResponseRedirect('/group5/printDocument/')
                     st.StatusPetition = status
                     st.save()
                     return HttpResponseRedirect('/group5/printDocument/')   #Redirect to /group5/printDocument/
@@ -636,8 +641,8 @@ def table_finish(request, sid, status):
 
 def table_printDoc(request):
     global G_sid, G_status                                          #global variable
-    G_sid = sid                                                     #insert value to G_sid[studentID]
-    G_status = status                                               #insert value to G_statustudentID]
+    sid = G_sid                                                     #insert value to G_sid[studentID]
+    #G_status = status                                               #insert value to G_statustudentID]
     if request.user.is_authenticated():                             #for user is authenticated
         if getUserType(request) != '0':                             #if user type don't Student
             estimate = Estimate.objects.all()                       #create objects Estimate[from group5:models.py]
@@ -645,7 +650,7 @@ def table_printDoc(request):
             stu = Student.objects.all()                             #create objects Student [from login:models.py]
             Pro = UserProfile.objects.all()                         #create objects UserProfile [from login:models.py]
             stuG5 = studentG5.objects.all()                         #create objects StudentG5 [from group5:models.py]
-            return render_to_response("group5/PrintDoc.html", {'estimate': estimate,
+            return render_to_response("group5/printDoc.html", {'estimate': estimate,
                                                                 'state': state, 'stu': stu, 'stuG5': stuG5,
                                                                'Pro': Pro, 'sid': sid,},
                                       RequestContext(request))      #render PrintDoc.html

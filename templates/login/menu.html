@@ -13,10 +13,16 @@
                     <h4>ระบบ <small>งานสารบัญ</small></h4>
                 </div>
                 <div class="panel-body">
-                    <a href="{% url 'group1:upload_file' %}">อัพโหลดเอกสาร</a><br>
-                    <a href="{% url 'group1:search_file' %}">ค้นหาเอกสาร</a><br>
-                    <a href="{% url 'group1:add_category' %}">เพิ่มหมวดของเอกสาร</a><br>
-                    <a href="{% url 'group1:add_people' %}">เพิ่มผู้ได้รับมอบหมาย</a><br>
+                    {% if user.is_staff or user.username == "admin_doc" or user.username == "Kannekar_Nuchu" or user.username == "Pimruthai_Saikaow" %}
+					    <a href="{% url 'group1:add_category' %}">เพิ่มหมวดของเอกสาร</a><br>
+        		        <a href="{% url 'group1:upload_file' %}">อัพโหลดเอกสาร</a><br>
+                        <a href="{% url 'group1:search_file' %}">ค้นหาเอกสาร</a><br>
+        		        {% if user.username == "admin" or user.username == "admin_doc" %}
+					        <a href="{% url 'group1:add_people' %}">ผู้ดูแลเอกสาร</a>
+                        {% endif %}
+                    {% else %}
+                        <a href="{% url 'group1:search_file' %}">ค้นหาเอกสาร</a><br>
+                    {% endif %}
                 </div>
             </div>
         </div>

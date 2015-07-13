@@ -1,0 +1,66 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+{% extends "base.html" %}
+
+{% block pageHeader %}
+
+<h2>ระบบ<small>งานสารบัญ</small></h2>
+
+<ol class="breadcrumb">
+    <li><a href="{% url 'login:menu' %}">เมนู</a></li>
+    <li class="active">ลบหมวดของเอกสาร</li>
+</ol>
+
+
+
+{% endblock %}
+
+{% block content %}
+
+
+
+{% load static %}
+
+{% if user.username == "admin" or user.username == "admin_doc"%}
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<div style="width: auto; margin: 0 auto; padding: 10px 10px 10px;">
+<form action="/group1/delete_category/" method="post" enctype="multipart/form-data"enctype="multipart/form-data" class="form-horizontal">
+<legend>ลบหมวดของเอกสาร</legend>
+{% csrf_token %}
+{% if msg = 200 %}
+<div class="alert alert-success" role="alert"><strong>ลบหมวดเอกสารสำเร็จ</strong></div>
+{% elif msg = 201 %}
+<div class="alert alert-danger" role="alert"><strong>ไม่สามารถลบหมวดเอกสารได้</strong></div>
+
+{% endif %}
+<div class="delete" id="delete">
+    <div class="form-group">
+
+	<label for="Title" class="col-sm-2 control-label">เลือกชื่อหมวด:</label>
+	<div class="col-sm-5">
+		<select name="category_id" size="1" lang="th" id="Title2" required>
+			  <option value =""></option>
+			  {% for item in categories %}
+			  <option value = "{{item.id}}">{{item.name}}</option>
+			  {% endfor %}
+		</select>
+	</div>
+
+	<br></br>
+
+	<div class="col-sm-5"></div>
+	
+	<div class="col-sm-10">	
+	<label for="Title" class="col-sm-2 control-label"><button type="submit" class="btn btn-danger" >ลบ</button></label>
+	</div>
+	<input type="hidden" name="doc_id" value="{{document.id}}">
+    </div> 
+</div> 
+</form>
+
+<br>
+
+
+</div>
+{% endif %}
+{% endblock %}

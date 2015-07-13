@@ -4,6 +4,7 @@
 {% block pageHeader %}
 
 <h2>ระบบ<small>งานสารบัญ</small></h2>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 
 <ol class="breadcrumb">
     <li><a href="{% url 'login:menu' %}">เมนู</a></li>
@@ -16,7 +17,20 @@
 
 {% block content %}
 
-{% if user.username == "admin" or user.username == "admin_doc"%}
+<!-- User Checker -->
+<!--
+{% for p_item in modify %}
+{% if forloop.counter|divisibleby:2 %}
+	<input name="user_mod_2" value="{{p_item.username}}" id="user_mod_2">user2<br></input>
+{% else %}
+	<input name="user_mod_1" value="{{p_item.username}}" id="user_mod_1">user1<br></input>
+{% endif %}
+{% endfor %}
+-->
+
+
+
+{% if user.username == "admin" or user.username == "admin_doc" or user.username == "Kannekar_Nuchu" or user.username == "Pimruthai_Saikaow" %}
 
 {% load static %}
 
@@ -66,6 +80,18 @@ cells.insertRow
 <form action="/group1/upload_file/" method="post" enctype="multipart/form-data" class="form-horizontal">
 {% csrf_token %}
 <div style="width: auto; margin: 0 auto; padding: 10px 10px 10px;">
+{% if msg = 200 %}
+<div class="alert alert-success" role="alert"><strong>อัพโหลดข้อมูลสำเร็จ</strong></div>
+{% elif msg = 201 %}
+<div class="alert alert-danger" role="alert"><strong>ไม่สามารถอัพโหลดข้อมูลได้</strong></div>
+{% elif msg = 202 %}
+<div class="alert alert-danger" role="alert"><strong>มีการซ้ำกันของข้อมูลเลขที่รับ/ปีพ.ศ.</strong></div>
+{% elif msg = 203 %}
+<div class="alert alert-danger" role="alert"><strong>กรุณาเลือกเอกสารที่ต้องการอัพโหลด</strong></div>
+{% elif msg = 204 %}
+<div class="alert alert-danger" role="alert"><strong>กรุณาเลือกหมวดของเอกสาร</strong></div>
+{% endif %}
+<input type="hidden" name="user_doc" value="{{user.username}}" />
 	
 		<fieldset>
           <legend>รายละเอียดเอกสาร</legend>
@@ -74,81 +100,142 @@ cells.insertRow
         
         <div class="form-group">
 			<label for="title" class="col-sm-2 control-label">ชื่อเรื่อง<font color = "red">*</font></label> 
-			<div class="col-sm-5">
-				<input type="text" name="name_file"  value="{{name_file}}" class="form-control" id="title" placeholder="ชื่อเรื่อง" required>
-				
+			<div class="col-sm-6">
+				<input type="text" name="name_file" value="{{name_file}}" class="form-control" id="title" placeholder="ชื่อเรื่อง" required>			
 			</div>
 		</div>
 		
 	<!------------------------------------------------------------------------------------------------------------------------------------------------>
-		
 		<div class="form-group">
-			<label for="dept" class="col-sm-2 control-label">หน่วยงาน<font color = "red">*</font></label>
+			<label for="catalogue" class="col-sm-2 control-label">หน่วยงาน<font color = "red">*</font></label>
 			<div class="col-sm-5">
-				<input type="checkbox" name="detail5_file" value="ภายใน" checked="checked"><label>&nbsp;ภายใน&nbsp;</label></input>
-				<input  type="checkbox" name="detail5_file" value="ภายนอก" ><label>&nbsp;ภายนอก&nbsp;</label></input></td>
-				
-                              
-                <script>
-					// the selector will match all input controls of type :checkbox
-					// and attach a click event handler 
-					$("input:checkbox").on('click', function() {
-					 // in the handler, 'this' refers to the box clicked on
-					 var $box = $(this);
-					 if ($box.is(":checked")) {
-					// the name of the box is retrieved using the .attr() method
-					// as it is assumed and expected to be immutable
-					var group = "input:checkbox[name='" + $box.attr("name") + "']";
-					// the checked state of the group/box on the other hand will change
-					// and the current value is retrieved using .prop() method
-					$(group).prop("checked", false);
-					$(group).prop("not checked", false);
-					$box.prop("checked", true);
-					 } 
-					 else {
-					$box.prop("checked", false);
-						
-					 }
-					});
-								
-				</script> 
+					<input type="radio" name="category_name" id="inside" checked required><label>&nbsp;ภายใน</label>
+					<input type="radio" name="category_name" id="outside" value="-" required><label>&nbsp;ภายนอก</label>
 			</div>
+			
+			<script type="text/javascript">
+                   $("#inside").click(function() {
+                        $("#catename").attr("disabled", false);
+                    	document.getElementById('catename').value = ""; 
+                        //$("#category").show(); //To Show the dropdown
+                    });
+                    $("#outside").click(function() {
+                        $("#catename").attr("disabled", true);
+                        document.getElementById('catename').value = "-";                 
+                    });
+			</script>
 		</div>
 		
+		
+	<!------------------------------------------------------------------------------------------------------------------------------------------------>
+		<div class="form-group">
+			<label for="dept_name" class="col-sm-2 control-label">ชื่อหน่วยงาน<font color = "red">*</font></label>
+			<div class="col-sm-6">
+				<input type="text" name="name_dept"  value="{{name_dept}}" class="form-control" id="name_dept" placeholder="ชื่อหน่วยงาน" required>
+			</div>	
+		</div>
+		
+
 	<!------------------------------------------------------------------------------------------------------------------------------------------------>
 		
 				<div class="form-group">
 			<label for="catalogue" class="col-sm-2 control-label">หมวดเอกสาร<font color = "red">*</font></label>
-			<div class="col-sm-5">
-				<select name="category_file" size="1" lang="th" class="form-control">
-					<option value ="{{category_code}}">{{category_name}}</option>
+			<div class="col-sm-6">
+				<input type="text" list="category" class="form-control" placeholder="ชื่อหมวดเอกสาร" id="catename" autocomplete="off" name="category_name" required />
+				<datalist name="category_file" size="1" lang="th" id="category">
+					<option value ="-"></option>
 					{% for item in category %}
-					<option value = "{{item.code_name}}">{{item.name}}</option>
+					<option value = "{{item.name}}">{{item.name}}</option>
 					{% endfor %}
-				</select>
-			</div>
+				</datalist>
+				<!--input type="text" list="category" id="category_list"-->
+			</div>	
 		</div>
 	
 	<!------------------------------------------------------------------------------------------------------------------------------------------------>
 		
 		<div class="form-group">
-			<label for="year" class="col-sm-2 control-label">ปี พ.ศ.<font color = "red">*</font></label>
-			<div class="col-sm-6">
-				<select name="year_file" required>
-				     <option value="{{year_file}}">{{year_file}}</option>
-				     <script>
-				     var myDate = new Date();
-				     for(var i = (myDate.getFullYear() +543); i >= (myDate.getFullYear() +543)-20; i--){
-					  document.write('<option value="'+i+'">'+i+'</option>');
-				     }
-				     </script>
-				</select>
-				
+			<!--label for="year" class="col-sm-2 control-label">ปี พ.ศ.<font color = "red">*</font></label-->
+			<label for="d" class="col-sm-2 control-label">เลขที่รับจากภายนอก<font color = "red">*</font></label>
+			<div class="col-sm-10">
+				<input name="number_file2" type="text" maxlength="20" size="14" value="{{number_file2}}" required></input>
 				&nbsp;&nbsp;<label for="d">เลขที่รับ<font color = "red">*</font> </label>
                         <input name="number_file" type="text" maxlength="10" size="14" value="{{number_file}}" required></input>
-             
-				&nbsp;<label for="d">เลขจากภายนอก<font color = "red">*</font></label>
-                        <input name="number_file2" type="text" maxlength="20" size="14" value="{{number_file2}}" required></input>
+				<!---------------------------------------------------------------------------->
+				<!-- Input date hidden-->
+						<input type="hidden" name="year_file" id="g_year" />
+						<script>
+							var y = new Date();
+							var n = y.getYear()+2443;
+							document.getElementById("g_year").value = n;
+						</script>
+				<!---------------------------------------------------------------------------->
+						<input type="hidden" name="month_file" id="g_month" />
+						<script>
+							var m = new Date();
+							var n = m.getMonth()+1;
+							document.getElementById("g_month").value = n;
+						</script>
+				<!---------------------------------------------------------------------------->
+						<input type="hidden" name="date_file" id="g_day" />
+						<script>
+							var d = new Date();
+							var n = d.getDate();
+							document.getElementById("g_day").value = n;
+						</script>
+                 <!---------------------------------------------------------------------------->
+                 &nbsp;&nbsp;<label for="year">วัน - เวลา </label>
+                  
+                  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+				  
+				  <script>
+					jQuery(document).ready(function() {
+					var foo = jQuery('#foo');
+			  
+					function updateTime() {
+						var now = new Date()
+						var s = now.getSeconds()
+						if(s<10)
+							s = "0" +s
+						else
+							s = s
+						
+						var mi = now.getMinutes()
+							if(mi<10)
+								mi = "0" +mi
+							else
+								mi = mi						
+						var h = now.getHours()
+							if(h<10)
+								h = "0" +h
+							else
+								h = h	
+						var d = now.getDate()
+							if(d<10)
+								d = "0" +d
+							else
+								d = d						
+						var m = now.getMonth()+1
+							if(m<10)
+								m = "0" +m
+							else
+								m = m						
+						var y  = now.getFullYear() +543
+						
+						
+						foo.val(" "+d.toString()+"/"+m.toString()+"/"
+								+y.toString()+" - "+h.toString()+":"+mi.toString()+":"+s.toString());   
+								
+						    
+					}
+				  
+					updateTime();
+					setInterval(updateTime, 1000); // 5 * 1000 miliseconds
+				});
+				
+				</script>
+					<input id="foo" name="foo" type="text" value="" size="41" disabled>
+					     
 				
 			</div>
 		</div>
@@ -171,31 +258,8 @@ cells.insertRow
 		<div class="form-group">
 			<label for="docs" class="col-sm-2 control-label">เอกสารเพื่อ<font color = "red">*</font></label>
 			<div class="col-sm-5">
-				<input type="checkbox"  name="detail1_file" value="ทราบ" checked="checked"><label>&nbsp;ทราบ&nbsp;</label></input>
-                <input  type="checkbox"  name="detail1_file" value="พิจารณา" ><label>&nbsp;พิจารณา&nbsp;</label></input>
-               
-                              
-                <script>
-					// the selector will match all input controls of type :checkbox
-					// and attach a click event handler 
-					$("input:checkbox").on('click', function() {
-					 // in the handler, 'this' refers to the box clicked on
-					 var $box = $(this);
-					 if ($box.is(":checked")) {
-					// the name of the box is retrieved using the .attr() method
-					// as it is assumed and expected to be immutable
-					var group = "input:checkbox[name='" + $box.attr("name") + "']";
-					// the checked state of the group/box on the other hand will change
-					// and the current value is retrieved using .prop() method
-					$(group).prop("checked", false);
-					$(group).prop("not checked", false);
-					$box.prop("checked", true);
-					 } 
-					 else {
-					$box.prop("checked", false);					
-					 }
-					});								
-				</script> 
+				<input type="radio"  name="detail1_file" value="ทราบ" checked="checked">{% if detail1_file == "ทราบ" %}checked{% endif %}<label>&nbsp;ทราบ&nbsp;</label></input>
+                <input  type="radio"  name="detail1_file" value="พิจารณา" >{% if detail1_file == "พิจารณา" %}checked{% endif %}<label>&nbsp;พิจารณา&nbsp;</label></input>                      
 			</div>
 		</div>
 		
@@ -207,10 +271,40 @@ cells.insertRow
 				<input type="hidden" name="detail2_file" value=''>
 				<input type="hidden" name="detail3_file" value=''>
 				<input type="hidden" name="detail4_file" value=''>
-                <input type="checkbox" name="detail2_file" value="ติดประกาศ" ><label>&nbsp;ติดประกาศ&nbsp;</label>  
-                <input type="checkbox" name="detail3_file" value="Facebook"><label>&nbsp;Facebook&nbsp;</label> 
-			    <input type="checkbox" name="detail4_file" value="เว็บไซต์" ><label>&nbsp;เว็บไซต์&nbsp;</label>
+                <input type="radio" class="rad" name="detail2_file" value="ติดประกาศ" >{% if detail2_file == "ติดประกาศ" %}checked{% endif %}<label>&nbsp;ติดประกาศ&nbsp;</label>  
+                <input type="radio" class="rad" name="detail3_file" value="Facebook">{% if detail3_file == "Facebook" %}checked{% endif %}<label>&nbsp;Facebook&nbsp;</label> 
+			    <input type="radio" class="rad" name="detail4_file" value="เว็บไซต์" >{% if detail4_file == "เว็บไซต์" %}checked{% endif %}<label>&nbsp;เว็บไซต์&nbsp;</label>
 			</div>
+			
+			<script>
+				$(document).ready(function () {
+					$("#button").click(function () {
+						// Radios
+						$(".rad:checked").each(function() {
+							console.log("Radio: " + $(this).val());
+						});
+					});
+				})	
+				</script>
+				<script>
+				var allRadios = document.getElementsByClassName('rad');
+				var booRadio;
+				var x = 0;
+				for(x = 0; x < allRadios.length; x++){
+
+						allRadios[x].onclick = function(){
+
+							if(booRadio == this){
+								this.checked = false;
+						booRadio = null;
+							}else{
+							booRadio = this;
+						}
+						};
+
+				}
+
+			</script>
 		</div>
 		
 	<!------------------------------------------------------------------------------------------------------------------------------------------------>
@@ -221,21 +315,20 @@ cells.insertRow
                           <TABLE id="dataTable">
             				<TR>
 								<TD>
-
                                   <SELECT name="pers_email[]" onchange="showHide() ">
                                       <option value="" selected><label>กรุณาเลือกบุคลากร</label></option>
+                                      <!--<option value="person_all"><label>เลือกบุคลากรทั้งหมด</label></option>-->
 					{% for per in persons %}
-                                      <option value="{{per.name}}"><label>{{per.code_name}}  {{per.name}}</label></option>
+                                      <option value="{{per.id}}"><label>{{per.firstname_th}}  {{per.lastname_th}}</label></option>
 					{% endfor %}                                      
-										<!--option value="other"><label>อื่นๆ</label></option-->
-                                  </SELECT>
-                                  
+              
+                                  </SELECT>&nbsp;&nbsp;
                               </TD>
                               
                              
                                <TD>
 								   
-								  &nbsp;&nbsp;<button type="button" class="btn btn-success"  onClick="addRow('dataTable')">เพิ่มผู้ได้รับมอบหมาย&nbsp;&nbsp;</button>&nbsp;</td>
+					<button type="button" class="btn btn-success"  onClick="addRow('dataTable')">เพิ่มผู้ได้รับมอบหมาย&nbsp;&nbsp;</button>&nbsp;</td>
 								  
 								<script>
 									function deleteRow(r) {
@@ -244,21 +337,20 @@ cells.insertRow
 									}
 								</script>
                               </TD>
-                              <td>
-								&nbsp;&nbsp;&nbsp;
-                              
-                              </td>
 
                           </TR>
-                          </fieldset>
-                      </TABLE>
-					  <br>
+				</TABLE>
+                          </fieldset>                   
+	
            
 	
 	</div>
 	</from>	
 
         <tr><td>&nbsp;&nbsp;<button type="submit" class="btn btn-success" >อัพโหลด</button></td></tr>
+
+
+<br> <br> <br> <br> <br> <br> <br> <br><br> <br> <br> <br> <br> <br> <br> <br><br>
         
        
         

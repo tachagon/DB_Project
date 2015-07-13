@@ -49,18 +49,40 @@
                         </tr>
                         <tr>
                             <th>สาขาวิขา</th>
-                            <td>{{info1.main}}</td>
+                            <td>{%if info1.main = '0'%}
+                                Cpr.E
+                                {%elif info1.main = '1'%}
+                                G
+                                {%elif info1.main = '2'%}
+                                U
+                                {%elif info1.main = '3'%}
+                                C
+                                {%endif%}
+                            </td>
                         </tr>
                         <th>ภาควิชา</th>
-                        <td>{{info1.userprofile.department}}</td>
+                        <td>{%if info1.userprofile.department %}
+                            วิศวกรรมไฟฟ้าและคอมพิวเตอร์
+                            {%endif%}
+                        </td>
                         </tr>
                         <tr>
+                            {% if info1.userprofile.faculty = '1'%}
                             <th>คณะ</th>
-                            <td>{{info1.userprofile.faculty}}</td>
+                            <td>วิศวกรรมศาสตร์</td>
+                            {% endif %}
                         </tr>
                         <tr>
                             <th>ระดับการศึกษา</th>
-                            <td>{{info1.degree}}</td>
+
+                            <td>{%if info1.degree = '0' %}
+                                ปริญญาตรี
+                                {%elif info1.degree = '1' %}
+                                ปริญญาโท
+                                {%else%}
+                                ปริญญาเอก
+                                {%endif%}
+                            </td>
                         </tr>
                         <tr>
                             <th>เบอร์โทรศัพท์</th>
@@ -74,6 +96,7 @@
 
         {%endif%}
         {%endfor%}
+
 
         <!----------------------- Internship info. --------------------------->
         {% for info2 in state %}
