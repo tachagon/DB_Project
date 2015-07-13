@@ -1028,21 +1028,27 @@ def hourpdf(request, employeeID, scan_month, scan_year): # use to see working of
         
         pdf.cell(15, 10, u''+ str(543+int(str(working.releaseDate.year))) )
         if (str(working.startTime.minute) == '0') and ( str(working.endTime.minute) != '0' ):
-            pdf.cell(30, 10, u''+ str(working.startTime.hour)+':'+'00'+' - '+str(working.endTime.hour)+':'+str(working.endTime.minute))
-        elif (str(working.startTime.minute) != '0') and ( str(working.endTime.minute) == '0' ):
-            pdf.cell(30, 10, u''+ str(working.startTime.hour)+':'+str(working.startTime.minute)+' - '+str(working.endTime.hour)+':'+'00')
+            if int(str(working.endTime.minute) <10):
+                pdf.cell(30, 10, u''+ str(working.startTime.hour)+':0'+str(working.startTime.minute)+' - '+str(working.endTime.hour)+':'+'00')
+            else:
+                pdf.cell(30, 10, u''+ str(working.startTime.hour)+':'+'00'+' - '+str(working.endTime.hour)+':'+str(working.endTime.minute))
+        elif (str(working.startTime.minute) != '0') and (str(working.endTime.minute) == '0'):
+            if int(str(working.startTime.minute) <10 ):
+                pdf.cell(30, 10, u''+ str(working.startTime.hour)+':00'+' - '+str(working.endTime.hour)+':'+'0'+str(working.endTime.minute))
+            else:
+                pdf.cell(30, 10, u''+ str(working.startTime.hour)+':'+str(working.startTime.minute)+' - '+str(working.endTime.hour)+':'+'00')
         elif (str(working.startTime.minute) == '0') and ( str(working.endTime.minute) == '0' ):
             pdf.cell(30, 10, u''+ str(working.startTime.hour)+':'+'00'+' - '+str(working.endTime.hour)+':'+'00')
         else:
-            if (int(str(working.startTime.minute)) < 10) and ( int(str(working.endTime.minute)) >= 10 ):
+            if (int(str(working.startTime.minute)) < 10)and ( int(str(working.endTime.minute)) >= 10 ) :
                 pdf.cell(30, 10, u''+ str(working.startTime.hour)+':'+'0'+str(working.startTime.minute)+' - '+str(working.endTime.hour)+':'+str(working.endTime.minute))
-            elif (int(str(working.endTime.minute)) < 10) and (int(str(working.startTime.minute)) >= 10):
+            elif (int(str(working.startTime.minute)) >= 10)and ( int(str(working.endTime.minute)) < 10 ):
                 pdf.cell(30, 10, u''+ str(working.startTime.hour)+':'+str(working.startTime.minute)+' - '+str(working.endTime.hour)+':'+'0'+str(working.endTime.minute))
             elif ( int(str(working.startTime.minute)) < 10 ) and ( int(str(working.endTime.minute)) < 10 ):
                 pdf.cell(30, 10, u''+ str(working.startTime.hour)+':'+'0'+str(working.startTime.minute)+' - '+str(working.endTime.hour)+':'+'0'+str(working.endTime.minute))
             else:
                 pdf.cell(30, 10, u''+ str(working.startTime.hour)+':'+str(working.startTime.minute)+' - '+str(working.endTime.hour)+':'+str(working.endTime.minute))
-        come_time = str(working.startTime.hour)+':'+str(working.startTime.minute) # time that employee come to work.
+        """come_time = str(working.startTime.hour)+':'+str(working.startTime.minute) # time that employee come to work.
         back_time = str(working.endTime.hour)+':'+str(working.endTime.minute) # time that employee go home
         if (int(come_time.split(':')[0]) == 12) and ( int(back_time.split(':')[0]) > 12 ):
             diff_min = int(back_time.split(':')[1]) - 0    # calculate differ value of come_time
@@ -1058,14 +1064,18 @@ def hourpdf(request, employeeID, scan_month, scan_year): # use to see working of
             diff_hour = int(back_time.split(':')[0]) - int(come_time.split(':')[0])  # calculate differ value of back_time
         if diff_min < 0:
             diff_min = 60 + diff_min
-            diff_hour = diff_hour - 1
-        diff_min_100 = float(str(diff_min))/60
-        
+            diff_hour = diff_hour - 1 """
+
+        """
         try:
-            if int(back_time.split(':')[0]) > 12:
+            if (int(back_time.split(':')[0]) > 12):
                 diff_hour = diff_hour - 1
+                print "Diff hour"
         except:
-            pass
+            pass"""
+        diff_hour = working.get_time_diff().split(':')[0]
+        diff_min = working.get_time_diff().split(':')[1]
+        diff_min_100 = float(str(diff_min))/60
         show_payment = show_payment + ( float(diff_hour)+ (float(diff_min)/100) ) 
         pdf.cell(49, 10, u''+ str(diff_hour)+'.'+str(diff_min))
         pdf.cell(90, 10, u''+working.note)
@@ -1295,7 +1305,7 @@ def returnsearch(request, id, choose_month=0, choose_year=0):
     template = "group3/hour_profile.html"
     context = {}
     worker = HourlyEmployee.objects.get(id=int(id))
-    ListWork = worker.work_set.all().order_by('id')
+    ListWork = worker.work_set.all().order_by('-id')
     ##################### scan_time   ############################
     if (int(choose_month) != 0) and (int(choose_year) != 0):
         month_now = int(choose_month)

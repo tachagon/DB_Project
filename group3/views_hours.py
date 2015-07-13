@@ -29,7 +29,7 @@ def add_work(request, employeeID):
         elif (int(startTime_hour) == int(endTime_hour)) and ( int(startTime_minute) == int(endTime_minute) ):
             context['error'] = "เวลาเริ่มงานไม่ถูกต้อง"
             return render(request, template, context)
-        
+
         startTime = str(startTime_hour + ":" + startTime_minute + ":00")
         endTime   = str(endTime_hour   + ":" + endTime_minute   + ":00")
 

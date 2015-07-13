@@ -125,8 +125,11 @@ class Work(models.Model):
             diff_min = 60 + diff_min
             diff_hour = diff_hour - 1
         try:
-            if int(str(self.endTime.hour)) > 12:
+            if (int(str(self.endTime.hour)) > 12) and (int(str(self.startTime)) !=12):
                 diff_hour = diff_hour - 1
         except:
             pass
-        return str(diff_hour) + ':'+str(diff_min)
+        if (diff_min < 10):
+           return str(diff_hour) + ':0'+str(diff_min)
+        else:
+            return str(diff_hour) + ':'+str(diff_min)
