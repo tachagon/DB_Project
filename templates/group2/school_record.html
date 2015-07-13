@@ -37,7 +37,7 @@
 
 	</style>
 	<center>
-		<p></p><br><b>เลขประจำตัว&nbsp&nbsp&nbsp&nbsp</b>{{ studentObj.std_id }}&nbsp&nbsp&nbsp&nbsp<b>ชื่อ&nbsp&nbsp&nbsp&nbsp</b>{{ studentObj.userprofile }}
+		<p></p><br><b>เลขประจำตัว&nbsp&nbsp&nbsp&nbsp</b>{{ studentObj.std_id }}&nbsp&nbsp&nbsp&nbsp<b>ชื่อ&nbsp&nbsp&nbsp&nbsp</b>{{ studentObj.userprofile.firstname_th }} {{studentObj.userprofile.lastname_th}}
 		<br><b>สาขา&nbsp&nbsp&nbsp&nbsp</b>
 		<script>
 		x = {{ studentObj.main }}
@@ -74,17 +74,47 @@
 			document.write('วิศวกรรมศาสตร์')
 		}
 		</script>
-		<br><br><FONT COLOR=#FF0000>*** ข้อมูลผลการเรียนอย่างไม่เป็นทางการ ***</FONT>
+		
+<p class='info' id='month'></p>
+<p class='info' id='year'></p>
+
+<script>
+var date=new Date()
+var month = date.getMonth()
+month=month+1;
+
+
+if( month==7 || month==8 || month==9 || month==10 || month==11 || month==12   ) {
+    month=1;
+}
+else if(month==1 || month==2 || month==3 || month==4 || month==5 || month==6 ){
+	month=2;
+}
+document.getElementById("month").innerHTML ="ภาคเรียนที่ : "+month;
+
+</script>
+
+<br>
+
+<script>
+var date=new Date()
+var year = date.getFullYear()
+year = year+543
+document.getElementById("year").innerHTML ="ปีการศึกษา : "+year;
+</script>
+
+
+		<br><FONT COLOR=#FF0000>*** ข้อมูลผลการเรียนอย่างไม่เป็นทางการ ***</FONT>
 		<br><br>
 
 
 			
 			
-			{%for i in number_table %}
-			{%if i.std_id.std_id == studentObj.std_id %}
+		
+		
 				
 				<table width="50%"  bgcolor="#336C6C">
-				<tr><td align="center" ><FONT COLOR=#000000><b>ปีการศึกษา&nbsp&nbsp{{i.year}}&nbsp&nbsp&nbsp&nbspภาคการศึกษา&nbsp&nbsp{{i.term}}</b></FONT></td></tr>
+				<tr><td align="center" >&nbsp&nbsp&nbsp&nbspภาคการศึกษา&nbsp&nbsp1</td></tr>
 				</table>		
 
 				
@@ -93,102 +123,47 @@
 					<td align="center" width="5%" bgcolor="#C0C0C0">หน่วยกิต</td>
 					<td align="center" width="5%" bgcolor="#C0C0C0">ตอนเรียน</td>
 					<td align="center" width="5%" bgcolor="#C0C0C0">เกรด</td><tr>
-					{%for j in course %}
-					{%if j.Course_ID == i.Course_ID.Course_ID %}
-						<tr><td align="left" bgcolor="#C0C0C0" width="35%">{{j.Course_Name}}</td>
-						<td align="center" width="5%" bgcolor="#C0C0C0">{{j.Credit}}</td>
+					{%for i in number_table1 %}
+					
+						<tr><td align="left" bgcolor="#C0C0C0" width="35%">{{i.Course_ID.Course_Name}}</td>
+						<td align="center" width="5%" bgcolor="#C0C0C0">{{i.Course_ID.Credit}}</td>
 						<td align="center" width="5%" bgcolor="#C0C0C0">{{i.Section.Section}}</td>
-						<td align="center" width="5%" bgcolor="#C0C0C0">
-								{% if i.Grade == '0' %}
-									&nbsp
-								{% endif %}
-								{% if i.Grade == '1' %}
-									A
-								{% endif %}
-								{% if i.Grade == '2' %}
-									B+
-								{% endif %}
-								{% if i.Grade == '3' %}
-									B
-								{% endif %}
-								{% if i.Grade == '4' %}
-									C+
-								{% endif %}
-								{% if i.Grade == '5' %}
-									C
-								{% endif %}
-								{% if i.Grade == '6' %}
-									D+
-								{% endif %}
-								{% if i.Grade == '7' %}
-									D
-								{% endif %}
-								{% if i.Grade == '8' %}
-									F
-								{% endif %}
-								{% if i.Grade == '9' %}
-									Fa
-								{% endif %}
-								{% if i.Grade == '10' %}
-									Fe
-								{% endif %}
-								{% if i.Grade == '11' %}
-									S
-								{% endif %}
-								{% if i.Grade == '12' %}
-									U
-								{% endif %}
-								{% if i.Grade == '13' %}
-									I
-								{% endif %}
-								{% if i.Grade == '14' %}
-									Ip
-								{% endif %}
-								{% if i.Grade == '15' %}
-									W
-								{% endif %}
-								{% if i.Grade == '16' %}
-									AUD
-								{% endif %}</td></tr>
-					{%endif%}
+						<td align="center" width="5%" bgcolor="#C0C0C0">{{i.Grade}}</td>
+					</tr>
+					
 					{%endfor%}
-					</table>
-					
-					
-					<table width="50%"  bgcolor="#FFFFFF">
-					<tr><td align="center" bgcolor="#C0C0C0" width="8%"></td>
-					<td align="center" width="8%" bgcolor="#C0C0C0">คะเเนนเฉลี่ย</td>
-					<td align="center" width="8%" bgcolor="#C0C0C0">หน่วยกิตที่ลง</td>
-					<td align="center" width="8%" bgcolor="#C0C0C0">หน่วยกิตที่ได้</td>
-					<td align="center" width="18%" bgcolor="#C0C0C0">เเต้มระดับคะเเนน</td></tr>
 
-					<tr><td align="center" bgcolor="#C0C0C0" width="8%">ประจำภาค</td>
-					<td align="center" width="8%" bgcolor="#C0C0C0"></td>
-					<td align="center" width="8%" bgcolor="#C0C0C0"></td>
-					<td align="center" width="8%" bgcolor="#C0C0C0"></td>
-					<td align="center" width="18%" bgcolor="#C0C0C0"></td></tr>
-					
-					<tr><td align="center" bgcolor="#C0C0C0" width="8%">สะสม</td>
-					<td align="center" width="8%" bgcolor="#C0C0C0"></td>
-					<td align="center" width="8%" bgcolor="#C0C0C0"></td>
-					<td align="center" width="8%" bgcolor="#C0C0C0"></td>
-					<td align="center" width="18%" bgcolor="#C0C0C0"></td></tr>
 					</table>
-			 
-			 
+				<br>
+				<br>
+				<br>
+				
+				
+				<table width="50%"  bgcolor="#336C6C">
+				<tr><td align="center" >&nbsp&nbsp&nbsp&nbspภาคการศึกษา&nbsp&nbsp2</td></tr>
+				</table>		
+
+				
 					<table width="50%"  bgcolor="#FFFFFF">
-					<tr><td align="center" bgcolor="#C0C0C0" width="7%">สถานภาพ</td>
-					<td align="center" width="42%" bgcolor="#C0C0C0">ปกติ</td></tr>
+					<tr><td align="center" bgcolor="#C0C0C0" width="35%">ชื่อวิชา</td>
+					<td align="center" width="5%" bgcolor="#C0C0C0">หน่วยกิต</td>
+					<td align="center" width="5%" bgcolor="#C0C0C0">ตอนเรียน</td>
+					<td align="center" width="5%" bgcolor="#C0C0C0">เกรด</td><tr>
+					{%for i in number_table2 %}
+					
+						<tr><td align="left" bgcolor="#C0C0C0" width="35%">{{i.Course_ID.Course_Name}}</td>
+						<td align="center" width="5%" bgcolor="#C0C0C0">{{i.Course_ID.Credit}}</td>
+						<td align="center" width="5%" bgcolor="#C0C0C0">{{i.Section.Section}}</td>
+						<td align="center" width="5%" bgcolor="#C0C0C0">{{i.Grade}}</td>
+					</tr>
+					
+					{%endfor%}
+
 					</table>
-				
-				<br>
-				<br>
-				<br>
-				
-				
-			{%endif%}
-			{%endfor%}
-			
-		</table>
+					<br>
+					<br>
+					<br>
+					
+
 	</center>
 {% endblock %}

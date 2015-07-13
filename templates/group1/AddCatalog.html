@@ -1,0 +1,102 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+{% extends "base.html" %}
+
+{% block pageHeader %}
+
+<h2>ระบบ<small>งานสารบัญ</small></h2>
+
+<ol class="breadcrumb">
+    <li><a href="{% url 'login:menu' %}">เมนู</a></li>
+    <li class="active">เพิ่มหมวดเอกสาร</li>
+</ol>
+
+
+
+{% endblock %}
+
+{% block content %}
+
+{% if user.username == "admin" or user.username == "admin_doc"%}
+
+{% load static %}
+
+    
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+
+<form action="/group1/upload_file/" method="post" enctype="multipart/form-data" class="form-horizontal">
+{% csrf_token %}
+<div style="width: auto; margin: 0 auto; padding: 10px 10px 10px;">
+	
+		<fieldset>
+          <legend>รายละเอียดหมวดเอกสาร</legend>
+		
+		<div class="form-group">
+			<label for="dept" class="col-sm-2 control-label">หน่วยงาน<font color = "red">*</font></label>
+			<div class="col-sm-5">
+				<input type="checkbox" name="detail5_file" value="ภายใน" checked="checked"><label>&nbsp;ภายใน&nbsp;</label></input>
+				<input  type="checkbox" name="detail5_file" value="ภายนอก" ><label>&nbsp;ภายนอก&nbsp;</label></input></td>
+				<font id="choose1" color="red"></font>
+                              
+                <script>
+					// the selector will match all input controls of type :checkbox
+					// and attach a click event handler 
+					$("input:checkbox").on('click', function() {
+					 // in the handler, 'this' refers to the box clicked on
+					 var $box = $(this);
+					 if ($box.is(":checked")) {
+					// the name of the box is retrieved using the .attr() method
+					// as it is assumed and expected to be immutable
+					var group = "input:checkbox[name='" + $box.attr("name") + "']";
+					// the checked state of the group/box on the other hand will change
+					// and the current value is retrieved using .prop() method
+					$(group).prop("checked", false);
+					$(group).prop("not checked", false);
+					$box.prop("checked", true);
+					 } 
+					 /*if($box.is(":!checked")){
+						alert("You must check at least one checkbox.");
+					 }*/
+					 else {
+					$box.prop("checked", false);
+					//alert("You must check at least one checkbox.");
+						document.getElementById("choose1").innerHTML = "กรุณาเลือกอย่างใดอย่างหนึ่ง";
+						
+					 }
+					});
+								
+				</script> 
+			</div>
+		</div>
+		
+		<div class="form-group">
+			<label for="catalogue" class="col-sm-2 control-label">หมวดเอกสาร<font color = "red">*</font></label>
+			<div class="col-sm-5">
+				<select name="category_file" size="1" lang="th" class="form-control">
+					<option value ="{{category_code}}">{{category_name}}</option>
+					{% for item in category %}
+					<option value = "{{item.code_name}}">{{item.name}}</option>
+					{% endfor %}
+				</select>
+			</div>
+			<div class="col-sm-3">
+                    <button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal_addSubject" style="color:green;">
+                        <span class="glyphicon glyphicon-plus"></span>
+                        เพิ่มหมวดเอกสาร
+                    </button>
+            </div>
+		</div>
+		
+</from>	
+
+        <!--&nbsp;&nbsp;<button type="submit" class="btn btn-success">อัพโหลด</button-->
+        
+       
+        
+
+
+ {% else %}
+        <div class="alert alert-danger" role="alert"><strong>Warning!</strong> สำหรับเจ้าหน้าที่งานสารบัญ</div>
+{% endif %}
+
+{% endblock %}
+

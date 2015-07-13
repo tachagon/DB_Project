@@ -32,9 +32,9 @@
     position: absolute;
     left: 346px;
     padding: 10px 10px;
-    background-color: #3366CC;
+    background-color: #A8D9E8;
     text-decoration: none;
-    color: #fff;
+    color: #117777;
     border-radius: 10px;
 }
 
@@ -42,69 +42,59 @@
     position: absolute;
     left: 442px;
     padding: 10px 10px;
-    background-color: #5964ff;
+    background-color: #A8D9E8;
     text-decoration: none;
-    color: #fff;
+    color: #117777;
     border-radius: 10px;
 }
 
 .botton3{
     position: absolute;
-    left: 546px;
+    left: 562px;
     padding: 10px 10px;
-    background-color: #6fa3ff;
-    text-decoration: none;
-    color: #fff;
-    border-radius: 10px;
-}
-
-.botton4{
-    position: absolute;
-    left: 665px;
-    padding: 10px 10px;
-    background-color: #66CCFF;
+    background-color: #00B3EE;
     text-decoration: none;
     color: #fff;
     border-radius: 10px;
 }
 </style>
 
-{% if currentUser.type = "0" %}
-<a href="{% url 'group2:profile' %}" class="botton1">ประวัติส่วนตัว</a>
-<a href="{% url 'group2:data_student' %}" class="botton2">ข้อมูลนักศึกษา</a>
-<a href="{% url 'group2:regis_result' %}" class="botton3">ผลการลงทะเบียน</a>
-<a href="{% url 'group2:viyanipon' %}" class="botton4">การทำวิทยานิพนธ์เเละการสอบวิทยานิพนธ์</a>
-{% endif %}
-{% if currentUser.type != "0" %}
-<a href="{% url 'group2:profile_admin' studentObj.std_id %}" class="botton1">ประวัติส่วนตัว</a>
-<a href="{% url 'group2:data_student_admin' studentObj.std_id %}" class="botton2">ข้อมูลนักศึกษา</a>
-<!--a href="{% url 'group2:regis_result_admin' studentObj.std_id %}" class="botton3">ผลการลงทะเบียน</a-->
-<a href="{% url 'group2:viyanipon_admin' studentObj.std_id %}" class="botton4">การทำวิทยานิพนธ์เเละการสอบวิทยานิพนธ์</a>
-{% endif %}
+<a href="{% url 'group2:profile' %}" class="botton1"> ประวัติส่วนตัว </a>
+<a href="{% url 'group2:regis_result' %}" class="botton2">ผลการลงทะเบียน</a>
+<a href="{% url 'group2:viyanipon' %}" class="botton3">การทำวิทยานิพนธ์เเละการสอบวิทยานิพนธ์</a>
 
 <br>
 <br>
-
-
+<br>
+<center>
+	<!--h1>ViyaniponShow</h1-->
+</center>
 <body>
-	<table align="center" style="width:60%"><!--border="1">-->
-		<form method = "post" action="{% url 'group2:viyaniponshow' %}">
+	{%if studentObj.degree != '0' %}
+	<table align="center" style="width:70%">
+		<form class="form-horizontal" method = "post" action="{% url 'group2:viyaniponshow' %}">
 			{%csrf_token%}
 		<tr>
-			<td></td>
+			<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+			<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+			<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
 			<td>เลขประจำตัว   </td>
 			<td> {{ studentObj.std_id }}  </td>
 		</tr>
 		<tr>
-			<td></td>
-			<td></td>
+			<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+			<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+			<td>&nbsp;&nbsp;</td>
+			<td>ชื่อ - นามสกุล</td>
 			<td>{{ studentObj.userprofile.firstname_th }}&nbsp{{ studentObj.userprofile.lastname_th }}</td>
 		</tr>
 		<tr>
-			<td></td>
+			<td>&nbsp;&nbsp;</td>
+			<td>&nbsp;&nbsp;</td>
+			<td>&nbsp;&nbsp;</td>
 			<td>เรียน</td>
-			<td>
-			<script>
+			<td>	
+			<script>  
 				x = {{ studentObj.degree }}
 				if (x == '1') {
 					document.write('มหาบัณฑิต   :  ปริญญาโท')
@@ -118,12 +108,13 @@
 		{%for i in table_show%}
 		{%if i.teach_name == 'true' and i.std_id == studentObj.std_id %}
 		<tr>
-			<!-------------------------------------------------------------->
-			<td></td>
-			<td>
+			<td>&nbsp;&nbsp;</td>
+			<td>&nbsp;&nbsp;</td>
+			<td>&nbsp;&nbsp;</td>
+			<td><font color="#FFA500">
 				อาจารย์ที่ปรึกษาวิทยานิพนธ์	<!-------------------------------------------------------------->
-			</td>
-			<td>
+			</font></td>
+			<td><font color="#FFA500">
 				{%if i.adviser == '1'%}
 					ศาสตราจารย์  ประยุทธ อัครเอกฒาลิน
 				{%elif i.adviser == '2'%}
@@ -178,12 +169,14 @@
 					อาจารย์  เรวัต  ศิริโภคาภิรมย์
 				{%else%}
 				{%endif%}
-			</td>
-			{%endif%}	<!-------------------------------------------------------------->
-			{%endfor%}
+			</font></td>
 		</tr>
+		{%endif%}	<!-------------------------------------------------------------->
+		{%endfor%}
 		<tr>
-			<td></td>
+			<td><input type="radio" name="teach_name" value="true" required="">Chang  :  </td>
+			<td><input type="radio" name="teach_name" value="" required="">No Chang  :  </td>
+			<td>&nbsp;&nbsp;</td>
 			<td>
 				ตั้งอาจารย์ที่ปรึกษาวิทยานิพนธ์
 			</td>
@@ -221,68 +214,98 @@
 					{%endif%}
 		  		</select>
 			</td>
-
 		</tr>
 		<tr><td>&nbsp;&nbsp;</td></tr>
+		{%for s in table_name%}
+		{%if s.name == 'true' and s.std_id == studentObj.std_id%}
 		<tr>
-			{%for s in table_name%}
-			{%if s.name == 'true' and s.std_id == studentObj.std_id%}	<!-------------------------------------------------------------->
-			<td></td>
-				<td  width="20%" valign="top">วิทยานิพนธ์ เรื่อง</td>	<!-------------------------------------------------------------->
+			<td>&nbsp;&nbsp;</td>
+			<td>&nbsp;&nbsp;</td>
+			<td>&nbsp;&nbsp;</td>
+			<td><font color="#FFA500">วิทยานิพนธ์ เรื่อง</font></td>
+			<td><font color="#FFA500">ชื่อภาษาไทย   {{s.name_thai}}</font></td><!-------------------------------------------------------------->
 		</tr>
 		<tr>
+			<td>&nbsp;&nbsp;</td>
+			<td>&nbsp;&nbsp;</td>
+			<td>&nbsp;&nbsp;</td>
 			<td></td>
-			<td></td>
-			<td>ชื่อภาษาไทย   {{s.name_thai}}</td><!-------------------------------------------------------------->
+			<td><font color="#FFA500">ชื่อภาษาอังกฤษ   {{s.name_eng}}</font></td><!-------------------------------------------------------------->
 		</tr>
+		{%endif%}	<!-------------------------------------------------------------->
+		{%endfor%}
+		<tr><td>&nbsp;&nbsp;</td></tr>
 		<tr>
-			<td></td>
-			<td></td>
-			<td>ชื่อภาษาอังกฤษ   {{s.name_eng}}</td><!-------------------------------------------------------------->
-		</tr>
-			{%endif%}	<!-------------------------------------------------------------->
-			{%endfor%}
-			<tr><td>&nbsp;&nbsp;</td></tr>
-		<tr>
-			{%for j in table_show%}
-			{%if j.adviser != '0' and j.std_id == studentObj.std_id %}
-			<td></td>
+			<td><input type="radio" name="viyanipon_name" value="true" required="">Chang  :  </td>
+			<td><input type="radio" name="viyanipon_name" value="" required="">No Chang  :  </td>
+			<td>&nbsp;&nbsp;</td>
 			<td  width="20%" valign="top">เสนอวิทยานิพนธ์ เรื่อง</td>
 			<td><textarea name="name_thai" cols="60" rows="2" placeholder="ชื่อภาษาไทย"></textarea></td>
 		</tr>
 		<tr>
 			<td valign="top">&nbsp;</td>
+			<td>&nbsp;&nbsp;</td>
+			<td>&nbsp;&nbsp;</td>
 			<td></td>
 			<td><textarea name="name_eng" cols="60" rows="2" placeholder="ชื่อภาษาอังกฤษ"></textarea></td>
 		</tr>
 		<tr>
 			<td></td>
 			<td valign="top">&nbsp;</td>
+			<td>&nbsp;&nbsp;</td>
+			<td>&nbsp;&nbsp;</td>
 			<td><font color="#FF0000">***หมายเหตุ  ต้องลงทะเบียนวิทยานิพนธ์ไม่น้อยกว่า  3  หน่วยกิตในภาคการศึกษานั้น ***</font></td>
-			{%endif%}
-			{%endfor%}
 		</tr>
 		<tr><td>&nbsp;&nbsp;</td></tr>
 		<tr>
 			{%for k in table_project%}
-			{%if k.project_name == 'true' and k.std_id == studentObj.std_id %}	<!-------------------------------------------------------------->
-			<td></td>
-			<td>สอบหัวข้อวิทยานิพนธ์</td>	<!-------------------------------------------------------------->
-			<td>วันที่
+			{%if k.project_name == 'true' and k.std_id == studentObj.std_id %}
+			<td>&nbsp;&nbsp;</td>
+			<td>&nbsp;&nbsp;</td>
+			<td>&nbsp;&nbsp;</td>
+			<td><font color="#FFA500">สอบหัวข้อวิทยานิพนธ์</font></td>	<!-------------------------------------------------------------->
+			<td><font color="#FFA500">
+				วันที่
 		  		{{k.name_day}}	<!-------------------------------------------------------------->
 				เดือน
 		  		{{k.name_month}}	<!-------------------------------------------------------------->
 				ปี
 				{{k.name_year}}
-			</td>
+			</font></td>
 			{%endif%}	<!-------------------------------------------------------------->
 			{%endfor%}
-		</tr>
+		</tr>	
 		<tr>
-			{%for x in table_name%}
-			{%if x.name == 'true' and x.std_id == studentObj.std_id %}	<!-------------------------------------------------------------->
-			<td></td>
+			<td><input type="radio" name="project_name" value="true" required="">Chang  :  </td>
+			<td><input type="radio" name="project_name" value="" required="">No Chang  :  </td>
+			<td>&nbsp;&nbsp;</td>
 			<td>สอบหัวข้อวิทยานิพนธ์</td>
+			<!--td>
+				<!input type="date" name="Date_since" value="{{Date_since}}" class="form-control" placeholder="ตั้งแต่" title="ตั้งแต่"  style='width:200px;' required>
+				<script>
+					<input type='date' >
+					(function(){
+						( "#date" ).datepicker({ changeMonth: true,
+											   changeYear: true,
+											   dateFormat: 'dd-mm-yy', // รูปแบบการแสดงผล วัน-เดือน-ปี
+											   yearRange: '-100:+0',
+											   });
+						});
+				</script>
+				<div class="form-group">
+					<label class="col-sm-3 control-label">เลือกวัน</label>
+					<div class="col-sm-9">
+						<input type="text" name="date" id="date">
+					</div>
+				</div>
+				<!-- save button >
+				<div class="form-group">
+					<label class="col-sm-3 control-label"></label>
+					<div class="col-sm-9">
+						<input type="submit" class="btn btn-success" value="ตกลง"/>
+					</div>
+				</div>
+			</td-->
 			<td>วันที่
 		  		<select name="name_day" id="day">
 					<option value="0">--</option>
@@ -325,37 +348,39 @@
 					<option value="2557">2557</option>
 					<option value="2556">2556</option>
 				</select>
-
+				
 			</td>
 		</tr>
 		<tr>
-			<td></td>
+			<td>&nbsp;&nbsp;</td>
+			<td>&nbsp;&nbsp;</td>
+			<td>&nbsp;&nbsp;</td>
 			<td></td>
 			<td><font color="#FF0000">***หมายเหตุ  ต้องดำเนินการให้แล้วเสร็จภายใน  30  วันหลังจากแต่งตั้งอาจารย์ที่ปรึกษาวิทยานิพนธ์และอนุมัติโครการวิทยานิพนธ์ที่เสนอ ***</font></td>
-			{%endif%}			<!-------------------------------------------------------------->
-			{%endfor%}
 		</tr>
 		<tr><td>&nbsp;&nbsp;</td></tr>
 		<tr>
 			{%for l in table_test%}
-			{%if l.test == 'true' and l.std_id == studentObj.std_id %}	<!-------------------------------------------------------------->
-			<td></td>
-			<td>สอบความก้าวหน้าวิทยานิพนธ์</td>	<!-------------------------------------------------------------->
-			<td>วันที่
+			{%if l.test == 'true' and l.std_id == studentObj.std_id %}
+			<td>&nbsp;&nbsp;</td>
+			<td>&nbsp;&nbsp;</td>
+			<td>&nbsp;&nbsp;</td>
+			<td><font color="#FFA500">สอบความก้าวหน้าวิทยานิพนธ์</font></td>	<!-------------------------------------------------------------->
+			<td><font color="#FFA500">
+				วันที่
 		  		{{l.test_day}}	<!-------------------------------------------------------------->
 				เดือน
 		  		{{l.test_month}}	<!-------------------------------------------------------------->
 				ปี
 				{{l.test_year}}
-			</td>
+			</font></td>
 			{%endif%}	<!-------------------------------------------------------------->
 			{%endfor%}
 		</tr>
-		</table>
-		<table align="center" style="width:60%"><!--border="1">-->
-		<tr>{%for d in table_project%}
-			{%if d.project_name == 'true' and d.std_id == studentObj.std_id%}	<!-------------------------------------------------------------->
-			<td></td>
+		<tr>
+			<td><input type="radio" name="test" value="true" required="">Chang  :  </td>
+			<td><input type="radio" name="test" value="" required="">No Chang  :  </td>
+			<td>&nbsp;&nbsp;</td>
 			<td width="26%">สอบความก้าวหน้าวิทยานิพนธ์&nbsp;</td>
 			<td>
 				วันที่
@@ -403,90 +428,98 @@
 			</td>
 		</tr>
 		<tr>
-			<td></td>
+			<td>&nbsp;&nbsp;</td>
+			<td>&nbsp;&nbsp;</td>
+			<td>&nbsp;&nbsp;</td>
 			<td></td>
 			<td><font color="#FF0000">***หมายเหตุ ***</font></td>
-			{%endif%}	<!-------------------------------------------------------------->
-			{%endfor%}
 		</tr>
 		<tr><td>&nbsp;&nbsp;</td></tr>
 		<tr>
 			{%for m in table_testend%}
-			{%if m.testend == 'true' and m.std_id == studentObj.std_id %}	<!-------------------------------------------------------------->
-			<td></td>
-			<td>สอบป้องกันวิทยานิพนธ์</td>	<!-------------------------------------------------------------->
-			<td>วันที่
+			{%if m.testend == 'true' and m.std_id == studentObj.std_id %}
+			<td>&nbsp;&nbsp;</td>
+			<td>&nbsp;&nbsp;</td>
+			<td>&nbsp;&nbsp;</td>
+			<td><font color="#FFA500">สอบป้องกันวิทยานิพนธ์</font></td>	<!-------------------------------------------------------------->
+			<td><font color="#FFA500">
+				วันที่  
 		  		{{m.testend_day}}    	<!-------------------------------------------------------------->
-				เดือน
+				เดือน  
 		  		{{m.testend_month}}    	<!-------------------------------------------------------------->
-				ปี
+				ปี  
 				{{m.testend_year}}
-			</td>
+			</font></td>
 			{%endif%}	<!-------------------------------------------------------------->
 			{%endfor%}
 		</tr>
+		<tr>
+			<td><input type="radio" name="testend" value="true" required="">Chang  :  </td>
+			<td><input type="radio" name="testend" value="" required="">No Chang  :  </td>
+			<td>&nbsp;&nbsp;</td>
+			<td width="21%">สอบป้องกันวิทยานิพนธ์</td>
+			<td>วันที่
+			<select name="testend_day" id="day">
+				<option value="0">--</option>
+				<option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option>
+				<option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option>
+				<option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option>
+				<option value="13">13</option><option value="14">14</option><option value="15">15</option><option value="16">16</option>
+				<option value="17">17</option><option value="18">18</option><option value="19">19</option><option value="20">20</option>
+				<option value="21">21</option><option value="22">22</option><option value="23">23</option><option value="24">24</option>
+				<option value="25">25</option><option value="26">26</option><option value="27">27</option><option value="28">28</option>
+				<option value="29">29</option><option value="30">30</option><option value="31">31</option>
+			</select>
+			เดือน
+			<select name="testend_month" id="month">
+				<option value="0">-----</option>
+				<option value="มกราคม">มกราคม</option>
+				<option value="กุมภาพันธ์">กุมภาพันธ์</option>
+				<option value="มีนาคม">มีนาคม</option>
+				<option value="เมษายน">เมษายน</option>
+				<option value="พฤษภาคม">พฤษภาคม</option>
+				<option value="มิถุนายน">มิถุนายน</option>
+				<option value="กรกฏาคม">กรกฏาคม</option>
+				<option value="สิงหาคม">สิงหาคม</option>
+				<option value="กันยายน">กันยายน</option>
+				<option value="ตุลาคม">ตุลาคม</option>
+				<option value="พฤศจิกายน">พฤศจิกายน</option>
+				<option value="ธันวาคม">ธันวาคม</option>
+			</select>
+			ปี
+			<select name="testend_year" id="year">
+				<option value="0">----</option>
+				<option value="2565">2565</option>
+				<option value="2564">2564</option>
+				<option value="2563">2563</option>
+				<option value="2562">2562</option>
+				<option value="2561">2561</option>
+				<option value="2560">2560</option>
+				<option value="2559">2559</option>
+				<option value="2558">2558</option>
+				<option value="2557">2557</option>
+				<option value="2556">2556</option>
+			</select>
+			</td>
+		</tr>
+		<tr>
+			<td>&nbsp;&nbsp;</td>
+			<td>&nbsp;&nbsp;</td>
+			<td>&nbsp;&nbsp;</td>
+			<td></td>
+			<td><font color="#FF0000">***หมายเหตุ ***</font></td>
+		</tr>
+		<tr><td>&nbsp;&nbsp;</td></tr>
 		</table>
-		<table align="center" style="width:60%"><!--border="1">-->
-			<tr>{%for e in table_test %}
-				{%if e.test == 'true' and e.std_id == studentObj.std_id %}	<!-------------------------------------------------------------->
-				<td></td>
-				<td width="21%">สอบป้องกันวิทยานิพนธ์</td>
-				<td>วันที่
-				<select name="testend_day" id="day">
-					<option value="0">--</option>
-					<option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option>
-					<option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option>
-					<option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option>
-					<option value="13">13</option><option value="14">14</option><option value="15">15</option><option value="16">16</option>
-					<option value="17">17</option><option value="18">18</option><option value="19">19</option><option value="20">20</option>
-					<option value="21">21</option><option value="22">22</option><option value="23">23</option><option value="24">24</option>
-					<option value="25">25</option><option value="26">26</option><option value="27">27</option><option value="28">28</option>
-					<option value="29">29</option><option value="30">30</option><option value="31">31</option>
-				</select>
-				เดือน
-				<select name="testend_month" id="month">
-					<option value="0">-----</option>
-					<option value="มกราคม">มกราคม</option>
-					<option value="กุมภาพันธ์">กุมภาพันธ์</option>
-					<option value="มีนาคม">มีนาคม</option>
-					<option value="เมษายน">เมษายน</option>
-					<option value="พฤษภาคม">พฤษภาคม</option>
-					<option value="มิถุนายน">มิถุนายน</option>
-					<option value="กรกฏาคม">กรกฏาคม</option>
-					<option value="สิงหาคม">สิงหาคม</option>
-					<option value="กันยายน">กันยายน</option>
-					<option value="ตุลาคม">ตุลาคม</option>
-					<option value="พฤศจิกายน">พฤศจิกายน</option>
-					<option value="ธันวาคม">ธันวาคม</option>
-				</select>
-				ปี
-				<select name="testend_year" id="year">
-					<option value="0">----</option>
-					<option value="2565">2565</option>
-					<option value="2564">2564</option>
-					<option value="2563">2563</option>
-					<option value="2562">2562</option>
-					<option value="2561">2561</option>
-					<option value="2560">2560</option>
-					<option value="2559">2559</option>
-					<option value="2558">2558</option>
-					<option value="2557">2557</option>
-					<option value="2556">2556</option>
-				</select>
-				</td>
-			</tr>
-			<tr>
-				<td></td>
-				<td></td>
-				<td><font color="#FF0000">***หมายเหตุ ***</font></td>
-				{%endif%}	<!-------------------------------------------------------------->
-				{%endfor%}
-			</tr>
-			<tr><td>&nbsp;&nbsp;</td></tr>
-		</table>
-		&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp;
+		<br><br>
+		&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp;&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp;
 		<input type="submit" class="btn btn-success" value="save">
-		<br><br><br><br>
+		<br><br><br><br><br><br><br><br>
 	</form>
+	{%else%}
+	<center>
+		<h2><font color="#FF0000">สำหรับนักศึกษาปริญญาโทและปริญญาเอกเท่านั้น</font></h2>
+	</center>
+	{%endif%}
 </body>
 {% endblock %}

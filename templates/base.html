@@ -59,10 +59,19 @@
                             งานสารบัญ<span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu">
+                            {% if user.username == "admin" or user.username == "admin_doc" or user.username == "kaka.kunnikung" or user.username == "pimruthai26" %}
+<!--
+							Have to modify by id of username in table
+-->
+							<li><a href="{% url 'group1:add_category' %}">เพิ่มหมวดของเอกสาร</a></li>
                             <li><a href="{% url 'group1:upload_file' %}">อัพโหลดเอกสาร</a> </li>
                             <li><a href="{% url 'group1:search_file' %}">ค้นหาเอกสาร</a> </li>
-                            <li><a href="{% url 'group1:add_category' %}">เพิ่มหมวดของเอกสาร</a></li>
-                            <li><a href="{% url 'group1:add_people' %}">เพิ่มผู้ได้รับมอบหมาย</a></li>
+                            {% if user.username == "admin" or user.username == "admin_doc" %}
+							<li><a href="{% url 'group1:add_people' %}">ผู้ดูแลเอกสาร</a></li>
+                             {% endif %}
+                             {% else %}
+                            <li><a href="{% url 'group1:search_file' %}">ค้นหาเอกสาร</a> </li>
+                            {% endif %}
                         </ul>
                     </li>
 
@@ -100,8 +109,8 @@
                             เบิกค่ารักษาพยาบาล<span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a href="#">หน้าหลักของผู้ดูแลระบบ</a></li>
-                            <li><a href="#">หน้าหลักของผู้ใช้งาน</a></li>
+                            <li><a href="{% url 'group4:adminIndexPage' %}">หน้าหลักของผู้ดูแลระบบ</a></li>
+                            <li><a href="{% url 'group4:userPage' %}">หน้าหลักของผู้ใช้งาน</a></li>
                         </ul>
                     </li>
 

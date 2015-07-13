@@ -14,37 +14,40 @@
 
 {% block content %}
 <div class="container-fluid">
-<center><h3>รายการใบสั่งวัสดุภาควิชาวิศวกรรมไฟฟ้าและคอมพิวเตอร์</h3></center>
+<center><font size="7" face="Angsana New"><b>รายการใบสั่งวัสดุภาควิชาวิศวกรรมไฟฟ้าและคอมพิวเตอร์</b></font></center>
 {% if object.order_set.all %}
 	<center>
-	<table border ="1" width="100%">
+	<div class="table-responsive">
+	<table class="table table-striped table-bordered">
 	<tr>
-		<th><center>วัน/เดือน/ปี</center></th>
-		<th><center>ชื่อโครงงาน</center></th>
-		<th><center>ชื่อผู้สั่ง</center></th>
-		<th><center>เลขที่โปรเจ็ค</center></th>
-		<th><center>รายละเอียด</center></th>
-		<th><center>สถานะ</center></th>
-		<th><center>ลบข้อมูล</center></th>
+		<th bgcolor="#E6E6E6"><font size="6" face="Angsana New"><center>วัน/เดือน/ปี</center></th>
+		<th bgcolor="#E6E6E6"><font size="6" face="Angsana New"><center>ชื่อโครงงาน</center></th>
+		<th bgcolor="#E6E6E6"><font size="6" face="Angsana New"><center>ชื่อผู้สั่ง</center></th>
+		<th bgcolor="#E6E6E6"><font size="6" face="Angsana New"><center>เลขที่โครงงาน</center></th>
+		<th bgcolor="#E6E6E6"><font size="6" face="Angsana New"><center>รายละเอียด</center></th>
+		<th bgcolor="#E6E6E6"><font size="6" face="Angsana New"><center>สถานะ</center></th>
+		<th bgcolor="#E6E6E6"><font size="6" face="Angsana New"><center>แก้ไขข้อมูล</center></th>
 	</tr>
 	{% for pay in object.order_set.all %}
-		<tr>	
-			<td><center>{{ pay.Date }}</center></td>
-			<td><center>{{ object.name_thai}}</center></td>
-			<td><center>{{ teacher}}</center></td>
-			<td><center>{{object.id}}</center></td>
-			<td><center><a href="/group7/{{ pay.id }}/orderinfo/">รายละเอียดใบสั่งวัสดุ</a></center></td> 
-			<td><center><a href="/group7/{{ pay.id }}/statusof/">สถานะรายการสั่งวัสดุ</a></center></td>
-			<td><center><a href="/group7/{{ pay.id }}/remove/" style="text-decoration:none"><input type="button" value="ลบข้อมูล" ></a></center></td>
+		<tr>
+		    {%for d in dates%}
+			{% ifequal forloop.parentloop.counter forloop.counter%}
+			<td><font size="5" face="Angsana New"><center>{{ d }}</center></td>
+			{%endifequal%}
+		    {% endfor %}
+			<td><font size="5" face="Angsana New"><center>{{ object.name_thai}}</center></td>
+			<td><font size="5" face="Angsana New"><center>{{ teacher.firstname_th}}  {{ teacher.lastname_th}}</center></td>
+			<td><font size="5" face="Angsana New"><center>{{pid.project_catagories}}{{pid.year}}-{{pid.semester}}-{{pid.number}}</center></td>
+			<td><center><a href="/group7/{{ pay.id }}/orderinfo/" ><button type="button"class="btn btn-info">รายละเอียดใบสั่งวัสดุ</button></a></center></td> 
+			<td><center><a href="/group7/{{ pay.id }}/statusof/"><button type="button"class="btn btn-info">สถานะรายการสั่งวัสดุ</button></a></center></td>
+			<td><center><a href="/group7/{{ pay.id }}/edit/" ><button type="button"class="btn btn-info">แก้ไข</button></a></center></td>
 		</tr>
 	{% endfor %}
 {% else %}
-	<br><font color="red" size = "5"><center>There are no data available.</center></font>
+	<br><font size="5" face="Angsana New"><center>There are no data available.</center></font>
 {% endif %}
 </table>
-<table border ="0"  width="100%">
-<tr><td><a href="/group7/{{ object.id }}/addorder/" style="text-decoration:none"><input type="button" value="เพิ่มรายการใบสั่งวัสดุ" ></a></td></tr>
-</table>
-<center><a href="/group7Project_Docs/" style="text-decoration:none"><input type="button" value="ย้อนกลับ" ></a></center>
 </center>
+<a href="/group7/{{ object.id }}/addorder/"><button type="button"class="btn btn-success">เพิ่มรายการใบสั่งวัสดุ</button></a>
+<center><a href="/group7Project_Docs/"><button type="button"class="btn btn-danger">ย้อนกลับ</button></a></center>
 {% endblock %}

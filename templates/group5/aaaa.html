@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+
+{% block pageHeader %}
+<ol class="breadcrumb">
+    <meta charset="UTF-8">
+    <li><a href="{% url 'login:menu' %}">เมนู</a></li>
+    <li><a href="{% url 'group5:mainG5' %}">รายชื่อนักศึกษาที่ยื่นเรื่องฝึกงานทั้งหมด</a></li>
+    <li class="active">รายชื่อนักศึกษาทำเรื่องขอความอนุเคราะห์ฝึกงาน</li>
+</ol>
+{% endblock %}
+{% block content %}
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+{%for state in state  %}
+{%if state.studentG5_id = sid%}
+<form action="/group5/form1/">
+    <td><br><br>
+        <center>
+            &nbsp;กรุณากรอกวันที่ยื่นเอกสาร&nbsp;
+            <select name="date">
+		<option value="๑">1</option>
+		<option value="๒">2</option>
+		<option value="๓">3</option>
+		<option value="๔">4</option>
+                <option value="๕">5</option>
+		<option value="๖">6</option>
+		<option value="๗">7</option>
+		<option value="๘">8</option>
+                <option value="๙">9</option>
+		<option value="๑๐">10</option>
+		<option value="๑๑">11</option>
+		<option value="๑๒">12</option>
+                <option value="๑๓">13</option>
+		<option value="๑๔">14</option>
+		<option value="๑๕">15</option>
+		<option value="๑๖">16</option>
+                <option value="๑๗">17</option>
+		<option value="๑๘">18</option>
+		<option value="๑๙">19</option>
+		<option value="๒๐">20</option>
+                <option value="๒๑">21</option>
+		<option value="๒๒">22</option>
+		<option value="๒๓">23</option>
+		<option value="๒๔">24</option>
+                <option value="๒๕">25</option>
+		<option value="๒๖">26</option>
+		<option value="๒๗">27</option>
+		<option value="๒๘">28</option>
+                <option value="๒๙">29</option>
+		<option value="๓๐">30</option>
+		<option value="๓๑">31</option>
+	    </select>
+        </center>
+    </td>
+    <td><br><br>
+        <center>
+            <a class="btn btn-info" href="{% url 'group5:status_printALL' state.studentG5_id %}">พิมพ์แบบคำร้องขอฝึกงาน</a>
+        </center>
+    </td>
+    <td><br><br>
+        <center>
+            <input type=hidden name=id value={{sid}}>
+            <button type="submit" class="btn btn-info" formtarget="_blank">พิมพ์เอกสารขอความอนุเคราะห์นักศึกษาฝึกงาน</button>
+        </center>
+    </td>
+</form>
+
+
+    <td><br><br>
+        <center>
+            <a class="btn btn-info" href="/group5/accept_trainee_print/?id={{sid}}"  target="_blank">พิมพ์แบบตอบรับนักศึกษาฝึกงาน</a>
+        </center>
+    </td>
+
+{%if state.StatusPetition = "เสร็จสิ้น"  or state.StatusPetition = "ได้รับการอนุมัติเข้าฝึกงาน"%}
+<form action="/group5/form2_p/">
+    <td>
+        <center><br><br>
+            <input type=hidden name=id value={{sid}}>
+            <button type="submit" class="btn btn-info" formtarget="_blank">พิมพ์แบบขอส่งตัวนักศึกษาฝึกงาน</button>
+        </center>
+    </td>
+</form>
+<form action="/group5/reporting/">
+    <td>
+        <center><br><br>
+            <button type="submit" class="btn btn-info" formtarget="_blank">พิมพ์แบบรายงานผลการฝึกงาน</button>
+        </center>
+    </td>
+</form>
+
+{%endif%}
+{%endif%}
+{%endfor%}
+<br><br>
+<center><a href="{% url 'group5:mainG5' %}"><input class="btn btn-danger"  type ="button" name="Cancel_status" value="ย้อนกลับ" /></br></a></center>
+</body>
+{% endblock %}
+</html>

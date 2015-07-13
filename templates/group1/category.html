@@ -16,7 +16,7 @@
 
 {% block content %}
 
-{% if user.username == "admin" or user.username == "admin_doc"%}
+{% if user.username == "admin" or user.username == "admin_doc" or user.username == modify.0.username or user.username == modify.1.username %}
 
 {% load static %}
 
@@ -24,55 +24,23 @@
 <form action="/group1/add_category/" method="post" enctype="multipart/form-data" class="form-horizontal">
 {% csrf_token %}
 <div style="width: auto; margin: 0 auto; padding: 10px 10px 10px;">
-	
+		{% if msg = 200 %}
+<div class="alert alert-success" role="alert"><strong>เพิ่มหมวดเอกสารสำเร็จ</strong></div>
+{% elif msg = 201 %}
+<div class="alert alert-danger" role="alert"><strong>ไม่สามารถเพิ่มหมวดเอกสารได้</strong></div>
+{% endif %}
+
 		<fieldset>
           <legend>เพิ่มหมวดของเอกสาร</legend>
 		
 	<!------------------------------------------------------------------------------------------------------------------------------------------------>
 		
-		<div class="form-group">
-			<label for="dept" class="col-sm-2 control-label">หน่วยงาน<font color = "red">*</font></label>
-			<div class="col-sm-5">
-				<input type="checkbox" name="detail5_file" value="ภายใน" checked="checked"><label>&nbsp;ภายใน&nbsp;</label></input>
-				<input  type="checkbox" name="detail5_file" value="ภายนอก" ><label>&nbsp;ภายนอก&nbsp;</label></input></td>
-				<font id="choose3" color="red"></font>
-                              
-                <script>
-					// the selector will match all input controls of type :checkbox
-					// and attach a click event handler 
-					$("input:checkbox").on('click', function() {
-					 // in the handler, 'this' refers to the box clicked on
-					 var $box = $(this);
-					 if ($box.is(":checked")) {
-					// the name of the box is retrieved using the .attr() method
-					// as it is assumed and expected to be immutable
-					var group = "input:checkbox[name='" + $box.attr("name") + "']";
-					// the checked state of the group/box on the other hand will change
-					// and the current value is retrieved using .prop() method
-					$(group).prop("checked", false);
-					$(group).prop("not checked", false);
-					$box.prop("checked", true);
-					document.getElementById("choose3").innerHTML="";
-					 } 
-					
-					 else {
-					$box.prop("checked", false);
-					//alert("You must check at least one checkbox.");
-						document.getElementById("choose3").innerHTML="กรุณาเลือกอย่างใดอย่างหนึ่ง";
-						
-					 }
-					});
-								
-				</script> 
-			</div>
-		</div>
-		
-	<!------------------------------------------------------------------------------------------------------------------------------------------------>
+			<!------------------------------------------------------------------------------------------------------------------------------------------------>
         
         <div class="form-group">
 			<label for="title" class="col-sm-2 control-label">ชื่อหมวดเอกสาร<font color = "red">*</font></label> 
 			<div class="col-sm-5">
-				<input type="text" name="category_name"  value="{{category_name}}" class="form-control" id="title" placeholder="ชื่อหมวดเอกสาร" required>
+				<input type="text" name="category_name" class="form-control" id="title" placeholder="ชื่อหมวดเอกสาร" required>
 				
 			</div>
 		</div>
@@ -83,57 +51,45 @@
 			 <label for="title" class="col-sm-2 control-label"></label>  
 			<div class="col-sm-5">
 				<button type="submit" class="btn btn-success" >ยืนยัน</button>	
+				<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal_addSubject">ตรวจสอบหมวดเอกสาร</button>
 			</div>
 		</div> 
-	
-	</div>
-	
-	    <table id="category-table" border="1px"  align="center" style="cellpadding:100px">
+		
+		<div class="modal fade" id="modal_addSubject" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <!-- Form for add Subject Object -->
+            
+                <div class="modal-content">
+                    <!-- modal header -->
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title">หมวดเอกสาร</h4>
+                    </div>
+                    <!-- modal body -->
+                    <div class="modal-body">
+                        {% csrf_token %}
+							    <table id="category-table" border="1px"  align="center" style="cellpadding:100px">
        <tr bgcolor="#E6E6E6" style="text-align:center;padding-left: 5px;padding-right: 5px">
-			
 		   <th style="width:250px;text-align:center;padding-left: 5px;padding-right: 5px">ชื่อหมวดเอกสาร</th>
-		    <th style="text-align:center;padding-left: 5px;padding-right: 5px">ที่มาของหน่วยงาน</th>
-
-		{% if user.username == "admin" or user.username == "admin_doc"%}
-			<th style="text-align:center;padding-left: 5px;padding-right: 5px">ลบหมวดเอกสาร</th>
-		{% endif %}
 		
                 </tr>
 				
 	<!------------------------------------------------------------------------------------------------------------------------------------------------>
-		{% for item in category %}
-                <tr valign="middle" align = "middle" style="padding-left: 5px;padding-right: 5px">
-             
-
-		    <td >
-		    
-				{{item.name}}&nbsp;
-		  
-
-		    </td>
-		    
-		    <td >
-		    
-				{{item.depart}}&nbsp;
-		  
-
-		    </td>
-		    
-		    
-		{% if user.username == "admin" or user.username == "admin_doc"%}
-			
-			<td valign="middle" align = "middle" style="padding-left: 5px;padding-right: 5px;padding-top: 5px;padding-bottom: 5px">
-				
-				&nbsp;<!--button type="button" class="btn btn-danger" id="delete" onClick="location.href='/group1/delete/'" align="middle">ลบ</button-->
-				<button type="button" class="btn btn-danger" id="delete" onClick="location.href='/admin/group1/category/{{item.code_name}}/delete/'" align="middle">ลบ</button>
-				&nbsp;
-			</td>
-		{% endif %}
-                </tr>
+		{% for item in categories %}
+            <tr valign="middle" align = "middle" style="padding-left: 5px;padding-right: 5px">        
+				<td >{{item.name}}&nbsp;</td>
+			</tr>
                 {% endfor %}
-                
-             </table> 
-             
+			</table> 
+			</div>
+			<!-- modal footer -->
+            </div><!-- end of modal-content -->       
+        </div>
+    </div>
+	
+	</div>
 </from>	
 
         

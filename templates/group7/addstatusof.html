@@ -51,11 +51,11 @@
 		}
 	}
 	</script>
-<h3>เพิ่มเติมสถานะรายการใบสั่งวัสดุภาควิชาวิศวกรรมไฟฟ้าและคอมพิวเตอร์</h3>
+<font size="7" face="Angsana New"><b>เพิ่มเติมสถานะรายการใบสั่งวัสดุภาควิชาวิศวกรรมไฟฟ้าและคอมพิวเตอร์</b></font>
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 <form action="/group7/{{ id }}/addstatusof/" >
 <table border=0>
-    	<b><h4>อัพเดทสถานะปัจจุบัน</h4></b>
+    	<b><font size="6" face="Angsana New">อัพเดทสถานะปัจจุบัน</b></font>
     	<tr><td>
 	<script>
                 $(function(){
@@ -70,8 +70,8 @@
 
             <div class="form-group">
                 <div class="col-sm-9">
-			<tr><td>เลือกวันที่:<td><input type="text" name="date" id="date" value="{{now}}"></tr></td>
-			<tr><td> ขั้นตอน : </td><td><select name="state_status">
+			<tr><td><font size="5" face="Angsana New">เลือกวันที่:<td><input type="text" name="date" id="date" value="{{now}}"></tr></td>
+			<tr><td><font size="5" face="Angsana New"> ขั้นตอน : </td><td><select name="state_status">
 			{% if object == ""%}
 			    <option  type="text" value="วันที่ในการซื้อวัสดุ">วันที่ในการซื้อวัสดุ</option>
 			{%endif%}
@@ -84,7 +84,7 @@
 			{%endif%}
 			
 			</select></td></tr>
-			<tr><td> หมายเหตุ: </td><td><input type="text" name="more"></td></tr>
+			<tr><td><font size="5" face="Angsana New"> หมายเหตุ: </td><td><input type="text" name="more"></td></tr>
                 </div>
             </div>      
 	</td></tr>
@@ -92,12 +92,12 @@
 </table>
 <table border=0>
     {%if object == "ตรวจสอบวัสดุและใบเสร็จ"%}
-	<b><h4>ข้อมูลใบเบิกวัสดุ</h4></b>
-	<tr><td> เลขที่ตามใบส่งของ : </td><td><input type="text" name="requisition_id"></td></tr>
+	<b><font size=6" face="Angsana New">ข้อมูลใบเบิกวัสดุ</b></font>
+	<tr><td><font size="5" face="Angsana New"> เลขที่ตามใบส่งของ : </td><td><input type="text" name="requisition_id" value="None"></td></tr>
     {%endif%}
 </table>
 
-<input type="submit" value="ยืนยัน" /><a href="/group7/{{ id }}/statusof/" style="text-decoration:none"><input type="button" value="ยกเลิก" ></a>
+<button type="submit"class="btn btn-success">ยืนยัน</button>&nbsp<a href="/group7/{{ id }}/statusof/"><button type="button"class="btn btn-danger">ยกเลิก</button></a>
 </form>
 {% endblock %}
 

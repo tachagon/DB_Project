@@ -1,6 +1,6 @@
 
 from django.contrib import admin
-from group1.models import Category, Document, Personal
+from group1.models import Category, Document, Personal, Document_modify
 
 
 class documentAdmin(admin.ModelAdmin):
@@ -10,3 +10,4 @@ class documentAdmin(admin.ModelAdmin):
 admin.site.register(Category)
 admin.site.register(Document, documentAdmin)
 admin.site.register(Personal)
+admin.site.register(Document_modify)

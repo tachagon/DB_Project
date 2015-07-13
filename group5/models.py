@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
+from datetime import datetime
+
 
 # Create your models here.
 class studentG5(models.Model):
@@ -22,21 +24,9 @@ class StatusPetition(models.Model):
     Internship = models.ForeignKey(Internship)
     send = models.CharField(max_length=20)
     to = models.CharField(max_length=100)
+    created_at = models.DateTimeField(auto_now_add=True,auto_now=False)
+    updated_at = models.DateTimeField(auto_now=True)
 
-#3Table
-class accept(models.Model):
-    No_accept = models.IntegerField(primary_key=True,default=0)
-    StatusPetition = models.ForeignKey(StatusPetition)
-    accept_status = models.CharField(max_length=20)
-    Date= models.DateField()
-
-class Event(models.Model):
-    NoEvent = models.IntegerField(primary_key=True,default=0)
-    stuID = models.CharField(max_length=13)
-    Event = models.IntegerField(default=0)
-    Date_now= models.DateField()
-    Date_acc= models.DateField()
-    
 class Estimate(models.Model):
     studentID = models.CharField(primary_key=True,max_length=13)
     image_estimate = models.ImageField(upload_to = "group5/image_estimate")

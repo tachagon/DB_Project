@@ -34,14 +34,13 @@ table{
     font:14pt "Angsana New";
 }
 
-
 .botton1{
     position: absolute;
     left: 346px;
     padding: 10px 10px;
     background-color: #00B3EE;
     text-decoration: none;
-    color: #fff;
+    color: #117777;
     border-radius: 10px;
 }
 
@@ -55,36 +54,36 @@ table{
     border-radius: 10px;
 }
 
-.botton3{
+.botton21{
     position: absolute;
-    left: 546px;
+    left: 442px;
     padding: 10px 10px;
-    background-color: #A8D9E8;
+    background-color: #00B3EE;
     text-decoration: none;
     color: #117777;
     border-radius: 10px;
 }
-
-.botton4{
+.botton3{
     position: absolute;
-    left: 665px;
+    left: 562px;
     padding: 10px 10px;
     background-color: #A8D9E8;
     text-decoration: none;
-    color: #117777;
+    color: #fff;
     border-radius: 10px;
+	
+	
+	
 }
 </style>
 {% if currentUser.type = "0" %}
 <a href="{% url 'group2:profile' %}" class="botton1">ประวัติส่วนตัว</a>
-<a href="{% url 'group2:data_student' %}" class="botton2">ข้อมูลนักศึกษา</a>
-<a href="{% url 'group2:regis_result' %}" class="botton3">ผลการลงทะเบียน</a>
-<a href="{% url 'group2:viyanipon' %}" class="botton4">การทำวิทยานิพนธ์เเละการสอบวิทยานิพนธ์</a>
+<a href="{% url 'group2:regis_result' %}" class="botton2">ผลการลงทะเบียน</a>
+<a href="{% url 'group2:viyanipon' %}" class="botton3">การทำวิทยานิพนธ์เเละการสอบวิทยานิพนธ์</a>
 {% endif %}
 {% if currentUser.type != "0" %}
 <a href="{% url 'group2:profile_admin' studentObj.std_id %}" class="botton1">ประวัติส่วนตัว</a>
-<a href="{% url 'group2:data_student_admin' studentObj.std_id %}" class="botton2">ข้อมูลนักศึกษา</a>
-<!--a href="{% url 'group2:regis_result_admin' studentObj.std_id %}" class="botton3">ผลการลงทะเบียน</a-->
+<a href="{% url 'group2:regis_result_admin' studentObj.std_id %}" class="botton2">ผลการลงทะเบียน</a>
 <a href="{% url 'group2:viyanipon_admin' studentObj.std_id %}" class="botton4">การทำวิทยานิพนธ์เเละการสอบวิทยานิพนธ์</a>
 {% endif %}
 

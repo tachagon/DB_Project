@@ -51,12 +51,12 @@
 		}
 	}
 	</script>
-<h3>แก้ไขสถานะรายการใบสั่งวัสดุภาควิชาวิศวกรรมไฟฟ้าและคอมพิวเตอร์</h3>
+<font size="7" face="Angsana New"><b>แก้ไขสถานะรายการใบสั่งวัสดุภาควิชาวิศวกรรมไฟฟ้าและคอมพิวเตอร์</b></font>
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 <form action="/group7/{{ object.id }}/editstf/" >
 <table border=0>
 
-    	<b><h4>อัพเดทสถานะปัจจุบัน</h4></b>
+    	<b><h4>อัพเดทสถานะปัจจุบัน{{object.id}}</h4></b>
 	<tr><td>
 	<script>
                 $(function(){
@@ -70,8 +70,8 @@
             </script>
 	<div class="form-group">
                 <div class="col-sm-9">
-		    <tr><td> วัน/เดือน/ปี : </td><td><input type="text" name="date" id="date" value="{{object.Date|date:"Y-m-d"}}"></td></tr>
-		    <tr><td> ขั้นตอน : </td><td><select name="state_status" value="{{object.State}}">
+		    <tr><td><font size="5" face="Angsana New"> วัน/เดือน/ปี : </td><td><input type="text" name="date" id="date" value="{{object.Date|date:"d-m-Y"}}"></td></tr>
+		    <tr><td><font size="5" face="Angsana New"> ขั้นตอน : </td><td><select name="state_status" value="{{object.State}}">
 			{% if object.State == "วันที่ในการซื้อวัสดุ"%}
 			    <option  type="text" value="วันที่ในการซื้อวัสดุ">วันที่ในการซื้อวัสดุ</option>
 			{%endif%}
@@ -82,13 +82,18 @@
 				<option  type="text" value="complete">ใบเบิกวัสดุ</option>
 			{%endif%}
 		</select></td></tr>
-		<tr><td> หมายเหตุ: </td><td><input type="text" name="more" value="{{object.Moreabout}}"></td></tr>
+		<tr><td><font size="5" face="Angsana New"> หมายเหตุ: </td><td><input type="text" name="more" value="{{object.Moreabout}}"></td></tr>
 	     </div>
         </div>
 	</td></tr>
 </table>
-
-<input type="submit" value="ยืนยัน" /><a href="/group7/{{object.Order_id}}/statusof/" style="text-decoration:none"><input type="button" value="ยกเลิก" ></a>
+<table border=0>
+    {%if object.State == "ใบเบิกวัสดุ"%}
+	<b><font size="6" face="Angsana New">ข้อมูลใบเบิกวัสดุ</font></b>
+	<tr><td><font size="5" face="Angsana New"> เลขที่ตามใบส่งของ : </td><td><input type="text" name="requisition_id" value={{req.Requisition_Id}}></td></tr>
+    {%endif%}
+</table>
+<button type="submit"class="btn btn-success">ยืนยัน</button>&nbsp<a href="/group7/{{object.Order_id}}/statusof/" ><button type="button"class="btn btn-danger">ยกเลิก</button></a>
 </form>
 {% endblock %}
 

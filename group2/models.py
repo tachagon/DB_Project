@@ -4,7 +4,8 @@ from login.models import *
 
 
 class Department(models.Model):
-    #code
+    #code  Nooooooooooo
+    
     Department_ID = models.IntegerField(primary_key=True, max_length=10)
     Department_Name = models.CharField( max_length=100 )
     def __unicode__(self):
@@ -12,32 +13,23 @@ class Department(models.Model):
 
 class Course(models.Model):
     #code
-    Course_ID = models.IntegerField(primary_key=True, max_length=10)
-    Course_Name = models.CharField( max_length=100 )
-    Department_ID = models.ForeignKey(Department)
-    Credit = models.CharField( max_length=10 )
-    Describe = models.CharField( max_length=1000, blank=True )
+    Course_ID = models.IntegerField(primary_key=True, max_length=15)
+    Course_Name = models.CharField( max_length=100 , blank=True)
+    Credit = models.IntegerField( max_length=10 , blank=True,null=True)
     def __unicode__(self):
         return str(self.Course_ID )
 	
 class Section(models.Model):
-    Section = models.IntegerField(max_length=10)
+    Section = models.IntegerField(max_length=10, blank=True)
     Course_ID = models.ForeignKey(Course)
-    classroom = models.CharField(max_length=20)
-    st_endTime = models.CharField(max_length=11)
-    Teacher_ID = models.ForeignKey(Teacher)
-    
-    dateChoices = (
-    ('M', 'Monday'),
-    ('T', 'Tuesday'),
-    ('W', 'Wednesday'),
-    ('H', 'Thursday'),
-    ('F', 'Friday'),
-    ('S', 'Saturday')
-    )
-    date = models.CharField(max_length=1, choices=dateChoices)
+    classroom = models.CharField(max_length=20, blank=True)
+    st_endTime = models.CharField(max_length=11, blank=True)
+    T_name=models.CharField(max_length=30, blank=True)
+    T_lastname=models.CharField(max_length=30, blank=True)
+    shortname = models.CharField(max_length=60, blank=True)    
+    date = models.CharField(max_length=9, blank=True)
     def __unicode__(self):
-        return " Course "+str(self.Course_ID )+" Section "+str(self.Section)+" Time "+  str(self.st_endTime)+"  Teacher_ID "+  str(self.Teacher_ID)
+        return " Course "+str(self.Course_ID )+" Section "+str(self.Section)+" Time "+  str(self.st_endTime)+"  Teacher Name "+  str(self.T_name)
 	
 class Grade(models.Model):
     #code
@@ -45,34 +37,21 @@ class Grade(models.Model):
     Course_ID = models.ForeignKey(Course)
     year        = models.IntegerField(max_length=10)
     term        = models.IntegerField(max_length=1)
-    gradeChoices = (
-    ('0', ' '),
-    ('1', 'A'),
-    ('2', 'B+'),
-    ('3', 'B'),
-    ('4', 'C+'),
-    ('5', 'C'),
-    ('6', 'D+'),
-    ('7', 'D'),
-    ('8', 'F'),
-    ('9', 'Fa'),
-    ('10', 'Fe'),
-    ('11', 'S'),
-    ('12', 'U'),
-    ('13', 'I'),
-    ('14', 'Ip'),
-    ('15', 'W'),
-    ('16', 'AUD'),
-    )
-    Grade = models.CharField( max_length=3, choices=gradeChoices , default = '0')
+    Grade = models.CharField( max_length=3)
     Section = models.ForeignKey(Section)
+    check= models.CharField( max_length=20, blank=True)
     def __unicode__(self):
         return "Student "+str(self.std_id )+" Course "+str(self.Course_ID )+" Section "+str(self.Section)+" Year "+  str(self.year)+"  Term "+  str(self.term)
 
-
+class Status(models.Model):
+    #code
+    std_id = models.ForeignKey(Student)
+    state= models.CharField( max_length=40, blank=True)
+    def __unicode__(self):
+        return "Student "+str(self.std_id )+" State "+str(self.state )
 
 class Teacher_Course(models.Model):
-    #code
+    #code nooooooooo
     shortname = models.ForeignKey(Teacher)
     Course_ID = models.ForeignKey(Course)
     Section = models.ForeignKey(Section)
@@ -81,6 +60,7 @@ class Teacher_Course(models.Model):
 
 	
 class scheme(models.Model):
+    #code nooooooooo
     Course_ID = models.ForeignKey(Course)
     schemeChoices = (
     ('0', 'ไม่มีในหลักสูตร'),  
@@ -105,11 +85,9 @@ class viyanipon_adviser(models.Model):
 		
 class viyanipon_name(models.Model):
     std_id = models.CharField(primary_key=True, max_length=13)
-    viyaniponh_name = models.CharField(max_length=6)
+    name = models.CharField(max_length=20)
     name_thai = models.CharField(max_length=200)
     name_eng = models.CharField(max_length=200)
-    def __unicode__(self):
-        return str(self.std_id)+"  "+  str(self.name_eng)
 
 
 class viyanipon_project(models.Model):

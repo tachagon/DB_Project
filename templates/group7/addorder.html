@@ -89,9 +89,9 @@
 	    return true;
 	  }
 	</script>  
-<h3>เพิ่มเติมรายการใบสั่งซื้อวัสดุภาควิชาวิศวกรรมไฟฟ้าและคอมพิวเตอร์ {{projectg7.id}}</h3>
+<font size="7" face="Angsana New"><b>เพิ่มเติมรายการใบสั่งซื้อวัสดุภาควิชาวิศวกรรมไฟฟ้าและคอมพิวเตอร์</b></font>
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
-<!-- <form action="/group7addorderview/" method="post"> -->
+
 <form name="dateForm" action="/group7/{{projectg6.id}}/addorderview/"  onsubmit="return validateForm(this)" >
 {% csrf_token %}
 	<table border=0>
@@ -109,7 +109,7 @@
 
             <div class="form-group">
                 <div class="col-sm-9">
-                    <tr><td>เลือกวันที่:<td><input type="text" name="date" id="date" value="{{object}}"></tr></td>
+                    <tr><td><font size="6" face="Angsana New">เลือกวันที่:<td><input type="text" name="date" id="date" value="{{object}}"></tr></td>
                 </div>
             </div>
 
@@ -117,6 +117,6 @@
 	    
 	</td></tr>
 </table>
-<input type="submit" value="ยืนยัน" /><a href="/group7/{{projectg6.id}}/" style="text-decoration:none"><input type="button" value="ยกเลิก" ></a>
+<button type="submit"class="btn btn-success">ยืนยัน</button>&nbsp<a href="/group7/{{projectg6.id}}/"><button type="button"class="btn btn-danger">ยกเลิก</button></a>
 </form>
 {% endblock %}

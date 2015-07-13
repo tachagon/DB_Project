@@ -1,0 +1,19 @@
+<html>
+<body>
+
+<p>Click the button to display todays day of the month.</p>
+
+<button onclick="myFunction()">Try it</button>
+
+<p id="demo"></p>
+
+<script>
+function myFunction() {
+    var d = new Date();
+    var n = d.getDate()+"/"+(d.getMonth()+1)+"/"+(d.getYear()+1900);
+    document.getElementById("demo").innerHTML = n;
+}
+</script>
+
+</body>
+</html>
