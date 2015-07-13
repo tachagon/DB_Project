@@ -1,13 +1,21 @@
-﻿{% load custom_function %}
+﻿<!-- Use customfunction in this page -->
+{% load custom_function %}
+<!-- Use humanize of django for operating the number for this page -->
 {% load humanize %}
 <!DOCTYPE>
 <html>
 <head>
 <title>แบบ วศ. 4-01</title>
 <meta http-equiv="content-type" content="text/html;charset=utf-8">
+<!-- Style sheet : Use CSS for each tag name or class -->
 <style>
 body{
 	}
+*{
+	word-wrap:normal;
+	word-break:break-all;
+}
+
 .page{
 	font:14pt "Angsana New";
 	width:210mm;
@@ -29,7 +37,7 @@ body{
 	float:none;
 	}
 #nameeng{
-	padding-left:20mm;
+	padding-left:18mm;
 	}
 #yearspace{
 	display:block;
@@ -64,11 +72,17 @@ body{
 	display:table-row;
 	}
 
-#namestd,#numstd,#headerproject,#present{
+#namestd,#numstd,#headerproject{
 	display: table-cell;
 	border:none;
 	border-width: thin;
 	padding-left: 5px;
+}
+#present{
+	display: table-cell;
+	border:none;
+	border-width: thin;
+	padding-left: 0px;
 }
 .Cell{
 	display: table-cell;
@@ -94,7 +108,7 @@ body{
 	display: table-cell;
 	border: none;
 	border-width: thin;
-	padding-left: 5px;
+	padding-left: 0px;
 }
 
 #moneyitems{
@@ -123,6 +137,7 @@ body{
 	border:none;
 	border-width: thin;
 	padding-left: 5px;
+	text-align:right;
 }
 
 
@@ -142,7 +157,6 @@ body{
 		border-radius:0;
 		box-shadow: initial;
 		background: initial;
-		word-break:break-strict;
 		page-break-after: auto;
 		display:block;
 		}
@@ -169,6 +183,9 @@ body{
 <script>
 </script>
 </head>
+<!-- after this are HTML coding  -->
+<!-- {.{ ... }} is syntax for access database and add | for function in custom_function ("{.{" to avoid error) -->
+<!-- {.% ... %} is syntax for operation ex. if/else , forloop, etc. ("{.%" to aviod error) -->
 <body onLoad="return window.print()">
 <div class="page">
 <H id="topright">แบบ วศ. 4-01</H><br>
@@ -179,8 +196,8 @@ body{
 <H>ปีการศึกษา {{ offer.project.yearOfEducation }}</H></CENTER>
 <br id="yearspace">
 <label class="form">
-<H>ชื่อโครงการ</H><H id="nameth">(ภาษาไทย) {{ offer.project.name_thai }}</H><br>
-<H id="nameeng">(อังกฤษ) {{ offer.project.name_eng }}</H><br>
+<H>ชื่อโครงการ</H><H id="nameth">(ภาษาไทย)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ offer.project.name_thai }}</H><br>
+<H id="nameeng">(ภาษาอังกฤษ)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ offer.project.name_eng }}</H><br>
 <div id="corpname">
     <div class="row">
         <div id="present">เสนอโดย</div>
@@ -196,28 +213,28 @@ body{
         <div class="hide">
         {% endfor %}
         </div>
-        <div id="headerproject">หัวหน้าโครงการ</div>
+        <div id="headerproject">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;หัวหน้าโครงการ</div>
     </div>
 </div>
-<H>ชื่ออาจารย์ที่ปรึกษา {{ offer.project.teacher.academic_position|get_prefix_name_th_teacher:offer.project.teacher.userprofile.prefix_name }} {{ offer.project.teacher.userprofile.firstname_th }} {{ offer.project.teacher.userprofile.lastname_th }} ({{ offer.project.teacher.shortname }})</H><br>
-	<H>วัตถุประสงค์ </H><H class="text">{{ offer.project.objective }}</H><br>
-	<H>แนวเหตุผล ทฤฏีสำคัญหรือสมมุติฐาน </H><H class="text">{{ offer.project.reason }}</H><br>
-	<H>ขอบเขตของการทำโครงงาน </H><H class="text">{{ offer.project.scope }}</H><br>
+<H>ชื่ออาจารย์ที่ปรึกษา&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ offer.project.teacher.academic_position|get_prefix_name_th_teacher:offer.project.teacher.userprofile.prefix_name }} {{ offer.project.teacher.userprofile.firstname_th }} {{ offer.project.teacher.userprofile.lastname_th }} ({{ offer.project.teacher.shortname }})</H><br>
+	<H>วัตถุประสงค์&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</H><H class="text">{{ offer.project.objective }}</H><br>
+	<H>แนวเหตุผล ทฤษฎีสำคัญหรือสมมติฐาน&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</H><H class="text">{{ offer.project.reason }}</H><br>
+	<H>ขอบเขตของการทำโครงการ&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</H><H class="text">{{ offer.project.scope }}</H><br>
     <div id="corpmoney">
     	<div class="row">
             <div id="moneywant">ประมาณการค่าใช้จ่ายในโครงการ </H></div>
             <div class="row">
-            	<div id="moneyitems">ค่าวัสดุ {{ offer.priceOfMaterial|floatformat:"2"|intcomma }}</div><div id="moneytails"> บาท</div>
+            	<div id="moneyitems">ค่าวัสดุ </div><div id="moneytails">{{ offer.priceOfMaterial|floatformat:"2"|intcomma }} บาท</div>
             </div>
             <div class="row">
-            	<div id="moneyothers">ค่าใช้จ่ายเบ็ดเตล็ด {{ offer.priceOfOther|floatformat:"2"|intcomma }}</div><div id="moneytails"> บาท</div>
+            	<div id="moneyothers">ค่าใช้จ่ายเบ็ดเตล็ด </div><div id="moneytails">{{ offer.priceOfOther|floatformat:"2"|intcomma }} บาท</div>
             </div>
             <div class="row">
-            	<div id="moneytotal">รวมค่าใช้จ่ายในโครงการ {{ priceOfTotal|floatformat:"2"|intcomma }}</div><div id="moneytails"> บาท (ดังรายระเอียดที่แนบมา)</div>
+            	<div id="moneytotal">รวมค่าใช้จ่ายในโครงการ </div><div id="moneytails">{{ priceOfTotal|floatformat:"2"|intcomma }} บาท</div><div id="moneytails">(ดังรายละเอียดที่แนบมา)</div>
             </div>
         </div>
     </div>
-	<H>ผลประโยชน์ที่คาดว่าจะได้รับ </H><H class="text">{{ offer.project.benefit }}</H>	
+	<H>ผลประโยชน์ที่คาดว่าจะได้รับ&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</H><H class="text">{{ offer.project.benefit }}</H>	
 	</label>
 </div>
 </body>

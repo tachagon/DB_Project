@@ -19,294 +19,523 @@
 </div>
 {% endif %}
 
+{% if userprofile.type == '0' or userprofile.type == '2' %}
+<!-- prefix_name ------------------------------------------------------------------------------------------------------>
+<div class="panel panel-default">
+    <div class="panel-body">
+        <div class="col-md-3">คำนำหน้าชื่อ: </div>
+        <div class="col-md-6">
+            {% if userprofile.prefix_name == '0' %}นาย{% endif %}
+            {% if userprofile.prefix_name == '1' %}นาง{% endif %}
+            {% if userprofile.prefix_name == '2' %}นางสาว{% endif %}
+            {% if userprofile.prefix_name == '3' %}ดร.{% endif %}
+            {% if userprofile.prefix_name == '4' %}อาจารย์{% endif %}
+        </div>
+        <div class="col-md-3">
+            <button id="prefix_name_btn" data-target="#editPrefixName" onclick=defaultSelect('prefix_name_btn','prefix_name') class="btn btn-default btn-xs" type="button" data-toggle="collapse">แก้ไข</button>
+        </div><!-- /col-md-3 -->
+    </div><!-- /panel-body -->
+</div><!-- /panel -->
+
+<!-- แก้ไข prefix_name ------------------------------------------------------------------------------------------------->
+
+<div class="collapse" id="editPrefixName">
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <!-- form ------------------------------------------------------------------------------------------------->
+            <form class="form-horizontal" action="{% url 'login:profile_editPrefixName' %}" method="post">
+
+                {% csrf_token %}
+
+                <!-- 1. prefix_name -->
+                <div class="form-group">
+                    <label class="col-md-3 control-label">คำนำหน้าชื่อ: </label>
+                    <div class="col-md-6">
+                        <select name="prefix_name" id="prefix_name" class="form-control" required>
+                            <option value="">กรุณาเลือกคำนำหน้าชื่อ</option>
+                            <option value="0"{% if userprofile.prefix_name == '0' %} selected="selected"{% endif %}>นาย</option>
+                            <option value="1"{% if userprofile.prefix_name == '1' %} selected="selected"{% endif %}>นาง</option>
+                            <option value="2"{% if userprofile.prefix_name == '2' %} selected="selected"{% endif %}>นางสาว</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Button -->
+                <div class="form-group">
+                    <label class="col-md-3 control-label"></label>
+                    <div class="col-md-6">
+                        <button class="btn btn-default btn-sm" type="button" data-toggle="collapse" data-target="#editPrefixName">ยกเลิก</button>
+                        <button class="btn btn-primary btn-sm" type="submit">บันทึกการเปลี่ยนแปลง</button>
+                    </div>
+                </div>
+
+            </form>
+            <!-- /form ------------------------------------------------------------------------------------------------>
+        </div><!-- /panel-body -->
+    </div><!-- /panel -->
+</div><!-- /collapse -->
+
+{% endif %}
+
 <!-- 1. ชื่อไทย -------------------------------------------------------------------------------------------------------->
-<div class="row">
-    <div class="panel panel-default">
-        <div class="panel-body">
-            <div class="col-md-3">ชื่อ: </div>
-            <div class="col-md-6">
-                {{ userprofile.firstname_th }}&ensp;{{ userprofile.lastname_th }}
-            </div>
-            <div class="col-md-3">
-                <button class="btn btn-default btn-xs" type="button" data-toggle="collapse" data-target="#editThaiName">แก้ไข</button>
-            </div>
-        </div><!-- /panel-body -->
-    </div><!-- /panel -->
-</div><!-- /row -->
+
+<div class="panel panel-default">
+    <div class="panel-body">
+        <div class="col-md-3">ชื่อ: </div>
+        <div class="col-md-6">
+            {{ userprofile.firstname_th }}&ensp;{{ userprofile.lastname_th }}
+        </div>
+        <div class="col-md-3">
+            <button class="btn btn-default btn-xs" type="button" data-toggle="collapse" data-target="#editThaiName">แก้ไข</button>
+        </div>
+    </div><!-- /panel-body -->
+</div><!-- /panel -->
+
 <!-- แก้ไขชื่อไทย ------------------------------------------------------------------------------------------------------->
-<div class="row">
-    <div class="collapse" id="editThaiName">
-        <div class="panel panel-default">
-            <div class="panel-body">
-                <!-- form --------------------------------------------------------------------------------------------->
-                <form class="form-horizontal" action="{% url 'login:profile_editThaiName' %}" method="post">
 
-                    {% csrf_token %}
-
-                    <div class="row">
-
-                        <!-- 1. ชื่อ -->
-                        <div class="form-group">
-                            <label class="col-md-3 control-label">ชื่อ(ภาษาไทย): </label>
-                            <div class="col-md-6">
-                                <input type="text" name="firstname_th" value="{{ userprofile.firstname_th }}" class="form-control" placeholder="ชื่อ" required>
-                            </div>
-                        </div>
-
-                        <!-- 2. นามสกุล -->
-                        <div class="form-group">
-                            <label class="col-md-3 control-label">นามสกุล(ภาษาไทย): </label>
-                            <div class="col-md-6">
-                                <input type="text" name="lastname_th" value="{{ userprofile.lastname_th }}" class="form-control" placeholder="นามสกุล" required>
-                            </div>
-                        </div>
-
-                    </div><!-- /row -->
-
-                    <div class="row">
-                        <div class="col-md-3"></div>
-                        <div class="col-md-6">
-                            <button class="btn btn-default btn-sm" type="button" data-toggle="collapse" data-target="#editThaiName">
-                                ยกเลิก
-                            </button>
-                            <button class="btn btn-primary btn-sm" type="submit">บันทึกการเปลี่ยนแปลง</button>
-                        </div>
-                        <div class="col-md-3"></div>
-                    </div><!-- /row -->
-
-                </form>
-                <!-- /form -------------------------------------------------------------------------------------------->
-            </div><!-- /panel-body -->
-        </div><!-- /panel -->
-    </div><!-- /collapse -->
-</div><!-- row -->
-
-<!-- 2. ชื่ออังกฤษ -->
-<div class="row">
+<div class="collapse" id="editThaiName">
     <div class="panel panel-default">
         <div class="panel-body">
-            <div class="col-md-3">Name: </div>
-            <div class="col-md-6">
-                {{ userprofile.firstname_en }}&ensp;{{ userprofile.lastname_en }}
-            </div>
-            <div class="col-md-3">
-                <button class="btn btn-default btn-xs" type="button" data-toggle="collapse" data-target="#editEngName">แก้ไข</button>
-            </div>
+            <!-- form ------------------------------------------------------------------------------------------------->
+            <form class="form-horizontal" action="{% url 'login:profile_editThaiName' %}" method="post">
+
+                {% csrf_token %}
+
+                    <!-- 1. ชื่อ -->
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">ชื่อ(ภาษาไทย): </label>
+                        <div class="col-md-6">
+                            <input type="text" name="firstname_th" value="{{ userprofile.firstname_th }}" maxlength="100" class="form-control" title="ชื่อ" placeholder="ชื่อ" required>
+                        </div>
+                    </div>
+
+                    <!-- 2. นามสกุล -->
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">นามสกุล(ภาษาไทย): </label>
+                        <div class="col-md-6">
+                            <input type="text" name="lastname_th" value="{{ userprofile.lastname_th }}" maxlength="100" class="form-control" title="นามสกุล" placeholder="นามสกุล" required>
+                        </div>
+                    </div>
+
+                <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
+                        <button class="btn btn-default btn-sm" type="button" data-toggle="collapse" data-target="#editThaiName">
+                            ยกเลิก
+                        </button>
+                        <button class="btn btn-primary btn-sm" type="submit">บันทึกการเปลี่ยนแปลง</button>
+                    </div>
+                    <div class="col-md-3"></div>
+                </div><!-- /row -->
+
+            </form>
+            <!-- /form ------------------------------------------------------------------------------------------------>
         </div><!-- /panel-body -->
     </div><!-- /panel -->
-</div><!-- /row -->
+</div><!-- /collapse -->
+
+
+<!-- 2. ชื่ออังกฤษ ------------------------------------------------------------------------------------------------------>
+
+<div class="panel panel-default">
+    <div class="panel-body">
+        <div class="col-md-3">Name: </div>
+        <div class="col-md-6">
+            {{ userprofile.firstname_en }}&ensp;{{ userprofile.lastname_en }}
+        </div>
+        <div class="col-md-3">
+            <button class="btn btn-default btn-xs" type="button" data-toggle="collapse" data-target="#editEngName">แก้ไข</button>
+        </div>
+    </div><!-- /panel-body -->
+</div><!-- /panel -->
+
 <!-- แก้ไขอังกฤษ -->
-<div class="row">
-    <div class="collapse" id="editEngName">
-        <div class="panel panel-default">
-            <div class="panel-body">
-                <!-- form --------------------------------------------------------------------------------------------->
-                <form class="form-horizontal" action="{% url 'login:profile_editEngName' %}" method="post">
 
-                    {% csrf_token %}
+<div class="collapse" id="editEngName">
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <!-- form ------------------------------------------------------------------------------------------------->
+            <form class="form-horizontal" action="{% url 'login:profile_editEngName' %}" method="post">
 
-                    <div class="row">
+                {% csrf_token %}
 
-                        <!-- 1. firstname_en -->
-                        <div class="form-group">
-                            <label class="col-md-3 control-label">First Name: </label>
-                            <div class="col-md-6">
-                                <input type="text" name="firstname_en" value="{{ userprofile.firstname_en }}" class="form-control" title="First Name" placeholder="First Name" required>
-                            </div>
-                        </div>
+                <div class="row">
 
-                        <!-- 2. lastname_en -->
-                        <div class="form-group">
-                            <label class="col-md-3 control-label">Last Name: </label>
-                            <div class="col-md-6">
-                                <input type="text" name="lastname_en" value="{{ userprofile.lastname_en }}" class="form-control" title="Last Name" placeholder="Last Name" required>
-                            </div>
-                        </div>
-
-                    </div><!-- /row -->
-
-                    <div class="row">
-                        <div class="col-md-3"></div>
+                    <!-- 1. firstname_en -->
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">First Name: </label>
                         <div class="col-md-6">
-                            <button class="btn btn-default btn-sm" type="button" data-toggle="collapse" data-target="#editEngName">
-                                ยกเลิก
-                            </button>
-                            <button class="btn btn-primary btn-sm" type="submit">บันทึกการเปลี่ยนแปลง</button>
+                            <input type="text" name="firstname_en" pattern="[A-Za-z]{1,}" value="{{ userprofile.firstname_en }}" maxlength="30" class="form-control" title="กรอกชื่อจริงเป็นภาษาอังกฤษ" placeholder="First Name" required>
                         </div>
-                        <div class="col-md-3"></div>
-                    </div><!-- /row -->
+                    </div>
 
-                </form>
-                <!-- /form -------------------------------------------------------------------------------------------->
-            </div>
+                    <!-- 2. lastname_en -->
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">Last Name: </label>
+                        <div class="col-md-6">
+                            <input type="text" name="lastname_en" pattern="[A-Za-z]{1,}" value="{{ userprofile.lastname_en }}" maxlength="30" class="form-control" title="กรอกนามสกุลเป็นภาษาอังกฤษ" placeholder="Last Name" required>
+                        </div>
+                    </div>
+
+                </div><!-- /row -->
+
+                <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
+                        <button class="btn btn-default btn-sm" type="button" data-toggle="collapse" data-target="#editEngName">
+                            ยกเลิก
+                        </button>
+                        <button class="btn btn-primary btn-sm" type="submit">บันทึกการเปลี่ยนแปลง</button>
+                    </div>
+                    <div class="col-md-3"></div>
+                </div><!-- /row -->
+
+            </form>
+            <!-- /form ------------------------------------------------------------------------------------------------>
         </div>
     </div>
 </div>
 
-<!-- 3. username -->
-<div class="row">
-    <div class="panel panel-default">
-        <div class="panel-body">
-            <div class="col-md-3">username: </div>
-            <div class="col-md-6">
-                {{ user.get_username }}
-            </div>
-            <div class="col-md-3">
-                <button data-target="#editUsername" class="btn btn-default btn-xs" type="button" data-toggle="collapse">แก้ไข</button>
-            </div>
-        </div><!-- /panel-body -->
-    </div><!-- /panel -->
-</div><!-- /row -->
+
+<!-- 3. username ------------------------------------------------------------------------------------------------------>
+
+<div class="panel panel-default">
+    <div class="panel-body">
+        <div class="col-md-3">username: </div>
+        <div class="col-md-6">
+            {{ user.get_username }}
+        </div>
+        <div class="col-md-3">
+            <button data-target="#editUsername" class="btn btn-default btn-xs" type="button" data-toggle="collapse">แก้ไข</button>
+        </div>
+    </div><!-- /panel-body -->
+</div><!-- /panel -->
+
 <!-- แก้ username -->
-<div class="row">
-    <div class="collapse" id="editUsername">
-        <div class="panel panel-default">
-            <div class="panel-body">
 
-                <!-- form --------------------------------------------------------------------------------------------->
-                <form class="form-horizontal" action="{% url 'login:profile_editUsername' %}" method="post">
+<div class="collapse" id="editUsername">
+    <div class="panel panel-default">
+        <div class="panel-body">
 
-                    {% csrf_token %}
+            <!-- form ------------------------------------------------------------------------------------------------->
+            <form class="form-horizontal" action="{% url 'login:profile_editUsername' %}" method="post">
 
-                    <div class="row">
+                {% csrf_token %}
 
-                        <!-- 1. username -->
-                        <div class="form-group">
-                            <label class="col-md-3 control-label">username: </label>
-                            <div class="col-md-6">
-                                <input type="text" name="username" value="{{ user.get_username }}" class="form-control" title="Username" placeholder="Username" required>
-                            </div>
-                        </div>
+                <div class="row">
 
-                    </div><!-- /row -->
-
-                    <div class="row">
-                        <div class="col-md-3"></div>
+                    <!-- 1. username -->
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">username: </label>
                         <div class="col-md-6">
-                            <button class="btn btn-default btn-sm" type="button" data-toggle="collapse" data-target="#editUsername">
-                                ยกเลิก
-                            </button>
-                            <button class="btn btn-primary btn-sm" type="submit">บันทึกการเปลี่ยนแปลง</button>
+                            <input type="text" name="username" pattern="[A-Za-z0-9_]{1,}" value="{{ user.get_username }}" maxlength="30" class="form-control" title="กรอก Username เป็นภาษาอังกฤษหรือตัวเลข สามารถใช้เครื่องหมาย _ ได้" placeholder="Username" required>
                         </div>
-                        <div class="col-md-3"></div>
-                    </div><!-- /row -->
+                    </div>
 
-                </form>
-                <!-- /form -------------------------------------------------------------------------------------------->
+                </div><!-- /row -->
 
-            </div>
+                <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
+                        <button class="btn btn-default btn-sm" type="button" data-toggle="collapse" data-target="#editUsername">
+                            ยกเลิก
+                        </button>
+                        <button class="btn btn-primary btn-sm" type="submit">บันทึกการเปลี่ยนแปลง</button>
+                    </div>
+                    <div class="col-md-3"></div>
+                </div><!-- /row -->
+
+            </form>
+            <!-- /form ------------------------------------------------------------------------------------------------>
+
         </div>
     </div>
 </div>
 
-<!-- 4. email -->
-<div class="row">
-    <div class="panel panel-default">
-        <div class="panel-body">
-            <div class="col-md-3">E-mail: </div>
-            <div class="col-md-6">
-                {{ user.email }}
-            </div>
-            <div class="col-md-3">
-                <button data-target="#editEmail" class="btn btn-default btn-xs" type="button" data-toggle="collapse">แก้ไข</button>
-            </div>
-        </div><!-- /panel-body -->
-    </div><!-- /panel -->
-</div><!-- /row -->
+
+<!-- 4. email --------------------------------------------------------------------------------------------------------->
+
+<div class="panel panel-default">
+    <div class="panel-body">
+        <div class="col-md-3">E-mail: </div>
+        <div class="col-md-6">
+            {{ user.email }}
+        </div>
+        <div class="col-md-3">
+            <button data-target="#editEmail" class="btn btn-default btn-xs" type="button" data-toggle="collapse">แก้ไข</button>
+        </div>
+    </div><!-- /panel-body -->
+</div><!-- /panel -->
+
 <!-- แก้ email -->
-<div class="row">
-    <div class="collapse" id="editEmail">
-        <div class="panel panel-default">
-            <div class="panel-body">
 
-                <!-- form --------------------------------------------------------------------------------------------->
-                <form class="form-horizontal" action="{% url 'login:profile_editEmail' %}" method="post">
+<div class="collapse" id="editEmail">
+    <div class="panel panel-default">
+        <div class="panel-body">
 
-                    {% csrf_token %}
+            <!-- form ------------------------------------------------------------------------------------------------->
+            <form class="form-horizontal" action="{% url 'login:profile_editEmail' %}" method="post">
 
-                    <div class="row">
+                {% csrf_token %}
 
-                        <!-- 1. email -->
-                        <div class="form-group">
-                            <label class="col-md-3 control-label">E-mail: </label>
-                            <div class="col-md-6">
-                                <input type="email" name="email" value="{{ user.email }}" class="form-control" title="E-mail" placeholder="E-mail" required>
-                            </div>
-                        </div>
+                <div class="row">
 
-                    </div><!-- /row -->
-
-                    <div class="row">
-                        <div class="col-md-3"></div>
+                    <!-- 1. email -->
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">E-mail: </label>
                         <div class="col-md-6">
-                            <button class="btn btn-default btn-sm" type="button" data-toggle="collapse" data-target="#editEmail">
-                                ยกเลิก
-                            </button>
-                            <button class="btn btn-primary btn-sm" type="submit">บันทึกการเปลี่ยนแปลง</button>
+                            <input type="email" name="email" value="{{ user.email }}" class="form-control" title="E-mail" placeholder="E-mail" required>
                         </div>
-                        <div class="col-md-3"></div>
-                    </div><!-- /row -->
+                    </div>
 
-                </form>
-                <!-- /form -------------------------------------------------------------------------------------------->
+                </div><!-- /row -->
 
-            </div>
+                <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
+                        <button class="btn btn-default btn-sm" type="button" data-toggle="collapse" data-target="#editEmail">
+                            ยกเลิก
+                        </button>
+                        <button class="btn btn-primary btn-sm" type="submit">บันทึกการเปลี่ยนแปลง</button>
+                    </div>
+                    <div class="col-md-3"></div>
+                </div><!-- /row -->
+
+            </form>
+            <!-- /form ------------------------------------------------------------------------------------------------>
+
         </div>
     </div>
 </div>
 
-<!-- 4. tel -->
-<div class="row">
+
+<!-- 5. tel ----------------------------------------------------------------------------------------------------------->
+
+<div class="panel panel-default">
+    <div class="panel-body">
+        <div class="col-md-3">เบอร์โทรศัพท์: </div>
+        <div class="col-md-6">
+            {{ userprofile.tel }}{% if userprofile.ext != '' %} ต่อ {{ userprofile.ext }}{% endif %}
+        </div>
+        <div class="col-md-3">
+            <button data-target="#editTel" class="btn btn-default btn-xs" type="button" data-toggle="collapse">แก้ไข</button>
+        </div>
+    </div><!-- /panel-body -->
+</div><!-- /panel -->
+
+<!-- แก้ไข tel -->
+
+<div class="collapse" id="editTel">
     <div class="panel panel-default">
         <div class="panel-body">
-            <div class="col-md-3">เบอร์โทรศัพท์: </div>
-            <div class="col-md-6">
-                {{ userprofile.tel }}
-            </div>
-            <div class="col-md-3">
-                <button data-target="#editTel" class="btn btn-default btn-xs" type="button" data-toggle="collapse">แก้ไข</button>
-            </div>
-        </div><!-- /panel-body -->
-    </div><!-- /panel -->
-</div><!-- /row -->
-<!-- แก้ไข tel -->
-<div class="row">
-    <div class="collapse" id="editTel">
-        <div class="panel panel-default">
-            <div class="panel-body">
 
-                <!-- form --------------------------------------------------------------------------------------------->
-                <form class="form-horizontal" action="{% url 'login:profile_editTel' %}" method="post">
+            <!-- form ------------------------------------------------------------------------------------------------->
+            <form class="form-horizontal" action="{% url 'login:profile_editTel' %}" method="post">
 
-                    {% csrf_token %}
+                {% csrf_token %}
 
-                    <div class="row">
+                <div class="row">
 
-                        <!-- 1. tel -->
-                        <div class="form-group">
-                            <label class="col-md-3 control-label">เบอร์โทรศัพท์: </label>
-                            <div class="col-md-6">
-                                <input type="tel" name="tel" value="{{ userprofile.tel }}" class="form-control" title="เบอร์โทรศัพท์" placeholder="เบอร์โทรศัพท์" required>
-                            </div>
-                        </div>
-
-                    </div><!-- /row -->
-
-                    <div class="row">
-                        <div class="col-md-3"></div>
+                    <!-- 1. tel -->
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">เบอร์โทรศัพท์: </label>
                         <div class="col-md-6">
-                            <button class="btn btn-default btn-sm" type="button" data-toggle="collapse" data-target="#editTel">
-                                ยกเลิก
-                            </button>
-                            <button class="btn btn-primary btn-sm" type="submit">บันทึกการเปลี่ยนแปลง</button>
+                            <input type="tel" name="tel" pattern="[0-9]{9,10}" maxlength="10" value="{{ userprofile.tel }}" class="form-control" title="กรุณากรอกเบอร์โทรศัพท์ ห้ามใส่เครื่องหมาย - และห้ามเว้นวรรค" placeholder="เบอร์โทรศัพท์" required>
                         </div>
-                        <div class="col-md-3"></div>
-                    </div><!-- /row -->
+                    </div>
 
-                </form>
-                <!-- /form -------------------------------------------------------------------------------------------->
+                    <!-- 2. ext -->
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">ต่อ: </label>
+                        <div class="col-md-6">
+                            <input type="text" name="ext" pattern="[0-9]{1,}" maxlength="10" value="{{ userprofile.ext }}" class="form-control" title="กรุณากรอกหมายเลข ห้ามใส่เครื่องหมาย - และห้ามเว้นวรรค" placeholder="ต่อ">
+                        </div>
+                    </div>
 
-            </div>
+                </div><!-- /row -->
+
+                <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
+                        <button class="btn btn-default btn-sm" type="button" data-toggle="collapse" data-target="#editTel">
+                            ยกเลิก
+                        </button>
+                        <button class="btn btn-primary btn-sm" type="submit">บันทึกการเปลี่ยนแปลง</button>
+                    </div>
+                    <div class="col-md-3"></div>
+                </div><!-- /row -->
+
+            </form>
+            <!-- /form ------------------------------------------------------------------------------------------------>
+
+        </div>
+    </div>
+</div>
+
+
+<!-- 6. address ------------------------------------------------------------------------------------------------------->
+
+<div class="panel panel-default">
+    <div class="panel-body">
+        <div class="col-md-3">ที่อยู่: </div>
+        <div class="col-md-6">
+            {{ userprofile.address }}
+        </div>
+        <div class="col-md-3">
+            <button data-target="#editAddress" class="btn btn-default btn-xs" type="button" data-toggle="collapse">แก้ไข</button>
+        </div>
+    </div><!-- /panel-body -->
+</div><!-- /panel -->
+
+<!-- แก้ไข address -->
+
+<div class="collapse" id="editAddress">
+    <div class="panel panel-default">
+        <div class="panel-body">
+
+            <!-- form ------------------------------------------------------------------------------------------------->
+            <form class="form-horizontal" action="{% url 'login:profile_editAddress' %}" method="post">
+
+                {% csrf_token %}
+
+                <div class="row">
+
+                    <!-- 1. address -->
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">ที่อยู่: </label>
+                        <div class="col-md-6">
+                            <textarea name="address" class="form-control" title="ที่อยู่" placeholder="ที่อยู่" required>{{ userprofile.address }}</textarea>
+                        </div>
+                    </div>
+
+                </div><!-- /row -->
+
+                <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
+                        <button class="btn btn-default btn-sm" type="button" data-toggle="collapse" data-target="#editAddress">
+                            ยกเลิก
+                        </button>
+                        <button class="btn btn-primary btn-sm" type="submit">บันทึกการเปลี่ยนแปลง</button>
+                    </div>
+                    <div class="col-md-3"></div>
+                </div><!-- /row -->
+
+            </form>
+            <!-- /form ------------------------------------------------------------------------------------------------>
+
+        </div>
+    </div>
+</div>
+
+
+<!-- 7. office -------------------------------------------------------------------------------------------------------->
+
+<div class="panel panel-default">
+    <div class="panel-body">
+        <div class="col-md-3">ที่ทำงาน: </div>
+        <div class="col-md-6">
+            {{ userprofile.office }}
+        </div>
+        <div class="col-md-3">
+            <button data-target="#editOffice" class="btn btn-default btn-xs" type="button" data-toggle="collapse">แก้ไข</button>
+        </div>
+    </div><!-- /panel-body -->
+</div><!-- /panel -->
+
+<!-- แก้ไข office -->
+
+<div class="collapse" id="editOffice">
+    <div class="panel panel-default">
+        <div class="panel-body">
+
+            <!-- form ------------------------------------------------------------------------------------------------->
+            <form class="form-horizontal" action="{% url 'login:profile_editOffice' %}" method="post">
+
+                {% csrf_token %}
+
+                <div class="row">
+
+                    <!-- 1. office -->
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">ที่ทำงาน: </label>
+                        <div class="col-md-6">
+                            <textarea name="office" class="form-control" title="ที่ทำงาน" placeholder="ที่ทำงาน" required>{{ userprofile.office }}</textarea>
+                        </div>
+                    </div>
+
+                </div><!-- /row -->
+
+                <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
+                        <button class="btn btn-default btn-sm" type="button" data-toggle="collapse" data-target="#editOffice">
+                            ยกเลิก
+                        </button>
+                        <button class="btn btn-primary btn-sm" type="submit">บันทึกการเปลี่ยนแปลง</button>
+                    </div>
+                    <div class="col-md-3"></div>
+                </div><!-- /row -->
+
+            </form>
+            <!-- /form ------------------------------------------------------------------------------------------------>
+
+        </div>
+    </div>
+</div>
+
+
+<!-- 8. account ------------------------------------------------------------------------------------------------------->
+
+<div class="panel panel-default">
+    <div class="panel-body">
+        <div class="col-md-3">เลขที่บัญชี: </div>
+        <div class="col-md-6">
+            {{ userprofile.account }}
+        </div>
+        <div class="col-md-3">
+            <button data-target="#editAccount" class="btn btn-default btn-xs" type="button" data-toggle="collapse">แก้ไข</button>
+        </div>
+    </div><!-- /panel-body -->
+</div><!-- /panel -->
+
+<!-- แก้ไข account -->
+
+<div class="collapse" id="editAccount">
+    <div class="panel panel-default">
+        <div class="panel-body">
+
+            <!-- form ------------------------------------------------------------------------------------------------->
+            <form class="form-horizontal" action="{% url 'login:profile_editAccount' %}" method="post">
+
+                {% csrf_token %}
+
+                <div class="row">
+
+                    <!-- 1. account -->
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">เลขที่บัญชี: </label>
+                        <div class="col-md-6">
+                            <input type="text" name="account" value="{{ userprofile.account }}" maxlength="20" class="form-control" title="เลขที่บัญชี" placeholder="เลขที่บัญชี">
+                        </div>
+                    </div>
+
+                </div><!-- /row -->
+
+                <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
+                        <button class="btn btn-default btn-sm" type="button" data-toggle="collapse" data-target="#editAccount">
+                            ยกเลิก
+                        </button>
+                        <button class="btn btn-primary btn-sm" type="submit">บันทึกการเปลี่ยนแปลง</button>
+                    </div>
+                    <div class="col-md-3"></div>
+                </div><!-- /row -->
+
+            </form>
+            <!-- /form ------------------------------------------------------------------------------------------------>
+
         </div>
     </div>
 </div>

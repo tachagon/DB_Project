@@ -1,7 +1,8 @@
-﻿{% extends "base.html" %}
-
+﻿<!-- Extend in base.html as a body -->
+{% extends "base.html" %}
+<!-- Command for setting title of page -->
 {% block title %}ระบบ จัดการโครงงาน สำหรับนักศึกษา ปริญญาตรี - ขั้นตอนการดำเนินงานแนวคิดกับแผนที่วางไว้ - {{ timeLine.project.name_thai }}{% endblock %}
-
+<!-- Command for setting header of page -->
 {% block pageHeader %}
 <h2>ระบบ <small>จัดการโครงงาน สำหรับนักศึกษา ปริญญาตรี</small></h2>
 <ol class="breadcrumb">
@@ -10,10 +11,11 @@
     <li class="active">ขั้นตอนการดำเนินงานแนวคิดกับแผนที่วางไว้ - {{ timeLine.project.name_thai }}</li>
 </ol>
 {% endblock %}
-
+<!-- This for content in base.html -->
 {% block content %}
 <div class="container-fluid">
-      <meta http-equiv="content-type" content="text/html;charset=utf-8">
+<meta http-equiv="content-type" content="text/html;charset=utf-8">
+<!-- Style sheet : Use CSS for each tag name or class -->
       <style>
 .page{
 	font:14pt "Angsana New";
@@ -113,15 +115,20 @@
            
             width: 5cm;
       }
-      </style><div class="page">
+      </style>
+<!-- after this are HTML coding  -->
+<!-- {.{ ... }} is syntax for access database and add | for function in custom_function ("{.{" to avoid error) -->
+<!-- {.% ... %} is syntax for operation ex. if/else , forloop, etc. ("{.%" to aviod error) -->
+      <div class="page">
       <!--<div id='pageset'>-->
             <span  id='headset'>ขั้นตอนการดำเนินงานแนวคิดกับแผนที่วางไว้</span>
             <table id='maintable' border="1" cellpadding="0" cellspacing="0"> 
                   <tr border="0">
                         <td id='lefttable' align=CENTER valign=MIDDLE>ขั้นตอนที่</td> 
                         <td id='middletable' align=CENTER valign=MIDDLE>
-                              <form>รายละเอียดขั้นตอนการดำเนินงาน</br>เริ่มทำปริญญานิพนธ์เมื่อ {{ timeLine.day }} เดือน {{ timeLine.month }} พ.ศ. {{ timeLine.year }}</td>
+                              <form>รายละเอียดขั้นตอนการดำเนินงาน</br>เริ่มทำปริญญานิพนธ์เมื่อ {{ timeLine.day }} เดือน {{ timeLine.month }} พ.ศ. {{ timeLine.year }}
                               </form>
+                              </td>
                               <td id='righttable' align=CENTER valign=MIDDLE>
                                     <table id='righttabletop' border="1" cellpadding="0" cellspacing="0" align="center" >    
                                           <tr border="0">
@@ -150,7 +157,7 @@
                         {% if process %}
                         <tr border="0">
                               <td id='lefttable' align=CENTER valign=MIDDLE>{{ forloop.counter }}</td> 
-                              <td id='middletable' align=CENTER valign=MIDDLE>{{ process.processDescription }}</td>
+                              <td id='middletable' valign="top">{{ process.processDescription }}</td>
                               <td id='middletable'  align=CENTER valign=MIDDLE>
                                     <table border="1" cellpadding="0" cellspacing="0" width="100%" height="50%" align="center" >    
 
@@ -222,7 +229,7 @@
                         {% else %}
                         <tr border="0">
                               <td id='lefttable' align=CENTER valign=MIDDLE>{{ forloop.counter }}</td> 
-                              <td id='middletable' align=CENTER valign=MIDDLE><!--get process1--></td>
+                              <td id='middletable' valign="top"><!--get process1--></td>
                               <td id='middletable'  align=CENTER valign=MIDDLE>
                                     <table border="1" cellpadding="0" cellspacing="0" width="100%" height="50%" align="center" >    
 
@@ -252,6 +259,10 @@
 <table id='bottomleft' align='left'><tr><td>ลงชื่อ</td><td id='bottomleftmid'>...............................................................................</td><td>(ผู้เสนอโครงงาน)</td></tr><tr><td></td><td id='bottomleftmid'>(.............................................................................)</td><td></td></tr><tr><td></td><td id='bottomleftmid'>........................./........................../..........................</td><td></td></tr></table>
 <table id='bottomright' align='right'><tr><td>ลงชื่อ</td><td id='bottomrightmid'>.......................................................................</td><td>(อาจารย์ที่ปรึกษา)</td></tr><tr><td></td><td id='bottomrightmid'>(.....................................................................)</td><td></td></tr><tr><td></td><td id='bottomrightmid'> ....................../......................./.......................</td><td></td></tr></table>
 </div><br>
+{% ifequal officer '2' %}
+<a class="btn btn-default" href="{% url 'group6:project_docs_timeLineProject_print' timeLine.id %}" target = _blank><span class="glyphicon glyphicon-print"></span></a>  (แถบสี)<br>
+<a class="btn btn-default" href="{% url 'group6:project_docs_timeLineProject_print_check' timeLine.id %}" target = _blank><span class="glyphicon glyphicon-print"></span></a>  (ติ๊กถูก)<br>
+{% else %}
 <a class="btn btn-default" href="javascript:if(confirm('! คำเตือน !\n
 ใช้ Browser : Chrome\n
 ขนาดกระดาษ : A4\n
@@ -274,6 +285,7 @@ Size : A4\n
 Margin : None\n
 Style : Landscape'))
 window.open('{% url 'group6:project_docs_timeLineProject_print_check' timeLine.id %}', '_blank');"><span class="glyphicon glyphicon-print"></span></a>  (ติ๊กถูก)<br>
+{% endifequal %}
 <a href="{% url 'group6:project_docs_index' %}"><input class="btn btn-danger" type="button" value="ย้อนกลับ" name = 'cancel' /></a> 
 </div><br>
 {% endblock %}

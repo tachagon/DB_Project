@@ -29,7 +29,8 @@ class Prof2Lang(models.Model):
         ('0', 'นาย'),       # Mr.
         ('1', 'นาง'),       # Mrs.
         ('2', 'นางสาว'),    # Miss.
-        ('3', 'ดร.')        # Dr.
+        ('3', 'ดร.'),       # Dr.
+        ('4', 'อาจารย์')     # อ.
     )
     prefix_name  = models.CharField(max_length=1, choices=prefix_name_choices)      # 11. * คำนำหน้าชื่อ
 

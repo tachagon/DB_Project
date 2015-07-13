@@ -202,7 +202,7 @@ def user_register(request):
         main            = request.POST['main']              # get 13. main
         department      = request.POST['department']        # get 14. department
         faculty         = request.POST['faculty']           # get 15. faculty
-        sex             = request.POST['sex']               # get 16. sex
+        #sex             = request.POST['sex']               # get 16. sex
         degree          = request.POST['degree']            # get 17. degree
         id_number       = request.POST['id_number']         # get 18. id_number
         nationality     = request.POST['nationality']       # get 19. nationality
@@ -212,6 +212,12 @@ def user_register(request):
         prefix_name     = request.POST['prefix_name']       # get 23. prefix_name
         password        = request.POST['password']          # get 24. password
         check_password  = request.POST['check_password']    # get 25. check_password
+
+        # define plan
+        if degree == '0':
+            plan = '0'
+        else:
+            plan = request.POST['plan']
 
         # errors 1: User fill invalid password
         if password != check_password:
@@ -278,6 +284,12 @@ def user_register(request):
                 date = str(birthDate.day) + "-" + str(birthDate.month) + "-" + str(year)
                 birthDate = datetime.strptime(date, '%d-%m-%Y').date()
 
+                # auto select sex
+                if prefix_name == '0':
+                    sex = '0'
+                elif prefix_name == '1' or prefix_name == '2':
+                    sex = '1'
+
                 # create new Student object
                 newStudent = Student(
                     userprofile     = newUserProfile,   # set 1. user profile
@@ -290,7 +302,8 @@ def user_register(request):
                     nationality     = nationality,      # set 8. เชื้อชาติ
                     religion        = religion,         # set 9. ศาสนา
                     blood_type      = blood_type,       # set 10. หมู่เลือด
-                    birthDate       = birthDate         # set 11. วันเกิด
+                    birthDate       = birthDate,        # set 11. วันเกิด
+                    plan            = plan              # set 12. แผนการเรียน
                 )
                 newStudent.save() # save new Srudent object into database
 

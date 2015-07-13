@@ -1,12 +1,18 @@
+<!-- Use customfunction in this page -->
 {% load custom_function %}
 ﻿<!DOCTYPE>
 <html>
 <head>
 <title>แบบ วศ. 4-03</title>
 <meta http-equiv="content-type" content="text/html;charset=utf-8">
+<!-- Style sheet : Use CSS for each tag name or class -->
 <style>
 body{
 	}
+*{
+	word-wrap:normal;
+	word-break:break-all;
+}
 .page{
 	font:14pt "Angsana New";
 	width:210mm;
@@ -18,7 +24,6 @@ body{
 	border-width:thin;
 	border-bottom:none;
     background: white;
-	word-break:break-all;
 	}
 .form > H{
 	margin-left:0;
@@ -31,11 +36,8 @@ body{
 	
 	}
 #nameeng{
-	padding-left:12mm;
+	padding-left:11mm;
 	}
-#teacheng{
-	padding-left:46mm;
-}
 #yearspace{
 	display:block;
 	margin-bottom:10mm;
@@ -44,7 +46,7 @@ body{
 	padding-left:2mm;
 	}
 #namestdeng{
-	padding-left:38mm;
+	padding-left:33mm;
 }
 #department{
 	padding-left:15mm;
@@ -124,8 +126,9 @@ body{
 	height:35mm;
 	padding-left: 2px;
 }
-
-
+#teacheng{
+	padding-left:45mm;
+}
 
 /* For set print*/
 @media print {
@@ -147,7 +150,6 @@ body{
 		background: initial;
 		page-break-after: auto;
 		display:block;
-		word-break:break-all;
 		}
 	#footer{
 		font:14pt "Angsana New";
@@ -192,15 +194,15 @@ body{
 	div *{
 		font:14pt "Angsana New";
 	}
-	#teacheng{
-		padding-left:46mm;
-	}
 }
 </style>
 <script>
 </script>
 </head>
-<body onLoad="return window.print()">
+<!-- after this are HTML coding  -->
+<!-- {.{ ... }} is syntax for access database and add | for function in custom_function ("{.{" to avoid error) -->
+<!-- {.% ... %} is syntax for operation ex. if/else , forloop, etc. ("{.%" to aviod error) -->
+<body onLoad="return window.print();">
 <div class="page">
     <H id="topright">แบบ วศ. 4-03</H><br>
     <CENTER><H>คณะวิศวกรรมศาสตร์</H><br>
@@ -209,37 +211,37 @@ body{
     <br id="yearspace">
     <label class="form">
 {% if student %}
-        <H>ด้วยข้าพเจ้า ชื่อและสกุล</H><H id="nameth">(ภาษาไทย) {{ student.userprofile.prefix_name|get_prefix_name_th }} {{ student.userprofile.firstname_th }} {{ student.userprofile.lastname_th }}</H><br>
-        <H id="namestdeng">(ภาษาอังกฤษ) {{ student.userprofile.prefix_name|get_prefix_name_en }} {{ student.userprofile.firstname_en }} {{ student.userprofile.lastname_en }}</H><br>
-        <H id="namestdeng">ขณะนี้เป็นนักศึกษาปีที่ {{ currentYear }}</H><H> ของหลักสูตร {{ scheme }}</H><H> วิศวกรรมศาสตร์บัณฑิต</H><br>
-        <H id="department">ในภาควิชา {{ department }}</H><H> สาขาวิชา {{ main }}</H><br>
-        <H>ตำบลที่อยู่ปัจจุบันของนักศึกษา </H><H class="text">{{ student.userprofile.address }}</H>
+        <H>ด้วยข้าพเจ้า ชื่อและสกุล</H><H id="nameth">(ภาษาไทย)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ student.userprofile.prefix_name|get_prefix_name_th }} {{ student.userprofile.firstname_th }} {{ student.userprofile.lastname_th }}</H><br>
+        <H id="namestdeng">(ภาษาอังกฤษ)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ student.userprofile.prefix_name|get_prefix_name_en }} {{ student.userprofile.firstname_en }} {{ student.userprofile.lastname_en }}</H><br>
+        <H id="namestdeng">ขณะนี้เป็นนักศึกษาปีที่ {{ currentYear }}</H><H> ของหลักสูตร {{ scheme }}</H><H> วิศวกรรมศาสตรบัณฑิต</H><br>
+        <H id="department">ในภาควิชา {{ department }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</H><H>สาขาวิชา {{ main }}</H><br>
+        <H>ตำบลที่อยู่ปัจจุบันของนักศึกษา&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</H><H class="text">{{ student.userprofile.address }}</H>
         <H>&nbsp; โทร {{ student.userprofile.tel }}</H><br>
-        <H>สภานที่ทำงานปัจจุบันของนักศึกษา </H><H class="text">{{ student.userprofile.office }}</H><br>
+        <H>สภานที่ทำงานปัจจุบันของนักศึกษา&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</H><H class="text">{{ student.userprofile.office }}</H><br>
 {% else %}
-        <H>ด้วยข้าพเจ้า ชื่อและสกุล</H><H id="nameth">(ภาษาไทย) {{ approve.student.userprofile.prefix_name|get_prefix_name_th }} {{ approve.student.userprofile.firstname_th }} {{ approve.student.userprofile.lastname_th }}</H><br>
-        <H id="namestdeng">(ภาษาอังกฤษ) {{ approve.student.userprofile.prefix_name|get_prefix_name_en }} {{ approve.student.userprofile.firstname_en }} {{ approve.student.userprofile.lastname_en }}</H><br>
-        <H id="namestdeng">ขณะนี้เป็นนักศึกษาปีที่ {{ currentYear }}</H><H> ของหลักสูตร {{ scheme }}</H><H> วิศวกรรมศาสตร์บัณฑิต</H><br>
-        <H id="department">ในภาควิชา {{ department }}</H><H> สาขาวิชา {{ main }}</H><br>
-        <H>ตำบลที่อยู่ปัจจุบันของนักศึกษา </H><H class="text">{{ approve.student.userprofile.address }}</H>
+        <H>ด้วยข้าพเจ้า ชื่อและสกุล</H><H id="nameth">(ภาษาไทย)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ approve.student.userprofile.prefix_name|get_prefix_name_th }} {{ approve.student.userprofile.firstname_th }} {{ approve.student.userprofile.lastname_th }}</H><br>
+        <H id="namestdeng">(ภาษาอังกฤษ)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ approve.student.userprofile.prefix_name|get_prefix_name_en }} {{ approve.student.userprofile.firstname_en }} {{ approve.student.userprofile.lastname_en }}</H><br>
+        <H id="namestdeng">ขณะนี้เป็นนักศึกษาปีที่ {{ currentYear }}</H><H> ของหลักสูตร {{ scheme }}</H><H> วิศวกรรมศาสตรบัณฑิต</H><br>
+        <H id="department">ในภาควิชา {{ department }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</H><H>สาขาวิชา {{ main }}</H><br>
+        <H>ตำบลที่อยู่ปัจจุบันของนักศึกษา&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</H><H class="text">{{ approve.student.userprofile.address }}</H>
         <H>&nbsp; โทร {{ approve.student.userprofile.tel }}</H><br>
-        <H>สภานที่ทำงานปัจจุบันของนักศึกษา </H><H class="text">{{ approve.student.userprofile.office }}</H><br>
+        <H>สภานที่ทำงานปัจจุบันของนักศึกษา&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</H><H class="text">{{ approve.student.userprofile.office }}</H><br>
 {% endif %}
         <H>มีความประสงค์ขออนุมัติทำปริญญานิพนธ์เพื่อเป็นส่วนหนึ่งของการศึกษาตามหลักสูตร</H><br>
-        <H>วิศวกรรมศาสตร์บัณฑิต ภาควิชาวิศวกรรมไฟฟ้าและคอมพิวเตอร์ จำนวน {{ approve.credit }}</H><H> หน่วย</H> <br>
+        <H>วิศวกรรมศาสตรบัณฑิต ภาควิชาวิศวกรรมไฟฟ้าและคอมพิวเตอร์ จำนวน {{ approve.credit }}</H><H> หน่วย</H> <br>
         <H>ในวิชา {{ approve.course }}</H><br>
-        <H>ชื่อเรื่อง (ภาษาไทย) {{ approve.project.name_thai }}</H><br>
-        <H id="nameeng">(ภาษาอังกฤษ) {{ approve.project.name_eng }}</H><br>
-        <H>ชื่ออาจารย์ที่ปรึกษาปริญญานิพนธ์ (ภาษาไทย) {{ approve.project.teacher.academic_position|get_prefix_name_th_teacher:approve.project.teacher.userprofile.prefix_name }} {{ approve.project.teacher.userprofile.firstname_th }} {{ approve.project.teacher.userprofile.lastname_th }} ({{ approve.project.teacher.shortname }})</H><br>
-        <H id="teacheng">(ภาษาอังกฤษ) {{ approve.project.teacher.academic_position|get_prefix_name_en_teacher:approve.project.teacher.userprofile.prefix_name }} {{ approve.project.teacher.userprofile.firstname_en }} {{ approve.project.teacher.userprofile.lastname_en }} ({{ approve.project.teacher.shortname }})</H><br>
-        <H>หมายเลขโทรศัพท์ที่ทำงานของอาจารย์ที่ปรึกษา โทร {{ approve.project.teacher.userprofile.tel }}</H><H> ต่อ {{ approve.project.teacher.userprofile.ext }}</H><br>
+        <H>ชื่อเรื่อง (ภาษาไทย)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ approve.project.name_thai }}</H><br>
+        <H id="nameeng">(ภาษาอังกฤษ)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ approve.project.name_eng }}</H><br>
+        <H>ชื่ออาจารย์ที่ปรึกษาปริญญานิพนธ์ (ภาษาไทย)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ approve.project.teacher.academic_position|get_prefix_name_th_teacher:approve.project.teacher.userprofile.prefix_name }} {{ approve.project.teacher.userprofile.firstname_th }} {{ approve.project.teacher.userprofile.lastname_th }} ({{ approve.project.teacher.shortname }})</H><br>
+        <H id="teacheng">(ภาษาอังกฤษ)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ approve.project.teacher.academic_position|get_prefix_name_en_teacher:approve.project.teacher.userprofile.prefix_name }} {{ approve.project.teacher.userprofile.firstname_en }} {{ approve.project.teacher.userprofile.lastname_en }} ({{ approve.project.teacher.shortname }})</H><br>
+        <H>หมายเลขโทรศัพท์ที่ทำงานของอาจารย์ที่ปรึกษา&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;โทร {{ approve.project.teacher.userprofile.tel }}</H><H> ต่อ {{ approve.project.teacher.userprofile.ext }}</H><br>
     </label>
 </div>
 <!-- Cut form -->
 <div id="footer">
     <H>คาดว่าจะเขียนปริญญานิพนธ์เสร็จภายในภาคที่ {{ approve.semesterEnd }}</H><H> ปีการศึกษา {{ approve.yearEnd }}</H><br>
-    <H>จิงขอได้โปรดพิจารณาอนุมัติ โดยได้แนบโครงการเสนอปริญญานิพนธ์มาพร้อมนี้</H><br><br>
-    <div align="right"><H>ลงชื่อ:</H>..................................................<H>(ผู้ยื่นคำร้อง)</H></div>
+    <H>จึงขอได้โปรดพิจารณาอนุมัติ โดยได้แนบโครงการเสนอปริญญานิพนธ์มาพร้อมนี้</H><br><br>
+    <div align="right"><H>ลงชื่อ </H>..................................................<H> (ผู้ยื่นคำร้อง)</H></div>
     <div align="right" style="margin-right:15mm">................/................/................</div>
     <br>
     <CENTER>
@@ -262,6 +264,5 @@ body{
         </div>
     </CENTER>
 </div>
-    
 </body>
 </html>

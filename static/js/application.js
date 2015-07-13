@@ -21,3 +21,13 @@ $(document).scroll(function(e){
         }
     }
 });
+
+function defaultSelect(btn_id, sel_id){
+    var btn_id = '#' + btn_id;
+    var sel_id = '#' + sel_id + ' option';
+    $(btn_id).on("click", function () {
+        $(sel_id).prop('selected', function() {
+            return this.defaultSelected;
+        });
+    });
+}
