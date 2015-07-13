@@ -22,7 +22,7 @@
         <div class="col-md-9">
             <div class="row">
                 <div class="table-responsive">
-                    <table class="table table-hover table-bordered">
+                    <table class="table table-hover table-bordered table-striped">
                         <tr>
                             <th>ชื่อ-นามสกุล</th>
                             <td>{{name_th}} {{last_th}}</td>
@@ -50,7 +50,7 @@
             {% if ListWork %}
                 <div class="row">
                     <div class="table-responsive">
-                        <table class="table table-hover table-bordered" id="no-more-tables">
+                        <table class="table table-hover table-bordered table-striped">
                             <thead>
                             <tr>
                                 <th>วัน</th>
@@ -61,8 +61,8 @@
                                 <th>เมนู</th>
                             </tr>
                             </thead>
-                            {% for working in ListWork %}
                             <tbody>
+                            {% for working in ListWork %}
                             <tr>
                                 <td data-title="วัน">
                                     {% ifequal working.day|date:"l" "Monday" %}จันทร์{%endifequal%}
