@@ -411,6 +411,40 @@ def addSection(request):
         except:
             return HttpResponseRedirect(reverse('group3:prof2lang_add', args=['6']))
 
+def set_center_point(pdf, th_text, point, end=0, padding=10): # to put text to be in center that I decide.
+    removed = th_text
+    th_del = u' ุูึี๊ัํ้็่๋ื์ิฺ '
+    for i in th_del:
+        removed=removed.replace(i,'')
+    pdf.cell(point-len(removed), padding, u'')
+    pdf.cell(end, padding, th_text)
+
+def to_thai_num(num): # convert to thai number.
+    thai_num = ''
+    for sub_num in num:
+        if sub_num == '1':
+            thai_num = thai_num + u'๑'
+        elif sub_num == '2':
+            thai_num = thai_num + u'๒'
+        elif sub_num == '3':
+            thai_num = thai_num + u'๓'
+        elif sub_num == '4':
+            thai_num = thai_num + u'๔'
+        elif sub_num == '5':
+            thai_num = thai_num + u'๕'
+        elif sub_num == '6':
+            thai_num = thai_num + u'๖'
+        elif sub_num == '7':
+            thai_num = thai_num + u'๗'
+        elif sub_num == '8':
+            thai_num = thai_num + u'๘'
+        elif sub_num == '9':
+            thai_num = thai_num + u'๙'
+        else:
+            thai_num = thai_num + u'๐'
+    return thai_num
+
+
 def genpdf(request, profID): # use to generate pdf file for lend another teacher.
     teachObj = Teach.objects.get(pk= int(profID))   # get all objects teacher.
     pdf = FPDF('P', 'mm', 'A4')    # start pdf file
@@ -601,7 +635,7 @@ def genpdf(request, profID): # use to generate pdf file for lend another teacher
     pdf.cell(11, 10, u'เรื่อง')
     pdf.add_font('THSarabun', '', 'THSarabun.ttf', uni=True)
     pdf.set_font('THSarabun', '', 16)
-    pdf.cell(0, 11, u'การจัดการเรียนการสอนสำหรับนักศึกษาโครงการพิเศษ(สองภาษา)')
+    pdf.cell(0, 10.5, u'การจัดการเรียนการสอนสำหรับนักศึกษาโครงการพิเศษ(สองภาษา)')
     pdf.line(40,68.5,180,68.5)
     pdf.ln(8)
     pdf.add_font('THSarabun Bold', '', 'THSarabun Bold.ttf', uni=True)
@@ -613,14 +647,34 @@ def genpdf(request, profID): # use to generate pdf file for lend another teacher
     pdf.cell(24, 11, u'หัวหน้าภาควิชา' + department)
     pdf.ln(8)
     pdf.cell(45, 10, u'')
-    pdf.cell(0, 10, u'ตามที่ภาควิชาวิศวกรรมไฟฟ้าและคอมพิวเตอร์  ได้ขอรับบริการจัดการเรียนการสอนจาก')
+    pdf.cell(0, 10, u'ตามที่ ภาควิชาวิศวกรรมไฟฟ้าและคอมพิวเตอร์  ได้ขอรับบริการจัดการเรียนการสอน')
     pdf.ln(8)
     pdf.cell(19, 10, u'')
-    pdf.cell(23, 10, u'ท่านในรายวิชา                                                              สำหรับนักศึกษาโครงการพิเศษ (สองภาษา) ')
-    pdf.cell(20, 10, u'' + subjectName + '  '  + subjectID) 
-    pdf.ln(8)
-    pdf.cell(19, 10, u'')
-    pdf.cell(0, 10, u'ภาคเรียนที่ .........  นั้น')
+    show_term = to_thai_num(str(teachObj.term))
+    show_year = to_thai_num(str(teachObj.year))
+        
+    word_subject = u'จาก#ท่าน#ใน#ราย#วิชา# ' + subjectID + '#  #'  + subjectName + u' #ตอนเรียน #' + sec[2:]+u'#  สำ#หรับ#นัก#ศึก#ษา#โครง#การ#พิ#เศษ# (สอง#ภาษา) #ภาค#เรียน#ที่# ' + show_term+ '/' + show_year + u' นั้น'
+    words = word_subject.split('#')
+    
+    removed = word_subject
+    th_del = u' ุูึี๊ัํ้็่๋ื์ิฺ '
+    for i in th_del:
+        removed=removed.replace(i,'')
+    
+    sum_word = u''
+    num_word = 0
+    for each_word in words:
+        num_word = num_word  + len(each_word)
+        if num_word  > 85:
+            print num_word
+            num_word = 0
+            pdf.cell(0, 10, sum_word)
+            pdf.ln(8)
+            sum_word = u''
+            pdf.cell(19, 0, u'')
+        sum_word = sum_word + each_word
+    pdf.cell(0, 10, sum_word)
+    
     pdf.ln(8)
     pdf.cell(45, 10, u'')
     pdf.cell(0, 10, u'ภาควิชาวิศวกรรมไฟฟ้าและคอมพิวเตอร์  ขอให้ท่านยืนยันการจัดการเรียนการสอนในราย')
@@ -639,25 +693,25 @@ def genpdf(request, profID): # use to generate pdf file for lend another teacher
     pdf.ln(8)
     pdf.cell(94, 10, u'')
     pdf.cell(90, 10, u'หัวหน้าภาควิศวกรรมไฟฟ้าและคอมพิวเตอร์')
-    pdf.ln(14)
+    pdf.ln(10)
     pdf.cell(21, 10, u'')
     pdf.cell(0, 10, u'.........................................................................................................................................................................')
-    pdf.ln(8)
+    pdf.ln(13)
     pdf.cell(8, 10,u'')
     pdf.cell(30, 10, u'         ชื่อผู้สอน ' + academicPosition + pre_name + firstname + '   '+ lastname + u'            รหัสผู้สอน ' + proID )
     #pdf.cell(80, 10, u'' + academicPosition +pre_name+ firstname + '   '+ lastname)
     #pdf.cell(80, 10, u'' + proID)
     pdf.ln(8)
     pdf.cell(8, 10,u'')
-    pdf.cell(30, 10, u'         ภาควิชา')
-    pdf.cell(60, 10, u'' + department)
-    pdf.cell(20, 10, u'คณะ')
+    pdf.cell(27, 10, u'         ภาควิชา')
+    pdf.cell(63, 10, u'' + department)
+    pdf.cell(14, 10, u'คณะ')
     pdf.cell(20, 10, u'' + faculty)
     pdf.ln(8)
     pdf.cell(8, 10,u'')
-    pdf.cell(30, 10, u'         รหัสวิชา')
-    pdf.cell(60, 10, u'' +subjectID)
-    pdf.cell(20, 10, u'ชื่อวิชา')
+    pdf.cell(27, 10, u'         รหัสวิชา')
+    pdf.cell(63, 10, u'' +subjectID)
+    pdf.cell(14, 10, u'ชื่อวิชา')
     pdf.cell(20, 10, u'' + subjectName) 
     pdf.ln(8)
     pdf.cell(8, 10,u'')
@@ -665,7 +719,7 @@ def genpdf(request, profID): # use to generate pdf file for lend another teacher
     pdf.cell(40, 10, u'' + sec)
     pdf.cell(10, 10, u'วัน')
     pdf.cell(40, 10, u'' + day)
-    pdf.cell(15, 10, u'เวลา')
+    pdf.cell(12, 10, u'เวลา')
     pdf.cell(20, 10, u'' + str(time)[:5] + u' น.')
     pdf.ln(8)
     pdf.cell(8, 10,u'')
@@ -673,26 +727,30 @@ def genpdf(request, profID): # use to generate pdf file for lend another teacher
     pdf.ln(8)
     pdf.cell(0, 10, u'                                      ภาษาอังกฤษ  ')
     
-    pdf.rect(52, 219, 3, 3)
+    pdf.rect(52, 220, 3, 3)
     pdf.ln(8)
     pdf.cell(0, 10, u'                                      ภาษาไทย')
-    pdf.rect(52, 227, 3, 3)
+    pdf.rect(52, 228, 3, 3)
     
     pdf.ln(8)
     pdf.cell(94, 10, u'')
     pdf.cell(100, 10, u'ลงชื่อ................................................อาจารย์ผู้สอน ')
     pdf.ln(8)
-    pdf.cell(100, 10, u'')
-    pdf.cell(110, 10, u''+u'( ' +short_academicPosition + pre_name + firstname +'   '+ lastname+u' )' )
+    #pdf.cell(100, 10, u'')
+    #pdf.cell(110, 10, u''+u'( ' +short_academicPosition + pre_name + firstname +'   '+ lastname+u' )' )
+    
+    th_name = u'( ' +short_academicPosition + pre_name + firstname +'   '+ lastname+u' )'
+    th_leader = u'หัวหน้าภาควิชา' + department
+    set_center_point(pdf, th_name, 125)
+    
     pdf.ln(8)
     pdf.cell(94, 10, u'')
-    pdf.cell(100, 10, u'ลงชื่อ................................................')
+    pdf.cell(100, 10, u'ลงชื่อ..................................................')
     pdf.ln(8)
     pdf.cell(100, 10, u'')
-    pdf.cell(110, 10, u'(..............................................) ')
+    pdf.cell(110, 10, u'(...................................................) ')
     pdf.ln(8)
-    pdf.cell(94, 10, u'')
-    pdf.cell(100, 10, u'หัวหน้าภาควิชา' + department)
+    set_center_point(pdf, th_leader, 125)
     pdf.ln(8)
 
     pdf.output("group3/uni.pdf", 'F')
@@ -737,10 +795,10 @@ def drawAttr2(pdf, start, end, attr=False): # draw  table for houfpdf()
     pdf.line(10, Y[0], 10, Y[1])
     pdf.line(30, Y[0], 30, Y[1])
     pdf.line(75, Y[0], 75, Y[1])
-    pdf.line(94, Y[0], 94, Y[1])
+    pdf.line(101, Y[0], 101, Y[1])
     
-    pdf.line(112, Y[0], 112, Y[1])
-    pdf.line(150,Y[0], 150, Y[1])
+    pdf.line(118, Y[0], 118, Y[1])
+    pdf.line(155,Y[0], 155, Y[1])
     pdf.line(198, Y[0], 198, Y[1])
 
 def genallpdf(request): # grnerate pdf for show all section data.
@@ -841,7 +899,7 @@ def genallpdf(request): # grnerate pdf for show all section data.
             pdf.cell(7, 18, day)
             pdf.cell(16, 18, str(starttime))
             pdf.cell(12, 18, room)
-            pdf.cell(19, 18, phone_num)
+            pdf.cell(20, 18, phone_num)
             pdf.cell(43, 18, email)
             pdf.cell(29, 18, sahakorn)
 
@@ -872,46 +930,74 @@ def gen_single_text(pdf, position, text=""): # use to create a single text for o
     pdf.cell(position, 18, u'' + text)
     pdf.ln(8)
 
-def hourpdf(request, employeeID): # use to see working of temporary employee.
+def hourpdf(request, employeeID, scan_month, scan_year): # use to see working of temporary employee.
     pdf = FPDF('P', 'mm', 'A4')
     pdf.add_page()
     ganY = [46, 54]  # line bettwen collumn.
     
     employeeObj = HourlyEmployee.objects.get(pk=int(employeeID))
     ListWork = employeeObj.work_set.all()
-    
+    ################################   scan_time #####################################3
+    new_ListWork  = []
+    for each_work in ListWork:
+        if (each_work.releaseDate.year == int(scan_year)) and (each_work.releaseDate.month == int(scan_month)):
+            new_ListWork.append(each_work)
+    ListWork = new_ListWork
+    ##############################################################################3
     pdf.add_font('THSarabun', '', 'THSarabun.ttf', uni=True)
     pdf.set_font('THSarabun', '', 16)
     
     gen_single_text(pdf, 65, u'ใบลงเวลาทำงานลูกจ้างชั่วคราวรายชั่วโมง')
     gen_single_text(pdf, 57, u'มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าพระนครเหนือ')
-    gen_single_text(pdf, 75, u'ชื่อ' + employeeObj.user.firstname_th + '   '+employeeObj.user.lastname_th)
+    pre_name = employeeObj.user.prefix_name
     
-    pdf.ln(8)
-    pdf.cell(0, 18, u'      วัน                 วันที่ เดือน ปี           เวลาทำงาน  รวมชั่วโมง          ลายมือชื่อ                       หมายเหตุ')
+    if pre_name == '0':
+        pre_name = u'นาย'
+    elif pre_name == '1':
+        pre_name = u'นาง'
+    elif pre_name == '3':
+        pre_name = u'นางสาว'
+    else:
+        pre_name = u'ดร.'
+
+    #gen_single_text(pdf, 75, u'ชื่อ ' +pre_name + employeeObj.user.firstname_th + '   ' + employeeObj.user.lastname_th)
+    th_name  = u'ชื่อ ' +pre_name + employeeObj.user.firstname_th + '   ' + employeeObj.user.lastname_th
+    set_center_point(pdf, th_name, 90, 0, 18)
+    pdf.ln(16)
+    pdf.cell(0, 18, u'      วัน                 วันที่ เดือน ปี              เวลาทำงาน    รวมชั่วโมง         ลายมือชื่อ                      หมายเหตุ')
     drawAttr2(pdf, ganY[0], ganY[1], True)
     pdf.ln(12)
 
     numLine = 0
     payment = 0
     show_payment = 0
+    line_new_page = 21
     for working in ListWork:
         numLine += 1
+        if ( numLine % line_new_page ) == 0:
+            ganY = [22, 30]  # line bettwen collumn.
+            pdf.add_page()
+            numLine = 1
+            pdf.ln(8)
+            pdf.cell(0, 18, u'      วัน                 วันที่ เดือน ปี              เวลาทำงาน    รวมชั่วโมง         ลายมือชื่อ                      หมายเหตุ')
+            drawAttr2(pdf, ganY[0], ganY[1], True)
+            pdf.ln(12)
+            line_new_page = 24
         drawAttr2(pdf, ganY[0] + (numLine*8), ganY[1] + (numLine*8))
         if working.day.weekday() == 0:  # geting day to pdf
-            pdf.cell(20, 10, u'วันจันทร์')
+            pdf.cell(20, 10, u'จันทร์')
         elif working.day.weekday() == 1:
-            pdf.cell(20, 10, u'วันอังคาร')
+            pdf.cell(20, 10, u'อังคาร')
         elif working.day.weekday() == 2:
-            pdf.cell(20, 10, u'วันพุธ')
+            pdf.cell(20, 10, u'พุธ')
         elif working.day.weekday() == 3:
-            pdf.cell(20, 10, u'วันพฤหัสบดี')
+            pdf.cell(20, 10, u'พฤหัสบดี')
         elif working.day.weekday() == 4:
-            pdf.cell(20, 10, u'วันศุกร์')
+            pdf.cell(20, 10, u'ศุกร์')
         elif working.day.weekday() == 5:
-            pdf.cell(20, 10, u'วันเสาร์')
+            pdf.cell(20, 10, u'เสาร์')
         else:
-            pdf.cell(20, 10, u'วันอาทิตย์')
+            pdf.cell(20, 10, u'อาทิตย์')
         
         space = 26
         pdf.cell(5, 10, u''+ str(working.releaseDate.day)) # get day
@@ -940,18 +1026,58 @@ def hourpdf(request, employeeID): # use to see working of temporary employee.
         else:
             pdf.cell(space, 10, u' ธันวาคม พ.ศ. ' )
         
-        pdf.cell(17, 10, u''+ str(543+int(str(working.releaseDate.year))) )
-        pdf.cell(20, 10, u''+ str(working.startTime.hour)+':'+str(working.startTime.minute))
-        come_time = str(working.startTime.hour)+':'+str(working.startTime.minute) # time that employee come to work.
+        pdf.cell(15, 10, u''+ str(543+int(str(working.releaseDate.year))) )
+        if (str(working.startTime.minute) == '0') and ( str(working.endTime.minute) != '0' ):
+            if int(str(working.endTime.minute) <10):
+                pdf.cell(30, 10, u''+ str(working.startTime.hour)+':0'+str(working.startTime.minute)+' - '+str(working.endTime.hour)+':'+'00')
+            else:
+                pdf.cell(30, 10, u''+ str(working.startTime.hour)+':'+'00'+' - '+str(working.endTime.hour)+':'+str(working.endTime.minute))
+        elif (str(working.startTime.minute) != '0') and (str(working.endTime.minute) == '0'):
+            if int(str(working.startTime.minute) <10 ):
+                pdf.cell(30, 10, u''+ str(working.startTime.hour)+':00'+' - '+str(working.endTime.hour)+':'+'0'+str(working.endTime.minute))
+            else:
+                pdf.cell(30, 10, u''+ str(working.startTime.hour)+':'+str(working.startTime.minute)+' - '+str(working.endTime.hour)+':'+'00')
+        elif (str(working.startTime.minute) == '0') and ( str(working.endTime.minute) == '0' ):
+            pdf.cell(30, 10, u''+ str(working.startTime.hour)+':'+'00'+' - '+str(working.endTime.hour)+':'+'00')
+        else:
+            if (int(str(working.startTime.minute)) < 10)and ( int(str(working.endTime.minute)) >= 10 ) :
+                pdf.cell(30, 10, u''+ str(working.startTime.hour)+':'+'0'+str(working.startTime.minute)+' - '+str(working.endTime.hour)+':'+str(working.endTime.minute))
+            elif (int(str(working.startTime.minute)) >= 10)and ( int(str(working.endTime.minute)) < 10 ):
+                pdf.cell(30, 10, u''+ str(working.startTime.hour)+':'+str(working.startTime.minute)+' - '+str(working.endTime.hour)+':'+'0'+str(working.endTime.minute))
+            elif ( int(str(working.startTime.minute)) < 10 ) and ( int(str(working.endTime.minute)) < 10 ):
+                pdf.cell(30, 10, u''+ str(working.startTime.hour)+':'+'0'+str(working.startTime.minute)+' - '+str(working.endTime.hour)+':'+'0'+str(working.endTime.minute))
+            else:
+                pdf.cell(30, 10, u''+ str(working.startTime.hour)+':'+str(working.startTime.minute)+' - '+str(working.endTime.hour)+':'+str(working.endTime.minute))
+        """come_time = str(working.startTime.hour)+':'+str(working.startTime.minute) # time that employee come to work.
         back_time = str(working.endTime.hour)+':'+str(working.endTime.minute) # time that employee go home
-        diff_min = int(back_time.split(':')[1]) - int(come_time.split(':')[1])    # calculate differ value of come_time
-        diff_hour = int(back_time.split(':')[0]) - int(come_time.split(':')[0])  # calculate differ value of back_time
+        if (int(come_time.split(':')[0]) == 12) and ( int(back_time.split(':')[0]) > 12 ):
+            diff_min = int(back_time.split(':')[1]) - 0    # calculate differ value of come_time
+            diff_hour = int(back_time.split(':')[1]) - 13
+        elif (int(come_time.split(':')[0]) < 12) and ( int(back_time.split(':')[0]) == 12 ):
+            diff_min = 0 - int(come_time.split(':')[1])    # calculate differ value of come_time
+            diff_hour = int(back_time.split(':')[0]) - int(come_time.split(':')[0])  # calculate differ value of back_time
+        elif (int(come_time.split(':')[0]) == 12) and ( int(back_time.split(':')[0]) == 12 ):
+            diff_min = 0
+            diff_hour = 0
+        else:
+            diff_min = int(back_time.split(':')[1]) - int(come_time.split(':')[1])    # calculate differ value of come_time
+            diff_hour = int(back_time.split(':')[0]) - int(come_time.split(':')[0])  # calculate differ value of back_time
         if diff_min < 0:
-            diff_min = 60 - diff_min
+            diff_min = 60 + diff_min
+            diff_hour = diff_hour - 1 """
+
+        """
+        try:
+            if (int(back_time.split(':')[0]) > 12):
+                diff_hour = diff_hour - 1
+                print "Diff hour"
+        except:
+            pass"""
+        diff_hour = working.get_time_diff().split(':')[0]
+        diff_min = working.get_time_diff().split(':')[1]
         diff_min_100 = float(str(diff_min))/60
-        
         show_payment = show_payment + ( float(diff_hour)+ (float(diff_min)/100) ) 
-        pdf.cell(52, 10, u''+ str(diff_hour)+'.'+str(diff_min))
+        pdf.cell(49, 10, u''+ str(diff_hour)+'.'+str(diff_min))
         pdf.cell(90, 10, u''+working.note)
         pdf.ln(8)
         payment = payment + (float(str(diff_min_100)[:4]) + float(diff_hour))
@@ -966,14 +1092,15 @@ def hourpdf(request, employeeID): # use to see working of temporary employee.
         else:
             show_complete_pay = i + show_complete_pay 
     
+    payment = show_payment * 45.45
     gen_single_text(pdf, 90, u'รวมจำนวนชั่วโมง ' +str(show_payment)+ u' ชั่วโมง') # call spacial funtion to write a text per line.
-    gen_single_text(pdf, 90, u'อัตรา 45.45 บาท ชั่วโมง')
-    payment = payment * 45.45
-    gen_single_text(pdf, 85, u'รวมเป็นเงินทั้งสิ้น ' + str(payment)[:4] +u' บาท')
+    gen_single_text(pdf, 94, u'อัตรา 45.45 บาท ชั่วโมง')
+    th_sum_money = u'รวมเป็นเงินทั้งสิ้น ' + "{0:.2f}".format(payment) +u' บาท'
+    set_center_point(pdf, th_sum_money, 110, 0, 18)
     gen_single_text(pdf, 85, u'(                                     )')
-    gen_single_text(pdf, 90, u'ได้ตรวจสอบถูกต้องแล้ว')
-    gen_single_text(pdf, 65, u'ลงชื่อ........................................................................................')
-    gen_single_text(pdf, 70, u'(.....................................................................................)')
+    gen_single_text(pdf, 95, u'ได้ตรวจสอบถูกต้องแล้ว')
+    gen_single_text(pdf, 70, u'ลงชื่อ...............................................................................')
+    gen_single_text(pdf, 75, u' (.................................................................................)')
     
     pdf.output("group3/hour.pdf", 'F')
     
@@ -1174,11 +1301,28 @@ def search_hour_worker(request):
             context
         )
 
-def returnsearch(request, id):
+def returnsearch(request, id, choose_month=0, choose_year=0):
     template = "group3/hour_profile.html"
     context = {}
     worker = HourlyEmployee.objects.get(id=int(id))
-    ListWork = worker.work_set.all().order_by('id')
+    ListWork = worker.work_set.all().order_by('-id')
+    ##################### scan_time   ############################
+    if (int(choose_month) != 0) and (int(choose_year) != 0):
+        month_now = int(choose_month)
+        year_now = int(choose_year) - 543
+        context['scan_month'] = month_now
+        context['scan_year'] = year_now
+    else:
+        month_now = datetime.datetime.now().date().month  
+        year_now = datetime.datetime.now().date().year
+        context['scan_month'] = month_now
+        context['scan_year'] = year_now
+    new_ListWork  = []
+    for each_work in ListWork:
+        if (each_work.releaseDate.year == year_now) and (each_work.releaseDate.month == month_now):
+            new_ListWork.append(each_work)
+    ListWork = new_ListWork
+    ###################################################################################
     try:
         profile = worker.user
 

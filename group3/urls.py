@@ -40,11 +40,13 @@ urlpatterns = patterns('',
     url(r'^testpdf/(\d+)/$',        views.genpdf,                   name='genpdf'),
     url(r'^genallpdf/$',            views.genallpdf,                name='genallpdf'),
     # พนักงานรายชั่วโมง ---------------------------------------------------------------------------------------------------
-    url(r'^hourpdf/(\d+)/$', views.hourpdf, name='hourpdf'),
+    #url(r'^hourpdf/(\d+)/$', views.hourpdf, name='hourpdf'), #original
+    url(r'^hourpdf/(\d+)/(\d+)/(\d+)/$', views.hourpdf, name='hourpdf'), #scan_time
     url(r'^prof2lang/delete/(\d+)$', views.prof2lang_delete, name='prof2lang_delete'),
     url(r'^hourindex/$', views.hour_index, name='hour_index'),
     url(r'^hourindex/searchname/$', views.search_hour_worker, name='worker_name'),
     url(r'^hourindex/searchname/(\d+)/$', views.returnsearch, name='returnsearch'),
+    url(r'^hourindex/searchname/(\d+)/(\d+)/(\d+)/$', views.returnsearch, name='returnsearch'), # scan_time
     url(r'^addhourpage/(\d+)/$', views.add_hour_page, name='add_hour_page'),
     url(r'^add_hour_note/(\d+)/$', views.add_hour_note, name='add_hour_note'),
     url(r'^add_hour_date/(\d+)/$', views.add_hour_date, name='add_hour_date'),
@@ -52,6 +54,6 @@ urlpatterns = patterns('',
 
     #-------Book-------------#
     url(r'^add_work/(\d+)/$', views_hours.add_work, name='add_work'),
-
+    url(r'^choose_work/(\d+)/$', views_hours.choose_work, name='choose_work'),
     #------------------------#
 )

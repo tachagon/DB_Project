@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block title %}Menu เมนู{% endblock %}
+{% block pageHeader %}<h1>ระบบ<small> พนักงานรายชั่วโมง</small></h1>
+<ol class="breadcrumb">
+    <li><a href="{% url 'login:menu' %}">เมนู</a></li>
+    <li><a href="{% url 'group3:hour_index' %}">ค้นหา</a></li>
+    <li><a href="{% url 'group3:returnsearch' employee.id %}">ระบบพนักงานรายชั่วโมง</a></li>
+    <li class="active">เลือกเวลา</li>
+</ol>
+{% endblock %}
+{% block content %}
+<div class="row">
+    <div class="container-fluid">
+        <div class="col-md-3"></div>
+       
+            <form  class="form-inline" method="post" action="{% url 'group3:choose_work' employee.id %}">
+                       {% csrf_token %}
+                       <div class="col-md-6">
+                           <div class="row">
+           
+                               <div class="form-group form-group-sm">
+                                   <label class="col-sm-2 control-label">เดือน</label>
+           
+                                   <!-- choose month-->
+                                   <div class="col-sm-4">
+                                       <select name="choose_month" class="form-control">
+
+                                            <option value="1">มกราคม</option>
+                                            <option value="2">กุมภาพันธ์</option>
+                                            <option value="3">มีนาคม</option>
+                                            <option value="4">เมษายน</option>
+                                            <option value="5">พฤษภาคม</option>
+                                            <option value="6">มิถุนายน</option>
+                                            <option value="7">กรกฎาคม</option>
+                                            <option value="8">สิงหาคม</option>
+                                            <option value="9">กันยายน</option>
+                                            <option value="10">ตุลาคม</option>
+                                            <option value="11">พฤศจิกายน</option>
+                                            <option value="12">ธันวาคม</option>
+                                                   
+                                       </select>
+                                   </div>
+                                   <label class="col-sm-2 control-label">    ปี</label>
+                                   <!-- choose year-->
+                                   <div class="col-sm-4">
+                                       <select name="choose_year" class="form-control">
+                                           <script>
+                                                   for(var i = 2558; i < 2571; i++){
+                                                       document.write('<option value="' + i + '">' + i + '</option>');
+                                                   }
+                                               </script>
+                                       </select>
+                                   </div>
+                               </div>
+           
+           
+                               <button type="submit" class="btn btn-default">ตกลง</button>
+                           </div>
+                       </div>
+                   </form>
+       
+        <div class="col-md-3"></div>
+    </div>
+</div>
+{% endblock %}

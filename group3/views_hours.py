@@ -12,6 +12,35 @@ def add_work(request, employeeID):
     context = {}
     employee = HourlyEmployee.objects.get(id=employeeID)
     context["employee"] = employee
+    """
+    if request.method == "POST":
+        startTime_hour   = request.POST["startTime_hour"]
+        startTime_minute = request.POST["startTime_minute"]
+        try:
+            endTime_hour     = request.POST["endTime_hour"]
+        except:
+            context['error'] = "เวลาเริ่มงานไม่ถูกต้อง"
+            return render(request, template, context)
+        endTime_minute   = request.POST["endTime_minute"]
+
+        if (int(startTime_hour) > int(endTime_hour)) or (int(startTime_hour) < 9) or (int(startTime_hour) > 16) or ( int(endTime_hour) > 16 )or( int(endTime_hour) < 9 ):
+            context['error'] = "เวลาเริ่มงานไม่ถูกต้อง"
+            return render(request, template, context)
+        elif (int(startTime_hour) == int(endTime_hour)) and ( int(startTime_minute) == int(endTime_minute) ):
+            context['error'] = "เวลาเริ่มงานไม่ถูกต้อง"
+            return render(request, template, context)
+
+        startTime = str(startTime_hour + ":" + startTime_minute + ":00")
+        endTime   = str(endTime_hour   + ":" + endTime_minute   + ":00")
+
+        workObj = Work(
+            startTime = startTime,
+            endTime   = endTime,
+            employee  = employee
+        )
+        workObj.save()
+        return HttpResponseRedirect(reverse('group3:returnsearch', args=[employeeID]))
+        """
 
     if request.method == "POST":
         startTime_hour   = request.POST["startTime_hour"]
@@ -33,7 +62,9 @@ def add_work(request, employeeID):
                     template,
                     context
                 )
-
+        if (startTime.hour == endTime.hour) and (startTime.minute >= endTime.minute ):
+            context['error'] = "กรุณาเลือกเวลาเริ่มงานให้น้อยกว่าเวลาเลิกงาน"
+            return render(request, template, context)
 
         workObj = Work(
             startTime = startTime,
@@ -43,7 +74,23 @@ def add_work(request, employeeID):
         workObj.save()
         return HttpResponseRedirect(reverse('group3:returnsearch', args=[employeeID]))
 
+    return render(
+        request,
+        template,
+        context
+    )
 
+def choose_work(request, employeeID):
+    template = 'group3/worker/choose_work.html'
+    context = {}
+    employee = HourlyEmployee.objects.get(id=employeeID)
+    context["employee"] = employee
+    
+    if request.method == "POST":
+        choose_month = request.POST["choose_month"]
+        choose_year = request.POST["choose_year"]
+        return HttpResponseRedirect(reverse('group3:returnsearch', args=[employeeID, int(choose_month), int(choose_year)]))
+    
     return render(
         request,
         template,
