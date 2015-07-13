@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}นักศึกษาไม่มีสิทธิ์เข้าใช้งาน{% endblock %}
+
+{% block pageHeader %}
+    <h2>ไม่มีสิทธิ์ <small>เข้าใช้งาน</small></h2>
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="container">
+            <div class="alert alert-warning" role="alert">
+                <strong>Warning!</strong> ผู้ใช้นี้ไม่สามารถเข้าใช้งานระบบนี้ได้
+            </div>
+        </div>
+    </div>
+{% endblock %}

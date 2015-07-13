@@ -937,13 +937,13 @@ def hourpdf(request, employeeID, scan_month, scan_year): # use to see working of
     
     employeeObj = HourlyEmployee.objects.get(pk=int(employeeID))
     ListWork = employeeObj.work_set.all()
-    ################################   scan_time #####################################3
+    ################################   scan_time ##################################
     new_ListWork  = []
     for each_work in ListWork:
         if (each_work.releaseDate.year == int(scan_year)) and (each_work.releaseDate.month == int(scan_month)):
             new_ListWork.append(each_work)
     ListWork = new_ListWork
-    ##############################################################################3
+    ##############################################################################
     pdf.add_font('THSarabun', '', 'THSarabun.ttf', uni=True)
     pdf.set_font('THSarabun', '', 16)
     
@@ -1027,15 +1027,20 @@ def hourpdf(request, employeeID, scan_month, scan_year): # use to see working of
             pdf.cell(space, 10, u' ธันวาคม พ.ศ. ' )
         
         pdf.cell(15, 10, u''+ str(543+int(str(working.releaseDate.year))) )
+        print str(working.startTime.minute) +' : '+ str(working.endTime.minute)
         if (str(working.startTime.minute) == '0') and ( str(working.endTime.minute) != '0' ):
-            if int(str(working.endTime.minute) <10):
-                pdf.cell(30, 10, u''+ str(working.startTime.hour)+':0'+str(working.startTime.minute)+' - '+str(working.endTime.hour)+':'+'00')
+            if int(str(working.endTime.minute)) <10:
+                print 'W1'
+                pdf.cell(30, 10, u''+ str(working.startTime.hour)+':00'+' - '+str(working.endTime.hour)+':0'+str(working.endTime.minute))
             else:
+                print 'W2'
                 pdf.cell(30, 10, u''+ str(working.startTime.hour)+':'+'00'+' - '+str(working.endTime.hour)+':'+str(working.endTime.minute))
         elif (str(working.startTime.minute) != '0') and (str(working.endTime.minute) == '0'):
-            if int(str(working.startTime.minute) <10 ):
-                pdf.cell(30, 10, u''+ str(working.startTime.hour)+':00'+' - '+str(working.endTime.hour)+':'+'0'+str(working.endTime.minute))
+            if int(str(working.startTime.minute)) <10 :
+                print 'T1'
+                pdf.cell(30, 10, u''+ str(working.startTime.hour)+':0'+str(working.startTime.minute)+' - '+str(working.endTime.hour)+':00')
             else:
+                print 'T2'
                 pdf.cell(30, 10, u''+ str(working.startTime.hour)+':'+str(working.startTime.minute)+' - '+str(working.endTime.hour)+':'+'00')
         elif (str(working.startTime.minute) == '0') and ( str(working.endTime.minute) == '0' ):
             pdf.cell(30, 10, u''+ str(working.startTime.hour)+':'+'00'+' - '+str(working.endTime.hour)+':'+'00')
@@ -1208,11 +1213,13 @@ def prof2lang_delete(request, profID): # delete teacher data from index page.
 
 def hour_index(request):
     template = 'group3/hour_index.html'
-
-    return render(request, template,
+    if check_user(request):
+        return render(request, template,
                       {}
                       )
-    
+    else:
+        template = 'group3/disable_user.html'
+        return render(request, template, {})
 def add_hour_page(request, workID):
     workObj = Work.objects.get(pk=int(workID))
     template = 'group3/add_hour.html'
@@ -1302,76 +1309,79 @@ def search_hour_worker(request):
         )
 
 def returnsearch(request, id, choose_month=0, choose_year=0):
-    template = "group3/hour_profile.html"
-    context = {}
-    worker = HourlyEmployee.objects.get(id=int(id))
-    ListWork = worker.work_set.all().order_by('-id')
-    ##################### scan_time   ############################
-    if (int(choose_month) != 0) and (int(choose_year) != 0):
-        month_now = int(choose_month)
-        year_now = int(choose_year) - 543
-        context['scan_month'] = month_now
-        context['scan_year'] = year_now
-    else:
-        month_now = datetime.datetime.now().date().month  
-        year_now = datetime.datetime.now().date().year
-        context['scan_month'] = month_now
-        context['scan_year'] = year_now
-    new_ListWork  = []
-    for each_work in ListWork:
-        if (each_work.releaseDate.year == year_now) and (each_work.releaseDate.month == month_now):
-            new_ListWork.append(each_work)
-    ListWork = new_ListWork
-    ###################################################################################
-    try:
-        profile = worker.user
-
-        context['name_th'] = profile.firstname_th
-        context['last_th'] = profile.lastname_th
-        context['name_en'] = profile.firstname_en
-        context['last_en'] = profile.lastname_en
-
-        if profile.department == '0':
-            department = ''
-        elif profile.department == '1':
-            department = 'วิศวกรรมไฟฟ้าและคอมพิวเตอร์'
-
-        context['department'] = department
-
-        if profile.faculty == '0':
-            faculty = ''
-        elif profile.faculty == '1':
-            faculty = 'วิศวกรรมศาสตร์'
-
-        context['faculty'] = faculty
-        context['tel'] = profile.tel
-        context['worker'] = worker
-
-        if str(ListWork[len(ListWork)-1].endTime) == time.strftime("00:00:01"):
-            status_on = 'disabled'
-            status_off = 'active'
+    if check_user(request):
+        template = "group3/hour_profile.html"
+        context = {}
+        worker = HourlyEmployee.objects.get(id=int(id))
+        ListWork = worker.work_set.all().order_by('-id')
+        ##################### scan_time   ############################
+        if (int(choose_month) != 0) and (int(choose_year) != 0):
+            month_now = int(choose_month)
+            year_now = int(choose_year) - 543
+            context['scan_month'] = month_now
+            context['scan_year'] = year_now
         else:
-            status_on = 'active'
-            status_off = 'disabled'
-
-        context['ListWork'] = ListWork
-        context['employObj'] = worker
-        context['status_on'] = status_on
-        context['status_off'] = status_off
-
-    except:
-        print "Except"
-        context['ListWork'] = ListWork
-        context['employObj'] = worker
-        context['status_on'] = 'active'
-        context['status_off'] = 'disabled'
-
-    return render(
-        request,
-        template,
-        context
-    )
-
+            month_now = datetime.datetime.now().date().month  
+            year_now = datetime.datetime.now().date().year
+            context['scan_month'] = month_now
+            context['scan_year'] = year_now
+        new_ListWork  = []
+        for each_work in ListWork:
+            if (each_work.releaseDate.year == year_now) and (each_work.releaseDate.month == month_now):
+                new_ListWork.append(each_work)
+        ListWork = new_ListWork
+        ###############################################################
+        try:
+            profile = worker.user
+    
+            context['name_th'] = profile.firstname_th
+            context['last_th'] = profile.lastname_th
+            context['name_en'] = profile.firstname_en
+            context['last_en'] = profile.lastname_en
+    
+            if profile.department == '0':
+                department = ''
+            elif profile.department == '1':
+                department = 'วิศวกรรมไฟฟ้าและคอมพิวเตอร์'
+    
+            context['department'] = department
+    
+            if profile.faculty == '0':
+                faculty = ''
+            elif profile.faculty == '1':
+                faculty = 'วิศวกรรมศาสตร์'
+    
+            context['faculty'] = faculty
+            context['tel'] = profile.tel
+            context['worker'] = worker
+    
+            if str(ListWork[len(ListWork)-1].endTime) == time.strftime("00:00:01"):
+                status_on = 'disabled'
+                status_off = 'active'
+            else:
+                status_on = 'active'
+                status_off = 'disabled'
+    
+            context['ListWork'] = ListWork
+            context['employObj'] = worker
+            context['status_on'] = status_on
+            context['status_off'] = status_off
+    
+        except:
+            print "Except"
+            context['ListWork'] = ListWork
+            context['employObj'] = worker
+            context['status_on'] = 'active'
+            context['status_off'] = 'disabled'
+    
+        return render(
+            request,
+            template,
+            context
+        )
+    else:
+        template = 'group3/disable_user.html'
+        return render(request, template, {})
 def add_hour_note(request, workID):
     if request.method == 'POST':
         workObj = Work.objects.get(id=int(workID))
@@ -1397,3 +1407,9 @@ def add_hour_date2(request, employeeID):
     workObj.endTime = endTime=time.strftime("%H:%M")
     workObj.save()
     return HttpResponseRedirect(reverse('group3:returnsearch', args=[employeeID]))
+
+def check_user(request):
+    if (request.user.username == 'group3') or (request.user.is_staff):
+        return True
+    else:
+        return False
