@@ -58,11 +58,16 @@
     border-radius: 10px;
 }
 </style>
-
-<a href="{% url 'group2:profile' %}" class="botton1"> ประวัติส่วนตัว </a>
+{% if currentUser.type = "0" %}
+<a href="{% url 'group2:profile' %}" class="botton1">ประวัติส่วนตัว</a>
 <a href="{% url 'group2:regis_result' %}" class="botton2">ผลการลงทะเบียน</a>
 <a href="{% url 'group2:viyanipon' %}" class="botton3">การทำวิทยานิพนธ์เเละการสอบวิทยานิพนธ์</a>
-
+{% endif %}
+{% if currentUser.type != "0" %}
+<a href="{% url 'group2:profile_admin' studentObj.std_id %}" class="botton1">ประวัติส่วนตัว</a>
+<a href="{% url 'group2:regis_result_admin' studentObj.std_id %}" class="botton2">ผลการลงทะเบียน</a>
+<a href="{% url 'group2:viyaniponadmin' %}" class="botton3">การทำวิทยานิพนธ์เเละการสอบวิทยานิพนธ์</a>
+{% endif %}
 <br>
 <br>
 <br>

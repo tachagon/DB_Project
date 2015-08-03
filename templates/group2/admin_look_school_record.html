@@ -6,7 +6,7 @@
     </style>
 {% endblock %}
 
-{% block title %}ผลการเรียน{% endblock %}
+
 
 {% block pageHeader %}
 
@@ -17,21 +17,55 @@
 {% endblock %}
 
 {% block content %}
-	<style>
+<style>
 
-	#bod{
-		white-space:nowrap;
-		margin:  0px 0% 0%;
-		padding: 0px 340px 0px;
-		background-color:#FFFFFF;
-		}
-
-		
-	th,tr,td{
-		
-		border:3px solid #ab82ff;//blue
-		font:14pt "Angsana New";
+#bod{
+	white-space:nowrap;
+	margin:  0px 0% 0%;
+	padding: 0px 340px 0px;
+	background-color:#FFFFFF;
 	}
+
+.botton1{
+    position: absolute;
+    left: 373px;
+    padding: 10px 10px;
+    background-color: #A8D9E8;
+    text-decoration: none;
+    color: #117777;
+    border-radius: 10px;
+}
+
+.botton2{
+    position: absolute;
+    left: 468px;
+    padding: 10px 10px;
+    background-color: #A8D9E8;
+    text-decoration: none;
+    color: #117777;
+    border-radius: 10px;
+}
+
+.botton3{
+    position: absolute;
+    left: 588px;
+    padding: 10px 10px;
+    background-color: #A8D9E8;
+    text-decoration: none;
+    color: #117777;
+    border-radius: 10px;
+}
+
+.botton4{
+    position: absolute;
+    left: 850px;
+    padding: 10px 10px;
+    background-color: #00B3EE;
+    text-decoration: none;
+    color: #fff;
+    border-radius: 10px;	
+	
+}
 
 .table{
 		width: 50%;
@@ -39,8 +73,22 @@
 		font:14pt "Angsana New";
 	}
 
-	</style>
-	<center>
+	
+tr,td{
+    
+    border:3px solid #ab82ff;//blue
+    font:14pt "Angsana New";
+}
+
+</style>
+
+<a href="{% url 'group2:profile_admin' studentObj.std_id %}" class="botton1">ประวัติส่วนตัว</a>
+<a href="{% url 'group2:regis_result_admin' studentObj.std_id %}" class="botton2">ผลการลงทะเบียน</a>
+<a href="{% url 'group2:viyanipon_admin' studentObj.std_id %}" class="botton3">การทำวิทยานิพนธ์เเละการสอบวิทยานิพนธ์</a>
+<a href="{% url 'group2:admin_look_school_record' studentObj.std_id %}" class="botton4">ผลการเรียน</a>
+<br>
+<br>
+<center>
 		<p></p><br><b>เลขประจำตัว&nbsp&nbsp&nbsp&nbsp</b>{{ studentObj.std_id }}&nbsp&nbsp&nbsp&nbsp<b>ชื่อ&nbsp&nbsp&nbsp&nbsp</b>{{ studentObj.userprofile.firstname_th }} {{studentObj.userprofile.lastname_th}}
 		<br><b>สาขา&nbsp&nbsp&nbsp&nbsp</b>
 		<script>
@@ -106,8 +154,6 @@ var year = date.getFullYear()
 year = year+543
 document.getElementById("year").innerHTML ="ปีการศึกษา : "+year;
 </script>
-
-
 		<br><FONT COLOR=#FF0000>*** ข้อมูลผลการเรียนอย่างไม่เป็นทางการ ***</FONT>
 		<br><br>
 

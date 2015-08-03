@@ -5,10 +5,5 @@ from group2.models import *
 admin.site.register(Course)
 admin.site.register(Section)
 admin.site.register(Grade)
-admin.site.register(Status)
-admin.site.register(viyanipon_adviser)
-admin.site.register(viyanipon_name)
-admin.site.register(viyanipon_project)
-admin.site.register(viyanipon_test)
-admin.site.register(viyanipon_testend)
+admin.site.register(Viyanipon)
 #class Study
