@@ -170,8 +170,11 @@ document.getElementById("year").innerHTML ="<b>ปีการศึกษา : 
         <th bgcolor="#C0C0C0"><b>วิชา</b></th>
         <th bgcolor="#C0C0C0"><b>หน่วยกิต</b></th>
         <th bgcolor="#C0C0C0"><b>ตอนเรียน</b></th>
+		<th bgcolor="#C0C0C0"><b>วันเรียน</b></th>
         <th bgcolor="#C0C0C0"><b>เวลาเรียน</b></th>
+		<th bgcolor="#C0C0C0"><b>ห้องเรียน</b></th>
         <th bgcolor="#C0C0C0"><b>ผู้สอน</th>
+		<th bgcolor="#C0C0C0"><b>รหัสผู้สอน</th>
 		<th bgcolor="#C0C0C0"><b>สถานะ</th>
 		</tr>
     </thead>
@@ -184,8 +187,11 @@ document.getElementById("year").innerHTML ="<b>ปีการศึกษา : 
  	    <td >{{i.Course_ID.Course_Name}}</td>
  	    <td >{{i.Course_ID.Credit}}</td>
         <td >{{i.Section.Section}}</td>
+		<td >{{i.Section.date}}</td>
         <td >{{i.Section.st_endTime}}</td>
-         <td>{{i.T_name}} &nbsp{{i.T_lastname}}</td>
+		<td >{{i.Section.classroom }} </td>
+        <td>{{i.Section.T_name}} &nbsp{{i.Section.T_lastname}}</td>
+		<td>{{i.Section.shortname}}</td>
 		 <td>{{i.check}} </td>
 		</tr>	
         
@@ -196,8 +202,11 @@ document.getElementById("year").innerHTML ="<b>ปีการศึกษา : 
  	    <td >{{i.Course_ID.Course_Name}}</td>
  	    <td >{{i.Course_ID.Credit}}</td>
         <td >{{i.Section.Section}}</td>
+		<td >{{i.Section.date}}</td>
         <td >{{i.Section.st_endTime}}</td>
-         <td>{{i.T_name}} &nbsp{{i.T_lastname}}</td>
+		<td >{{i.Section.classroom }} </td>
+        <td>{{i.Section.T_name}} &nbsp{{i.Section.T_lastname}}</td>
+		<td>{{i.Section.shortname}}</td>
 		 <td>{{i.check}} </td>
 		</tr>	
         
@@ -208,9 +217,12 @@ document.getElementById("year").innerHTML ="<b>ปีการศึกษา : 
  	    <td >{{i.Course_ID.Course_Name}}</td>
  	    <td >{{i.Course_ID.Credit}}</td>
         <td >{{i.Section.Section}}</td>
+		<td >{{i.Section.date}}</td>
         <td >{{i.Section.st_endTime}}</td>
-         <td>{{i.T_name}} &nbsp{{i.T_lastname}}</td>
-		 <td>{{i.check}} </td>
+		<td >{{i.Section.classroom }} </td>
+        <td>{{i.Section.T_name}} &nbsp{{i.Section.T_lastname}}</td>
+		<td>{{i.Section.shortname}}</td>
+		 <td>{{i.Section.check}} </td>
 		</tr>	
         
 	{%endfor%}
@@ -220,8 +232,11 @@ document.getElementById("year").innerHTML ="<b>ปีการศึกษา : 
  	    <td >{{i.Course_ID.Course_Name}}</td>
  	    <td >{{i.Course_ID.Credit}}</td>
         <td >{{i.Section.Section}}</td>
+		<td >{{i.Section.date}}</td>
         <td >{{i.Section.st_endTime}}</td>
-         <td>{{i.T_name}} &nbsp{{i.T_lastname}}</td>
+		<td >{{i.Section.classroom }} </td>
+        <td>{{i.Section.T_name}} &nbsp{{i.Section.T_lastname}}</td>
+		<td>{{i.Section.shortname}}</td>
 		 <td>{{i.check}} </td>
 		</tr>	
         
@@ -341,8 +356,11 @@ document.getElementById("year").innerHTML ="ปีการศึกษา : "+y
         <th bgcolor="#C0C0C0"><b>วิชา</b></th>
         <th bgcolor="#C0C0C0"><b>หน่วยกิต</b></th>
         <th bgcolor="#C0C0C0"><b>ตอนเรียน</b></th>
+		<th bgcolor="#C0C0C0"><b>วันเรียน</b></th>
         <th bgcolor="#C0C0C0"><b>เวลาเรียน</b></th>
+		<th bgcolor="#C0C0C0"><b>ห้องเรียน</b></th>
         <th bgcolor="#C0C0C0"><b>ผู้สอน</th>
+		<th bgcolor="#C0C0C0"><b>รหัสผู้สอน</th>
 		<th bgcolor="#C0C0C0"><b>สถานะ</th>
 		</tr>
     </thead>
@@ -355,8 +373,11 @@ document.getElementById("year").innerHTML ="ปีการศึกษา : "+y
  	    <td >{{i.Course_ID.Course_Name}}</td>
  	    <td >{{i.Course_ID.Credit}}</td>
         <td >{{i.Section.Section}}</td>
+		<td >{{i.Section.date}}</td>
         <td >{{i.Section.st_endTime}}</td>
-         <td>{{i.T_name}} &nbsp{{i.T_lastname}}</td>
+		<td >{{i.Section.classroom }} </td>
+        <td>{{i.Section.T_name}} &nbsp{{i.Section.T_lastname}}</td>
+		<td>{{i.Section.shortname}}</td>
 		 <td>{{i.check}} </td>
 		</tr>	
         
@@ -367,10 +388,13 @@ document.getElementById("year").innerHTML ="ปีการศึกษา : "+y
  	    <td >{{i.Course_ID.Course_Name}}</td>
  	    <td >{{i.Course_ID.Credit}}</td>
         <td >{{i.Section.Section}}</td>
+		<td >{{i.Section.date}}</td>
         <td >{{i.Section.st_endTime}}</td>
-         <td>{{i.T_name}} &nbsp{{i.T_lastname}}</td>
+		<td >{{i.Section.classroom }} </td>
+        <td>{{i.Section.T_name}} &nbsp{{i.Section.T_lastname}}</td>
+		<td>{{i.Section.shortname}}</td>
 		 <td>{{i.check}} </td>
-		</tr>	
+		</tr>
         
 	{%endfor%}
 	{%for i in table_show3 %}
@@ -379,10 +403,13 @@ document.getElementById("year").innerHTML ="ปีการศึกษา : "+y
  	    <td >{{i.Course_ID.Course_Name}}</td>
  	    <td >{{i.Course_ID.Credit}}</td>
         <td >{{i.Section.Section}}</td>
+		<td >{{i.Section.date}}</td>
         <td >{{i.Section.st_endTime}}</td>
-         <td>{{i.T_name}} &nbsp{{i.T_lastname}}</td>
+		<td >{{i.Section.classroom }} </td>
+        <td>{{i.Section.T_name}} &nbsp{{i.Section.T_lastname}}</td>
+		<td>{{i.Section.shortname}}</td>
 		 <td>{{i.check}} </td>
-		</tr>	
+		</tr>
         
 	{%endfor%}
 	{%for i in table_show4 %}
@@ -391,8 +418,11 @@ document.getElementById("year").innerHTML ="ปีการศึกษา : "+y
  	    <td >{{i.Course_ID.Course_Name}}</td>
  	    <td >{{i.Course_ID.Credit}}</td>
         <td >{{i.Section.Section}}</td>
+		<td >{{i.Section.date}}</td>
         <td >{{i.Section.st_endTime}}</td>
-         <td>{{i.T_name}} &nbsp{{i.T_lastname}}</td>
+		<td >{{i.Section.classroom }} </td>
+        <td>{{i.Section.T_name}} &nbsp{{i.Section.T_lastname}}</td>
+		<td>{{i.Section.shortname}}</td>
 		 <td>{{i.check}} </td>
 		</tr>	
         

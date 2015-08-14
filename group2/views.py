@@ -1065,9 +1065,9 @@ def regis_result(request):
     year=int(year)
     year=year+2543
     
-    if (    ((month=="07" or month=="08")and( day >= 10 or day <= 31)) or  ((month=="09" or month=="10")and( day >= 1 or day <= 31)) or  ((month=="11" )and( day >= 1 or day <= 2))   ):
+    if (    ((month=="07" or month=="08")and( day >= 10 or day <= 31)) or  ((month=="09" or month=="10" or month=="11" or month=="12")and( day >= 1 or day <= 31))    ):
              t=1
-    elif(   (month=="01" and (day>=11 or day <= 31))    or  ((month=="02" or month=="03")and( day >= 1 or day <= 31))  or  ((month=="04" )and( day >= 1 or day <= 4))           ):
+    elif(   (month=="01" and (day>=11 or day <= 31))    or  ((month=="02" or month=="03" or month=="04" or month=="05")and( day >= 1 or day <= 31))             ):
              t=2
              
     table_show1=Grade.objects.filter(std_id=studentObj,year=year,term=t ,check="อนุมัติ")
