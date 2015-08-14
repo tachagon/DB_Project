@@ -8,10 +8,12 @@ urlpatterns = patterns('',
     url(r'^getdataStudentEdit/$', views.get_data_student_edit, name='get_data_student_edit'),
     url(r'^search_student/$', views.search_student, name='search_student'),
     url(r'^search_student/profile/(\d+)/$', views.profile_admin, name='profile_admin'),
-    url(r'^search_student/data_student/(\d+)/$', views.data_student_admin, name='data_student_admin'),
     url(r'^search_student/regis_result/(\d+)/$', views.regis_result_admin, name='regis_result_admin'),
-    url(r'^search_student/viyanipon/(\d+)/$', views.viyanipon_admin, name='viyanipon_admin'),
+    url(r'^search_student/viyanipon_admin/(\d+)/$', views.viyanipon_admin, name='viyanipon_admin'),
+    url(r'^search_student/admin_look_school_record/(\d+)/$', views.admin_look_school_record, name='admin_look_school_record'),
 
+
+    url(r'^admin_look_school_record/$', views.admin_look_school_record, name='admin_look_school_record'),
     url(r'^registeration/$', views.registeration, name='registeration'),
     url(r'^regisResult/$', views.regis_result, name='regis_result'),
     url(r'^schoolRecord/$', views.school_record, name='school_record'),
@@ -37,12 +39,13 @@ urlpatterns = patterns('',
     url(r'^Update_check_drop/$', views.Update_check_drop, name='Update_check_drop'),
     url(r'^Find_school_record_admin/$', views.Find_school_record_admin, name='Find_school_record_admin'),
     url(r'^Edit_school_record_admin/$', views.Edit_school_record_admin, name='Edit_school_record_admin'),
+    url(r'^Add_register/$', views.Add_register, name='Add_register'),  
     url(r'^viyanipon/$', views.viyanipon, name='viyanipon'),
-    url(r'^viyaniponShow/$', views.viyaniponshow, name='viyaniponshow'),
-    url(r'^viyaniponAdmin/$', views.viyanipon_admin, name='viyaniponadmin'),
-    url(r'^viyaniponAdmin2/$', views.viyanipon_admin2, name='viyaniponadmin2'),
+    url(r'^edit_viyanipon/$', views.edit_viyanipon, name='edit_viyanipon'),
+    url(r'^Add_edit_viyanipon/$', views.Add_edit_viyanipon, name='Add_edit_viyanipon'),
+                  
 
-                 
+      
 
 
                        

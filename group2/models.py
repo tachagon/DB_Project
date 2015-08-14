@@ -1,8 +1,7 @@
 #-*- coding: utf-8 -*-
 from django.db import models
 from login.models import *
-
-
+    
 class Department(models.Model):
     #code  Nooooooooooo
     
@@ -44,7 +43,7 @@ class Grade(models.Model):
         return "Student "+str(self.std_id )+" Course "+str(self.Course_ID )+" Section "+str(self.Section)+" Year "+  str(self.year)+"  Term "+  str(self.term)
 
 class Status(models.Model):
-    #code
+    #code nooooooooo
     std_id = models.ForeignKey(Student)
     state= models.CharField( max_length=40, blank=True)
     def __unicode__(self):
@@ -76,14 +75,17 @@ class scheme(models.Model):
         return str(self.Course_ID)+"  "+  str(self.scheme)
 		
 class viyanipon_adviser(models.Model):
-    #code
+    #code nooooooooo
     std_id = models.CharField(primary_key=True, max_length=13)
     teach_name = models.CharField(max_length=6)
     adviser = models.CharField(max_length=50)
     def __unicode__(self):
         return str(self.std_id)+"  "+  str(self.adviser)
-		
+
+
+	
 class viyanipon_name(models.Model):
+    #code nooooooooo
     std_id = models.CharField(primary_key=True, max_length=13)
     name = models.CharField(max_length=20)
     name_thai = models.CharField(max_length=200)
@@ -91,6 +93,7 @@ class viyanipon_name(models.Model):
 
 
 class viyanipon_project(models.Model):
+    #code nooooooooo
     std_id = models.CharField(primary_key=True, max_length=13)
     project_name = models.CharField(max_length=6)
     name_day = models.IntegerField(max_length=2)
@@ -100,6 +103,7 @@ class viyanipon_project(models.Model):
         return str(self.std_id)+"  "+  str(self.name_day)+"  "+  str(self.name_month)+"  "+  str(self.name_year)
 		
 class viyanipon_test(models.Model):
+    #code nooooooooo
     std_id = models.CharField(primary_key=True, max_length=13)
     test = models.CharField(max_length=6)
     test_day = models.IntegerField(max_length=2)
@@ -109,6 +113,7 @@ class viyanipon_test(models.Model):
         return str(self.std_id)+"  "+  str(self.test_day)+"  "+  str(self.test_month)+"  "+  str(self.test_year)
 		
 class viyanipon_testend(models.Model):
+    #code nooooooooo
     std_id = models.CharField(primary_key=True, max_length=13)
     testend = models.CharField(max_length=6)
     testend_day = models.IntegerField(max_length=2)
@@ -116,3 +121,22 @@ class viyanipon_testend(models.Model):
     testend_year = models.IntegerField(max_length=4)
     def __unicode__(self):
         return str(self.std_id)+"  "+  str(self.testend_day)+"  "+  str(self.testend_month)+"  "+  str(self.testend_year)
+
+
+class date(models.Model):
+    #code nooooooooo
+    datee = models.CharField(max_length=20, blank=True)	
+    def __unicode__(self):
+        return str(self.datee)
+    
+
+class Viyanipon(models.Model):
+    std_id = models.ForeignKey(Student)
+    Teacher = models.CharField(max_length=100, blank=True)
+    Offer_th= models.CharField(max_length=200, blank=True)
+    Offer_en= models.CharField(max_length=200, blank=True)
+    Test=models.CharField(max_length=20, blank=True)
+    Advance_Test=models.CharField(max_length=20, blank=True)
+    Protect_Test=models.CharField(max_length=20, blank=True)
+    def __unicode__(self):
+        return str(self.std_id)+"  "+  str(self.Offer_th)

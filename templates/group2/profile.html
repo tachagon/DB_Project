@@ -7,17 +7,20 @@
     </style>
 {% endblock %}
 
-{% block title %}ประวัตินักศึกษา{% endblock %}
+{% block title %}ประวัติส่วนตัว{% endblock %}
 
 {% block pageHeader %}
 
 <ol class="breadcrumb">
     <li><a href="{% url 'login:menu' %}">เมนู</a></li>
-    <li class="active">ประวัตินักศึกษา</li>
+    <li class="active">ประวัติส่วนตัว</li>
 </ol>
 {% endblock %}
 
 {% block content %}
+
+
+
 <style>
 
 #bod{
@@ -28,25 +31,22 @@
 	}
 
 	
-table{
-    width: 50%;
-    border:3px solid  #3366CC;//blue
-    font:14pt "Angsana New";
-}
+
+
 
 .botton1{
     position: absolute;
-    left: 346px;
+    left: 373px;
     padding: 10px 10px;
     background-color: #00B3EE;
     text-decoration: none;
-    color: #117777;
+    color: #fff;
     border-radius: 10px;
 }
 
 .botton2{
     position: absolute;
-    left: 442px;
+    left: 468px;
     padding: 10px 10px;
     background-color: #A8D9E8;
     text-decoration: none;
@@ -54,38 +54,201 @@ table{
     border-radius: 10px;
 }
 
-.botton21{
+.botton3{
     position: absolute;
-    left: 442px;
+    left: 588px;
     padding: 10px 10px;
-    background-color: #00B3EE;
+    background-color: #A8D9E8;
     text-decoration: none;
     color: #117777;
     border-radius: 10px;
 }
-.botton3{
+
+.botton4{
     position: absolute;
-    left: 562px;
+    left: 850px;
     padding: 10px 10px;
     background-color: #A8D9E8;
     text-decoration: none;
-    color: #fff;
-    border-radius: 10px;
-	
-	
+    color: #117777;
+    border-radius: 10px;	
 	
 }
+
+table{
+    width: 50%;
+	
+    border:3px solid  #3366CC;//blue
+    font:14pt "Angsana New";
+}
 </style>
-{% if currentUser.type = "0" %}
+
+{%if user.is_staff %}
+<a href="{% url 'group2:profile_admin' studentObj.std_id %}" class="botton1">ประวัติส่วนตัว</a>
+<a href="{% url 'group2:regis_result_admin' studentObj.std_id %}" class="botton2">ผลการลงทะเบียน</a>
+<a href="{% url 'group2:viyanipon_admin' studentObj.std_id %}" class="botton3">การทำวิทยานิพนธ์เเละการสอบวิทยานิพนธ์</a>
+<a href="{% url 'group2:admin_look_school_record' studentObj.std_id %}" class="botton4">ผลการเรียน</a>
+<br>
+<br>
+<center>
+<table> 
+<tr><th  width="30%"><br><u>ข้อมูลนักศึกษา</u></th><td></td></tr>
+<tr><th  width="30%">เลขประจำตัว</th><td>{{ studentObj.std_id }}</td></tr>
+<tr><th  width="30%">ชื่อภาษาไทย</th><td>{{ studentObj.userprofile.firstname_th }}&nbsp{{ studentObj.userprofile.lastname_th }}</td></tr>
+<tr><th  width="30%">ชื่อภาษาอังกฤษ</th><td>{{ studentObj.userprofile }}</td></tr>
+<tr><th  width="30%">เพศ</th><td>
+<script>
+x = {{ studentObj.sex }}
+if (x == 0) {
+    document.write('ชาย')
+}
+else if (x == 1){
+    document.write('หญิง')
+}
+</script>
+</td></tr>
+<tr><th  width="30%">ระดับ</th><td>
+<script>
+x = {{ studentObj.degree }}
+if (x == 0) {
+    document.write('ปริญญาตรี')
+}
+else if (x == 1){
+    document.write('ปริญญาโท')
+}
+else if (x == 2){
+    document.write('ปริญญาเอก')
+}
+</script>
+</td></tr>
+<tr><th  width="30%">สาขา</th><td>
+ภาควิชา<script>
+x = {{ studentObj.userprofile.department }}
+if (x == 0) {
+    document.write('')
+}
+else if (x == 1){
+    document.write('วิศวกรรมไฟฟ้าและคอมพิวเตอร์')
+}
+</script>&nbsp
+คณะ
+<script>
+x = {{ studentObj.userprofile.department }}
+if (x == 0) {
+    document.write('')
+}
+else if (x == 1){
+    document.write('วิศวกรรมศาสตร์')
+}
+</script>&nbsp
+<script>
+x = {{ studentObj.main }}
+if (x == 0) {
+    document.write('Cpr.E')
+}
+else if (x == 1){
+    document.write('G')
+}
+else if (x == 2){
+    document.write('U')
+}
+else if (x == 3){
+    document.write('C')
+}
+</script>
+</td></tr>
+<tr><th  width="30%">หลักสูตร</th><td>
+<script>
+x = {{ studentObj.scheme }}
+if (x == 0) {
+    document.write('หลักสูตรปรับปรุง Cpr.E 54')
+}
+else if (x == 1){
+    document.write('หลักสูตรปรับปรุง EE 51')
+}
+else if (x == 2){
+    document.write('หลักสูตรปรับปรุง ECE 55')
+}
+else if (x == 3){
+    document.write('หลักสูตรมหาบัณฑิต 55')
+}
+else if (x == 4){
+    document.write('หลักสูตรดุษฎีบัณฑิต 55')
+}
+</script>
+</td></tr>
+<tr><th  width="30%">แผนการเรียน</th><td>
+<script>
+x = {{ studentObj.plan }}
+if (x == 0) {
+    document.write('')
+}
+else if (x == 1){
+    document.write('ป.โท แผน ก แบบ ก 2 ปกติ')
+}
+else if (x == 2){
+    document.write('ป.โท แผน ก แบบ ก 2 สหกิจศึกษา')
+}
+else if (x == 3){
+    document.write('ป.เอก แผน 1 แบบ 1.1')
+}
+else if (x == 4){
+    document.write('ป.เอก แผน 1 แบบ 1.2')
+}
+else if (x == 5){
+    document.write('ป.เอก แผน 2 แบบ 2.1')
+}
+else if (x == 6){
+    document.write('ป.เอก แผน 2 แบบ 2.2')
+}
+</script>
+</td></tr>
+<tr><th  width="30%">ปีที่เข้า</th><td>25{{ studentObj.std_id.0 }}{{ studentObj.std_id.1 }}</td></tr>
+<tr><th  width="30%">ชั้นปีที่</th><td>
+<script>
+var date=new Date()
+var yyyy = date.getFullYear()
+xxxx = 25{{ studentObj.std_id.0 }}{{ studentObj.std_id.1 }}
+yyyy = yyyy+543-xxxx+1
+document.write(yyyy)
+</script>
+</td></tr>
+<tr><th  width="30%"><br><u>ประวัตินักศึกษา</u></th><td></td></tr>
+<tr><th  width="30%">บัตรประชาชน</th><td>{{ studentObj.id_number }}</td></tr>
+<tr><th  width="30%">หมู่เลือด</th><td>
+<script>
+x = {{ studentObj.blood_type }}
+if (x == 0) {
+    document.write('O')
+}
+else if (x == 1){
+    document.write('A')
+}
+else if (x == 2){
+    document.write('B')
+}
+else if (x == 3){
+    document.write('AB')
+}
+</script>
+</td></tr>
+<tr><th  width="30%">เชื้อชาติ</th><td>{{ studentObj.nationality }}</td></tr>
+<tr><th  width="30%">ศาสนา</th><td>{{ studentObj.religion }}</td></tr>
+<tr><th  width="30%">วันเกิด</th><td>{{ studentObj.birthDate }}</td></tr>
+<tr><th  width="30%">ที่อยุ่</th><td>{{ studentObj.userprofile.address }}</td></tr>
+<tr><th  width="30%">โทรศัพท์</th><td>{{ studentObj.userprofile.tel }}</td></tr>
+<tr><th  width="30%"><br><u></u></th><td></td></tr>
+
+</table>
+<br>
+<br>
+
+</center>
+{%else%}
+{%if studentObj.degree != '0'%}
 <a href="{% url 'group2:profile' %}" class="botton1">ประวัติส่วนตัว</a>
 <a href="{% url 'group2:regis_result' %}" class="botton2">ผลการลงทะเบียน</a>
 <a href="{% url 'group2:viyanipon' %}" class="botton3">การทำวิทยานิพนธ์เเละการสอบวิทยานิพนธ์</a>
-{% endif %}
-{% if currentUser.type != "0" %}
-<a href="{% url 'group2:profile_admin' studentObj.std_id %}" class="botton1">ประวัติส่วนตัว</a>
-<a href="{% url 'group2:regis_result_admin' studentObj.std_id %}" class="botton2">ผลการลงทะเบียน</a>
-<a href="{% url 'group2:viyanipon_admin' studentObj.std_id %}" class="botton4">การทำวิทยานิพนธ์เเละการสอบวิทยานิพนธ์</a>
-{% endif %}
 
 <br>
 <br>
@@ -168,6 +331,38 @@ else if (x == 1){
 else if (x == 2){
     document.write('หลักสูตรปรับปรุง ECE 55')
 }
+else if (x == 3){
+    document.write('หลักสูตรมหาบัณฑิต 55')
+}
+else if (x == 4){
+    document.write('หลักสูตรดุษฎีบัณฑิต 55')
+}
+</script>
+</td></tr>
+<tr><th  width="30%">แผนการเรียน</th><td>
+<script>
+x = {{ studentObj.plan }}
+if (x == 0) {
+    document.write('')
+}
+else if (x == 1){
+    document.write('ป.โท แผน ก แบบ ก 2 ปกติ')
+}
+else if (x == 2){
+    document.write('ป.โท แผน ก แบบ ก 2 สหกิจศึกษา')
+}
+else if (x == 3){
+    document.write('ป.เอก แผน 1 แบบ 1.1')
+}
+else if (x == 4){
+    document.write('ป.เอก แผน 1 แบบ 1.2')
+}
+else if (x == 5){
+    document.write('ป.เอก แผน 2 แบบ 2.1')
+}
+else if (x == 6){
+    document.write('ป.เอก แผน 2 แบบ 2.2')
+}
 </script>
 </td></tr>
 <tr><th  width="30%">ปีที่เข้า</th><td>25{{ studentObj.std_id.0 }}{{ studentObj.std_id.1 }}</td></tr>
@@ -176,7 +371,7 @@ else if (x == 2){
 var date=new Date()
 var yyyy = date.getFullYear()
 xxxx = 25{{ studentObj.std_id.0 }}{{ studentObj.std_id.1 }}
-yyyy = yyyy+543-xxxx
+yyyy = yyyy+543-xxxx+1
 document.write(yyyy)
 </script>
 </td></tr>
@@ -211,6 +406,9 @@ else if (x == 3){
 <br>
 
 </center>
+	{% endif %}
+{% endif %}
+
 
 
 {% endblock %}
